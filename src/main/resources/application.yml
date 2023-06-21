@@ -1,6 +1,7 @@
 swagger-api:
   version: "1.0"
 
+
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/book_store
