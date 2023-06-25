@@ -56,16 +56,23 @@ public class BookTests extends BookStoreTest {
     BookDto BOOK_DTO_INCORRECT_COUNT = BookDto.builder()
             .id(5)
             .name("5")
-            .price(-5)
-            .count(5)
+            .price(5)
+            .count(-5)
             .build();
 
-    BookDto BOOK_DTO_INCORRECT_NAME = BookDto.builder()
+    BookDto BOOK_DTO_INCORRECT_NAME_1 = BookDto.builder()
             .id(6)
-            .name("6")
-            .price(-6)
+            .price(6)
             .count(6)
             .build();
+
+    BookDto BOOK_DTO_INCORRECT_NAME_2 = BookDto.builder()
+            .id(6)
+            .name("")
+            .price(6)
+            .count(6)
+            .build();
+
     List<BookModel> BOOKS = List.of(
             BOOK_CORRECT_1,
             BOOK_CORRECT_2
@@ -132,10 +139,18 @@ public class BookTests extends BookStoreTest {
     }
 
     @Test
-    public void createIncorrectNameTest() {
+    public void createIncorrectName1Test() {
         Assertions.assertThrows(
                 BookValidationException.class,
-                () -> bookController.create(BOOK_DTO_INCORRECT_NAME)
+                () -> bookController.create(BOOK_DTO_INCORRECT_NAME_1)
+        );
+    }
+
+    @Test
+    public void createIncorrectName2Test() {
+        Assertions.assertThrows(
+                BookValidationException.class,
+                () -> bookController.create(BOOK_DTO_INCORRECT_NAME_2)
         );
     }
 
@@ -173,10 +188,18 @@ public class BookTests extends BookStoreTest {
     }
 
     @Test
-    public void updateIncorrectNameTest() {
+    public void updateIncorrectName1Test() {
         Assertions.assertThrows(
                 BookValidationException.class,
-                () -> bookController.update(BOOK_DTO_INCORRECT_NAME)
+                () -> bookController.update(BOOK_DTO_INCORRECT_NAME_1)
+        );
+    }
+
+    @Test
+    public void updateIncorrectName2Test() {
+        Assertions.assertThrows(
+                BookValidationException.class,
+                () -> bookController.update(BOOK_DTO_INCORRECT_NAME_2)
         );
     }
 
