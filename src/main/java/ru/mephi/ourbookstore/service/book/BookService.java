@@ -68,7 +68,7 @@ public class BookService {
         if (book.getCount() < 0) {
             throw new BookValidationException("count");
         }
-        if (book.getName().isBlank()) {
+        if (book.getName() == null || book.getName().isBlank()) {
             throw new BookValidationException("name");
         }
         if (book.getPrice() < 0) {
