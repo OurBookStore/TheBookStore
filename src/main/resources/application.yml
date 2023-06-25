@@ -1,6 +1,8 @@
-swagger-api:
-  version: "1.0"
-
+server:
+  servlet:
+    context-path: /app
+  error:
+    include-message: always
 
 spring:
   datasource:
@@ -13,11 +15,12 @@ spring:
     hibernate:
       ddl-auto: create-drop
     show-sql: true
+
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
+      jakarta:
+        persistence:
+          sharedCache:
+            mode: ALL
 
-server:
-  port: 8090
-  servlet:
-    context-path: /app
