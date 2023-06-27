@@ -1,7 +1,7 @@
 package ru.mephi.ourbookstore.service.book;
 
 import org.mapstruct.Mapper;
-import ru.mephi.ourbookstore.repository.book.model.BookModel;
+import ru.mephi.ourbookstore.repository.book.BookModel;
 
 /**
  * @author Aleksei Iagnenkov (alekseiiagn)
@@ -11,5 +11,5 @@ public interface BookModelMapper {
 
     Book modelToObject(BookModel model);
 
-    BookModel ObjectToModel(Book book);
+    BookModel objectToModel(Book book);
 }

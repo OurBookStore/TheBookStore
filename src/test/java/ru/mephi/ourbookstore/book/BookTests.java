@@ -8,7 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ru.mephi.ourbookstore.BookStoreTest;
 import ru.mephi.ourbookstore.controller.book.BookDto;
-import ru.mephi.ourbookstore.repository.book.model.BookModel;
+import ru.mephi.ourbookstore.repository.book.BookModel;
 import ru.mephi.ourbookstore.service.book.exceptions.BookAlreadyExistException;
 import ru.mephi.ourbookstore.service.book.exceptions.BookNotFoundException;
 import ru.mephi.ourbookstore.service.book.exceptions.BookValidationException;
@@ -19,55 +19,55 @@ import ru.mephi.ourbookstore.service.book.exceptions.BookValidationException;
 public class BookTests extends BookStoreTest {
 
     BookModel BOOK_CORRECT_1 = BookModel.builder()
-            .id(1)
+            .id(1L)
             .name("1")
             .price(1)
             .count(1)
             .build();
 
     BookModel BOOK_CORRECT_2 = BookModel.builder()
-            .id(2)
+            .id(2L)
             .name("2")
             .price(2)
             .count(2)
             .build();
 
     BookDto BOOK_CORRECT_1_NEW = BookDto.builder()
-            .id(1)
+            .id(1L)
             .name("11")
             .price(11)
             .count(11)
             .build();
 
     BookDto BOOK_DTO = BookDto.builder()
-            .id(3)
+            .id(3L)
             .name("3")
             .price(3)
             .count(3)
             .build();
 
     BookDto BOOK_DTO_INCORRECT_PRICE = BookDto.builder()
-            .id(4)
+            .id(4L)
             .name("4")
             .price(-4)
             .count(4)
             .build();
 
     BookDto BOOK_DTO_INCORRECT_COUNT = BookDto.builder()
-            .id(5)
+            .id(5L)
             .name("5")
             .price(5)
             .count(-5)
             .build();
 
     BookDto BOOK_DTO_INCORRECT_NAME_1 = BookDto.builder()
-            .id(6)
+            .id(6L)
             .price(6)
             .count(6)
             .build();
 
     BookDto BOOK_DTO_INCORRECT_NAME_2 = BookDto.builder()
-            .id(6)
+            .id(6L)
             .name("")
             .price(6)
             .count(6)
@@ -239,14 +239,14 @@ public class BookTests extends BookStoreTest {
 
 
     private boolean isEquals(BookModel expected, BookDto actual) {
-        return expected.getId() == actual.getId()
+        return expected.getId().equals(actual.getId())
                 && expected.getName().equals(actual.getName())
                 && expected.getPrice() == actual.getPrice()
                 && expected.getCount() == actual.getCount();
     }
 
     private boolean isEquals(BookDto expected, BookDto actual) {
-        return expected.getId() == actual.getId()
+        return expected.getId().equals(actual.getId())
                 && expected.getName().equals(actual.getName())
                 && expected.getPrice() == actual.getPrice()
                 && expected.getCount() == actual.getCount();

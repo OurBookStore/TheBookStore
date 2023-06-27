@@ -13,7 +13,7 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class BookDto {
 
-    long id;
+    Long id;
     String name;
     double price;
     int count;

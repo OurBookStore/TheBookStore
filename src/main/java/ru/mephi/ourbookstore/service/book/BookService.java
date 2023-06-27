@@ -8,7 +8,7 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.mephi.ourbookstore.repository.book.BookRepository;
-import ru.mephi.ourbookstore.repository.book.model.BookModel;
+import ru.mephi.ourbookstore.repository.book.BookModel;
 import ru.mephi.ourbookstore.service.book.exceptions.BookAlreadyExistException;
 import ru.mephi.ourbookstore.service.book.exceptions.BookNotFoundException;
 import ru.mephi.ourbookstore.service.book.exceptions.BookValidationException;
@@ -43,7 +43,7 @@ public class BookService {
         if (bookRepository.findByName(name).isPresent()) {
             throw new BookAlreadyExistException(name);
         }
-        BookModel bookModel = bookModelMapper.ObjectToModel(book);
+        BookModel bookModel = bookModelMapper.objectToModel(book);
         bookRepository.save(bookModel);
     }
 
@@ -53,7 +53,7 @@ public class BookService {
         long bookId = book.getId();
         bookRepository.findById(bookId)
                 .orElseThrow(() -> new BookNotFoundException(bookId));
-        BookModel bookModel = bookModelMapper.ObjectToModel(book);
+        BookModel bookModel = bookModelMapper.objectToModel(book);
         bookRepository.save(bookModel);
     }
 
