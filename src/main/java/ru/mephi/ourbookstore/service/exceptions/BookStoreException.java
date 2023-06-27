@@ -7,7 +7,7 @@ import org.springframework.web.server.ResponseStatusException;
  */
 public class BookStoreException extends ResponseStatusException {
 
-    public BookStoreException(BookStoreError error, String entity, String value){
+    public BookStoreException(BookStoreError error, String entity, String value) {
         super(error.getCode(), String.format(error.getMessage(), entity, value));
     }
 }
