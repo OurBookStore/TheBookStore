@@ -1,31 +1,15 @@
 package ru.mephi.ourbookstore.controller.book;
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
+import org.mapstruct.Mapper;
 import ru.mephi.ourbookstore.service.book.Book;
 
 /**
  * @author Aleksei Iagnenkov (alekseiiagn)
  */
-@Component
-@RequiredArgsConstructor
-public class BookDtoMapper {
+@Mapper(componentModel = "spring")
+public interface BookDtoMapper {
 
-    public Book dtoToObject(BookDto model) {
-        return Book.builder()
-                .id(model.getId())
-                .name(model.getName())
-                .count(model.getCount())
-                .price(model.getPrice())
-                .build();
-    }
+    Book dtoToObject(BookDto model);
 
-    public BookDto ObjectToDto(Book book) {
-        return BookDto.builder()
-                .id(book.getId())
-                .name(book.getName())
-                .count(book.getCount())
-                .price(book.getPrice())
-                .build();
-    }
+    BookDto ObjectToDto(Book book);
 }
