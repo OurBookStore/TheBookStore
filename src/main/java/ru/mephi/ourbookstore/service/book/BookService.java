@@ -39,20 +39,20 @@ public class BookService {
     }
 
     @Transactional
-    public void create(Book book) {
+    public Long create(Book book) {
         validate(book);
         String name = book.getName();
         if (bookRepository.findByName(name).isPresent()) {
             throw new BookAlreadyExistException(name);
         }
         BookModel bookModel = bookModelMapper.objectToModel(book);
-        bookRepository.save(bookModel);
+        return bookRepository.save(bookModel).getId();
     }
 
     @Transactional
     public void update(Book book) {
         validate(book);
-        long bookId = book.getId();
+        Long bookId = book.getId();
         bookRepository.findById(bookId)
                 .orElseThrow(() -> new BookNotFoundException(bookId));
         BookModel bookModel = bookModelMapper.objectToModel(book);

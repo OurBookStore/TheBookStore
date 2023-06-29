@@ -40,9 +40,9 @@ public class BookController {
     }
 
     @PostMapping
-    public void create(@RequestBody BookDto bookDto) {
+    public Long create(@RequestBody BookDto bookDto) {
         Book book = bookDtoMapper.dtoToObject(bookDto);
-        bookService.create(book);
+        return bookService.create(book);
     }
 
     @PutMapping
