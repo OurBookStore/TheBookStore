@@ -1,7 +1,8 @@
-package ru.mephi.ourbookstore.service.book;
+package ru.mephi.ourbookstore.mapper.book;
 
 import org.mapstruct.Mapper;
-import ru.mephi.ourbookstore.repository.book.BookModel;
+import ru.mephi.ourbookstore.domain.BookModel;
+import ru.mephi.ourbookstore.domain.dto.book.Book;
 
 /**
  * @author Aleksei Iagnenkov (alekseiiagn)

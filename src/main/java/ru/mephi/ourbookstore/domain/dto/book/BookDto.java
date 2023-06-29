@@ -1,4 +1,4 @@
-package ru.mephi.ourbookstore.controller.book;
+package ru.mephi.ourbookstore.domain.dto.book;
 
 import lombok.AccessLevel;
 import lombok.Builder;

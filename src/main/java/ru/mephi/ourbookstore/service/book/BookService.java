@@ -7,11 +7,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.mephi.ourbookstore.domain.dto.book.Book;
+import ru.mephi.ourbookstore.mapper.book.BookModelMapper;
 import ru.mephi.ourbookstore.repository.book.BookRepository;
-import ru.mephi.ourbookstore.repository.book.BookModel;
-import ru.mephi.ourbookstore.service.book.exceptions.BookAlreadyExistException;
-import ru.mephi.ourbookstore.service.book.exceptions.BookNotFoundException;
-import ru.mephi.ourbookstore.service.book.exceptions.BookValidationException;
+import ru.mephi.ourbookstore.domain.BookModel;
+import ru.mephi.ourbookstore.service.exceptions.book.BookAlreadyExistException;
+import ru.mephi.ourbookstore.service.exceptions.book.BookNotFoundException;
+import ru.mephi.ourbookstore.service.exceptions.book.BookValidationException;
 
 /**
  * @author Aleksei Iagnenkov (alekseiiagn)

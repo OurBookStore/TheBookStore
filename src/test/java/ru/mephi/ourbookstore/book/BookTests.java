@@ -7,11 +7,11 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ru.mephi.ourbookstore.BookStoreTest;
-import ru.mephi.ourbookstore.controller.book.BookDto;
-import ru.mephi.ourbookstore.repository.book.BookModel;
-import ru.mephi.ourbookstore.service.book.exceptions.BookAlreadyExistException;
-import ru.mephi.ourbookstore.service.book.exceptions.BookNotFoundException;
-import ru.mephi.ourbookstore.service.book.exceptions.BookValidationException;
+import ru.mephi.ourbookstore.domain.dto.book.BookDto;
+import ru.mephi.ourbookstore.domain.BookModel;
+import ru.mephi.ourbookstore.service.exceptions.book.BookAlreadyExistException;
+import ru.mephi.ourbookstore.service.exceptions.book.BookNotFoundException;
+import ru.mephi.ourbookstore.service.exceptions.book.BookValidationException;
 
 /**
  * @author Aleksei Iagnenkov (alekseiiagn)
@@ -92,7 +92,7 @@ public class BookTests extends BookStoreTest {
     public void getByIdTest() {
         BookDto bookDto = bookController.getById(BOOK_CORRECT_1.getId());
 
-        Assertions.assertTrue(isEquals(BOOK_CORRECT_1, bookDto));
+        assertBooks(BOOK_CORRECT_1, bookDto);
     }
 
     @Test
@@ -111,7 +111,7 @@ public class BookTests extends BookStoreTest {
         for (int i = 0; i < BOOKS.size(); i++) {
             BookModel expected = BOOKS.get(i);
             BookDto actual = bookDtos.get(i);
-            Assertions.assertTrue(isEquals(expected, actual));
+            assertBooks(expected, actual);
         }
     }
 
@@ -121,7 +121,7 @@ public class BookTests extends BookStoreTest {
 
         BookDto bookDto = bookController.getById(BOOK_DTO.getId());
 
-        Assertions.assertTrue(isEquals(BOOK_DTO, bookDto));
+        assertBooks(BOOK_DTO, bookDto);
     }
 
     @Test
@@ -176,7 +176,7 @@ public class BookTests extends BookStoreTest {
 
         BookDto bookDto = bookController.getById(BOOK_CORRECT_1.getId());
 
-        Assertions.assertTrue(isEquals(BOOK_CORRECT_1_NEW, bookDto));
+        assertBooks(BOOK_CORRECT_1_NEW, bookDto);
     }
 
     @Test
@@ -220,7 +220,7 @@ public class BookTests extends BookStoreTest {
     }
 
     @Test
-    public void deleteTest(){
+    public void deleteTest() {
         bookController.delete(BOOK_CORRECT_1.getId());
 
         Assertions.assertThrows(
@@ -230,7 +230,7 @@ public class BookTests extends BookStoreTest {
     }
 
     @Test
-    public void deleteNotFoundTest(){
+    public void deleteNotFoundTest() {
         Assertions.assertThrows(
                 BookNotFoundException.class,
                 () -> bookController.delete(-1)
@@ -238,17 +238,17 @@ public class BookTests extends BookStoreTest {
     }
 
 
-    private boolean isEquals(BookModel expected, BookDto actual) {
-        return expected.getId().equals(actual.getId())
-                && expected.getName().equals(actual.getName())
-                && expected.getPrice() == actual.getPrice()
-                && expected.getCount() == actual.getCount();
+    private void assertBooks(BookModel expected, BookDto actual) {
+        Assertions.assertEquals(expected.getId(), actual.getId());
+        Assertions.assertEquals(expected.getName(), actual.getName());
+        Assertions.assertEquals(expected.getPrice(), actual.getPrice());
+        Assertions.assertEquals(expected.getCount(), actual.getCount());
     }
 
-    private boolean isEquals(BookDto expected, BookDto actual) {
-        return expected.getId().equals(actual.getId())
-                && expected.getName().equals(actual.getName())
-                && expected.getPrice() == actual.getPrice()
-                && expected.getCount() == actual.getCount();
+    private void assertBooks(BookDto expected, BookDto actual) {
+        Assertions.assertEquals(expected.getId(), actual.getId());
+        Assertions.assertEquals(expected.getName(), actual.getName());
+        Assertions.assertEquals(expected.getPrice(), actual.getPrice());
+        Assertions.assertEquals(expected.getCount(), actual.getCount());
     }
 }

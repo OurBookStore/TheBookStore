@@ -1,4 +1,4 @@
-package ru.mephi.ourbookstore.service.book.exceptions;
+package ru.mephi.ourbookstore.service.exceptions.book;
 
 import ru.mephi.ourbookstore.service.exceptions.BookStoreError;
 import ru.mephi.ourbookstore.service.exceptions.BookStoreException;

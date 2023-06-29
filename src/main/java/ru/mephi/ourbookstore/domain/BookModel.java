@@ -1,4 +1,4 @@
-package ru.mephi.ourbookstore.repository.book;
+package ru.mephi.ourbookstore.domain;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
