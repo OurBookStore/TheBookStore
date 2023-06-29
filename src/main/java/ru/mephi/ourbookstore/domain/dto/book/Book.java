@@ -1,10 +1,9 @@
-package ru.mephi.ourbookstore.service.book;
+package ru.mephi.ourbookstore.domain.dto.book;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
 /**
@@ -13,10 +12,10 @@ import lombok.experimental.FieldDefaults;
 @Data
 @Builder
 @AllArgsConstructor
-@NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Book {
-    long id;
+
+    Long id;
     String name;
     double price;
     int count;

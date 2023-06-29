@@ -6,16 +6,16 @@ server:
 
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/book_store
-    username: "postgres"
-    password: "postgres"
-    driver-class-name: org.postgresql.Driver
+    url: jdbc:h2:~/book_store;DB_CLOSE_DELAY=-1
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
   jpa:
-    database: POSTGRESQL
+    database: H2
     generate-ddl: true
-    show-sql: true
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: create
+    show-sql: true
 
     properties:
       hibernate:
@@ -24,4 +24,3 @@ spring:
         persistence:
           sharedCache:
             mode: ALL
-

@@ -1,4 +1,4 @@
-package ru.mephi.ourbookstore.controller.book;
+package ru.mephi.ourbookstore.domain.dto.book;
 
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -13,7 +13,7 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class BookDto {
 
-    long id;
+    Long id;
     String name;
     double price;
     int count;
