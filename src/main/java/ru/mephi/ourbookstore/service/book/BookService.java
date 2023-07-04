@@ -11,9 +11,11 @@ import ru.mephi.ourbookstore.domain.dto.book.Book;
 import ru.mephi.ourbookstore.mapper.book.BookModelMapper;
 import ru.mephi.ourbookstore.repository.book.BookRepository;
 import ru.mephi.ourbookstore.domain.BookModel;
-import ru.mephi.ourbookstore.service.exceptions.book.BookAlreadyExistException;
-import ru.mephi.ourbookstore.service.exceptions.book.BookNotFoundException;
-import ru.mephi.ourbookstore.service.exceptions.book.BookValidationException;
+import ru.mephi.ourbookstore.service.exceptions.AlreadyExistException;
+import ru.mephi.ourbookstore.service.exceptions.NotFoundException;
+import ru.mephi.ourbookstore.service.exceptions.ValidationException;
+
+import static ru.mephi.ourbookstore.domain.Entities.BOOK;
 
 /**
  * @author Aleksei Iagnenkov (alekseiiagn)
@@ -28,7 +30,7 @@ public class BookService {
 
     public Book getById(long bookId) {
         BookModel bookModel = bookRepository.findById(bookId)
-                .orElseThrow(() -> new BookNotFoundException(bookId));
+                .orElseThrow(() -> new NotFoundException(BOOK, "id", bookId));
         return bookModelMapper.modelToObject(bookModel);
     }
 
@@ -43,7 +45,7 @@ public class BookService {
         validate(book);
         String name = book.getName();
         if (bookRepository.findByName(name).isPresent()) {
-            throw new BookAlreadyExistException(name);
+            throw new AlreadyExistException(BOOK, "name", name);
         }
         BookModel bookModel = bookModelMapper.objectToModel(book);
         return bookRepository.save(bookModel).getId();
@@ -54,7 +56,7 @@ public class BookService {
         validate(book);
         Long bookId = book.getId();
         bookRepository.findById(bookId)
-                .orElseThrow(() -> new BookNotFoundException(bookId));
+                .orElseThrow(() -> new NotFoundException(BOOK, "id", bookId));
         BookModel bookModel = bookModelMapper.objectToModel(book);
         bookRepository.save(bookModel);
     }
@@ -62,19 +64,22 @@ public class BookService {
     @Transactional
     public void delete(Long bookId) {
         bookRepository.findById(bookId)
-                .orElseThrow(() -> new BookNotFoundException(bookId));
+                .orElseThrow(() -> new NotFoundException(BOOK, "id", bookId));
         bookRepository.deleteById(bookId);
     }
 
     private void validate(Book book) {
-        if (book.getCount() < 0) {
-            throw new BookValidationException("count");
+        int count = book.getCount();
+        if (count < 0) {
+            throw new ValidationException(BOOK, "count", count);
         }
-        if (book.getName() == null || book.getName().isBlank()) {
-            throw new BookValidationException("name");
+        String name = book.getName();
+        if (name == null || name.isBlank()) {
+            throw new ValidationException(BOOK, "name", name);
         }
-        if (book.getPrice() < 0) {
-            throw new BookValidationException("price");
+        double price = book.getPrice();
+        if (price < 0) {
+            throw new ValidationException(BOOK, "price", price);
         }
     }
 }

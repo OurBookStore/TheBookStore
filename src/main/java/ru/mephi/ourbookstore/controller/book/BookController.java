@@ -29,13 +29,13 @@ public class BookController {
 
     @GetMapping("/{bookId}")
     public BookDto getById(@PathVariable long bookId) {
-        return bookDtoMapper.ObjectToDto(bookService.getById(bookId));
+        return bookDtoMapper.objectToDto(bookService.getById(bookId));
     }
 
     @GetMapping
     public List<BookDto> getAll() {
         return bookService.getAll().stream()
-                .map(bookDtoMapper::ObjectToDto)
+                .map(bookDtoMapper::objectToDto)
                 .toList();
     }
 

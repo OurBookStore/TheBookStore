@@ -9,9 +9,9 @@ import org.junit.jupiter.api.Test;
 import ru.mephi.ourbookstore.BookStoreTest;
 import ru.mephi.ourbookstore.domain.BookModel;
 import ru.mephi.ourbookstore.domain.dto.book.BookDto;
-import ru.mephi.ourbookstore.service.exceptions.book.BookAlreadyExistException;
-import ru.mephi.ourbookstore.service.exceptions.book.BookNotFoundException;
-import ru.mephi.ourbookstore.service.exceptions.book.BookValidationException;
+import ru.mephi.ourbookstore.service.exceptions.AlreadyExistException;
+import ru.mephi.ourbookstore.service.exceptions.NotFoundException;
+import ru.mephi.ourbookstore.service.exceptions.ValidationException;
 
 /**
  * @author Aleksei Iagnenkov (alekseiiagn)
@@ -95,7 +95,7 @@ public class BookTests extends BookStoreTest {
     @Test
     public void getByIdExceptionTest() {
         Assertions.assertThrows(
-                BookNotFoundException.class,
+                NotFoundException.class,
                 () -> bookController.getById(-1)
         );
     }
@@ -116,11 +116,11 @@ public class BookTests extends BookStoreTest {
 
     @Test
     public void createTest() {
-        Long bookId = bookRepository.save(BOOK_CORRECT_1).getId();
+        Long customerId = bookController.create(BOOK_DTO);
 
-        BookDto bookDto = bookController.getById(bookId);
+        BookModel bookModel = bookRepository.findById(customerId).get();
 
-        assertBooks(BOOK_CORRECT_1, bookDto);
+        assertBooks(BOOK_DTO, bookModel);
     }
 
     @Test
@@ -134,7 +134,7 @@ public class BookTests extends BookStoreTest {
                 .build();
 
         Assertions.assertThrows(
-                BookAlreadyExistException.class,
+                AlreadyExistException.class,
                 () -> bookController.create(bookDto)
         );
     }
@@ -142,7 +142,7 @@ public class BookTests extends BookStoreTest {
     @Test
     public void createIncorrectName1Test() {
         Assertions.assertThrows(
-                BookValidationException.class,
+                ValidationException.class,
                 () -> bookController.create(BOOK_DTO_INCORRECT_NAME_1)
         );
     }
@@ -150,7 +150,7 @@ public class BookTests extends BookStoreTest {
     @Test
     public void createIncorrectName2Test() {
         Assertions.assertThrows(
-                BookValidationException.class,
+                ValidationException.class,
                 () -> bookController.create(BOOK_DTO_INCORRECT_NAME_2)
         );
     }
@@ -158,7 +158,7 @@ public class BookTests extends BookStoreTest {
     @Test
     public void createIncorrectCountTest() {
         Assertions.assertThrows(
-                BookValidationException.class,
+                ValidationException.class,
                 () -> bookController.create(BOOK_DTO_INCORRECT_COUNT)
         );
     }
@@ -166,7 +166,7 @@ public class BookTests extends BookStoreTest {
     @Test
     public void createIncorrectPriceTest() {
         Assertions.assertThrows(
-                BookValidationException.class,
+                ValidationException.class,
                 () -> bookController.create(BOOK_DTO_INCORRECT_PRICE)
         );
     }
@@ -185,7 +185,7 @@ public class BookTests extends BookStoreTest {
     @Test
     public void updateNotFoundTest() {
         Assertions.assertThrows(
-                BookNotFoundException.class,
+                NotFoundException.class,
                 () -> bookController.update(BOOK_DTO)
         );
     }
@@ -193,7 +193,7 @@ public class BookTests extends BookStoreTest {
     @Test
     public void updateIncorrectName1Test() {
         Assertions.assertThrows(
-                BookValidationException.class,
+                ValidationException.class,
                 () -> bookController.update(BOOK_DTO_INCORRECT_NAME_1)
         );
     }
@@ -201,7 +201,7 @@ public class BookTests extends BookStoreTest {
     @Test
     public void updateIncorrectName2Test() {
         Assertions.assertThrows(
-                BookValidationException.class,
+                ValidationException.class,
                 () -> bookController.update(BOOK_DTO_INCORRECT_NAME_2)
         );
     }
@@ -209,7 +209,7 @@ public class BookTests extends BookStoreTest {
     @Test
     public void updateIncorrectCountTest() {
         Assertions.assertThrows(
-                BookValidationException.class,
+                ValidationException.class,
                 () -> bookController.update(BOOK_DTO_INCORRECT_COUNT)
         );
     }
@@ -217,7 +217,7 @@ public class BookTests extends BookStoreTest {
     @Test
     public void updateIncorrectPriceTest() {
         Assertions.assertThrows(
-                BookValidationException.class,
+                ValidationException.class,
                 () -> bookController.update(BOOK_DTO_INCORRECT_PRICE)
         );
     }
@@ -235,7 +235,7 @@ public class BookTests extends BookStoreTest {
     @Test
     public void deleteNotFoundTest() {
         Assertions.assertThrows(
-                BookNotFoundException.class,
+                NotFoundException.class,
                 () -> bookController.delete(-1)
         );
     }
