@@ -19,6 +19,9 @@ import ru.mephi.ourbookstore.domain.dto.customer.CustomerRsDto;
 import ru.mephi.ourbookstore.mapper.customer.CustomerDtoMapper;
 import ru.mephi.ourbookstore.service.customer.CustomerService;
 
+/**
+ * @author Aleksei Iagnenkov (alekseiiagn)
+ */
 @RestController
 @RequestMapping("/customers")
 @RequiredArgsConstructor

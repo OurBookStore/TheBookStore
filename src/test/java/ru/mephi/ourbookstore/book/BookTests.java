@@ -3,12 +3,17 @@ package ru.mephi.ourbookstore.book;
 import java.util.List;
 import java.util.Optional;
 
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import ru.mephi.ourbookstore.BookStoreTest;
+import ru.mephi.ourbookstore.controller.book.BookController;
 import ru.mephi.ourbookstore.domain.BookModel;
 import ru.mephi.ourbookstore.domain.dto.book.BookDto;
+import ru.mephi.ourbookstore.repository.book.BookRepository;
 import ru.mephi.ourbookstore.service.exceptions.AlreadyExistException;
 import ru.mephi.ourbookstore.service.exceptions.NotFoundException;
 import ru.mephi.ourbookstore.service.exceptions.ValidationException;
@@ -16,64 +21,70 @@ import ru.mephi.ourbookstore.service.exceptions.ValidationException;
 /**
  * @author Aleksei Iagnenkov (alekseiiagn)
  */
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class BookTests extends BookStoreTest {
 
-    BookModel BOOK_CORRECT_1 = BookModel.builder()
+    @Autowired
+    BookController bookController;
+    @Autowired
+    BookRepository bookRepository;
+
+    final BookModel BOOK_CORRECT_1 = BookModel.builder()
             .id(1L)
             .name("1")
             .price(1)
             .count(1)
             .build();
 
-    BookModel BOOK_CORRECT_2 = BookModel.builder()
+    final BookModel BOOK_CORRECT_2 = BookModel.builder()
             .id(2L)
             .name("2")
             .price(2)
             .count(2)
             .build();
 
-    BookDto BOOK_CORRECT_1_NEW = BookDto.builder()
+    final BookDto BOOK_CORRECT_1_NEW = BookDto.builder()
             .id(1L)
             .name("11")
             .price(11)
             .count(11)
             .build();
 
-    BookDto BOOK_DTO = BookDto.builder()
+    final BookDto BOOK_DTO = BookDto.builder()
             .id(3L)
             .name("3")
             .price(3)
             .count(3)
             .build();
 
-    BookDto BOOK_DTO_INCORRECT_PRICE = BookDto.builder()
+    final BookDto BOOK_DTO_INCORRECT_PRICE = BookDto.builder()
             .id(4L)
             .name("4")
             .price(-4)
             .count(4)
             .build();
 
-    BookDto BOOK_DTO_INCORRECT_COUNT = BookDto.builder()
+    final BookDto BOOK_DTO_INCORRECT_COUNT = BookDto.builder()
             .id(5L)
             .name("5")
             .price(5)
             .count(-5)
             .build();
 
-    BookDto BOOK_DTO_INCORRECT_NAME_1 = BookDto.builder()
+    final BookDto BOOK_DTO_INCORRECT_NAME_1 = BookDto.builder()
             .id(6L)
             .price(6)
             .count(6)
             .build();
 
-    BookDto BOOK_DTO_INCORRECT_NAME_2 = BookDto.builder()
+    final BookDto BOOK_DTO_INCORRECT_NAME_2 = BookDto.builder()
             .id(6L)
             .name("")
             .price(6)
             .count(6)
             .build();
 
-    List<BookModel> BOOKS = List.of(
+    final List<BookModel> BOOKS = List.of(
             BOOK_CORRECT_1,
             BOOK_CORRECT_2
     );

@@ -3,13 +3,18 @@ package ru.mephi.ourbookstore.customer;
 import java.util.List;
 import java.util.Optional;
 
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import ru.mephi.ourbookstore.BookStoreTest;
+import ru.mephi.ourbookstore.controller.customer.CustomerController;
 import ru.mephi.ourbookstore.domain.CustomerModel;
 import ru.mephi.ourbookstore.domain.dto.customer.CustomerRqDto;
 import ru.mephi.ourbookstore.domain.dto.customer.CustomerRsDto;
+import ru.mephi.ourbookstore.repository.customer.CustomerRepository;
 import ru.mephi.ourbookstore.service.exceptions.AlreadyExistException;
 import ru.mephi.ourbookstore.service.exceptions.NotFoundException;
 import ru.mephi.ourbookstore.service.exceptions.ValidationException;
@@ -17,36 +22,42 @@ import ru.mephi.ourbookstore.service.exceptions.ValidationException;
 /**
  * @author Aleksei Iagnenkov (alekseiiagn)
  */
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class CustomerTests extends BookStoreTest {
 
-    CustomerModel CUSTOMER_CORRECT_1 = CustomerModel.builder()
+    @Autowired
+    CustomerController customerController;
+    @Autowired
+    CustomerRepository customerRepository;
+
+    final CustomerModel CUSTOMER_CORRECT_1 = CustomerModel.builder()
             .id(1L)
             .nickname("1")
             .email("1")
             .password("1")
             .build();
 
-    CustomerModel CUSTOMER_CORRECT_2 = CustomerModel.builder()
+    final CustomerModel CUSTOMER_CORRECT_2 = CustomerModel.builder()
             .id(2L)
             .nickname("2")
             .email("2")
             .password("2")
             .build();
 
-    CustomerRqDto CUSTOMER_DTO = CustomerRqDto.builder()
+    final CustomerRqDto CUSTOMER_DTO = CustomerRqDto.builder()
             .id(3L)
             .nickname("3")
             .email("3")
             .password("3")
             .build();
 
-    CustomerRqDto CUSTOMER_DTO_INCORRECT_EMAIl_1 = CustomerRqDto.builder()
+    final CustomerRqDto CUSTOMER_DTO_INCORRECT_EMAIl_1 = CustomerRqDto.builder()
             .id(4L)
             .nickname("4")
             .password("4")
             .build();
 
-    CustomerRqDto CUSTOMER_DTO_INCORRECT_EMAIl_2 = CustomerRqDto.builder()
+    final CustomerRqDto CUSTOMER_DTO_INCORRECT_EMAIl_2 = CustomerRqDto.builder()
             .id(4L)
             .nickname("4")
             .email("")
@@ -54,32 +65,32 @@ public class CustomerTests extends BookStoreTest {
             .build();
 
 
-    CustomerRqDto CUSTOMER_DTO_INCORRECT_PASSWORD_1 = CustomerRqDto.builder()
+    final CustomerRqDto CUSTOMER_DTO_INCORRECT_PASSWORD_1 = CustomerRqDto.builder()
             .id(5L)
             .nickname("5")
             .email("5")
             .build();
 
-    CustomerRqDto CUSTOMER_DTO_INCORRECT_PASSWORD_2 = CustomerRqDto.builder()
+    final CustomerRqDto CUSTOMER_DTO_INCORRECT_PASSWORD_2 = CustomerRqDto.builder()
             .id(5L)
             .nickname("5")
             .email("5")
             .password("")
             .build();
-    CustomerRqDto CUSTOMER_DTO_INCORRECT_NICKNAME_1 = CustomerRqDto.builder()
+    final CustomerRqDto CUSTOMER_DTO_INCORRECT_NICKNAME_1 = CustomerRqDto.builder()
             .id(6L)
             .email("6")
             .password("6")
             .build();
 
-    CustomerRqDto CUSTOMER_DTO_INCORRECT_NICKNAME_2 = CustomerRqDto.builder()
+    final CustomerRqDto CUSTOMER_DTO_INCORRECT_NICKNAME_2 = CustomerRqDto.builder()
             .id(6L)
             .nickname("")
             .email("6")
             .password("6")
             .build();
 
-    List<CustomerModel> CUSTOMERS = List.of(
+    final List<CustomerModel> CUSTOMERS = List.of(
             CUSTOMER_CORRECT_1,
             CUSTOMER_CORRECT_2
     );
