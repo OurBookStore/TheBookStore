@@ -1,8 +1,8 @@
 package ru.mephi.ourbookstore.mapper.book;
 
 import org.mapstruct.Mapper;
-import ru.mephi.ourbookstore.domain.dto.book.BookDto;
 import ru.mephi.ourbookstore.domain.dto.book.Book;
+import ru.mephi.ourbookstore.domain.dto.book.BookDto;
 
 /**
  * @author Aleksei Iagnenkov (alekseiiagn)
@@ -12,5 +12,5 @@ public interface BookDtoMapper {
 
     Book dtoToObject(BookDto model);
 
-    BookDto ObjectToDto(Book book);
+    BookDto objectToDto(Book book);
 }

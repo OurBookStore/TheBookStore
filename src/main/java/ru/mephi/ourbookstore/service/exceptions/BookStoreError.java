@@ -12,9 +12,9 @@ import org.springframework.http.HttpStatus;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public enum BookStoreError {
 
-    NOT_FOUND(HttpStatus.NOT_FOUND, "The %s with id = %s not found!"),
-    ALREADY_EXISTS(HttpStatus.CONFLICT, "The %s with id = %s already exist!"),
-    VALIDATION_ERROR(HttpStatus.BAD_REQUEST, "Validation for %s of field %s error!");
+    NOT_FOUND(HttpStatus.NOT_FOUND, "The %s with %s = %s not found!"),
+    ALREADY_EXISTS(HttpStatus.CONFLICT, "The %s with %s = %s already exist!"),
+    VALIDATION_ERROR(HttpStatus.BAD_REQUEST, "Validation for %s of field %s = %s error!");
 
     final String message;
     final HttpStatus code;
