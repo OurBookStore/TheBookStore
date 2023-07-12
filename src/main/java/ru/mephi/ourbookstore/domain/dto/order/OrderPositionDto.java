@@ -4,7 +4,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
-import ru.mephi.ourbookstore.domain.dto.book.BookDto;
+
 
 /**
  * @author Bushueva Valery
@@ -15,7 +15,7 @@ import ru.mephi.ourbookstore.domain.dto.book.BookDto;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class OrderPositionDto {
     Long id;
-    BookDto book;
+    Long bookId;
     int count;
     OrderDto order;
 

@@ -4,7 +4,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
-import ru.mephi.ourbookstore.domain.dto.book.Book;
+
 
 
 /**
@@ -15,7 +15,7 @@ import ru.mephi.ourbookstore.domain.dto.book.Book;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class OrderPosition {
     Long id;
-    Book book;
+    Long bookId;
     int count;
     Order order;
 }

@@ -6,6 +6,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -31,7 +32,7 @@ public class OrderModel {
 
     @OneToMany(mappedBy = "orders", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     @Column(name="books_in_order")
-    List<OrderPositionModel> booksInOrder;
+    List<OrderPositionModel> booksInOrder = new ArrayList<>();
 
     @Column(name="customer_id")
     Long customerId;

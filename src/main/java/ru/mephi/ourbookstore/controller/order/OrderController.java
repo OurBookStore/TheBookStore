@@ -4,10 +4,10 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.web.bind.annotation.*;
-import ru.mephi.ourbookstore.domain.dto.book.Dog;
 import ru.mephi.ourbookstore.domain.dto.order.Order;
 import ru.mephi.ourbookstore.domain.dto.order.OrderDto;
 import ru.mephi.ourbookstore.mapper.order.OrderDtoMapper;
+import ru.mephi.ourbookstore.service.order.OrderService;
 
 import java.util.List;
 
@@ -32,16 +32,18 @@ public class OrderController {
                 .toList();
     }
 
-    @PostMapping
-    public Long createNewOrder(@RequestBody OrderDto orderDto) {
-        Order order = orderDtoMapper.dtoToObject(orderDto);
-        return orderService.createOrder(order);
+    @GetMapping
+    public List<OrderDto> getAllByCustomer(@RequestParam long customerId) {
+        return orderService.getAllByCustomerId(customerId).stream()
+                .map(orderDtoMapper::objectToDto)
+                .toList();
     }
 
-    @PutMapping
+
+    @PostMapping
     public void updateExistingOrder(@RequestBody OrderDto orderDto) {
         Order order = orderDtoMapper.dtoToObject(orderDto);
-        orderService.updateExisting(order);
+        orderService.createOrderOrUpdateExisting(order);
     }
 
     @DeleteMapping("/{orderId}")

@@ -13,5 +13,5 @@ public interface CustomerDtoMapper {
 
     Customer dtoToObject(CustomerRqDto model);
 
-    CustomerRsDto objectToDto(Customer book);
+    CustomerRsDto objectToDto(Customer customer);
 }

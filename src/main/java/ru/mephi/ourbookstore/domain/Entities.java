@@ -9,8 +9,11 @@ import lombok.Getter;
 public enum Entities {
 
     BOOK("book"),
+    ORDER("order"),
+    ORDER_POSITION("orderPosition"),
     AUTHOR("author"),
     CUSTOMER("customer");
+
 
     final String name;
 
