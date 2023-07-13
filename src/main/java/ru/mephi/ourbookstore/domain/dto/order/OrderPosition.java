@@ -20,4 +20,3 @@ public class OrderPosition {
     Order order;
 }
 
-//get price of it all

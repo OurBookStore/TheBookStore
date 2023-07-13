@@ -25,7 +25,7 @@ public class OrderPositionService {
     final OrderPositionRepository orderPositionRepository;
     final OrderPositionModelMapper orderPositionModelMapper;
 
-    private BookService bookService;
+    BookService bookService;
 
     public OrderPosition getById(long orderPosId) {
         OrderPositionModel orderPosModel = orderPositionRepository.findById(orderPosId)
@@ -69,7 +69,6 @@ public class OrderPositionService {
         if(orderPosition.getOrder() == null){
             throw new ValidationException(ORDER_POSITION, "order", orderPosition.getOrder());
         }
-        //order validation??
 
     }
 }

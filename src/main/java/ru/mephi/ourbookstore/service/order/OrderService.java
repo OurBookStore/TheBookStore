@@ -31,7 +31,7 @@ public class OrderService {
     final OrderRepository orderRepository;
     final OrderModelMapper orderModelMapper;
 
-    private CustomerService customerService;
+    CustomerService customerService;
 
 
     public Order getById(long orderId) {
