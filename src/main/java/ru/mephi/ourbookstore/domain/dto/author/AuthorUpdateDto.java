@@ -12,7 +12,7 @@ import java.util.Date;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class AuthorUpdateDto {
-    Long id;
+    String id;
     String fullName;
     String country;
     String dateOfBirth;

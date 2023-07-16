@@ -19,10 +19,10 @@ class AuthorControllerTest {
 
     @Test
     @BeforeEach
-    void cleanData() {
+    void cleanDb() {
         List<AuthorDto> authorDtoList = AuthorSpec.getAll();
         for (int i = 0; i < authorDtoList.size(); i++) {
-            AuthorSpec.deleteAuthor(authorDtoList.get(i).getId());
+            AuthorSpec.deleteAuthor(Long.parseLong(authorDtoList.get(i).getId()));
         }
     }
 
@@ -65,18 +65,74 @@ class AuthorControllerTest {
                 .dateOfBirth(dateOfBirth)
                 .fullName(fullName).build();
         Long id = AuthorSpec.createAuthorSuccessful(authorCreateDto);
-        var authorDto = AuthorSpec.getAuthor(id);
-
+        AuthorDto authorDto = AuthorSpec.getAuthor(id);
         assertAuthors(authorDto, authorCreateDto);
     }
+    @ParameterizedTest
+    @DisplayName("Update author unsuccessful")
+    @CsvSource({
+            "Lev Tolstoy, 2023-01-01, Russia",
+            "Grigory Bashev, 2000-01-01, Russia",
+            "Grigory Bashev, 2023-01-01, France",
+    })
+    void updateAuthorSuccessful(String newFullName, String newDateOfBirth, String newCountry) {
+        AuthorCreateDto authorCreateDto = AuthorCreateDto.builder()
+                .country("Russia")
+                .dateOfBirth("2023-01-01")
+                .fullName("Grigory Bashev").build();
+        long id = AuthorSpec.createAuthorSuccessful(authorCreateDto);
 
+        AuthorUpdateDto authorUpdateDto = AuthorUpdateDto.builder()
+                .country(newCountry)
+                .fullName(newFullName)
+                .dateOfBirth(newDateOfBirth)
+                .id(String.valueOf(id)).build();
+        AuthorSpec.updateAuthor(authorUpdateDto);
+
+        AuthorDto authorDto = AuthorSpec.getAuthor(id);
+        assertAuthors(authorDto, authorUpdateDto);
+    }
+
+    @ParameterizedTest
+    @DisplayName("Update author unsuccessful")
+    @CsvSource({
+            "1rigory Bashev, 2023-01-01, Russia",
+            ", 2023-01-01, Russia",
+            "Grigory Bashev, 3023-01-01, Russia",
+            "Grigory Bashev, 2023-01-01, Fussia",
+            "Game of thrones, 2023-01-01, Russia",
+            "Grigory Bashev, , Russia",
+            "Grigory Bashev, 2023-01-01, ",
+            "Grigory Bashev, a;sldkjf, Russia",
+            "Grigory Bashev, 2023-01-01, asldkjfa",
+            "1234 2345, 2023-01-01, Russia",
+    })
+    void updateAuthorUnsuccessful(String newFullName, String newDateOfBirth, String newCountry) {
+        AuthorCreateDto authorCreateDto = AuthorCreateDto.builder()
+                .country("Russia")
+                .dateOfBirth("2023-01-01")
+                .fullName("Grigory Bashev").build();
+        long id = AuthorSpec.createAuthorSuccessful(authorCreateDto);
+        AuthorUpdateDto authorUpdateDto = AuthorUpdateDto.builder()
+                .country(newCountry)
+                .fullName(newFullName)
+                .dateOfBirth(newDateOfBirth)
+                .id(String.valueOf(id)).build();
+        AuthorSpec.updateAuthorInvalid(authorUpdateDto);
+    }
     @Test
     @DisplayName("Get nonexistent author")
     void getNonexistentAuthor() {
-        var authorDto = AuthorSpec.getNotExistingAuthor(1L);
+        AuthorSpec.getNotExistingAuthor(1L);
     }
 
-    public  void assertAuthors(AuthorDto authorDto, AuthorCreateDto authorCreateDto) {
+    @Test
+    @DisplayName("Delete nonexistent author")
+    void deleteNonexistentAuthor() {
+        AuthorSpec.deleteNotExistingAuthor(1L);
+    }
+
+    public void assertAuthors(AuthorDto authorDto, AuthorCreateDto authorCreateDto) {
         assertAll(
                 "Grouped assertion of two author dtos",
                 () -> assertEquals(authorDto.getCountry(), authorCreateDto.getCountry()),
@@ -85,7 +141,9 @@ class AuthorControllerTest {
         );
     }
 
-    public  void assertAuthors(AuthorDto authorDto, AuthorUpdateDto authorUpdateDto) {
+
+
+    public void assertAuthors(AuthorDto authorDto, AuthorUpdateDto authorUpdateDto) {
         assertAll(
                 "Grouped assertion of two author dtos",
                 () -> assertEquals(authorDto.getCountry(), authorUpdateDto.getCountry()),

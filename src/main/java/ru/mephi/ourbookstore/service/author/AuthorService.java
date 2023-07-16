@@ -66,13 +66,13 @@ public class AuthorService {
 
     public void validate(Author author) {
         if (!DateValidator.validateDate(author.getDateOfBirth())) {
-            throw new ValidationException(Entities.CUSTOMER, "Invalid date of birth", author.getDateOfBirth());
+            throw new ValidationException(Entities.AUTHOR, "Invalid date of birth", author.getDateOfBirth());
         }
         if (author.getFullName() == null || !author.getFullName().matches("^[a-zA-Z]+ [a-zA-Z]+$")) {
-            throw new ValidationException(Entities.CUSTOMER, "InvalidAuthorName", author.getFullName());
+            throw new ValidationException(Entities.AUTHOR, "InvalidAuthorName", author.getFullName());
         }
         if (!CountryValidator.isCountryValid(author.getCountry())) {
-            throw new ValidationException(Entities.CUSTOMER, "Invalid country", author.getCountry());
+            throw new ValidationException(Entities.AUTHOR, "Invalid country", author.getCountry());
         }
     }
 }

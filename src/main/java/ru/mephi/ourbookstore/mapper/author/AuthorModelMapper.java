@@ -8,6 +8,7 @@ import ru.mephi.ourbookstore.domain.dto.author.Author;
 @Mapper(componentModel = "spring")
 public interface AuthorModelMapper {
 
+    @Mapping(source = "dateOfBirth", target = "dateOfBirth", dateFormat = "yyyy-MM-dd")
     Author modelToObject(AuthorModel model);
 
     @Mapping(source = "dateOfBirth", target = "dateOfBirth", dateFormat = "yyyy-MM-dd")

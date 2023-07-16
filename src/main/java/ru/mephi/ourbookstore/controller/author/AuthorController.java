@@ -43,7 +43,7 @@ public class AuthorController {
         authorService.update(author);
     }
 
-    @DeleteMapping("/{authorId}")
+    @DeleteMapping("{authorId}")
     public void delete(@PathVariable long authorId) {
         authorService.delete(authorId);
     }

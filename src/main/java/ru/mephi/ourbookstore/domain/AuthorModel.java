@@ -7,7 +7,7 @@ import jakarta.persistence.Id;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
 @Data
@@ -19,8 +19,7 @@ public class AuthorModel {
      @Id
      @GeneratedValue(strategy = GenerationType.IDENTITY)
      Long id;
-     String firstName;
-     String lastName;
-     Date dateOfBirth;
+     String fullName;
+     LocalDate dateOfBirth;
      String country;
 }

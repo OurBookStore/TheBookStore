@@ -19,4 +19,8 @@ public class Author {
     String fullName;
     String dateOfBirth;
     String country;
+
+    public Long getId() {
+        return id;
+    }
 }

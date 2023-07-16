@@ -17,7 +17,7 @@ public class CountryValidator {
     static Set<String> countrySet;
 
     static {
-        Scanner scanner = null;
+        Scanner scanner;
         try {
             scanner = new Scanner(new FileReader("src/main/resources/countrylist"));
         } catch (FileNotFoundException e) {
@@ -27,7 +27,7 @@ public class CountryValidator {
     }
 
     public static boolean isCountryValid(String country) {
-        if (country.isBlank() || country.length() > 100) {
+        if (country == null || country.isBlank() || country.length() > 100) {
             return false;
         }
         return countrySet.contains(country);

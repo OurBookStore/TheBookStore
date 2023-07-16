@@ -1,5 +1,7 @@
 package ru.mephi.ourbookstore.spec.author;
 
+import io.restassured.RestAssured;
+import io.restassured.mapper.ObjectMapperType;
 import ru.mephi.ourbookstore.domain.dto.author.AuthorCreateDto;
 import ru.mephi.ourbookstore.domain.dto.author.AuthorDto;
 import ru.mephi.ourbookstore.domain.dto.author.AuthorUpdateDto;
@@ -59,7 +61,7 @@ public class AuthorSpec {
                 .spec(BaseSpec.getRequestSpec())
                 .when()
                 .pathParam("authorId", id)
-                .delete("/author")
+                .delete("/author/{authorId}")
                 .then()
                 .spec(BaseSpec.getResponseSpec(404))
                 .extract().body().asPrettyString();
@@ -70,7 +72,7 @@ public class AuthorSpec {
                 .spec(BaseSpec.getRequestSpec())
                 .when()
                 .pathParam("authorId", id)
-                .delete("/author")
+                .delete("/author/{authorId}")
                 .then()
                 .spec(BaseSpec.getResponseSpec(200))
                 .extract().body().asPrettyString();
@@ -81,7 +83,7 @@ public class AuthorSpec {
                 .spec(BaseSpec.getRequestSpec())
                 .when()
                 .pathParam("authorId", id)
-                .delete("/author")
+                .get("/author/{authorId}")
                 .then()
                 .spec(BaseSpec.getResponseSpec(200))
                 .extract().body().as(AuthorDto.class);
@@ -92,7 +94,7 @@ public class AuthorSpec {
                 .spec(BaseSpec.getRequestSpec())
                 .when()
                 .pathParam("authorId", id)
-                .get("/author")
+                .get("/author/{authorId}")
                 .then()
                 .spec(BaseSpec.getResponseSpec(404))
                 .extract().body().asPrettyString();
@@ -105,6 +107,6 @@ public class AuthorSpec {
                 .get("/author")
                 .then()
                 .spec(BaseSpec.getResponseSpec(200))
-                .extract().body().jsonPath().getList("." , AuthorDto.class);
+                .extract().body().jsonPath().getList(".", AuthorDto.class);
     }
 }
