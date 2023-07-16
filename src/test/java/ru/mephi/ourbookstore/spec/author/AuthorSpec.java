@@ -32,8 +32,8 @@ public class AuthorSpec {
                 .extract().body().asPrettyString();
     }
 
-    public static String updateAuthor(AuthorUpdateDto authorUpdateDto) {
-        return given()
+    public static void updateAuthor(AuthorUpdateDto authorUpdateDto) {
+        given()
                 .spec(BaseSpec.getRequestSpec())
                 .when()
                 .body(authorUpdateDto)
@@ -43,8 +43,8 @@ public class AuthorSpec {
                 .extract().body().asPrettyString();
     }
 
-    public static String updateAuthorInvalid(AuthorUpdateDto authorUpdateDto) {
-        return given()
+    public static void updateAuthorInvalid(AuthorUpdateDto authorUpdateDto) {
+        given()
                 .spec(BaseSpec.getRequestSpec())
                 .when()
                 .body(authorUpdateDto)
@@ -54,8 +54,8 @@ public class AuthorSpec {
                 .extract().body().asPrettyString();
     }
 
-    public static String deleteNotExistingAuthor(Long id) {
-        return given()
+    public static void deleteNotExistingAuthor(Long id) {
+        given()
                 .spec(BaseSpec.getRequestSpec())
                 .when()
                 .pathParam("authorId", id)
@@ -65,8 +65,8 @@ public class AuthorSpec {
                 .extract().body().asPrettyString();
     }
 
-    public static String deleteAuthor(Long id) {
-        return given()
+    public static void deleteAuthor(Long id) {
+        given()
                 .spec(BaseSpec.getRequestSpec())
                 .when()
                 .pathParam("authorId", id)
@@ -87,8 +87,8 @@ public class AuthorSpec {
                 .extract().body().as(AuthorDto.class);
     }
 
-    public static String getNotExistingAuthor(Long id) {
-        return given()
+    public static void getNotExistingAuthor(Long id) {
+        given()
                 .spec(BaseSpec.getRequestSpec())
                 .when()
                 .pathParam("authorId", id)
