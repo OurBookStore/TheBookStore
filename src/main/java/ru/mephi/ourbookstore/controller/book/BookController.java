@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import ru.mephi.ourbookstore.domain.dto.book.BookCreateDto;
 import ru.mephi.ourbookstore.domain.dto.book.BookDto;
+import ru.mephi.ourbookstore.domain.dto.book.BookUpdateDto;
 import ru.mephi.ourbookstore.mapper.book.BookDtoMapper;
 import ru.mephi.ourbookstore.domain.dto.book.Book;
 import ru.mephi.ourbookstore.service.book.BookService;
@@ -40,13 +42,13 @@ public class BookController {
     }
 
     @PostMapping
-    public Long create(@RequestBody BookDto bookDto) {
+    public Long create(@RequestBody BookCreateDto bookDto) {
         Book book = bookDtoMapper.dtoToObject(bookDto);
         return bookService.create(book);
     }
 
     @PutMapping
-    public void update(@RequestBody BookDto bookDto) {
+    public void update(@RequestBody BookUpdateDto bookDto) {
         Book book = bookDtoMapper.dtoToObject(bookDto);
         bookService.update(book);
     }

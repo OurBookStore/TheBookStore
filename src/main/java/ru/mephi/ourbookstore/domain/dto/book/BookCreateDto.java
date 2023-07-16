@@ -1,4 +1,4 @@
-package ru.mephi.ourbookstore.domain.dto.customer;
+package ru.mephi.ourbookstore.domain.dto.book;
 
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -11,9 +11,9 @@ import lombok.experimental.FieldDefaults;
 @Data
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class CustomerRsDto {
+public class BookCreateDto {
 
-    Long id;
-    String nickname;
-    String email;
+    String name;
+    double price;
+    int count;
 }

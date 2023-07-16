@@ -2,8 +2,9 @@ package ru.mephi.ourbookstore.mapper.customer;
 
 import org.mapstruct.Mapper;
 import ru.mephi.ourbookstore.domain.dto.customer.Customer;
-import ru.mephi.ourbookstore.domain.dto.customer.CustomerRqDto;
-import ru.mephi.ourbookstore.domain.dto.customer.CustomerRsDto;
+import ru.mephi.ourbookstore.domain.dto.customer.CustomerCreateDto;
+import ru.mephi.ourbookstore.domain.dto.customer.CustomerDto;
+import ru.mephi.ourbookstore.domain.dto.customer.CustomerUpdateDto;
 
 /**
  * @author Aleksei Iagnenkov (alekseiiagn)
@@ -11,7 +12,9 @@ import ru.mephi.ourbookstore.domain.dto.customer.CustomerRsDto;
 @Mapper(componentModel = "spring")
 public interface CustomerDtoMapper {
 
-    Customer dtoToObject(CustomerRqDto model);
+    Customer dtoToObject(CustomerCreateDto model);
 
-    CustomerRsDto objectToDto(Customer customer);
+    Customer dtoToObject(CustomerUpdateDto model);
+
+    CustomerDto objectToDto(Customer book);
 }

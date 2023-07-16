@@ -12,8 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import ru.mephi.ourbookstore.BookStoreTest;
 import ru.mephi.ourbookstore.controller.customer.CustomerController;
 import ru.mephi.ourbookstore.domain.CustomerModel;
-import ru.mephi.ourbookstore.domain.dto.customer.CustomerRqDto;
-import ru.mephi.ourbookstore.domain.dto.customer.CustomerRsDto;
+import ru.mephi.ourbookstore.domain.dto.customer.CustomerCreateDto;
+import ru.mephi.ourbookstore.domain.dto.customer.CustomerDto;
+import ru.mephi.ourbookstore.domain.dto.customer.CustomerUpdateDto;
 import ru.mephi.ourbookstore.repository.customer.CustomerRepository;
 import ru.mephi.ourbookstore.service.exceptions.AlreadyExistException;
 import ru.mephi.ourbookstore.service.exceptions.NotFoundException;
@@ -44,20 +45,35 @@ public class CustomerTests extends BookStoreTest {
             .password("2")
             .build();
 
-    final CustomerRqDto CUSTOMER_DTO = CustomerRqDto.builder()
+    final CustomerCreateDto CUSTOMER_DTO_CRT = CustomerCreateDto.builder()
+            .nickname("3")
+            .email("3")
+            .password("3")
+            .build();
+    final CustomerUpdateDto CUSTOMER_DTO_UPD = CustomerUpdateDto.builder()
             .id(3L)
             .nickname("3")
             .email("3")
             .password("3")
             .build();
 
-    final CustomerRqDto CUSTOMER_DTO_INCORRECT_EMAIl_1 = CustomerRqDto.builder()
+    final CustomerCreateDto CUSTOMER_DTO_INCORRECT_EMAIl_1_CRT = CustomerCreateDto.builder()
+            .nickname("4")
+            .password("4")
+            .build();
+
+    final CustomerUpdateDto CUSTOMER_DTO_INCORRECT_EMAIl_1_UPD = CustomerUpdateDto.builder()
             .id(4L)
             .nickname("4")
             .password("4")
             .build();
 
-    final CustomerRqDto CUSTOMER_DTO_INCORRECT_EMAIl_2 = CustomerRqDto.builder()
+    final CustomerCreateDto CUSTOMER_DTO_INCORRECT_EMAIl_2_CRT = CustomerCreateDto.builder()
+            .nickname("4")
+            .email("")
+            .password("4")
+            .build();
+    final CustomerUpdateDto CUSTOMER_DTO_INCORRECT_EMAIl_2_UPD = CustomerUpdateDto.builder()
             .id(4L)
             .nickname("4")
             .email("")
@@ -65,25 +81,44 @@ public class CustomerTests extends BookStoreTest {
             .build();
 
 
-    final CustomerRqDto CUSTOMER_DTO_INCORRECT_PASSWORD_1 = CustomerRqDto.builder()
+    final CustomerCreateDto CUSTOMER_DTO_INCORRECT_PASSWORD_1_CRT = CustomerCreateDto.builder()
+            .nickname("5")
+            .email("5")
+            .build();
+    final CustomerCreateDto CUSTOMER_DTO_INCORRECT_PASSWORD_2_CRT = CustomerCreateDto.builder()
+            .nickname("5")
+            .email("5")
+            .password("")
+            .build();
+    final CustomerUpdateDto CUSTOMER_DTO_INCORRECT_PASSWORD_1_UPD = CustomerUpdateDto.builder()
             .id(5L)
             .nickname("5")
             .email("5")
             .build();
-
-    final CustomerRqDto CUSTOMER_DTO_INCORRECT_PASSWORD_2 = CustomerRqDto.builder()
+    final CustomerUpdateDto CUSTOMER_DTO_INCORRECT_PASSWORD_2_UPD = CustomerUpdateDto.builder()
             .id(5L)
             .nickname("5")
             .email("5")
             .password("")
             .build();
-    final CustomerRqDto CUSTOMER_DTO_INCORRECT_NICKNAME_1 = CustomerRqDto.builder()
+    final CustomerCreateDto CUSTOMER_DTO_INCORRECT_NICKNAME_1_CRT = CustomerCreateDto.builder()
+            .email("6")
+            .password("6")
+            .build();
+
+    final CustomerUpdateDto CUSTOMER_DTO_INCORRECT_NICKNAME_1_UPD = CustomerUpdateDto.builder()
             .id(6L)
             .email("6")
             .password("6")
             .build();
 
-    final CustomerRqDto CUSTOMER_DTO_INCORRECT_NICKNAME_2 = CustomerRqDto.builder()
+
+    final CustomerCreateDto CUSTOMER_DTO_INCORRECT_NICKNAME_2_CRT = CustomerCreateDto.builder()
+            .nickname("")
+            .email("6")
+            .password("6")
+            .build();
+    final CustomerUpdateDto CUSTOMER_DTO_INCORRECT_NICKNAME_2_UPD = CustomerUpdateDto.builder()
             .id(6L)
             .nickname("")
             .email("6")
@@ -104,7 +139,7 @@ public class CustomerTests extends BookStoreTest {
     public void getByIdTest() {
         Long customerId = customerRepository.save(CUSTOMER_CORRECT_1).getId();
 
-        CustomerRsDto customerRsDto = customerController.getById(customerId);
+        CustomerDto customerRsDto = customerController.getById(customerId);
 
         assertCustomers(CUSTOMER_CORRECT_1, customerRsDto);
     }
@@ -121,30 +156,29 @@ public class CustomerTests extends BookStoreTest {
     public void getAllTest() {
         customerRepository.saveAll(CUSTOMERS);
 
-        List<CustomerRsDto> customerRsDtos = customerController.getAll();
+        List<CustomerDto> customerRsDtos = customerController.getAll();
 
         Assertions.assertEquals(customerRsDtos.size(), CUSTOMERS.size());
         for (int i = 0; i < CUSTOMERS.size(); i++) {
             CustomerModel expected = CUSTOMERS.get(i);
-            CustomerRsDto actual = customerRsDtos.get(i);
+            CustomerDto actual = customerRsDtos.get(i);
             assertCustomers(expected, actual);
         }
     }
 
     @Test
     public void createTest() {
-        Long customerId = customerController.create(CUSTOMER_DTO);
+        Long customerId = customerController.create(CUSTOMER_DTO_CRT);
 
         CustomerModel customerModel = customerRepository.findById(customerId).get();
 
-        assertCustomers(CUSTOMER_DTO, customerModel);
+        assertCustomers(CUSTOMER_DTO_CRT, customerModel);
     }
 
     @Test
     public void createAlreadyExistNicknameTest() {
-        Long customerId = customerRepository.save(CUSTOMER_CORRECT_1).getId();
-        CustomerRqDto customerRqDto = CustomerRqDto.builder()
-                .id(customerId)
+        customerRepository.save(CUSTOMER_CORRECT_1);
+        CustomerCreateDto customerRqDto = CustomerCreateDto.builder()
                 .nickname(CUSTOMER_CORRECT_1.getNickname())
                 .email("some email")
                 .password("some password")
@@ -158,9 +192,8 @@ public class CustomerTests extends BookStoreTest {
 
     @Test
     public void createAlreadyExistEmailTest() {
-        Long customerId = customerRepository.save(CUSTOMER_CORRECT_1).getId();
-        CustomerRqDto customerRqDto = CustomerRqDto.builder()
-                .id(customerId)
+        customerRepository.save(CUSTOMER_CORRECT_1);
+        CustomerCreateDto customerRqDto = CustomerCreateDto.builder()
                 .nickname("some nickname")
                 .email(CUSTOMER_CORRECT_1.getEmail())
                 .password("some password")
@@ -176,7 +209,7 @@ public class CustomerTests extends BookStoreTest {
     public void createIncorrectNickname1Test() {
         Assertions.assertThrows(
                 ValidationException.class,
-                () -> customerController.create(CUSTOMER_DTO_INCORRECT_NICKNAME_1)
+                () -> customerController.create(CUSTOMER_DTO_INCORRECT_NICKNAME_1_CRT)
         );
     }
 
@@ -184,7 +217,7 @@ public class CustomerTests extends BookStoreTest {
     public void createIncorrectNickname2Test() {
         Assertions.assertThrows(
                 ValidationException.class,
-                () -> customerController.create(CUSTOMER_DTO_INCORRECT_NICKNAME_2)
+                () -> customerController.create(CUSTOMER_DTO_INCORRECT_NICKNAME_2_CRT)
         );
     }
 
@@ -192,7 +225,7 @@ public class CustomerTests extends BookStoreTest {
     public void createIncorrectPassword1Test() {
         Assertions.assertThrows(
                 ValidationException.class,
-                () -> customerController.create(CUSTOMER_DTO_INCORRECT_PASSWORD_1)
+                () -> customerController.create(CUSTOMER_DTO_INCORRECT_PASSWORD_1_CRT)
         );
     }
 
@@ -200,7 +233,7 @@ public class CustomerTests extends BookStoreTest {
     public void createIncorrectPassword2Test() {
         Assertions.assertThrows(
                 ValidationException.class,
-                () -> customerController.create(CUSTOMER_DTO_INCORRECT_PASSWORD_2)
+                () -> customerController.create(CUSTOMER_DTO_INCORRECT_PASSWORD_2_CRT)
         );
     }
 
@@ -208,7 +241,7 @@ public class CustomerTests extends BookStoreTest {
     public void createIncorrectEmail1Test() {
         Assertions.assertThrows(
                 ValidationException.class,
-                () -> customerController.create(CUSTOMER_DTO_INCORRECT_EMAIl_1)
+                () -> customerController.create(CUSTOMER_DTO_INCORRECT_EMAIl_1_CRT)
         );
     }
 
@@ -216,14 +249,14 @@ public class CustomerTests extends BookStoreTest {
     public void createIncorrectEmail2Test() {
         Assertions.assertThrows(
                 ValidationException.class,
-                () -> customerController.create(CUSTOMER_DTO_INCORRECT_EMAIl_2)
+                () -> customerController.create(CUSTOMER_DTO_INCORRECT_EMAIl_2_CRT)
         );
     }
 
     @Test
     public void updateTest() {
         Long customerId = customerRepository.save(CUSTOMER_CORRECT_1).getId();
-        CustomerRqDto customerRqDto = CustomerRqDto.builder()
+        CustomerUpdateDto customerRqDto = CustomerUpdateDto.builder()
                 .id(customerId)
                 .nickname("new nickname")
                 .email("new email")
@@ -240,7 +273,7 @@ public class CustomerTests extends BookStoreTest {
     public void updateNotFoundTest() {
         Assertions.assertThrows(
                 NotFoundException.class,
-                () -> customerController.update(CUSTOMER_DTO)
+                () -> customerController.update(CUSTOMER_DTO_UPD)
         );
     }
 
@@ -248,7 +281,7 @@ public class CustomerTests extends BookStoreTest {
     public void updateIncorrectName1Test() {
         Assertions.assertThrows(
                 ValidationException.class,
-                () -> customerController.update(CUSTOMER_DTO_INCORRECT_NICKNAME_1)
+                () -> customerController.update(CUSTOMER_DTO_INCORRECT_NICKNAME_1_UPD)
         );
     }
 
@@ -256,7 +289,7 @@ public class CustomerTests extends BookStoreTest {
     public void updateIncorrectName2Test() {
         Assertions.assertThrows(
                 ValidationException.class,
-                () -> customerController.update(CUSTOMER_DTO_INCORRECT_NICKNAME_2)
+                () -> customerController.update(CUSTOMER_DTO_INCORRECT_NICKNAME_2_UPD)
         );
     }
 
@@ -264,7 +297,7 @@ public class CustomerTests extends BookStoreTest {
     public void updateIncorrectPassword1Test() {
         Assertions.assertThrows(
                 ValidationException.class,
-                () -> customerController.update(CUSTOMER_DTO_INCORRECT_PASSWORD_1)
+                () -> customerController.update(CUSTOMER_DTO_INCORRECT_PASSWORD_1_UPD)
         );
     }
 
@@ -272,7 +305,7 @@ public class CustomerTests extends BookStoreTest {
     public void updateIncorrectPassword2Test() {
         Assertions.assertThrows(
                 ValidationException.class,
-                () -> customerController.update(CUSTOMER_DTO_INCORRECT_PASSWORD_2)
+                () -> customerController.update(CUSTOMER_DTO_INCORRECT_PASSWORD_2_UPD)
         );
     }
 
@@ -280,7 +313,7 @@ public class CustomerTests extends BookStoreTest {
     public void updateIncorrectEmail1Test() {
         Assertions.assertThrows(
                 ValidationException.class,
-                () -> customerController.update(CUSTOMER_DTO_INCORRECT_EMAIl_1)
+                () -> customerController.update(CUSTOMER_DTO_INCORRECT_EMAIl_1_UPD)
         );
     }
 
@@ -288,14 +321,14 @@ public class CustomerTests extends BookStoreTest {
     public void updateIncorrectEmail2Test() {
         Assertions.assertThrows(
                 ValidationException.class,
-                () -> customerController.update(CUSTOMER_DTO_INCORRECT_EMAIl_2)
+                () -> customerController.update(CUSTOMER_DTO_INCORRECT_EMAIl_2_UPD)
         );
     }
 
     @Test
     public void updateAlreadyExistNicknameTest() {
         Long customerId = customerRepository.save(CUSTOMER_CORRECT_1).getId();
-        CustomerRqDto customerRqDto = CustomerRqDto.builder()
+        CustomerUpdateDto customerRqDto = CustomerUpdateDto.builder()
                 .id(customerId)
                 .nickname(CUSTOMER_CORRECT_1.getNickname())
                 .email("some email")
@@ -311,7 +344,7 @@ public class CustomerTests extends BookStoreTest {
     @Test
     public void updateAlreadyExistEmailTest() {
         Long customerId = customerRepository.save(CUSTOMER_CORRECT_1).getId();
-        CustomerRqDto customerRqDto = CustomerRqDto.builder()
+        CustomerUpdateDto customerRqDto = CustomerUpdateDto.builder()
                 .id(customerId)
                 .nickname("some nickname")
                 .email(CUSTOMER_CORRECT_1.getEmail())
@@ -342,12 +375,17 @@ public class CustomerTests extends BookStoreTest {
         );
     }
 
-    private void assertCustomers(CustomerModel expected, CustomerRsDto actual) {
+    private void assertCustomers(CustomerModel expected, CustomerDto actual) {
         Assertions.assertEquals(expected.getNickname(), actual.getNickname());
         Assertions.assertEquals(expected.getEmail(), actual.getEmail());
     }
 
-    private void assertCustomers(CustomerRqDto expected, CustomerModel actual) {
+    private void assertCustomers(CustomerCreateDto expected, CustomerModel actual) {
+        Assertions.assertEquals(expected.getNickname(), actual.getNickname());
+        Assertions.assertEquals(expected.getEmail(), actual.getEmail());
+    }
+
+    private void assertCustomers(CustomerUpdateDto expected, CustomerModel actual) {
         Assertions.assertEquals(expected.getNickname(), actual.getNickname());
         Assertions.assertEquals(expected.getEmail(), actual.getEmail());
     }

@@ -12,7 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import ru.mephi.ourbookstore.BookStoreTest;
 import ru.mephi.ourbookstore.controller.book.BookController;
 import ru.mephi.ourbookstore.domain.BookModel;
+import ru.mephi.ourbookstore.domain.dto.book.BookCreateDto;
 import ru.mephi.ourbookstore.domain.dto.book.BookDto;
+import ru.mephi.ourbookstore.domain.dto.book.BookUpdateDto;
 import ru.mephi.ourbookstore.repository.book.BookRepository;
 import ru.mephi.ourbookstore.service.exceptions.AlreadyExistException;
 import ru.mephi.ourbookstore.service.exceptions.NotFoundException;
@@ -43,41 +45,70 @@ public class BookTests extends BookStoreTest {
             .count(2)
             .build();
 
-    final BookDto BOOK_CORRECT_1_NEW = BookDto.builder()
+    final BookUpdateDto BOOK_CORRECT_1_UPD = BookUpdateDto.builder()
             .id(1L)
             .name("11")
             .price(11)
             .count(11)
             .build();
 
-    final BookDto BOOK_DTO = BookDto.builder()
+    final BookCreateDto BOOK_DTO_CRT = BookCreateDto.builder()
+            .name("3")
+            .price(3)
+            .count(3)
+            .build();
+
+    final BookUpdateDto BOOK_DTO_UPD = BookUpdateDto.builder()
             .id(3L)
             .name("3")
             .price(3)
             .count(3)
             .build();
 
-    final BookDto BOOK_DTO_INCORRECT_PRICE = BookDto.builder()
+    final BookCreateDto BOOK_DTO_INCORRECT_PRICE_CRT = BookCreateDto.builder()
+            .name("4")
+            .price(-4)
+            .count(4)
+            .build();
+
+    final BookUpdateDto BOOK_DTO_INCORRECT_PRICE_UPD = BookUpdateDto.builder()
             .id(4L)
             .name("4")
             .price(-4)
             .count(4)
             .build();
 
-    final BookDto BOOK_DTO_INCORRECT_COUNT = BookDto.builder()
+    final BookCreateDto BOOK_DTO_INCORRECT_COUNT_CRT = BookCreateDto.builder()
+            .name("5")
+            .price(5)
+            .count(-5)
+            .build();
+
+    final BookUpdateDto BOOK_DTO_INCORRECT_COUNT_UPD = BookUpdateDto.builder()
             .id(5L)
             .name("5")
             .price(5)
             .count(-5)
             .build();
 
-    final BookDto BOOK_DTO_INCORRECT_NAME_1 = BookDto.builder()
+    final BookCreateDto BOOK_DTO_INCORRECT_NAME_1_CRT = BookCreateDto.builder()
+            .price(6)
+            .count(6)
+            .build();
+
+    final BookUpdateDto BOOK_DTO_INCORRECT_NAME_1_UPD = BookUpdateDto.builder()
             .id(6L)
             .price(6)
             .count(6)
             .build();
 
-    final BookDto BOOK_DTO_INCORRECT_NAME_2 = BookDto.builder()
+    final BookCreateDto BOOK_DTO_INCORRECT_NAME_2_CRT = BookCreateDto.builder()
+            .name("")
+            .price(6)
+            .count(6)
+            .build();
+
+    final BookUpdateDto BOOK_DTO_INCORRECT_NAME_2_UPD = BookUpdateDto.builder()
             .id(6L)
             .name("")
             .price(6)
@@ -127,18 +158,17 @@ public class BookTests extends BookStoreTest {
 
     @Test
     public void createTest() {
-        Long customerId = bookController.create(BOOK_DTO);
+        Long customerId = bookController.create(BOOK_DTO_CRT);
 
         BookModel bookModel = bookRepository.findById(customerId).get();
 
-        assertBooks(BOOK_DTO, bookModel);
+        assertBooks(BOOK_DTO_CRT, bookModel);
     }
 
     @Test
     public void createAlreadyExistTest() {
-        Long bookId = bookRepository.save(BOOK_CORRECT_1).getId();
-        BookDto bookDto = BookDto.builder()
-                .id(bookId)
+        bookRepository.save(BOOK_CORRECT_1);
+        BookCreateDto bookDto = BookCreateDto.builder()
                 .name(BOOK_CORRECT_1.getName())
                 .price(BOOK_CORRECT_1.getPrice())
                 .count(BOOK_CORRECT_1.getCount())
@@ -154,7 +184,7 @@ public class BookTests extends BookStoreTest {
     public void createIncorrectName1Test() {
         Assertions.assertThrows(
                 ValidationException.class,
-                () -> bookController.create(BOOK_DTO_INCORRECT_NAME_1)
+                () -> bookController.create(BOOK_DTO_INCORRECT_NAME_1_CRT)
         );
     }
 
@@ -162,7 +192,7 @@ public class BookTests extends BookStoreTest {
     public void createIncorrectName2Test() {
         Assertions.assertThrows(
                 ValidationException.class,
-                () -> bookController.create(BOOK_DTO_INCORRECT_NAME_2)
+                () -> bookController.create(BOOK_DTO_INCORRECT_NAME_2_CRT)
         );
     }
 
@@ -170,7 +200,7 @@ public class BookTests extends BookStoreTest {
     public void createIncorrectCountTest() {
         Assertions.assertThrows(
                 ValidationException.class,
-                () -> bookController.create(BOOK_DTO_INCORRECT_COUNT)
+                () -> bookController.create(BOOK_DTO_INCORRECT_COUNT_CRT)
         );
     }
 
@@ -178,26 +208,26 @@ public class BookTests extends BookStoreTest {
     public void createIncorrectPriceTest() {
         Assertions.assertThrows(
                 ValidationException.class,
-                () -> bookController.create(BOOK_DTO_INCORRECT_PRICE)
+                () -> bookController.create(BOOK_DTO_INCORRECT_PRICE_CRT)
         );
     }
 
     @Test
     public void updateTest() {
         Long bookId = bookRepository.save(BOOK_CORRECT_1).getId();
-        BOOK_CORRECT_1_NEW.setId(bookId);
+        BOOK_CORRECT_1_UPD.setId(bookId);
 
-        bookController.update(BOOK_CORRECT_1_NEW);
+        bookController.update(BOOK_CORRECT_1_UPD);
 
         BookModel bookModel = bookRepository.findById(bookId).get();
-        assertBooks(BOOK_CORRECT_1_NEW, bookModel);
+        assertBooks(BOOK_CORRECT_1_UPD, bookModel);
     }
 
     @Test
     public void updateNotFoundTest() {
         Assertions.assertThrows(
                 NotFoundException.class,
-                () -> bookController.update(BOOK_DTO)
+                () -> bookController.update(BOOK_DTO_UPD)
         );
     }
 
@@ -205,7 +235,7 @@ public class BookTests extends BookStoreTest {
     public void updateIncorrectName1Test() {
         Assertions.assertThrows(
                 ValidationException.class,
-                () -> bookController.update(BOOK_DTO_INCORRECT_NAME_1)
+                () -> bookController.update(BOOK_DTO_INCORRECT_NAME_1_UPD)
         );
     }
 
@@ -213,7 +243,7 @@ public class BookTests extends BookStoreTest {
     public void updateIncorrectName2Test() {
         Assertions.assertThrows(
                 ValidationException.class,
-                () -> bookController.update(BOOK_DTO_INCORRECT_NAME_2)
+                () -> bookController.update(BOOK_DTO_INCORRECT_NAME_2_UPD)
         );
     }
 
@@ -221,7 +251,7 @@ public class BookTests extends BookStoreTest {
     public void updateIncorrectCountTest() {
         Assertions.assertThrows(
                 ValidationException.class,
-                () -> bookController.update(BOOK_DTO_INCORRECT_COUNT)
+                () -> bookController.update(BOOK_DTO_INCORRECT_COUNT_UPD)
         );
     }
 
@@ -229,7 +259,7 @@ public class BookTests extends BookStoreTest {
     public void updateIncorrectPriceTest() {
         Assertions.assertThrows(
                 ValidationException.class,
-                () -> bookController.update(BOOK_DTO_INCORRECT_PRICE)
+                () -> bookController.update(BOOK_DTO_INCORRECT_PRICE_UPD)
         );
     }
 
@@ -251,8 +281,25 @@ public class BookTests extends BookStoreTest {
         );
     }
 
-    private void assertBooks(BookDto expected, BookModel actual) {
+    private void assertBooks(BookUpdateDto expected, BookModel actual) {
         assertBooks(actual, expected);
+    }
+
+    private void assertBooks(BookCreateDto expected, BookModel actual) {
+        assertBooks(actual, expected);
+    }
+
+    private void assertBooks(BookModel expected, BookUpdateDto actual) {
+        Assertions.assertEquals(expected.getId(), actual.getId());
+        Assertions.assertEquals(expected.getName(), actual.getName());
+        Assertions.assertEquals(expected.getPrice(), actual.getPrice());
+        Assertions.assertEquals(expected.getCount(), actual.getCount());
+    }
+
+    private void assertBooks(BookModel expected, BookCreateDto actual) {
+        Assertions.assertEquals(expected.getName(), actual.getName());
+        Assertions.assertEquals(expected.getPrice(), actual.getPrice());
+        Assertions.assertEquals(expected.getCount(), actual.getCount());
     }
 
     private void assertBooks(BookModel expected, BookDto actual) {

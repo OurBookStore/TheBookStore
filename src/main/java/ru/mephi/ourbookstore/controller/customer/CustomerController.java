@@ -14,8 +14,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.mephi.ourbookstore.domain.dto.customer.Customer;
-import ru.mephi.ourbookstore.domain.dto.customer.CustomerRqDto;
-import ru.mephi.ourbookstore.domain.dto.customer.CustomerRsDto;
+import ru.mephi.ourbookstore.domain.dto.customer.CustomerCreateDto;
+import ru.mephi.ourbookstore.domain.dto.customer.CustomerDto;
+import ru.mephi.ourbookstore.domain.dto.customer.CustomerUpdateDto;
 import ru.mephi.ourbookstore.mapper.customer.CustomerDtoMapper;
 import ru.mephi.ourbookstore.service.customer.CustomerService;
 
@@ -32,25 +33,25 @@ public class CustomerController {
     final CustomerDtoMapper customerDtoMapper;
 
     @GetMapping("/{customerId}")
-    public CustomerRsDto getById(@PathVariable long customerId) {
+    public CustomerDto getById(@PathVariable long customerId) {
         return customerDtoMapper.objectToDto(customerService.getById(customerId));
     }
 
     @GetMapping
-    public List<CustomerRsDto> getAll() {
+    public List<CustomerDto> getAll() {
         return customerService.getAll().stream()
                 .map(customerDtoMapper::objectToDto)
                 .toList();
     }
 
     @PostMapping
-    public Long create(@RequestBody CustomerRqDto customerRqDto) {
+    public Long create(@RequestBody CustomerCreateDto customerRqDto) {
         Customer customer = customerDtoMapper.dtoToObject(customerRqDto);
         return customerService.create(customer);
     }
 
     @PutMapping
-    public void update(@RequestBody CustomerRqDto customerRqDto) {
+    public void update(@RequestBody CustomerUpdateDto customerRqDto) {
         Customer customer = customerDtoMapper.dtoToObject(customerRqDto);
         customerService.update(customer);
     }
