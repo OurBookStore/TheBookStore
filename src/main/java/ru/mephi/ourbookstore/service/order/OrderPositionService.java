@@ -6,7 +6,6 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.mephi.ourbookstore.domain.OrderPositionModel;
-import ru.mephi.ourbookstore.domain.dto.book.Book;
 import ru.mephi.ourbookstore.domain.dto.order.OrderPosition;
 import ru.mephi.ourbookstore.mapper.order.OrderPositionModelMapper;
 import ru.mephi.ourbookstore.repository.order.OrderPositionRepository;
@@ -16,6 +15,7 @@ import ru.mephi.ourbookstore.service.exceptions.ValidationException;
 
 import java.util.List;
 
+import static ru.mephi.ourbookstore.domain.Entities.ORDER;
 import static ru.mephi.ourbookstore.domain.Entities.ORDER_POSITION;
 
 @Service
@@ -40,13 +40,19 @@ public class OrderPositionService {
     }
 
     @Transactional
-    public Long createOrUpdate(OrderPosition orderPosition) {
+    public Long createOrderPosition(OrderPosition orderPosition) {
         validate(orderPosition);
-        OrderPositionModel newModel = orderPositionModelMapper.objectToModel(orderPosition);
-        if (orderPositionRepository.findByOrderAndBookId(newModel.getOrder(), newModel.getBookId()).isPresent()) {
-            orderPositionRepository.deleteById(newModel.getId());
-        }
-        return orderPositionRepository.save(newModel).getId();
+        OrderPositionModel newPosModel = orderPositionModelMapper.objectToModel(orderPosition);
+        return orderPositionRepository.save(newPosModel).getId();
+    }
+
+    @Transactional
+    public void updateOrder(OrderPosition orderPosition) {
+        Long orderId = orderPosition.getId();
+        orderPositionRepository.findById(orderId)
+                .orElseThrow(() -> new NotFoundException(ORDER, "id", orderId));
+        OrderPositionModel orderPosModel = orderPositionModelMapper.objectToModel(orderPosition);
+        orderPositionRepository.save(orderPosModel);
     }
 
 
@@ -58,15 +64,14 @@ public class OrderPositionService {
     }
 
     private void validate(OrderPosition orderPosition) {
-        Book book = bookService.getById(orderPosition.getBookId());
-        if (book == null) {
-            throw new NotFoundException(ORDER_POSITION, "bookId", orderPosition.getBookId());
+        if (orderPosition.getBookId() == null) {
+            throw new ValidationException(ORDER_POSITION, "bookId", orderPosition.getBookId());
         }
         int count = orderPosition.getCount();
-        if (count < 0 || count > book.getCount()) {
+        if (count < 0) {
             throw new ValidationException(ORDER_POSITION, "count", count);
         }
-        if(orderPosition.getOrder() == null){
+        if (orderPosition.getOrder() == null) {
             throw new ValidationException(ORDER_POSITION, "order", orderPosition.getOrder());
         }
 

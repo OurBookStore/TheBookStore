@@ -7,7 +7,6 @@ import lombok.Data;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,7 +19,7 @@ import java.util.List;
 public class Order {
     Long id;
     LocalDateTime createdDate;
-    List<OrderPosition> booksInOrders;
+    List<OrderPosition> booksInOrder;
     Long customerId;
 }
 

@@ -6,7 +6,6 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.mephi.ourbookstore.domain.OrderModel;
-import ru.mephi.ourbookstore.domain.dto.customer.Customer;
 import ru.mephi.ourbookstore.domain.dto.order.Order;
 import ru.mephi.ourbookstore.mapper.order.OrderModelMapper;
 
@@ -14,11 +13,8 @@ import ru.mephi.ourbookstore.repository.order.OrderRepository;
 import ru.mephi.ourbookstore.service.customer.CustomerService;
 import ru.mephi.ourbookstore.service.exceptions.NotFoundException;
 import ru.mephi.ourbookstore.service.exceptions.ValidationException;
-
-
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 import static ru.mephi.ourbookstore.domain.Entities.*;
 
@@ -47,21 +43,26 @@ public class OrderService {
                 .toList();
     }
 
-    public List<Order> getAllByCustomerId(Long customerId){
+    public List<Order> getAllByCustomerId(Long customerId) {
         return orderRepository.findAllByCustomerId(customerId).stream()
                 .map(orderModelMapper::modelToObject)
                 .toList();
     }
 
     @Transactional
-    public void createOrderOrUpdateExisting(Order order) {
+    public Long createOrder(Order order) {
         validate(order);
         OrderModel newModel = orderModelMapper.objectToModel(order);
-        Optional<OrderModel> existingModel = orderRepository.findById(order.getId());
-        if (existingModel.isPresent()) {
-            orderRepository.deleteById(order.getId());
-        }
-        orderRepository.save(newModel);
+        return orderRepository.save(newModel).getId();
+    }
+
+    @Transactional
+    public void updateOrder(Order order) {
+        Long orderId = order.getId();
+        orderRepository.findById(orderId)
+                .orElseThrow(() -> new NotFoundException(ORDER, "id", orderId));
+        OrderModel orderModel = orderModelMapper.objectToModel(order);
+        orderRepository.save(orderModel);
     }
 
     @Transactional
@@ -72,13 +73,14 @@ public class OrderService {
     }
 
     private void validate(Order order) {
-        Customer customer = customerService.getById(order.getCustomerId());
-        if (customer == null) {
-            throw new NotFoundException(ORDER, "customerId", order.getCustomerId());
+        if (order.getCustomerId() == null) {
+            throw new ValidationException(ORDER, "customer", order.getCustomerId());
+        }
+        if (order.getBooksInOrder() == null) {
+            throw new ValidationException(ORDER, "booksInOrder", order.getBooksInOrder());
         }
         if (order.getCreatedDate().isAfter(LocalDateTime.now())) {
             throw new ValidationException(ORDER, "createdDateTime", order.getCreatedDate());
         }
-
     }
 }

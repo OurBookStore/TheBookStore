@@ -5,7 +5,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.web.bind.annotation.*;
 import ru.mephi.ourbookstore.domain.dto.order.Order;
+import ru.mephi.ourbookstore.domain.dto.order.OrderCreateDto;
 import ru.mephi.ourbookstore.domain.dto.order.OrderDto;
+import ru.mephi.ourbookstore.domain.dto.order.OrderUpdateDto;
 import ru.mephi.ourbookstore.mapper.order.OrderDtoMapper;
 import ru.mephi.ourbookstore.service.order.OrderService;
 
@@ -41,9 +43,15 @@ public class OrderController {
 
 
     @PostMapping
-    public void updateExistingOrder(@RequestBody OrderDto orderDto) {
+    public Long createOrder(@RequestBody OrderCreateDto orderDto) {
         Order order = orderDtoMapper.dtoToObject(orderDto);
-        orderService.createOrderOrUpdateExisting(order);
+        return orderService.createOrder(order);
+    }
+
+    @PostMapping
+    public void updateOrder(@RequestBody OrderUpdateDto orderDto){
+        Order order = orderDtoMapper.dtoToObject(orderDto);
+        orderService.updateOrder(order);
     }
 
     @DeleteMapping("/{orderId}")

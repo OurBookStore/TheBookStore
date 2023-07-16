@@ -5,17 +5,13 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
 
-
-/**
- * @author Bushueva Valery
- */
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class OrderPositionDto {
+public class OrderUpdateDto {
     Long id;
-    Long bookId;
-    int count;
-    OrderDto order;
+    List<OrderPositionUpdateDto> booksInOrder;
 }

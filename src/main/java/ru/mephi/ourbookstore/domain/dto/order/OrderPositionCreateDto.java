@@ -5,17 +5,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
 
-
-/**
- * @author Bushueva Valery
- */
-
 @Data
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class OrderPositionDto {
-    Long id;
+public class OrderPositionCreateDto {
     Long bookId;
     int count;
-    OrderDto order;
 }

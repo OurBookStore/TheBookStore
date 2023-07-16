@@ -1,5 +1,6 @@
 package ru.mephi.ourbookstore.domain;
 
+
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
