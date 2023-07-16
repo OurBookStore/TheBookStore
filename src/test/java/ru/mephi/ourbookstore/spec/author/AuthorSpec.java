@@ -1,7 +1,5 @@
 package ru.mephi.ourbookstore.spec.author;
 
-import io.restassured.RestAssured;
-import io.restassured.mapper.ObjectMapperType;
 import ru.mephi.ourbookstore.domain.dto.author.AuthorCreateDto;
 import ru.mephi.ourbookstore.domain.dto.author.AuthorDto;
 import ru.mephi.ourbookstore.domain.dto.author.AuthorUpdateDto;

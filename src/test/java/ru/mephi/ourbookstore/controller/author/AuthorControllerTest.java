@@ -21,8 +21,8 @@ class AuthorControllerTest {
     @BeforeEach
     void cleanDb() {
         List<AuthorDto> authorDtoList = AuthorSpec.getAll();
-        for (int i = 0; i < authorDtoList.size(); i++) {
-            AuthorSpec.deleteAuthor(Long.parseLong(authorDtoList.get(i).getId()));
+        for (AuthorDto authorDto : authorDtoList) {
+            AuthorSpec.deleteAuthor(Long.parseLong(authorDto.getId()));
         }
     }
 
