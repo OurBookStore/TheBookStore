@@ -34,6 +34,7 @@ public class OrderModel {
     @Column(name="books_in_order")
     List<OrderPositionModel> booksInOrder = new ArrayList<>();
 
+    @ManyToOne
     @Column(name="customer_id")
-    Long customerId;
+    CustomerModel customer;
 }

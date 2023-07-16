@@ -1,15 +1,14 @@
 package ru.mephi.ourbookstore.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
+
+import java.util.List;
 
 /**
  * @author Aleksei Iagnenkov (alekseiiagn)
@@ -28,4 +27,7 @@ public class CustomerModel {
     String nickname;
     String email;
     String password;
+
+    @OneToMany(mappedBy = "customers", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    List<OrderModel> orders;
 }
