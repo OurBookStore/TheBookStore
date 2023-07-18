@@ -69,7 +69,7 @@ class AuthorControllerTest {
         assertAuthors(authorDto, authorCreateDto);
     }
     @ParameterizedTest
-    @DisplayName("Update author unsuccessful")
+    @DisplayName("Update author successful")
     @CsvSource({
             "Lev Tolstoy, 2023-01-01, Russia",
             "Grigory Bashev, 2000-01-01, Russia",

@@ -57,11 +57,7 @@ public class AuthorService {
 
     public List<Author> getAll() {
         List<AuthorModel> authors = authorRepository.findAll();
-        if (authors.isEmpty()) {
-            return new ArrayList<>();
-        } else {
             return authors.stream().map(authorModelMapper::modelToObject).toList();
-        }
     }
 
     public void validate(Author author) {

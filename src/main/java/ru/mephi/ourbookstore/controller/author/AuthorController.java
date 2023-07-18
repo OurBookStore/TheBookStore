@@ -19,7 +19,7 @@ public class AuthorController {
 
     final private AuthorService authorService;
     final private AuthorDtoMapper authorDtoMapper;
-    @GetMapping("{authorId}")
+    @GetMapping("/{authorId}")
     public AuthorDto getAuthorById(@PathVariable Long authorId){
         return authorDtoMapper.objectToDto(authorService.getAuthorById(authorId));
     }
@@ -43,7 +43,7 @@ public class AuthorController {
         authorService.update(author);
     }
 
-    @DeleteMapping("{authorId}")
+    @DeleteMapping("/{authorId}")
     public void delete(@PathVariable long authorId) {
         authorService.delete(authorId);
     }
