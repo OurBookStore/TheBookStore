@@ -11,8 +11,8 @@ public interface OrderDtoMapper {
 
     OrderDto objectToDto(Order order);
 
-    Order dtoToObject (OrderCreateDto orderCreateDto);
-
     Order dtoToObject(OrderUpdateDto orderUpdateDto);
+
+    Order dtoToObject(OrderCreateDto orderCreateDto);
 
 }

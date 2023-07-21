@@ -6,11 +6,13 @@ import lombok.Data;
 import lombok.experimental.FieldDefaults;
 
 import java.util.List;
+import java.util.UUID;
 
 @Data
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class OrderUpdateDto {
-    Long id;
+    UUID id;
     List<OrderPositionUpdateDto> booksInOrder;
+    Long customerId;
 }

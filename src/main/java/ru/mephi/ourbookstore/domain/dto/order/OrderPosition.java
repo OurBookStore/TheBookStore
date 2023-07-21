@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
 
+import java.util.UUID;
 
 
 /**
@@ -14,9 +15,9 @@ import lombok.experimental.FieldDefaults;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class OrderPosition {
-    Long id;
+    UUID id = UUID.randomUUID();
     Long bookId;
     int count;
-    Order order;
+    UUID orderId;
 }
 

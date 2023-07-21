@@ -7,5 +7,5 @@ import ru.mephi.ourbookstore.domain.dto.order.OrderPosition;
 @Mapper(componentModel = "spring")
 public interface OrderPositionModelMapper {
     OrderPosition modelToObject(OrderPositionModel model);
-    OrderPositionModel objectToModel(OrderPosition order);
+    OrderPositionModel objectToModel(OrderPosition orderPoition);
 }

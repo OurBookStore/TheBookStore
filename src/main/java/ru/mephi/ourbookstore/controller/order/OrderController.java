@@ -4,14 +4,15 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.web.bind.annotation.*;
-import ru.mephi.ourbookstore.domain.dto.order.Order;
-import ru.mephi.ourbookstore.domain.dto.order.OrderCreateDto;
-import ru.mephi.ourbookstore.domain.dto.order.OrderDto;
-import ru.mephi.ourbookstore.domain.dto.order.OrderUpdateDto;
+import ru.mephi.ourbookstore.domain.dto.order.*;
 import ru.mephi.ourbookstore.mapper.order.OrderDtoMapper;
+import ru.mephi.ourbookstore.mapper.order.OrderPositionDtoMapper;
+import ru.mephi.ourbookstore.service.order.OrderPositionService;
 import ru.mephi.ourbookstore.service.order.OrderService;
 
 import java.util.List;
+import java.util.UUID;
+
 
 @RestController
 @RequestMapping("/orders")
@@ -20,10 +21,15 @@ import java.util.List;
 public class OrderController {
 
     final OrderService orderService;
+
+    final OrderPositionService orderPositionService;
     final OrderDtoMapper orderDtoMapper;
 
+    final OrderPositionDtoMapper orderPositionDtoMapper;
+
+
     @GetMapping("/{orderId}")
-    public OrderDto getOrderById(@PathVariable long orderId) {
+    public OrderDto getOrderById(@PathVariable UUID orderId) {
         return orderDtoMapper.objectToDto(orderService.getById(orderId));
     }
 
@@ -36,26 +42,42 @@ public class OrderController {
 
     @GetMapping
     public List<OrderDto> getAllByCustomer(@RequestParam long customerId) {
-        return orderService.getAllByCustomerId(customerId).stream()
+        return orderService.getAllByCustomer(customerId).stream()
                 .map(orderDtoMapper::objectToDto)
                 .toList();
     }
 
 
     @PostMapping
-    public Long createOrder(@RequestBody OrderCreateDto orderDto) {
+    public UUID createOrder(@RequestBody OrderCreateDto orderDto) {
         Order order = orderDtoMapper.dtoToObject(orderDto);
         return orderService.createOrder(order);
     }
 
-    @PostMapping
-    public void updateOrder(@RequestBody OrderUpdateDto orderDto){
+    @PutMapping
+    public void updateOrder(@RequestBody OrderUpdateDto orderDto) {
         Order order = orderDtoMapper.dtoToObject(orderDto);
         orderService.updateOrder(order);
     }
 
+    @PostMapping
+    public UUID createOrderPositionInExistingOrder(
+            @RequestBody OrderPositionCreateDto orderPositionCreateDto,
+            @RequestParam UUID orderId
+    ) {
+        OrderPosition orderPosition = orderPositionDtoMapper.dtoToObject(orderPositionCreateDto);
+        orderPosition.setOrderId(orderId);
+        return orderPositionService.addNewOrderPosition(orderPosition);
+    }
+
+    @PutMapping
+    public void updateExistingOrderPosition(@RequestBody OrderPositionUpdateDto orderPositionUpdateDto){
+        OrderPosition orderPosition = orderPositionDtoMapper.dtoToObject(orderPositionUpdateDto);
+        orderPositionService.updateOrderPosition(orderPosition);
+    }
+
     @DeleteMapping("/{orderId}")
-    public void deleteOrder(@PathVariable long orderId) {
+    public void deleteOrder(@PathVariable UUID orderId) {
         orderService.deleteOrder(orderId);
     }
 }

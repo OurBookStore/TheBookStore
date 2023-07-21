@@ -9,6 +9,7 @@ import ru.mephi.ourbookstore.domain.dto.customer.Customer;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * @author Bushueva Valery
@@ -18,9 +19,10 @@ import java.util.List;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Order {
-    Long id;
-    LocalDateTime createdDate;
+    UUID id = UUID.randomUUID();
+    LocalDateTime createdDateTime;
     List<OrderPosition> booksInOrder;
-    Customer customer;
+    Long customerId;
+
 }
 

@@ -2,8 +2,14 @@ package ru.mephi.ourbookstore.domain;
 
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
+
+import java.util.UUID;
 
 @Entity
 @Table(name = "order_positions")
@@ -15,15 +21,14 @@ import lombok.experimental.FieldDefaults;
 public class OrderPositionModel {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "position_id")
-    Long id;
+    UUID id;
 
     Long bookId;
 
     int count;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     OrderModel order;
 
 }

@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
 
+import java.util.UUID;
+
 
 /**
  * @author Bushueva Valery
@@ -14,8 +16,8 @@ import lombok.experimental.FieldDefaults;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class OrderPositionDto {
-    Long id;
+    UUID id;
     Long bookId;
     int count;
-    OrderDto order;
+    UUID orderId;
 }

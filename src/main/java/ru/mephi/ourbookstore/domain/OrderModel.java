@@ -1,13 +1,17 @@
 package ru.mephi.ourbookstore.domain;
 
-
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * @author Bushueva Valery
@@ -23,18 +27,15 @@ import java.util.List;
 public class OrderModel {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "order_id")
-    Long id;
+    UUID id;
 
-    @Column(name = "created_date")
+    @Column(name = "created_at")
     LocalDateTime createdDateTime;
 
-    @OneToMany(mappedBy = "orders", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
-    @Column(name="books_in_order")
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     List<OrderPositionModel> booksInOrder = new ArrayList<>();
 
     @ManyToOne
-    @Column(name="customer_id")
     CustomerModel customer;
 }
