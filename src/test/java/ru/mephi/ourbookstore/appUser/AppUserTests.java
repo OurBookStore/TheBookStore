@@ -1,4 +1,4 @@
-package ru.mephi.ourbookstore.customer;
+package ru.mephi.ourbookstore.appUser;
 
 import java.util.List;
 import java.util.Optional;
@@ -10,12 +10,12 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import ru.mephi.ourbookstore.BookStoreTest;
-import ru.mephi.ourbookstore.controller.customer.CustomerController;
-import ru.mephi.ourbookstore.domain.CustomerModel;
-import ru.mephi.ourbookstore.domain.dto.customer.CustomerCreateDto;
-import ru.mephi.ourbookstore.domain.dto.customer.CustomerDto;
-import ru.mephi.ourbookstore.domain.dto.customer.CustomerUpdateDto;
-import ru.mephi.ourbookstore.repository.customer.CustomerRepository;
+import ru.mephi.ourbookstore.controller.appUser.AppUserController;
+import ru.mephi.ourbookstore.domain.AppUserModel;
+import ru.mephi.ourbookstore.domain.dto.appUser.AppUserCreateDto;
+import ru.mephi.ourbookstore.domain.dto.appUser.AppUserDto;
+import ru.mephi.ourbookstore.domain.dto.appUser.AppUserUpdateDto;
+import ru.mephi.ourbookstore.repository.appUser.AppUserRepository;
 import ru.mephi.ourbookstore.service.exceptions.AlreadyExistException;
 import ru.mephi.ourbookstore.service.exceptions.NotFoundException;
 import ru.mephi.ourbookstore.service.exceptions.ValidationException;
@@ -24,56 +24,56 @@ import ru.mephi.ourbookstore.service.exceptions.ValidationException;
  * @author Aleksei Iagnenkov (alekseiiagn)
  */
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class CustomerTests extends BookStoreTest {
+public class AppUserTests extends BookStoreTest {
 
     @Autowired
-    CustomerController customerController;
+    AppUserController appUserController;
     @Autowired
-    CustomerRepository customerRepository;
+    AppUserRepository appUserRepository;
 
-    final CustomerModel CUSTOMER_CORRECT_1 = CustomerModel.builder()
+    final AppUserModel APP_USER_CORRECT_1 = AppUserModel.builder()
             .id(1L)
             .nickname("1")
             .email("1")
             .password("1")
             .build();
 
-    final CustomerModel CUSTOMER_CORRECT_2 = CustomerModel.builder()
+    final AppUserModel APP_USER_CORRECT_2 = AppUserModel.builder()
             .id(2L)
             .nickname("2")
             .email("2")
             .password("2")
             .build();
 
-    final CustomerCreateDto CUSTOMER_DTO_CRT = CustomerCreateDto.builder()
+    final AppUserCreateDto APP_USER_DTO_CRT = AppUserCreateDto.builder()
             .nickname("3")
             .email("3")
             .password("3")
             .build();
-    final CustomerUpdateDto CUSTOMER_DTO_UPD = CustomerUpdateDto.builder()
+    final AppUserUpdateDto APP_USER_DTO_UPD = AppUserUpdateDto.builder()
             .id(3L)
             .nickname("3")
             .email("3")
             .password("3")
             .build();
 
-    final CustomerCreateDto CUSTOMER_DTO_INCORRECT_EMAIl_1_CRT = CustomerCreateDto.builder()
+    final AppUserCreateDto APP_USER_DTO_INCORRECT_EMAIl_1_CRT = AppUserCreateDto.builder()
             .nickname("4")
             .password("4")
             .build();
 
-    final CustomerUpdateDto CUSTOMER_DTO_INCORRECT_EMAIl_1_UPD = CustomerUpdateDto.builder()
+    final AppUserUpdateDto APP_USER_DTO_INCORRECT_EMAIl_1_UPD = AppUserUpdateDto.builder()
             .id(4L)
             .nickname("4")
             .password("4")
             .build();
 
-    final CustomerCreateDto CUSTOMER_DTO_INCORRECT_EMAIl_2_CRT = CustomerCreateDto.builder()
+    final AppUserCreateDto APP_USER_DTO_INCORRECT_EMAIl_2_CRT = AppUserCreateDto.builder()
             .nickname("4")
             .email("")
             .password("4")
             .build();
-    final CustomerUpdateDto CUSTOMER_DTO_INCORRECT_EMAIl_2_UPD = CustomerUpdateDto.builder()
+    final AppUserUpdateDto APP_USER_DTO_INCORRECT_EMAIl_2_UPD = AppUserUpdateDto.builder()
             .id(4L)
             .nickname("4")
             .email("")
@@ -81,127 +81,127 @@ public class CustomerTests extends BookStoreTest {
             .build();
 
 
-    final CustomerCreateDto CUSTOMER_DTO_INCORRECT_PASSWORD_1_CRT = CustomerCreateDto.builder()
+    final AppUserCreateDto APP_USER_DTO_INCORRECT_PASSWORD_1_CRT = AppUserCreateDto.builder()
             .nickname("5")
             .email("5")
             .build();
-    final CustomerCreateDto CUSTOMER_DTO_INCORRECT_PASSWORD_2_CRT = CustomerCreateDto.builder()
-            .nickname("5")
-            .email("5")
-            .password("")
-            .build();
-    final CustomerUpdateDto CUSTOMER_DTO_INCORRECT_PASSWORD_1_UPD = CustomerUpdateDto.builder()
-            .id(5L)
-            .nickname("5")
-            .email("5")
-            .build();
-    final CustomerUpdateDto CUSTOMER_DTO_INCORRECT_PASSWORD_2_UPD = CustomerUpdateDto.builder()
-            .id(5L)
+    final AppUserCreateDto APP_USER_DTO_INCORRECT_PASSWORD_2_CRT = AppUserCreateDto.builder()
             .nickname("5")
             .email("5")
             .password("")
             .build();
-    final CustomerCreateDto CUSTOMER_DTO_INCORRECT_NICKNAME_1_CRT = CustomerCreateDto.builder()
+    final AppUserUpdateDto APP_USER_DTO_INCORRECT_PASSWORD_1_UPD = AppUserUpdateDto.builder()
+            .id(5L)
+            .nickname("5")
+            .email("5")
+            .build();
+    final AppUserUpdateDto APP_USER_DTO_INCORRECT_PASSWORD_2_UPD = AppUserUpdateDto.builder()
+            .id(5L)
+            .nickname("5")
+            .email("5")
+            .password("")
+            .build();
+    final AppUserCreateDto APP_USER_DTO_INCORRECT_NICKNAME_1_CRT = AppUserCreateDto.builder()
             .email("6")
             .password("6")
             .build();
 
-    final CustomerUpdateDto CUSTOMER_DTO_INCORRECT_NICKNAME_1_UPD = CustomerUpdateDto.builder()
+    final AppUserUpdateDto APP_USER_DTO_INCORRECT_NICKNAME_1_UPD = AppUserUpdateDto.builder()
             .id(6L)
             .email("6")
             .password("6")
             .build();
 
 
-    final CustomerCreateDto CUSTOMER_DTO_INCORRECT_NICKNAME_2_CRT = CustomerCreateDto.builder()
+    final AppUserCreateDto APP_USER_DTO_INCORRECT_NICKNAME_2_CRT = AppUserCreateDto.builder()
             .nickname("")
             .email("6")
             .password("6")
             .build();
-    final CustomerUpdateDto CUSTOMER_DTO_INCORRECT_NICKNAME_2_UPD = CustomerUpdateDto.builder()
+    final AppUserUpdateDto APP_USER_DTO_INCORRECT_NICKNAME_2_UPD = AppUserUpdateDto.builder()
             .id(6L)
             .nickname("")
             .email("6")
             .password("6")
             .build();
 
-    final List<CustomerModel> CUSTOMERS = List.of(
-            CUSTOMER_CORRECT_1,
-            CUSTOMER_CORRECT_2
+    final List<AppUserModel> APP_USERS = List.of(
+            APP_USER_CORRECT_1,
+            APP_USER_CORRECT_2
     );
 
     @AfterEach
     public void dropDb() {
-        customerRepository.deleteAll();
+        appUserRepository.deleteAll();
     }
 
     @Test
     public void getByIdTest() {
-        Long customerId = customerRepository.save(CUSTOMER_CORRECT_1).getId();
+        Long appUserId = appUserRepository.save(APP_USER_CORRECT_1).getId();
 
-        CustomerDto customerRsDto = customerController.getById(customerId);
+        AppUserDto appUserRsDto = appUserController.getById(appUserId);
 
-        assertCustomers(CUSTOMER_CORRECT_1, customerRsDto);
+        assertAppUsers(APP_USER_CORRECT_1, appUserRsDto);
     }
 
     @Test
     public void getByIdExceptionTest() {
         Assertions.assertThrows(
                 NotFoundException.class,
-                () -> customerController.getById(-1)
+                () -> appUserController.getById(-1)
         );
     }
 
     @Test
     public void getAllTest() {
-        customerRepository.saveAll(CUSTOMERS);
+        appUserRepository.saveAll(APP_USERS);
 
-        List<CustomerDto> customerRsDtos = customerController.getAll();
+        List<AppUserDto> appUserRsDtos = appUserController.getAll();
 
-        Assertions.assertEquals(customerRsDtos.size(), CUSTOMERS.size());
-        for (int i = 0; i < CUSTOMERS.size(); i++) {
-            CustomerModel expected = CUSTOMERS.get(i);
-            CustomerDto actual = customerRsDtos.get(i);
-            assertCustomers(expected, actual);
+        Assertions.assertEquals(appUserRsDtos.size(), APP_USERS.size());
+        for (int i = 0; i < APP_USERS.size(); i++) {
+            AppUserModel expected = APP_USERS.get(i);
+            AppUserDto actual = appUserRsDtos.get(i);
+            assertAppUsers(expected, actual);
         }
     }
 
     @Test
     public void createTest() {
-        Long customerId = customerController.create(CUSTOMER_DTO_CRT);
+        Long appUserId = appUserController.create(APP_USER_DTO_CRT);
 
-        CustomerModel customerModel = customerRepository.findById(customerId).get();
+        AppUserModel appUserModel = appUserRepository.findById(appUserId).get();
 
-        assertCustomers(CUSTOMER_DTO_CRT, customerModel);
+        assertAppUsers(APP_USER_DTO_CRT, appUserModel);
     }
 
     @Test
     public void createAlreadyExistNicknameTest() {
-        customerRepository.save(CUSTOMER_CORRECT_1);
-        CustomerCreateDto customerRqDto = CustomerCreateDto.builder()
-                .nickname(CUSTOMER_CORRECT_1.getNickname())
+        appUserRepository.save(APP_USER_CORRECT_1);
+        AppUserCreateDto appUserRqDto = AppUserCreateDto.builder()
+                .nickname(APP_USER_CORRECT_1.getNickname())
                 .email("some email")
                 .password("some password")
                 .build();
 
         Assertions.assertThrows(
                 AlreadyExistException.class,
-                () -> customerController.create(customerRqDto)
+                () -> appUserController.create(appUserRqDto)
         );
     }
 
     @Test
     public void createAlreadyExistEmailTest() {
-        customerRepository.save(CUSTOMER_CORRECT_1);
-        CustomerCreateDto customerRqDto = CustomerCreateDto.builder()
+        appUserRepository.save(APP_USER_CORRECT_1);
+        AppUserCreateDto appUserRqDto = AppUserCreateDto.builder()
                 .nickname("some nickname")
-                .email(CUSTOMER_CORRECT_1.getEmail())
+                .email(APP_USER_CORRECT_1.getEmail())
                 .password("some password")
                 .build();
 
         Assertions.assertThrows(
                 AlreadyExistException.class,
-                () -> customerController.create(customerRqDto)
+                () -> appUserController.create(appUserRqDto)
         );
     }
 
@@ -209,7 +209,7 @@ public class CustomerTests extends BookStoreTest {
     public void createIncorrectNickname1Test() {
         Assertions.assertThrows(
                 ValidationException.class,
-                () -> customerController.create(CUSTOMER_DTO_INCORRECT_NICKNAME_1_CRT)
+                () -> appUserController.create(APP_USER_DTO_INCORRECT_NICKNAME_1_CRT)
         );
     }
 
@@ -217,7 +217,7 @@ public class CustomerTests extends BookStoreTest {
     public void createIncorrectNickname2Test() {
         Assertions.assertThrows(
                 ValidationException.class,
-                () -> customerController.create(CUSTOMER_DTO_INCORRECT_NICKNAME_2_CRT)
+                () -> appUserController.create(APP_USER_DTO_INCORRECT_NICKNAME_2_CRT)
         );
     }
 
@@ -225,7 +225,7 @@ public class CustomerTests extends BookStoreTest {
     public void createIncorrectPassword1Test() {
         Assertions.assertThrows(
                 ValidationException.class,
-                () -> customerController.create(CUSTOMER_DTO_INCORRECT_PASSWORD_1_CRT)
+                () -> appUserController.create(APP_USER_DTO_INCORRECT_PASSWORD_1_CRT)
         );
     }
 
@@ -233,7 +233,7 @@ public class CustomerTests extends BookStoreTest {
     public void createIncorrectPassword2Test() {
         Assertions.assertThrows(
                 ValidationException.class,
-                () -> customerController.create(CUSTOMER_DTO_INCORRECT_PASSWORD_2_CRT)
+                () -> appUserController.create(APP_USER_DTO_INCORRECT_PASSWORD_2_CRT)
         );
     }
 
@@ -241,7 +241,7 @@ public class CustomerTests extends BookStoreTest {
     public void createIncorrectEmail1Test() {
         Assertions.assertThrows(
                 ValidationException.class,
-                () -> customerController.create(CUSTOMER_DTO_INCORRECT_EMAIl_1_CRT)
+                () -> appUserController.create(APP_USER_DTO_INCORRECT_EMAIl_1_CRT)
         );
     }
 
@@ -249,31 +249,31 @@ public class CustomerTests extends BookStoreTest {
     public void createIncorrectEmail2Test() {
         Assertions.assertThrows(
                 ValidationException.class,
-                () -> customerController.create(CUSTOMER_DTO_INCORRECT_EMAIl_2_CRT)
+                () -> appUserController.create(APP_USER_DTO_INCORRECT_EMAIl_2_CRT)
         );
     }
 
     @Test
     public void updateTest() {
-        Long customerId = customerRepository.save(CUSTOMER_CORRECT_1).getId();
-        CustomerUpdateDto customerRqDto = CustomerUpdateDto.builder()
-                .id(customerId)
+        Long appUserId = appUserRepository.save(APP_USER_CORRECT_1).getId();
+        AppUserUpdateDto appUserRqDto = AppUserUpdateDto.builder()
+                .id(appUserId)
                 .nickname("new nickname")
                 .email("new email")
                 .password("new password")
                 .build();
 
-        customerController.update(customerRqDto);
+        appUserController.update(appUserRqDto);
 
-        CustomerModel customerModel = customerRepository.findById(customerId).get();
-        assertCustomers(customerRqDto, customerModel);
+        AppUserModel appUserModel = appUserRepository.findById(appUserId).get();
+        assertAppUsers(appUserRqDto, appUserModel);
     }
 
     @Test
     public void updateNotFoundTest() {
         Assertions.assertThrows(
                 NotFoundException.class,
-                () -> customerController.update(CUSTOMER_DTO_UPD)
+                () -> appUserController.update(APP_USER_DTO_UPD)
         );
     }
 
@@ -281,7 +281,7 @@ public class CustomerTests extends BookStoreTest {
     public void updateIncorrectName1Test() {
         Assertions.assertThrows(
                 ValidationException.class,
-                () -> customerController.update(CUSTOMER_DTO_INCORRECT_NICKNAME_1_UPD)
+                () -> appUserController.update(APP_USER_DTO_INCORRECT_NICKNAME_1_UPD)
         );
     }
 
@@ -289,7 +289,7 @@ public class CustomerTests extends BookStoreTest {
     public void updateIncorrectName2Test() {
         Assertions.assertThrows(
                 ValidationException.class,
-                () -> customerController.update(CUSTOMER_DTO_INCORRECT_NICKNAME_2_UPD)
+                () -> appUserController.update(APP_USER_DTO_INCORRECT_NICKNAME_2_UPD)
         );
     }
 
@@ -297,7 +297,7 @@ public class CustomerTests extends BookStoreTest {
     public void updateIncorrectPassword1Test() {
         Assertions.assertThrows(
                 ValidationException.class,
-                () -> customerController.update(CUSTOMER_DTO_INCORRECT_PASSWORD_1_UPD)
+                () -> appUserController.update(APP_USER_DTO_INCORRECT_PASSWORD_1_UPD)
         );
     }
 
@@ -305,7 +305,7 @@ public class CustomerTests extends BookStoreTest {
     public void updateIncorrectPassword2Test() {
         Assertions.assertThrows(
                 ValidationException.class,
-                () -> customerController.update(CUSTOMER_DTO_INCORRECT_PASSWORD_2_UPD)
+                () -> appUserController.update(APP_USER_DTO_INCORRECT_PASSWORD_2_UPD)
         );
     }
 
@@ -313,7 +313,7 @@ public class CustomerTests extends BookStoreTest {
     public void updateIncorrectEmail1Test() {
         Assertions.assertThrows(
                 ValidationException.class,
-                () -> customerController.update(CUSTOMER_DTO_INCORRECT_EMAIl_1_UPD)
+                () -> appUserController.update(APP_USER_DTO_INCORRECT_EMAIl_1_UPD)
         );
     }
 
@@ -321,71 +321,71 @@ public class CustomerTests extends BookStoreTest {
     public void updateIncorrectEmail2Test() {
         Assertions.assertThrows(
                 ValidationException.class,
-                () -> customerController.update(CUSTOMER_DTO_INCORRECT_EMAIl_2_UPD)
+                () -> appUserController.update(APP_USER_DTO_INCORRECT_EMAIl_2_UPD)
         );
     }
 
     @Test
     public void updateAlreadyExistNicknameTest() {
-        Long customerId = customerRepository.save(CUSTOMER_CORRECT_1).getId();
-        CustomerUpdateDto customerRqDto = CustomerUpdateDto.builder()
-                .id(customerId)
-                .nickname(CUSTOMER_CORRECT_1.getNickname())
+        Long appUserId = appUserRepository.save(APP_USER_CORRECT_1).getId();
+        AppUserUpdateDto appUserRqDto = AppUserUpdateDto.builder()
+                .id(appUserId)
+                .nickname(APP_USER_CORRECT_1.getNickname())
                 .email("some email")
                 .password("some password")
                 .build();
 
         Assertions.assertThrows(
                 AlreadyExistException.class,
-                () -> customerController.update(customerRqDto)
+                () -> appUserController.update(appUserRqDto)
         );
     }
 
     @Test
     public void updateAlreadyExistEmailTest() {
-        Long customerId = customerRepository.save(CUSTOMER_CORRECT_1).getId();
-        CustomerUpdateDto customerRqDto = CustomerUpdateDto.builder()
-                .id(customerId)
+        Long appUserId = appUserRepository.save(APP_USER_CORRECT_1).getId();
+        AppUserUpdateDto appUserRqDto = AppUserUpdateDto.builder()
+                .id(appUserId)
                 .nickname("some nickname")
-                .email(CUSTOMER_CORRECT_1.getEmail())
+                .email(APP_USER_CORRECT_1.getEmail())
                 .password("some password")
                 .build();
 
         Assertions.assertThrows(
                 AlreadyExistException.class,
-                () -> customerController.update(customerRqDto)
+                () -> appUserController.update(appUserRqDto)
         );
     }
 
     @Test
     public void deleteTest() {
-        Long customerId = customerRepository.save(CUSTOMER_CORRECT_1).getId();
+        Long appUserId = appUserRepository.save(APP_USER_CORRECT_1).getId();
 
-        customerController.delete(customerId);
+        appUserController.delete(appUserId);
 
-        Optional<CustomerModel> customerModel = customerRepository.findById(customerId);
-        Assertions.assertTrue(customerModel.isEmpty());
+        Optional<AppUserModel> appUserModel = appUserRepository.findById(appUserId);
+        Assertions.assertTrue(appUserModel.isEmpty());
     }
 
     @Test
     public void deleteNotFoundTest() {
         Assertions.assertThrows(
                 NotFoundException.class,
-                () -> customerController.delete(-1)
+                () -> appUserController.delete(-1)
         );
     }
 
-    private void assertCustomers(CustomerModel expected, CustomerDto actual) {
+    private void assertAppUsers(AppUserModel expected, AppUserDto actual) {
         Assertions.assertEquals(expected.getNickname(), actual.getNickname());
         Assertions.assertEquals(expected.getEmail(), actual.getEmail());
     }
 
-    private void assertCustomers(CustomerCreateDto expected, CustomerModel actual) {
+    private void assertAppUsers(AppUserCreateDto expected, AppUserModel actual) {
         Assertions.assertEquals(expected.getNickname(), actual.getNickname());
         Assertions.assertEquals(expected.getEmail(), actual.getEmail());
     }
 
-    private void assertCustomers(CustomerUpdateDto expected, CustomerModel actual) {
+    private void assertAppUsers(AppUserUpdateDto expected, AppUserModel actual) {
         Assertions.assertEquals(expected.getNickname(), actual.getNickname());
         Assertions.assertEquals(expected.getEmail(), actual.getEmail());
     }
