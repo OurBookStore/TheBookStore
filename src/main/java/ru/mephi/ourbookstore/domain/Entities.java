@@ -10,7 +10,10 @@ public enum Entities {
 
     BOOK("book"),
     AUTHOR("author"),
-    APP_USER("appUser");
+    APP_USER("appUser"),
+    ORDER("order"),
+    ORDER_POSITION("orderPosition"),
+    ORDER_STATUS("orderStatus");
 
     final String name;
 
