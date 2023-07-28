@@ -13,6 +13,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class OrderPositionModel {
+
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     UUID uuid;
