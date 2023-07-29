@@ -13,17 +13,16 @@ import ru.mephi.ourbookstore.service.exceptions.ValidationException;
 import ru.mephi.ourbookstore.util.validation.CountryValidator;
 import ru.mephi.ourbookstore.util.validation.DateValidator;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class AuthorService {
 
-    final private AuthorRepository authorRepository;
-    final private AuthorModelMapper authorModelMapper;
+    private final AuthorRepository authorRepository;
+    private final AuthorModelMapper authorModelMapper;
 
-    public Author getAuthorById(Long id) {
+    public Author getById(Long id) {
         AuthorModel author = authorRepository.findById(id).orElseThrow(
                 () -> new NotFoundException(Entities.AUTHOR, "id", id)
         );
@@ -41,7 +40,7 @@ public class AuthorService {
     @Transactional
     public void update(Author author) {
         validate(author);
-        Author authorToUpdate = getAuthorById(author.getId());
+        Author authorToUpdate = getById(author.getId());
         authorToUpdate.setCountry(author.getCountry());
         authorToUpdate.setFullName(author.getFullName());
         authorToUpdate.setDateOfBirth(author.getDateOfBirth());
@@ -57,7 +56,9 @@ public class AuthorService {
 
     public List<Author> getAll() {
         List<AuthorModel> authors = authorRepository.findAll();
-            return authors.stream().map(authorModelMapper::modelToObject).toList();
+        return authors.stream()
+                .map(authorModelMapper::modelToObject)
+                .toList();
     }
 
     public void validate(Author author) {
@@ -65,7 +66,7 @@ public class AuthorService {
             throw new ValidationException(Entities.AUTHOR, "Invalid date of birth", author.getDateOfBirth());
         }
         if (author.getFullName() == null || !author.getFullName().matches("^[a-zA-Z]+ [a-zA-Z]+$")) {
-            throw new ValidationException(Entities.AUTHOR, "InvalidAuthorName", author.getFullName());
+            throw new ValidationException(Entities.AUTHOR, "Invalid Author Name", author.getFullName());
         }
         if (!CountryValidator.isCountryValid(author.getCountry())) {
             throw new ValidationException(Entities.AUTHOR, "Invalid country", author.getCountry());

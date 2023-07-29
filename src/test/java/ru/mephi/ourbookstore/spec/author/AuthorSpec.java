@@ -9,68 +9,68 @@ import java.util.List;
 
 import static io.restassured.RestAssured.given;
 
-public class AuthorSpec {
+public class AuthorSpec extends BaseSpec{
     public static long createAuthorSuccessful(AuthorCreateDto authorCreateDto) {
         return given()
                 .spec(BaseSpec.getRequestSpec())
                 .when()
                 .body(authorCreateDto)
-                .post("/author")
+                .post("/authors")
                 .then()
                 .spec(BaseSpec.getResponseSpec(200))
                 .extract().body().as(Long.TYPE);
     }
 
-    public static void createAuthorInvalid(AuthorCreateDto authorCreateDto) {
-        given()
+    public static String createAuthorInvalid(AuthorCreateDto authorCreateDto) {
+        return given()
                 .spec(BaseSpec.getRequestSpec())
                 .when()
                 .body(authorCreateDto)
-                .post("/author")
+                .post("/authors")
                 .then()
                 .spec(BaseSpec.getResponseSpec(400))
                 .extract().body().asPrettyString();
     }
 
-    public static void updateAuthor(AuthorUpdateDto authorUpdateDto) {
-        given()
+    public static String updateAuthor(AuthorUpdateDto authorUpdateDto) {
+        return given()
                 .spec(BaseSpec.getRequestSpec())
                 .when()
                 .body(authorUpdateDto)
-                .put("/author")
+                .put("/authors")
                 .then()
                 .spec(BaseSpec.getResponseSpec(200))
                 .extract().body().asPrettyString();
     }
 
-    public static void updateAuthorInvalid(AuthorUpdateDto authorUpdateDto) {
-        given()
+    public static String updateAuthorInvalid(AuthorUpdateDto authorUpdateDto) {
+        return given()
                 .spec(BaseSpec.getRequestSpec())
                 .when()
                 .body(authorUpdateDto)
-                .put("/author")
+                .put("/authors")
                 .then()
                 .spec(BaseSpec.getResponseSpec(400))
                 .extract().body().asPrettyString();
     }
 
-    public static void deleteNotExistingAuthor(Long id) {
-        given()
+    public static String deleteNotExistingAuthor(Long id) {
+        return given()
                 .spec(BaseSpec.getRequestSpec())
                 .when()
                 .pathParam("authorId", id)
-                .delete("/author/{authorId}")
+                .delete("/authors/{authorId}")
                 .then()
                 .spec(BaseSpec.getResponseSpec(404))
                 .extract().body().asPrettyString();
     }
 
-    public static void deleteAuthor(Long id) {
-        given()
+    public static String deleteAuthor(Long id) {
+        return given()
                 .spec(BaseSpec.getRequestSpec())
                 .when()
                 .pathParam("authorId", id)
-                .delete("/author/{authorId}")
+                .delete("/authors/{authorId}")
                 .then()
                 .spec(BaseSpec.getResponseSpec(200))
                 .extract().body().asPrettyString();
@@ -81,18 +81,18 @@ public class AuthorSpec {
                 .spec(BaseSpec.getRequestSpec())
                 .when()
                 .pathParam("authorId", id)
-                .get("/author/{authorId}")
+                .get("/authors/{authorId}")
                 .then()
                 .spec(BaseSpec.getResponseSpec(200))
                 .extract().body().as(AuthorDto.class);
     }
 
-    public static void getNotExistingAuthor(Long id) {
-        given()
+    public static String  getNotExistingAuthor(Long id) {
+        return given()
                 .spec(BaseSpec.getRequestSpec())
                 .when()
                 .pathParam("authorId", id)
-                .get("/author/{authorId}")
+                .get("/authors/{authorId}")
                 .then()
                 .spec(BaseSpec.getResponseSpec(404))
                 .extract().body().asPrettyString();
@@ -102,7 +102,7 @@ public class AuthorSpec {
         return given()
                 .spec(BaseSpec.getRequestSpec())
                 .when()
-                .get("/author")
+                .get("/authors")
                 .then()
                 .spec(BaseSpec.getResponseSpec(200))
                 .extract().body().jsonPath().getList(".", AuthorDto.class);

@@ -5,6 +5,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import ru.mephi.ourbookstore.domain.dto.author.Author;
 import ru.mephi.ourbookstore.domain.dto.author.AuthorCreateDto;
 import ru.mephi.ourbookstore.domain.dto.author.AuthorDto;
 import ru.mephi.ourbookstore.domain.dto.author.AuthorUpdateDto;
@@ -12,14 +13,13 @@ import ru.mephi.ourbookstore.spec.author.AuthorSpec;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 class AuthorControllerTest {
 
     @Test
     @BeforeEach
-    void cleanDb() {
+    public void cleanDb() {
         List<AuthorDto> authorDtoList = AuthorSpec.getAll();
         for (AuthorDto authorDto : authorDtoList) {
             AuthorSpec.deleteAuthor(Long.parseLong(authorDto.getId()));
@@ -31,27 +31,30 @@ class AuthorControllerTest {
     @CsvSource({
             "Grigory Bashev, 2021-12-01, Russia",
     })
-    void createAuthorSuccessful(String fullName, String dateOfBirth, String country) {
+    public void createAuthorSuccessful(String fullName, String dateOfBirth, String country) {
         AuthorCreateDto authorCreateDto = AuthorCreateDto.builder().country(country)
                 .dateOfBirth(dateOfBirth)
                 .fullName(fullName).build();
         AuthorSpec.createAuthorSuccessful(authorCreateDto);
-
+        AuthorDto authorDto = AuthorSpec.getAll().get(0);
+        assertAuthors(authorDto, authorCreateDto);
     }
 
     @ParameterizedTest
     @DisplayName("Create author unsuccessful")
     @CsvSource({
-            "Grigory Bashev, 2023-11-22, Russia",
-            "!gory Bashev, 1999-2-31, France",
-            "Grigory Bashev, 1999-12-12, Lol what a country",
-            ",12th of September, Guatemala",
+            "Grigory Bashev, 2023-11-22, Russia, Invalid date of birth",
+            "!gory Bashev, 1999-2-31, France, Invalid date of birth",
+            "Grigory Bashev, 1999-12-12, Lol what a country, Invalid country",
+            ",12th of September, Guatemala, Invalid date of birth ",
+            ", 1999-12-12, Guatemala, Invalid Author Name",
     })
-    void createAuthorUnsuccessful(String fullName, String dateOfBirth, String country) {
+    public void createAuthorUnsuccessful(String fullName, String dateOfBirth, String country, String error) {
         AuthorCreateDto authorCreateDto = AuthorCreateDto.builder().country(country)
                 .dateOfBirth(dateOfBirth)
                 .fullName(fullName).build();
-        AuthorSpec.createAuthorInvalid(authorCreateDto);
+        String response = AuthorSpec.createAuthorInvalid(authorCreateDto);
+        assertTrue(response.contains(error));
     }
 
     @ParameterizedTest
@@ -59,7 +62,7 @@ class AuthorControllerTest {
     @CsvSource({
             "Grigory Bashev, 2021-12-01, Russia",
     })
-    void getExistingAuthor(String fullName, String dateOfBirth, String country) {
+    public void getExistingAuthor(String fullName, String dateOfBirth, String country) {
         var authorCreateDto = AuthorCreateDto.builder()
                 .country(country)
                 .dateOfBirth(dateOfBirth)
@@ -68,6 +71,7 @@ class AuthorControllerTest {
         AuthorDto authorDto = AuthorSpec.getAuthor(id);
         assertAuthors(authorDto, authorCreateDto);
     }
+
     @ParameterizedTest
     @DisplayName("Update author successful")
     @CsvSource({
@@ -75,7 +79,7 @@ class AuthorControllerTest {
             "Grigory Bashev, 2000-01-01, Russia",
             "Grigory Bashev, 2023-01-01, France",
     })
-    void updateAuthorSuccessful(String newFullName, String newDateOfBirth, String newCountry) {
+    public void updateAuthorSuccessful(String newFullName, String newDateOfBirth, String newCountry) {
         AuthorCreateDto authorCreateDto = AuthorCreateDto.builder()
                 .country("Russia")
                 .dateOfBirth("2023-01-01")
@@ -96,18 +100,18 @@ class AuthorControllerTest {
     @ParameterizedTest
     @DisplayName("Update author unsuccessful")
     @CsvSource({
-            "1rigory Bashev, 2023-01-01, Russia",
-            ", 2023-01-01, Russia",
-            "Grigory Bashev, 3023-01-01, Russia",
-            "Grigory Bashev, 2023-01-01, Fussia",
-            "Game of thrones, 2023-01-01, Russia",
-            "Grigory Bashev, , Russia",
-            "Grigory Bashev, 2023-01-01, ",
-            "Grigory Bashev, a;sldkjf, Russia",
-            "Grigory Bashev, 2023-01-01, asldkjfa",
-            "1234 2345, 2023-01-01, Russia",
+            "1rigory Bashev, 2023-01-01, Russia, Invalid Author Name",
+            ", 2023-01-01, Russia, Invalid Author Name",
+            "Grigory Bashev, 3023-01-01, Russia, Invalid date of birth",
+            "Grigory Bashev, 2023-01-01, Fussia, Invalid country",
+            "Game of thrones, 2023-01-01, Russia, Invalid Author Name",
+            "Grigory Bashev, , Russia, Invalid date of birth",
+            "Grigory Bashev, 2023-01-01, , Invalid country",
+            "Grigory Bashev, a;sldkjf, Russia, Invalid date of birth",
+            "Grigory Bashev, 2023-01-01, asldkjfa, Invalid country",
+            "1234 2345, 2023-01-01, Russia, Invalid Author Name",
     })
-    void updateAuthorUnsuccessful(String newFullName, String newDateOfBirth, String newCountry) {
+    public void updateAuthorUnsuccessful(String newFullName, String newDateOfBirth, String newCountry, String error) {
         AuthorCreateDto authorCreateDto = AuthorCreateDto.builder()
                 .country("Russia")
                 .dateOfBirth("2023-01-01")
@@ -118,18 +122,22 @@ class AuthorControllerTest {
                 .fullName(newFullName)
                 .dateOfBirth(newDateOfBirth)
                 .id(String.valueOf(id)).build();
-        AuthorSpec.updateAuthorInvalid(authorUpdateDto);
+        String response = AuthorSpec.updateAuthorInvalid(authorUpdateDto);
+        assertTrue(response.contains(error));
     }
+
     @Test
     @DisplayName("Get nonexistent author")
-    void getNonexistentAuthor() {
-        AuthorSpec.getNotExistingAuthor(1L);
+    public void getNonexistentAuthor() {
+        String response = AuthorSpec.getNotExistingAuthor(1L);
+        assertTrue(response.contains("The AUTHOR with id = 1 not found"));
     }
 
     @Test
     @DisplayName("Delete nonexistent author")
-    void deleteNonexistentAuthor() {
-        AuthorSpec.deleteNotExistingAuthor(1L);
+    public void deleteNonexistentAuthor() {
+        String response = AuthorSpec.deleteNotExistingAuthor(1L);
+        assertTrue(response.contains("The AUTHOR with id = 1 not found"));
     }
 
     public void assertAuthors(AuthorDto authorDto, AuthorCreateDto authorCreateDto) {
@@ -140,7 +148,6 @@ class AuthorControllerTest {
                 () -> assertEquals(authorDto.getFullName(), authorCreateDto.getFullName())
         );
     }
-
 
 
     public void assertAuthors(AuthorDto authorDto, AuthorUpdateDto authorUpdateDto) {

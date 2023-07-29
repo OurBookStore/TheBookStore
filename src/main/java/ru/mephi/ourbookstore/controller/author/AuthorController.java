@@ -12,16 +12,16 @@ import ru.mephi.ourbookstore.service.author.AuthorService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/author")
+@RequestMapping("/authors")
 @RequiredArgsConstructor
 public class AuthorController {
 
 
-    final private AuthorService authorService;
-    final private AuthorDtoMapper authorDtoMapper;
+    private final AuthorService authorService;
+    private final AuthorDtoMapper authorDtoMapper;
     @GetMapping("/{authorId}")
     public AuthorDto getAuthorById(@PathVariable Long authorId){
-        return authorDtoMapper.objectToDto(authorService.getAuthorById(authorId));
+        return authorDtoMapper.objectToDto(authorService.getById(authorId));
     }
 
     @GetMapping
