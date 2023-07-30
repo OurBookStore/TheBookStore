@@ -1,4 +1,4 @@
-package ru.mephi.ourbookstore.domain.dto.appUser;
+package ru.mephi.ourbookstore.domain.dto.orderStatusHistory;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -6,21 +6,19 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
 import ru.mephi.ourbookstore.domain.OrderModel;
+import ru.mephi.ourbookstore.domain.OrderStatus;
 
-import java.util.List;
+import java.util.Date;
 
-/**
- * @author Aleksei Iagnenkov (alekseiiagn)
- */
 @Data
 @Builder
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class AppUser {
+public class OrderStatusHistory {
 
     Long id;
-    String nickname;
-    String email;
-    String password;
-    List<OrderModel> orders;
+    OrderModel order;
+    OrderStatus status;
+    Date date;
+    boolean isActual;
 }

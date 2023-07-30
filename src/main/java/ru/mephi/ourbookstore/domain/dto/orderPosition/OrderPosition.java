@@ -1,26 +1,22 @@
-package ru.mephi.ourbookstore.domain.dto.appUser;
+package ru.mephi.ourbookstore.domain.dto.orderPosition;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
+import ru.mephi.ourbookstore.domain.BookModel;
 import ru.mephi.ourbookstore.domain.OrderModel;
 
-import java.util.List;
-
-/**
- * @author Aleksei Iagnenkov (alekseiiagn)
- */
 @Data
 @Builder
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class AppUser {
+public class OrderPosition {
 
     Long id;
-    String nickname;
-    String email;
-    String password;
-    List<OrderModel> orders;
+    BookModel book;
+    OrderModel order;
+    int count;
+    double price;
 }

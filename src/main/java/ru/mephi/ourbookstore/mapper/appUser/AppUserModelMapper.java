@@ -10,7 +10,7 @@ import ru.mephi.ourbookstore.domain.dto.appUser.AppUser;
 @Mapper(componentModel = "spring")
 public interface AppUserModelMapper {
 
-    AppUser modelToObject(AppUserModel model);
+    AppUser modelToObject(AppUserModel appUserModel);
 
-    AppUserModel objectToModel(AppUser book);
+    AppUserModel objectToModel(AppUser appUser);
 }
