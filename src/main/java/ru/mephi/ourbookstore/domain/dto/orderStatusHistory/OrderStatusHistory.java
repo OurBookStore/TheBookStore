@@ -9,7 +9,6 @@ import ru.mephi.ourbookstore.domain.OrderModel;
 import ru.mephi.ourbookstore.domain.OrderStatus;
 
 import java.util.Date;
-import java.util.UUID;
 
 @Data
 @Builder
@@ -17,7 +16,7 @@ import java.util.UUID;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class OrderStatusHistory {
 
-    UUID id;
+    Long id;
     OrderModel order;
     OrderStatus status;
     Date date;

@@ -9,7 +9,6 @@ import ru.mephi.ourbookstore.domain.AppUserModel;
 import ru.mephi.ourbookstore.domain.OrderPositionModel;
 
 import java.util.List;
-import java.util.UUID;
 
 @Data
 @Builder
@@ -17,10 +16,9 @@ import java.util.UUID;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Order {
 
-    UUID id;
+    Long id;
     AppUserModel appUser;
     List<OrderPositionModel> orderPositions;
     String address;
     double totalPrice;
-    double totalTax;
 }

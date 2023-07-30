@@ -4,8 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.util.Date;
-import java.util.UUID;
+import java.time.LocalDateTime;
 
 @Entity
 @Data
@@ -19,12 +18,12 @@ import java.util.UUID;
 public class OrderStatusHistoryModel {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    UUID id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    Long id;
     @ManyToOne
     OrderModel order;
     @Enumerated(EnumType.STRING)
     OrderStatus status;
-    Date date;
+    LocalDateTime dateTime;
     boolean isActual;
 }

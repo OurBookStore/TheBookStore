@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.util.UUID;
 
 @Entity
 @Data
@@ -15,13 +14,12 @@ import java.util.UUID;
 public class OrderPositionModel {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    UUID uuid;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    Long id;
     @ManyToOne
     BookModel book;
     @ManyToOne
     OrderModel order;
     int count;
     double price;
-    double taxShare;
 }

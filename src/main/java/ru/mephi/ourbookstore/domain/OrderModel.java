@@ -5,7 +5,6 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.util.List;
-import java.util.UUID;
 
 @Entity
 @Data
@@ -19,13 +18,12 @@ import java.util.UUID;
 public class OrderModel {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    UUID id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    Long id;
     @ManyToOne
     AppUserModel appUser;
-    @OneToMany(mappedBy = "order", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "order")
     List<OrderPositionModel> orderPositions;
     String address;
     double totalPrice;
-    double totalTax;
 }
