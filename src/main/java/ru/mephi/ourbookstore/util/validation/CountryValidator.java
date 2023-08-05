@@ -12,9 +12,9 @@ import java.util.stream.Collectors;
 @Component
 public class CountryValidator {
 
-    static Set<String> countrySet;
+    Set<String> countrySet;
 
-    static {
+    public CountryValidator() {
         Scanner scanner;
         try {
             scanner = new Scanner(new FileReader("src/main/resources/countrylist"));
@@ -22,9 +22,10 @@ public class CountryValidator {
             throw new RuntimeException("countrylist file not found", e);
         }
         countrySet = Arrays.stream(scanner.nextLine().split(",")).collect(Collectors.toSet());
+
     }
 
-    public static boolean isCountryValid(String country) {
+    public boolean isCountryValid(String country) {
         if (country == null || country.isBlank() || country.length() > 100) {
             return false;
         }

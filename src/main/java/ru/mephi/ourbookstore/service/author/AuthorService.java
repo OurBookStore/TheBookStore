@@ -21,6 +21,7 @@ public class AuthorService {
 
     private final AuthorRepository authorRepository;
     private final AuthorModelMapper authorModelMapper;
+    private final CountryValidator countryValidator;
 
     public Author getById(Long id) {
         AuthorModel author = authorRepository.findById(id).orElseThrow(
@@ -70,7 +71,7 @@ public class AuthorService {
         if (author.getFullName() == null || !author.getFullName().matches("^[a-zA-Z]+ [a-zA-Z]+$")) {
             throw new ValidationException(Entities.AUTHOR, "Invalid Author Name", author.getFullName());
         }
-        if (!CountryValidator.isCountryValid(author.getCountry())) {
+        if (!countryValidator.isCountryValid(author.getCountry())) {
             throw new ValidationException(Entities.AUTHOR, "Invalid country", author.getCountry());
         }
     }
