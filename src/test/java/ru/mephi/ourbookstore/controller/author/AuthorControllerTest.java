@@ -5,7 +5,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
-import ru.mephi.ourbookstore.domain.dto.author.Author;
 import ru.mephi.ourbookstore.domain.dto.author.AuthorCreateDto;
 import ru.mephi.ourbookstore.domain.dto.author.AuthorDto;
 import ru.mephi.ourbookstore.domain.dto.author.AuthorUpdateDto;
@@ -53,6 +52,20 @@ class AuthorControllerTest {
         AuthorCreateDto authorCreateDto = AuthorCreateDto.builder().country(country)
                 .dateOfBirth(dateOfBirth)
                 .fullName(fullName).build();
+        String response = AuthorSpec.createAuthorInvalid(authorCreateDto);
+        assertTrue(response.contains(error));
+    }
+
+    @ParameterizedTest
+    @DisplayName("Create author with same name")
+    @CsvSource({
+            "Grigory Bashev, 2021-12-01, Russia, Author with this name already exists",
+    })
+    public void createAuthorSameName(String fullName, String dateOfBirth, String country, String error) {
+        AuthorCreateDto authorCreateDto = AuthorCreateDto.builder().country(country)
+                .dateOfBirth(dateOfBirth)
+                .fullName(fullName).build();
+        AuthorSpec.createAuthorSuccessful(authorCreateDto);
         String response = AuthorSpec.createAuthorInvalid(authorCreateDto);
         assertTrue(response.contains(error));
     }

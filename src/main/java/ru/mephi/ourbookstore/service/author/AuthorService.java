@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 import ru.mephi.ourbookstore.domain.AuthorModel;
 import ru.mephi.ourbookstore.domain.Entities;
 import ru.mephi.ourbookstore.domain.dto.author.Author;
-import ru.mephi.ourbookstore.mapper.author.AuthorDtoMapper;
 import ru.mephi.ourbookstore.mapper.author.AuthorModelMapper;
 import ru.mephi.ourbookstore.repository.author.AuthorRepository;
 import ru.mephi.ourbookstore.service.exceptions.NotFoundException;
@@ -42,13 +41,16 @@ public class AuthorService {
     public void update(Author author) {
         Long id = author.getId();
         authorRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException(Entities.AUTHOR,"id", id));
+                .orElseThrow(() -> new NotFoundException(Entities.AUTHOR, "id", id));
         validate(author);
         authorRepository.save(authorModelMapper.objectToModel(author));
     }
 
     @Transactional
     public Long create(Author author) {
+        if (authorRepository.existsByFullName(author.getFullName())) {
+            throw new ValidationException(Entities.AUTHOR, "Author with this name already exists", author.getFullName());
+        }
         validate(author);
         AuthorModel model = authorRepository.save(authorModelMapper.objectToModel(author));
         return model.getId();
