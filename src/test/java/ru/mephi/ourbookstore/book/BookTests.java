@@ -158,9 +158,9 @@ public class BookTests extends BookStoreTest {
 
     @Test
     public void createTest() {
-        Long customerId = bookController.create(BOOK_DTO_CRT);
+        Long appUserId = bookController.create(BOOK_DTO_CRT);
 
-        BookModel bookModel = bookRepository.findById(customerId).get();
+        BookModel bookModel = bookRepository.findById(appUserId).get();
 
         assertBooks(BOOK_DTO_CRT, bookModel);
     }

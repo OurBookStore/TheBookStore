@@ -1,4 +1,4 @@
-package ru.mephi.ourbookstore.domain.dto.customer;
+package ru.mephi.ourbookstore.domain.dto.appUser;
 
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -11,10 +11,9 @@ import lombok.experimental.FieldDefaults;
 @Data
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class CustomerUpdateDto {
+public class AppUserDto {
 
     Long id;
     String nickname;
     String email;
-    String password;
 }
