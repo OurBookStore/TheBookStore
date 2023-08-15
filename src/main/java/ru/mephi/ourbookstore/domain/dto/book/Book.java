@@ -17,7 +17,6 @@ import java.util.List;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Book {
-
     Long id;
     String name;
     double price;

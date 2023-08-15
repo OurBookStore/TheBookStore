@@ -16,7 +16,6 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: create-drop
-
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
@@ -24,4 +23,3 @@ spring:
         persistence:
           sharedCache:
             mode: ALL
-
