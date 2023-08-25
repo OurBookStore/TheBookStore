@@ -18,8 +18,7 @@ public interface OrderModelCustomMapper {
 
     @Mappings(
             {
-                    @Mapping(target = "orderPositions", expression = "java(null)"),
-                    @Mapping(target = "appUser", expression = "java(null)")
+                    @Mapping(target = "orderPositions", expression = "java(null)")
             }
     )
     OrderModel objectToModel(Order order);

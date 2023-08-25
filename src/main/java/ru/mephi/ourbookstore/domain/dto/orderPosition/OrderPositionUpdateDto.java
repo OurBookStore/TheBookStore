@@ -5,16 +5,13 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
-import ru.mephi.ourbookstore.domain.dto.book.BookDto;
 
 @Data
 @Builder
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class OrderPositionDto {
+public class OrderPositionUpdateDto {
+
     Long id;
-    BookDto bookDto;
-    Long orderId;
     int count;
-    double price;
 }

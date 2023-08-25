@@ -7,8 +7,10 @@ import org.springframework.web.bind.annotation.*;
 import ru.mephi.ourbookstore.domain.dto.order.Order;
 import ru.mephi.ourbookstore.domain.dto.order.OrderCreateDto;
 import ru.mephi.ourbookstore.domain.dto.order.OrderDto;
+import ru.mephi.ourbookstore.domain.dto.orderPosition.OrderPositionLink;
 import ru.mephi.ourbookstore.mapper.order.OrderDtoMapper;
 import ru.mephi.ourbookstore.service.order.OrderService;
+import ru.mephi.ourbookstore.service.orderPosition.OrderPositionService;
 
 import java.util.List;
 
@@ -19,8 +21,8 @@ import java.util.List;
 public class OrderController {
 
     final OrderService orderService;
+    final OrderPositionService orderPositionService;
     final OrderDtoMapper orderDtoMapper;
-
 
     @GetMapping("/{orderId}")
     public OrderDto getOrderById(@PathVariable Long orderId) {
@@ -30,16 +32,11 @@ public class OrderController {
     @GetMapping
     public List<OrderDto> getAllByAppUser(@RequestParam(required = false) Long appUserId) {
         if (appUserId != null) {
-            return orderService.getAll(appUserId).stream()
-                    .map(orderDtoMapper::objectToDto)
-                    .toList();
+            return orderService.getAll(appUserId).stream().map(orderDtoMapper::objectToDto).toList();
         } else {
-            return orderService.getAll().stream()
-                    .map(orderDtoMapper::objectToDto)
-                    .toList();
+            return orderService.getAll().stream().map(orderDtoMapper::objectToDto).toList();
         }
     }
-
 
     @PostMapping
     public Long createOrder(@RequestBody OrderCreateDto orderDto) {
@@ -52,4 +49,8 @@ public class OrderController {
         orderService.delete(orderId);
     }
 
+    @PostMapping("/{orderId}/positions/{orderPositionId}")
+    public Long createOrderPosition(@PathVariable Long orderId, @PathVariable Long orderPositionId) {
+        return orderPositionService.createLinkToOrder(new OrderPositionLink(orderId, orderPositionId));
+    }
 }

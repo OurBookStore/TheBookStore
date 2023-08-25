@@ -22,7 +22,7 @@ public class OrderModel {
     Long id;
     @ManyToOne
     AppUserModel appUser;
-    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "order", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     @ToString.Exclude
     List<OrderPositionModel> orderPositions;
     String address;

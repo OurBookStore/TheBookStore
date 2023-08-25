@@ -11,10 +11,9 @@ import ru.mephi.ourbookstore.domain.dto.book.BookDto;
 @Builder
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class OrderPositionDto {
+public class OrderPositionOfOrderDto {
     Long id;
     BookDto bookDto;
-    Long orderId;
     int count;
     double price;
 }

@@ -5,10 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
-import ru.mephi.ourbookstore.domain.AppUserModel;
-import ru.mephi.ourbookstore.domain.OrderPositionModel;
 import ru.mephi.ourbookstore.domain.dto.appUser.AppUserDto;
-import ru.mephi.ourbookstore.domain.dto.orderPosition.OrderPositionDto;
+import ru.mephi.ourbookstore.domain.dto.orderPosition.OrderPositionOfOrderDto;
 
 import java.util.List;
 
@@ -19,8 +17,8 @@ import java.util.List;
 public class OrderDto {
 
     Long id;
-    AppUserDto appUser;
-    List<OrderPositionDto> orderPositions;
+    AppUserDto appUserDto;
+    List<OrderPositionOfOrderDto> orderPositionOfOrderDtos;
     String address;
     double totalPrice;
 }

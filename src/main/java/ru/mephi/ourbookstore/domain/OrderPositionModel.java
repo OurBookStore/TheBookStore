@@ -16,9 +16,9 @@ public class OrderPositionModel {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     Long id;
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.MERGE})
     BookModel book;
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.MERGE})
     OrderModel order;
     int count;
     double price;
