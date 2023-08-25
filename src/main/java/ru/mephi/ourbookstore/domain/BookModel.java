@@ -1,11 +1,7 @@
 package ru.mephi.ourbookstore.domain;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.util.List;
@@ -28,5 +24,6 @@ public class BookModel {
     double price;
     int count;
     @OneToMany(mappedBy = "book", fetch = FetchType.LAZY)
+    @ToString.Exclude
     List<OrderPositionModel> orderPositions;
 }

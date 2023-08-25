@@ -7,8 +7,8 @@ import lombok.Data;
 import lombok.experimental.FieldDefaults;
 import ru.mephi.ourbookstore.domain.AppUserModel;
 import ru.mephi.ourbookstore.domain.OrderPositionModel;
-import ru.mephi.ourbookstore.domain.dto.appUser.AppUser;
-import ru.mephi.ourbookstore.domain.dto.orderPosition.OrderPosition;
+import ru.mephi.ourbookstore.domain.dto.appUser.AppUserDto;
+import ru.mephi.ourbookstore.domain.dto.orderPosition.OrderPositionDto;
 
 import java.util.List;
 
@@ -16,11 +16,11 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Order {
+public class OrderDto {
 
     Long id;
-    AppUser appUser;
-    List<OrderPosition> orderPositions;
+    AppUserDto appUser;
+    List<OrderPositionDto> orderPositions;
     String address;
     double totalPrice;
 }
