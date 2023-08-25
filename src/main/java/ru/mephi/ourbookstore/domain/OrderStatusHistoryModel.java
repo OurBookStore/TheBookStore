@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 public class OrderStatusHistoryModel {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
     @ManyToOne
     OrderModel order;
