@@ -41,5 +41,4 @@ public class OrderPositionController {
     public void deleteOrderPosition(@PathVariable Long orderPositionId) {
         orderPositionService.delete(orderPositionId);
     }
-
 }

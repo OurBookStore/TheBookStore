@@ -1,5 +1,6 @@
 package ru.mephi.ourbookstore.domain.dto.order;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,7 +18,9 @@ import java.util.List;
 public class OrderDto {
 
     Long id;
+    @JsonProperty(value = "appUser")
     AppUserDto appUserDto;
+    @JsonProperty(value = "orderPositions")
     List<OrderPositionOfOrderDto> orderPositionOfOrderDtos;
     String address;
     double totalPrice;

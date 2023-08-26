@@ -1,5 +1,6 @@
 package ru.mephi.ourbookstore.domain.dto.orderPosition;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,7 +13,9 @@ import ru.mephi.ourbookstore.domain.dto.book.BookDto;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class OrderPositionDto {
+
     Long id;
+    @JsonProperty(value = "book")
     BookDto bookDto;
     Long orderId;
     int count;

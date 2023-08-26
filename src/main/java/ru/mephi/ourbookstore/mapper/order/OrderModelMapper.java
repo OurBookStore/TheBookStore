@@ -12,5 +12,4 @@ public interface OrderModelMapper {
     Order modelToObject(OrderModel orderModel);
 
     OrderModel objectToModel(Order order);
-
 }

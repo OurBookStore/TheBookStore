@@ -18,7 +18,7 @@ import java.util.List;
 public class OrderModel {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
     @ManyToOne
     AppUserModel appUser;

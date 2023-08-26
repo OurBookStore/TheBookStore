@@ -14,7 +14,7 @@ import lombok.experimental.FieldDefaults;
 public class OrderPositionModel {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
     @ManyToOne(cascade = {CascadeType.MERGE})
     BookModel book;

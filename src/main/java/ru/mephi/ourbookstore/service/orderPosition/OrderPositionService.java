@@ -6,11 +6,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.mephi.ourbookstore.domain.BookModel;
+import ru.mephi.ourbookstore.domain.OrderModel;
 import ru.mephi.ourbookstore.domain.OrderPositionModel;
 import ru.mephi.ourbookstore.domain.dto.orderPosition.OrderPosition;
 import ru.mephi.ourbookstore.domain.dto.orderPosition.OrderPositionLink;
 import ru.mephi.ourbookstore.mapper.orderPosition.OrderPositionModelMapper;
-import ru.mephi.ourbookstore.repository.order.OrderPositionRepository;
+import ru.mephi.ourbookstore.repository.orderPosition.OrderPositionRepository;
 import ru.mephi.ourbookstore.service.book.BookService;
 import ru.mephi.ourbookstore.service.exceptions.BookCountException;
 import ru.mephi.ourbookstore.service.exceptions.NotFoundException;
@@ -28,7 +30,6 @@ public class OrderPositionService {
     final BookService bookService;
     final OrderPositionModelMapper orderModelMapper;
     final OrderPositionRepository orderPositionRepository;
-
 
     public OrderPosition getById(long orderPositionId) {
         OrderPositionModel orderPositionModel = orderPositionRepository.findById(orderPositionId)
@@ -55,11 +56,14 @@ public class OrderPositionService {
         OrderPosition orderPosition = getById(orderPositionLink.getPositionId());
         orderPosition.setOrder(orderService.getById(orderPositionLink.getOrderId()));
 
-        orderPosition.getOrder().setTotalPrice(
-                orderPosition.getOrder().getTotalPrice() + orderPosition.getPrice()
-        );
+        if (orderPosition.getBook().getCount() < orderPosition.getCount()) {
+            throw new BookCountException("count", orderPosition.getCount());
+        }
         orderPosition.getBook().setCount(
                 orderPosition.getBook().getCount() - orderPosition.getCount()
+        );
+        orderPosition.getOrder().setTotalPrice(
+                orderPosition.getOrder().getTotalPrice() + orderPosition.getPrice()
         );
         OrderPositionModel orderPositionModel = orderModelMapper.objectToModel(orderPosition);
         orderPositionModel = orderPositionRepository.save(orderPositionModel);
@@ -73,15 +77,27 @@ public class OrderPositionService {
         OrderPositionModel orderPositionModel = orderPositionRepository.findById(orderPosition.getId())
                 .orElseThrow(() -> new NotFoundException(ORDER_POSITION, "id", orderPosition.getId()));
 
+        int tempCount = orderPositionModel.getCount();
         orderPositionModel.setCount(orderPosition.getCount());
-        orderPositionModel.getBook().setCount(
-                orderPositionModel.getBook().getCount() - orderPositionModel.getCount()
-        );
-        if (orderPosition.getOrder() != null) {
-            orderPositionModel.getOrder().setTotalPrice(
-                    orderPositionModel.getOrder().getTotalPrice() + orderPositionModel.getPrice()
+        orderPositionModel.setPrice(orderPositionModel.getBook().getPrice() * orderPosition.getCount());
+
+        if (orderPositionModel.getOrder() != null) {
+            BookModel book = orderPositionModel.getBook();
+            OrderModel order = orderPositionModel.getOrder();
+            if ((book.getCount() + tempCount) < orderPosition.getCount()) {
+                throw new BookCountException("count", orderPosition.getCount());
+            }
+            book.setCount(
+                    book.getCount() + tempCount - orderPositionModel.getCount()
             );
+            order.setTotalPrice(
+                    order.getTotalPrice() - (tempCount * book.getPrice()) + orderPositionModel.getPrice()
+            );
+
+            orderPositionModel.setBook(book);
+            orderPositionModel.setOrder(order);
         }
+
         orderPositionRepository.save(orderPositionModel);
         return orderPositionModel.getId();
     }

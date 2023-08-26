@@ -31,7 +31,6 @@ public class OrderService {
     final AppUserService appUserService;
     final AppUserModelMapper appUserModelMapper;
 
-
     public Order getById(long orderId) {
         OrderModel orderModel = orderRepository.findById(orderId)
                 .orElseThrow(() -> new NotFoundException(ORDER, "id", orderId));

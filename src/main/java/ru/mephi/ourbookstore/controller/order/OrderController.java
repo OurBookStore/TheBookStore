@@ -50,7 +50,7 @@ public class OrderController {
     }
 
     @PostMapping("/{orderId}/positions/{orderPositionId}")
-    public Long createOrderPosition(@PathVariable Long orderId, @PathVariable Long orderPositionId) {
+    public Long createPositionLink(@PathVariable Long orderId, @PathVariable Long orderPositionId) {
         return orderPositionService.createLinkToOrder(new OrderPositionLink(orderId, orderPositionId));
     }
 }
