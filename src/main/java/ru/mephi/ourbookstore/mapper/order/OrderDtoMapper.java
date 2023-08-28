@@ -6,13 +6,16 @@ import org.mapstruct.Mappings;
 import ru.mephi.ourbookstore.domain.dto.order.Order;
 import ru.mephi.ourbookstore.domain.dto.order.OrderCreateDto;
 import ru.mephi.ourbookstore.domain.dto.order.OrderDto;
+import ru.mephi.ourbookstore.domain.dto.order.OrderUpdateDto;
 import ru.mephi.ourbookstore.mapper.orderPosition.OrderPositionDtoMapper;
 
-@Mapper(componentModel = "spring" ,uses = OrderPositionDtoMapper.class)
+@Mapper(componentModel = "spring", uses = OrderPositionDtoMapper.class)
 public interface OrderDtoMapper {
 
     @Mapping(target = "appUser.id", source = "appUserId")
     Order dtoToObject(OrderCreateDto dto);
+
+    Order dtoToObject(OrderUpdateDto dto);
 
     @Mappings({
             @Mapping(target = "appUserDto", source = "appUser"),

@@ -7,6 +7,7 @@ import ru.mephi.ourbookstore.domain.OrderPositionModel;
 import ru.mephi.ourbookstore.domain.dto.appUser.AppUser;
 import ru.mephi.ourbookstore.domain.dto.order.Order;
 import ru.mephi.ourbookstore.domain.dto.order.OrderCreateDto;
+import ru.mephi.ourbookstore.domain.dto.order.OrderUpdateDto;
 import ru.mephi.ourbookstore.domain.dto.orderPosition.OrderPosition;
 import ru.mephi.ourbookstore.domain.dto.orderPosition.OrderPositionCreateDto;
 import ru.mephi.ourbookstore.domain.dto.orderPosition.OrderPositionUpdateDto;
@@ -76,6 +77,13 @@ public abstract class EntityTestHelper {
         return OrderCreateDto.builder()
                 .address("address" + version)
                 .appUserId(version)
+                .build();
+    }
+
+    public static OrderUpdateDto getTestOrderUpdateDto(Long version) {
+        return OrderUpdateDto.builder()
+                .id(version)
+                .address("address"+version)
                 .build();
     }
 

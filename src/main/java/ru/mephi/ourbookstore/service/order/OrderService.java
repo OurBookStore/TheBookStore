@@ -63,6 +63,15 @@ public class OrderService {
     }
 
     @Transactional
+    public Long update(Order order) {
+        validation(order);
+        Order updateOrder = getById(order.getId());
+        updateOrder.setAddress(order.getAddress());
+        OrderModel newModel = orderModelMapper.objectToModel(updateOrder);
+        return orderRepository.save(newModel).getId();
+    }
+
+    @Transactional
     public void delete(Long orderId) {
         orderRepository.findById(orderId)
                 .orElseThrow(() -> new NotFoundException(ORDER, "id", orderId));

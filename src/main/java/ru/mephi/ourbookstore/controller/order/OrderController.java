@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.mephi.ourbookstore.domain.dto.order.Order;
 import ru.mephi.ourbookstore.domain.dto.order.OrderCreateDto;
 import ru.mephi.ourbookstore.domain.dto.order.OrderDto;
+import ru.mephi.ourbookstore.domain.dto.order.OrderUpdateDto;
 import ru.mephi.ourbookstore.domain.dto.orderPosition.OrderPositionLink;
 import ru.mephi.ourbookstore.mapper.order.OrderDtoMapper;
 import ru.mephi.ourbookstore.service.order.OrderService;
@@ -30,18 +31,29 @@ public class OrderController {
     }
 
     @GetMapping
-    public List<OrderDto> getAllByAppUser(@RequestParam(required = false) Long appUserId) {
-        if (appUserId != null) {
-            return orderService.getAll(appUserId).stream().map(orderDtoMapper::objectToDto).toList();
-        } else {
-            return orderService.getAll().stream().map(orderDtoMapper::objectToDto).toList();
-        }
+    public List<OrderDto> getAll() {
+        return orderService.getAll().stream()
+                .map(orderDtoMapper::objectToDto)
+                .toList();
+    }
+
+    @GetMapping("/appUsers/{appUserId}")
+    public List<OrderDto> getAllByAppUser(@PathVariable Long appUserId) {
+        return orderService.getAll(appUserId).stream()
+                .map(orderDtoMapper::objectToDto)
+                .toList();
     }
 
     @PostMapping
     public Long createOrder(@RequestBody OrderCreateDto orderDto) {
         Order order = orderDtoMapper.dtoToObject(orderDto);
         return orderService.create(order);
+    }
+
+    @PutMapping
+    public Long updateOrder(@RequestBody OrderUpdateDto orderDto) {
+        Order order = orderDtoMapper.dtoToObject(orderDto);
+        return orderService.update(order);
     }
 
     @DeleteMapping("/{orderId}")

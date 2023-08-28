@@ -1,4 +1,4 @@
-package ru.mephi.ourbookstore.mapper.orderPosition.custom;
+package ru.mephi.ourbookstore.mapper.orderPosition.nullable;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -7,7 +7,7 @@ import ru.mephi.ourbookstore.domain.OrderModel;
 import ru.mephi.ourbookstore.domain.dto.order.Order;
 
 @Mapper(componentModel = "spring")
-public interface OrderModelCustomMapper {
+public interface OrderModelNullableMapper {
     @Mappings(
             {
                     @Mapping(target = "orderPositions", expression = "java(null)"),

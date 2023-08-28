@@ -3,13 +3,11 @@ package ru.mephi.ourbookstore.orderPosition;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.mephi.ourbookstore.BookStoreTest;
 import ru.mephi.ourbookstore.domain.BookModel;
@@ -19,8 +17,8 @@ import ru.mephi.ourbookstore.domain.dto.orderPosition.OrderPositionCreateDto;
 import ru.mephi.ourbookstore.domain.dto.orderPosition.OrderPositionUpdateDto;
 import ru.mephi.ourbookstore.repository.appUser.AppUserRepository;
 import ru.mephi.ourbookstore.repository.book.BookRepository;
-import ru.mephi.ourbookstore.repository.orderPosition.OrderPositionRepository;
 import ru.mephi.ourbookstore.repository.order.OrderRepository;
+import ru.mephi.ourbookstore.repository.orderPosition.OrderPositionRepository;
 import ru.mephi.ourbookstore.service.exceptions.BookStoreError;
 import ru.mephi.ourbookstore.util.EntityTestHelper;
 
@@ -36,7 +34,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static ru.mephi.ourbookstore.domain.Entities.BOOK;
 import static ru.mephi.ourbookstore.domain.Entities.ORDER_POSITION;
 
-@RunWith(SpringRunner.class)
 @AutoConfigureMockMvc
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class OrderPositionTests extends BookStoreTest {
@@ -62,7 +59,7 @@ public class OrderPositionTests extends BookStoreTest {
 
     public BookModel bookModel;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         orderRepository.deleteAll();
         appUserRepository.deleteAll();

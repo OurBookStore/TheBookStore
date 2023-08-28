@@ -3,13 +3,11 @@ package ru.mephi.ourbookstore.order;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.mephi.ourbookstore.BookStoreTest;
 import ru.mephi.ourbookstore.domain.AppUserModel;
@@ -17,10 +15,11 @@ import ru.mephi.ourbookstore.domain.BookModel;
 import ru.mephi.ourbookstore.domain.OrderModel;
 import ru.mephi.ourbookstore.domain.OrderPositionModel;
 import ru.mephi.ourbookstore.domain.dto.order.OrderCreateDto;
+import ru.mephi.ourbookstore.domain.dto.order.OrderUpdateDto;
 import ru.mephi.ourbookstore.repository.appUser.AppUserRepository;
 import ru.mephi.ourbookstore.repository.book.BookRepository;
-import ru.mephi.ourbookstore.repository.orderPosition.OrderPositionRepository;
 import ru.mephi.ourbookstore.repository.order.OrderRepository;
+import ru.mephi.ourbookstore.repository.orderPosition.OrderPositionRepository;
 import ru.mephi.ourbookstore.service.exceptions.BookStoreError;
 import ru.mephi.ourbookstore.util.EntityTestHelper;
 
@@ -36,7 +35,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static ru.mephi.ourbookstore.domain.Entities.*;
 
-@RunWith(SpringRunner.class)
 @AutoConfigureMockMvc
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class OrderTests extends BookStoreTest {
@@ -60,7 +58,7 @@ public class OrderTests extends BookStoreTest {
 
     public AppUserModel appUserModel;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         orderRepository.deleteAll();
         appUserRepository.deleteAll();
@@ -136,8 +134,7 @@ public class OrderTests extends BookStoreTest {
 
     @Test
     public void getAllOrders2Test() throws Exception {
-        mockMvc.perform(get("/orders")
-                        .param("appUserId", Long.toString(appUserModel.getId())))
+        mockMvc.perform(get(String.format("/orders/appUsers/%s", appUserModel.getId())))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.[0].id", is(orderModel.getId().intValue())))
                 .andExpect(jsonPath("$.[0].appUser.id", is(orderModel.getAppUser().getId().intValue())))
@@ -151,8 +148,7 @@ public class OrderTests extends BookStoreTest {
     public void filedGetAllOrdersTest() throws Exception {
         long incorrectId = 1212442L;
 
-        mockMvc.perform(get("/orders")
-                        .param("appUserId", Long.toString(incorrectId)))
+        mockMvc.perform(get(String.format("/orders/appUsers/%s", incorrectId)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", empty()));
     }
@@ -171,6 +167,66 @@ public class OrderTests extends BookStoreTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(content))
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    public void failedCreateOrderTest() throws Exception {
+        Long incorrectId = 1212442L;
+        OrderCreateDto orderCreateDto = EntityTestHelper.getTestOrderCreateDto(2L);
+        orderCreateDto.setAppUserId(incorrectId);
+
+        String content = new ObjectMapper()
+                .writer()
+                .withDefaultPrettyPrinter()
+                .writeValueAsString(orderCreateDto);
+
+        mockMvc.perform(post("/orders")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(content))
+                .andExpect(status().isNotFound())
+                .andExpect(result ->
+                        assertTrue(Objects.requireNonNull(result.getResolvedException()).getMessage().contains(
+                                String.format(BookStoreError.NOT_FOUND.getMessage(), APP_USER, "id", incorrectId)
+                        ))
+                );
+    }
+
+    @Test
+    public void updateOrderTest() throws Exception {
+        OrderUpdateDto orderUpdateDto = EntityTestHelper.getTestOrderUpdateDto(2L);
+        orderUpdateDto.setId(orderModel.getId());
+
+        String content = new ObjectMapper()
+                .writer()
+                .withDefaultPrettyPrinter()
+                .writeValueAsString(orderUpdateDto);
+
+        mockMvc.perform(put("/orders")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(content))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void failedUpdateOrderTest() throws Exception {
+        long incorrectId = 1212442L;
+        OrderUpdateDto orderUpdateDto = EntityTestHelper.getTestOrderUpdateDto(2L);
+        orderUpdateDto.setId(incorrectId);
+
+        String content = new ObjectMapper()
+                .writer()
+                .withDefaultPrettyPrinter()
+                .writeValueAsString(orderUpdateDto);
+
+        mockMvc.perform(put("/orders")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(content))
+                .andExpect(status().isNotFound())
+                .andExpect(result ->
+                        assertTrue(Objects.requireNonNull(result.getResolvedException()).getMessage().contains(
+                                String.format(BookStoreError.NOT_FOUND.getMessage(), ORDER, "id", incorrectId)
+                        ))
+                );
     }
 
     @Test
