@@ -14,6 +14,7 @@ public enum BookStoreError {
 
     NOT_FOUND(HttpStatus.NOT_FOUND, "The %s with %s = %s not found!"),
     ALREADY_EXISTS(HttpStatus.CONFLICT, "The %s with %s = %s already exist!"),
+    INCORRECT_COUNT(HttpStatus.CONFLICT, "The number of %s is not enough!\nThe request of %s = %s impossible to form!"),
     VALIDATION_ERROR(HttpStatus.BAD_REQUEST, "Validation for %s of field %s = %s error!");
 
     final String message;
