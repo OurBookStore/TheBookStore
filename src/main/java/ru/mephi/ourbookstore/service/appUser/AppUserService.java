@@ -6,6 +6,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import ru.mephi.ourbookstore.domain.AppUserModel;
 import ru.mephi.ourbookstore.domain.dto.appUser.AppUser;
@@ -29,12 +30,14 @@ public class AppUserService {
     final AppUserRepository appUserRepository;
     final AppUserModelMapper appUserModelMapper;
 
+    @Transactional(propagation = Propagation.REQUIRED, readOnly = true, noRollbackFor = Exception.class)
     public AppUser getById(long appUserId) {
         AppUserModel appUserModel = appUserRepository.findById(appUserId)
                 .orElseThrow(() -> new NotFoundException(APP_USER, "id", appUserId));
         return appUserModelMapper.modelToObject(appUserModel);
     }
 
+    @Transactional(propagation = Propagation.REQUIRED, readOnly = true, noRollbackFor = Exception.class)
     public List<AppUser> getAll() {
         return appUserRepository.findAll().stream()
                 .map(appUserModelMapper::modelToObject)
