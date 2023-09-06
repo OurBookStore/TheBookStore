@@ -1,21 +1,22 @@
 server:
-  servlet:
-    context-path: /app
   error:
     include-message: always
+  port: 8081
 
 spring:
+
   datasource:
     url: jdbc:postgresql://localhost:5432/book_store
     username: "postgres"
     password: "postgres"
     driver-class-name: org.postgresql.Driver
+
   jpa:
     database: POSTGRESQL
     generate-ddl: true
     show-sql: true
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
@@ -23,3 +24,28 @@ spring:
         persistence:
           sharedCache:
             mode: ALL
+    defer-datasource-initialization: true
+
+  security:
+    oauth2:
+      client:
+        provider:
+          test:
+            issuer-uri: http://localhost:8080/realms/test
+        registration:
+          test:
+            provider: test
+            client-id: test
+            client-name: test
+            client-secret: uFpy7ZDzZ8VVCXNE7jWUZc5Uu9fZU22z
+            scope: openid,offline_access,profile
+            authorization-grant-type: authorization_code
+
+### logging
+#logging:
+#  level:
+#    org:
+#      springframework:
+#        security: INFO
+#  pattern:
+#    console: "%d{dd-MM-yyyy HH:mm:ss} %magenta([%thread]) %highlight(%-5level) %logger.%M - %msg%n"
