@@ -6,6 +6,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import ru.mephi.ourbookstore.domain.dto.book.Book;
 import ru.mephi.ourbookstore.mapper.book.BookModelMapper;
@@ -28,12 +29,14 @@ public class BookService {
     final BookRepository bookRepository;
     final BookModelMapper bookModelMapper;
 
+    @Transactional(propagation = Propagation.REQUIRED, readOnly = true, noRollbackFor = Exception.class)
     public Book getById(long bookId) {
         BookModel bookModel = bookRepository.findById(bookId)
                 .orElseThrow(() -> new NotFoundException(BOOK, "id", bookId));
         return bookModelMapper.modelToObject(bookModel);
     }
 
+    @Transactional(propagation = Propagation.REQUIRED, readOnly = true, noRollbackFor = Exception.class)
     public List<Book> getAll() {
         return bookRepository.findAll().stream()
                 .map(bookModelMapper::modelToObject)
