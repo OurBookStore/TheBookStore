@@ -1,14 +1,12 @@
 package ru.mephi.ourbookstore.domain.dto.orderStatusHistory;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
-import ru.mephi.ourbookstore.domain.OrderModel;
 import ru.mephi.ourbookstore.domain.OrderStatus;
+import ru.mephi.ourbookstore.domain.dto.order.Order;
 
-import java.util.Date;
+import java.time.LocalDateTime;
+
 
 @Data
 @Builder
@@ -17,8 +15,12 @@ import java.util.Date;
 public class OrderStatusHistory {
 
     Long id;
-    OrderModel order;
+    Order order;
     OrderStatus status;
-    Date date;
+    LocalDateTime effectiveFrom;
     boolean isActual;
+
+    public OrderStatusHistory(Order order, OrderStatus orderStatus) {
+        this(null, order, orderStatus, LocalDateTime.now(), true);
+    }
 }

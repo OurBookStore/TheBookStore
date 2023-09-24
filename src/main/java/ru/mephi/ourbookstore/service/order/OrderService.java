@@ -7,6 +7,7 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.mephi.ourbookstore.domain.OrderModel;
+import ru.mephi.ourbookstore.domain.OrderStatus;
 import ru.mephi.ourbookstore.domain.dto.appUser.AppUser;
 import ru.mephi.ourbookstore.domain.dto.order.Order;
 import ru.mephi.ourbookstore.mapper.appUser.AppUserModelMapper;
@@ -15,6 +16,7 @@ import ru.mephi.ourbookstore.repository.order.OrderRepository;
 import ru.mephi.ourbookstore.service.appUser.AppUserService;
 import ru.mephi.ourbookstore.service.exceptions.NotFoundException;
 import ru.mephi.ourbookstore.service.exceptions.ValidationException;
+import ru.mephi.ourbookstore.service.orderStatusHistory.OrderStatusHistoryService;
 
 import java.util.List;
 
@@ -30,6 +32,7 @@ public class OrderService {
     final OrderModelMapper orderModelMapper;
     final AppUserService appUserService;
     final AppUserModelMapper appUserModelMapper;
+    final OrderStatusHistoryService orderStatusHistoryService;
 
     public Order getById(long orderId) {
         OrderModel orderModel = orderRepository.findById(orderId)
@@ -52,14 +55,21 @@ public class OrderService {
 
     @Transactional
     public Long create(Order order) {
+        Long orderId;
         validation(order);
         AppUser appUser = appUserService.getById(order.getAppUser().getId());
         if (appUser == null) {
             throw new NotFoundException(APP_USER, "appUserId", order.getAppUser().getId());
         }
+
         OrderModel newModel = orderModelMapper.objectToModel(order);
         newModel.setAppUser(appUserModelMapper.objectToModel(appUser));
-        return orderRepository.save(newModel).getId();
+        orderId = orderRepository.save(newModel).getId();
+
+        order.setId(orderId);
+        orderStatusHistoryService.logNewOrder(order);
+
+        return orderId;
     }
 
     @Transactional
@@ -69,6 +79,12 @@ public class OrderService {
         updateOrder.setAddress(order.getAddress());
         OrderModel newModel = orderModelMapper.objectToModel(updateOrder);
         return orderRepository.save(newModel).getId();
+    }
+
+    @Transactional
+    public Long updateOrderStatus(Long orderId, OrderStatus orderStatus) {
+        Order order = getById(orderId);
+        return orderStatusHistoryService.logOrderStatus(order, orderStatus);
     }
 
     @Transactional

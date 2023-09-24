@@ -24,6 +24,6 @@ public class OrderStatusHistoryModel {
     OrderModel order;
     @Enumerated(EnumType.STRING)
     OrderStatus status;
-    LocalDateTime dateTime;
+    LocalDateTime actualFrom;
     boolean isActual;
 }

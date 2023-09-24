@@ -4,6 +4,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.web.bind.annotation.*;
+import ru.mephi.ourbookstore.domain.OrderStatus;
 import ru.mephi.ourbookstore.domain.dto.order.Order;
 import ru.mephi.ourbookstore.domain.dto.order.OrderCreateDto;
 import ru.mephi.ourbookstore.domain.dto.order.OrderDto;
@@ -54,6 +55,11 @@ public class OrderController {
     public Long updateOrder(@RequestBody OrderUpdateDto orderDto) {
         Order order = orderDtoMapper.dtoToObject(orderDto);
         return orderService.update(order);
+    }
+
+    @PutMapping("/{orderId}")
+    public Long updateStatus(@PathVariable Long orderId, @RequestBody OrderStatus orderStatus) {
+        return orderService.updateOrderStatus(orderId, orderStatus);
     }
 
     @DeleteMapping("/{orderId}")

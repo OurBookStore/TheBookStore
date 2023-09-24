@@ -25,6 +25,9 @@ public class OrderModel {
     @OneToMany(mappedBy = "order", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     @ToString.Exclude
     List<OrderPositionModel> orderPositions;
+    @OneToMany(mappedBy = "order")
+    @ToString.Exclude
+    List<OrderStatusHistoryModel> orderStatusHistoryList;
     String address;
     double totalPrice;
 }
