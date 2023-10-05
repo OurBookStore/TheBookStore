@@ -1,5 +1,6 @@
 package ru.mephi.ourbookstore.controller.orderPosition;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -21,12 +22,14 @@ public class OrderPositionController {
     final OrderPositionDtoMapper orderPositionDtoMapper;
 
     @PostMapping
+    @SecurityRequirement(name = "bearerAuth")
     public Long createOrderPosition(@RequestBody OrderPositionCreateDto orderPositionCreateDto) {
         OrderPosition orderPosition = orderPositionDtoMapper.dtoToObject(orderPositionCreateDto);
         return orderPositionService.create(orderPosition);
     }
 
     @PutMapping
+    @SecurityRequirement(name = "bearerAuth")
     public Long updateOrderPosition(@RequestBody OrderPositionUpdateDto orderPositionCreateDto) {
         OrderPosition orderPosition = orderPositionDtoMapper.dtoToObject(orderPositionCreateDto);
         return orderPositionService.update(orderPosition);

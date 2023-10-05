@@ -1,5 +1,6 @@
 package ru.mephi.ourbookstore.controller.author;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ru.mephi.ourbookstore.domain.dto.author.AuthorDto;
@@ -14,6 +15,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/authors")
 @RequiredArgsConstructor
+@SecurityRequirement(name = "bearerAuth")
 public class AuthorController {
 
 

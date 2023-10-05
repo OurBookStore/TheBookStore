@@ -23,6 +23,7 @@ public class AppUserModel {
     String nickname;
     String email;
     String password;
+    String keycloakId;
     @OneToMany(mappedBy = "appUser", fetch = FetchType.LAZY)
     @ToString.Exclude
     List<OrderModel> orders;

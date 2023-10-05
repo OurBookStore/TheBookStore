@@ -2,6 +2,7 @@ package ru.mephi.ourbookstore.controller.book;
 
 import java.util.List;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -24,6 +25,7 @@ import ru.mephi.ourbookstore.service.book.BookService;
 @RequestMapping("/books")
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
+@SecurityRequirement(name = "bearerAuth")
 public class BookController {
 
     final BookService bookService;

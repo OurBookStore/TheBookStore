@@ -14,6 +14,7 @@ import ru.mephi.ourbookstore.repository.appUser.AppUserRepository;
 import ru.mephi.ourbookstore.service.exceptions.AlreadyExistException;
 import ru.mephi.ourbookstore.service.exceptions.NotFoundException;
 import ru.mephi.ourbookstore.service.exceptions.ValidationException;
+import ru.mephi.ourbookstore.service.keyCloak.KeyCloakClient;
 
 import static ru.mephi.ourbookstore.domain.Entities.APP_USER;
 
@@ -28,6 +29,7 @@ public class AppUserService {
 
     final AppUserRepository appUserRepository;
     final AppUserModelMapper appUserModelMapper;
+    final KeyCloakClient keyCloakClient;
 
     public AppUser getById(long appUserId) {
         AppUserModel appUserModel = appUserRepository.findById(appUserId)
@@ -52,6 +54,7 @@ public class AppUserService {
         if (appUserRepository.findByEmail(email).isPresent()) {
             throw new AlreadyExistException(APP_USER, "email", email);
         }
+        appUser.setKeycloakId( keyCloakClient.createUser(appUserModelMapper.objectToClientModel(appUser)));
         AppUserModel appUserModel = appUserModelMapper.objectToModel(appUser);
         return appUserRepository.save(appUserModel).getId();
     }

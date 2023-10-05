@@ -22,5 +22,6 @@ public class AppUser {
     String nickname;
     String email;
     String password;
+    String keycloakId;
     List<OrderModel> orders;
 }
