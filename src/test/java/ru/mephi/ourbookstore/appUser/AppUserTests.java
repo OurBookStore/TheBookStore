@@ -8,29 +8,53 @@ import lombok.experimental.FieldDefaults;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.Spy;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import ru.mephi.ourbookstore.BookStoreTest;
 import ru.mephi.ourbookstore.controller.appUser.AppUserController;
 import ru.mephi.ourbookstore.domain.AppUserModel;
+import ru.mephi.ourbookstore.domain.dto.appUser.AppUser;
 import ru.mephi.ourbookstore.domain.dto.appUser.AppUserCreateDto;
 import ru.mephi.ourbookstore.domain.dto.appUser.AppUserDto;
 import ru.mephi.ourbookstore.domain.dto.appUser.AppUserUpdateDto;
+import ru.mephi.ourbookstore.mapper.appUser.AppUserModelMapper;
 import ru.mephi.ourbookstore.repository.appUser.AppUserRepository;
+import ru.mephi.ourbookstore.service.appUser.AppUserService;
 import ru.mephi.ourbookstore.service.exceptions.AlreadyExistException;
 import ru.mephi.ourbookstore.service.exceptions.NotFoundException;
 import ru.mephi.ourbookstore.service.exceptions.ValidationException;
+import ru.mephi.ourbookstore.service.keyCloak.KeyCloakClient;
 
 /**
  * @author Aleksei Iagnenkov (alekseiiagn)
  */
 @FieldDefaults(level = AccessLevel.PRIVATE)
+@ExtendWith(MockitoExtension.class)
 public class AppUserTests extends BookStoreTest {
 
-    @Autowired
+
+    @InjectMocks
     AppUserController appUserController;
-    @Autowired
+
+    @Spy
+//    @Autowired
     AppUserRepository appUserRepository;
 
+//    @InjectMocks
+//    @Autowired
+//    AppUserService appUserService;
+
+    @Mock
+    KeyCloakClient keyCloakClient;
+
+    @Autowired
+    AppUserModelMapper appUserModelMapper;
     final AppUserModel APP_USER_CORRECT_1 = AppUserModel.builder()
             .id(1L)
             .nickname("1")
@@ -262,7 +286,17 @@ public class AppUserTests extends BookStoreTest {
                 .email("new email")
                 .password("new password")
                 .build();
-
+//        AppUser appUser = AppUser.builder()
+//                .id(appUserId)
+//                .nickname("new nickname")
+//                .email("new email")
+//                .password("new password")
+//                .build();
+//
+//
+//        Mockito
+//                .when(keyCloakClient.updateUser(appUserModelMapper.objectToClientModel(appUser),null))
+//                .thenAnswer(invocation -> "Always the same")
         appUserController.update(appUserRqDto);
 
         AppUserModel appUserModel = appUserRepository.findById(appUserId).get();

@@ -4,6 +4,7 @@ import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.PathNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.converter.Converter;
@@ -22,9 +23,11 @@ import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.stereotype.Component;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 
 import java.security.interfaces.RSAPublicKey;
 import java.util.Arrays;
@@ -39,6 +42,9 @@ public class WebSecurityConfig {
 
     @Value("${spring.security.oauth2.resourceserver.jwt.public-key-location}")
     private RSAPublicKey publicKey;
+
+    @Value("${server.security.security-enable}")
+    private Boolean isSecurityEnable;
 
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http, Converter<Jwt, ? extends AbstractAuthenticationToken> jwtAuthenticationConverter) throws Exception {
@@ -62,49 +68,61 @@ public class WebSecurityConfig {
         }));
 
         // @formatter:off
-        http.authorizeHttpRequests(accessManagement -> accessManagement
-                .requestMatchers(
-                        "/swagger-ui/**",
-                        "/v3/api-docs/**",
-                        "/account/oauth/**"
-                ).permitAll()
-                .requestMatchers(
-                        HttpMethod.GET,"/**"
-                ).permitAll()
-                .requestMatchers(
-                        HttpMethod.POST,
-                        "/books",
-                        "/authors"
-                ).hasAuthority("ADMIN")
-                .requestMatchers(
-                        HttpMethod.PUT,
-                        "/books",
-                        "/authors"
-                ).hasAuthority("ADMIN")
-                .requestMatchers(
-                        HttpMethod.DELETE,
-                        "/books",
-                        "/authors"
-                ).hasAuthority("ADMIN")
-                .anyRequest().authenticated()
-        );
+        if(isSecurityEnable){
+            http.authorizeHttpRequests(accessManagement -> accessManagement
+                    .requestMatchers(
+                            "/swagger-ui/**",
+                            "/v3/api-docs/**",
+                            "/account/oauth/**",
+                            "/error"
+                    ).permitAll()
+                    .requestMatchers(
+                            HttpMethod.GET,
+                            "/books/**",
+                            "/authors/**"
+                    ).permitAll()
+                    .requestMatchers(
+                            HttpMethod.POST,
+                            "/appUsers"
+                    ).permitAll()
+                    .anyRequest().authenticated()
+            );
+        }else {
+            http.authorizeHttpRequests(accessManagement -> accessManagement
+                    .requestMatchers("/error").permitAll()
+                    .requestMatchers("/**").permitAll()
+                    .anyRequest().permitAll()
+            );
+        }
         // @formatter:on
 
         return http.build();
     }
 
-    private UrlBasedCorsConfigurationSource corsConfigurationSource(String... origins) {
-        final var configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList(origins));
-        configuration.setAllowedMethods(List.of("*"));
-        configuration.setAllowedHeaders(List.of("*"));
-        configuration.setExposedHeaders(List.of("*"));
+//    private UrlBasedCorsConfigurationSource corsConfigurationSource(String... origins) {
+//        final var configuration = new CorsConfiguration();
+//        configuration.setAllowedOrigins(Arrays.asList(origins));
+//        configuration.setAllowedMethods(List.of("*"));
+//        configuration.setAllowedHeaders(List.of("*"));
+//        configuration.setExposedHeaders(List.of("*"));
+//
+//        final var source = new UrlBasedCorsConfigurationSource();
+//        source.registerCorsConfiguration("/**", configuration);
+//        return source;
+//    }
 
-        final var source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-        return source;
+    @Bean
+    public FilterRegistrationBean corsFilter() {
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        CorsConfiguration config = new CorsConfiguration();
+        config.addAllowedOrigin("*");
+        config.addAllowedHeader("*");
+        config.addAllowedMethod("*");
+        source.registerCorsConfiguration("/**", config);
+        FilterRegistrationBean bean = new FilterRegistrationBean(new CorsFilter(source));
+        bean.setOrder(0);
+        return bean;
     }
-
     @RequiredArgsConstructor
     static class JwtGrantedAuthoritiesConverter implements Converter<Jwt, Collection<? extends GrantedAuthority>> {
 
@@ -144,8 +162,10 @@ public class WebSecurityConfig {
                         return Stream.empty();
                     })
                     /* Insert some transformation here if you want to add a prefix like "ROLE_" or force upper-case authorities */
+//                    .filter(t -> t.contains("ROLE_"))
+//                    .map(grand -> new SimpleGrantedAuthority(grand.substring(5))).toList();
                     .filter(t -> t.contains("ROLE_"))
-                    .map(grand -> new SimpleGrantedAuthority(grand.substring(5))).toList();
+                    .map(SimpleGrantedAuthority::new).toList();
         }
     }
 

@@ -24,7 +24,7 @@ public class AuthController {
     @Operation(summary = "Get access token (grant type password)")
     public ResponseEntity<AccessTokenResponse> authenticate(@RequestBody(required = false) AuthRequest request ,
                                                             @RequestHeader(value = "refresh-token",required = false) String refreshToken) {
-        AccessTokenResponse accessTokenResponse = null;
+        AccessTokenResponse accessTokenResponse;
         if(refreshToken != null){
             log.info("Get request access token (grant type refresh token) : {}", refreshToken);
             accessTokenResponse = keyCloakClient.refreshToken(refreshToken);

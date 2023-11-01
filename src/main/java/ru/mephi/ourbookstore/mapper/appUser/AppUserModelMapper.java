@@ -19,6 +19,7 @@ public interface AppUserModelMapper {
     AppUserModel objectToModel(AppUser appUser);
 
     @Mappings({
+            @Mapping(target = "username", source = "nickname"),
             @Mapping(target = "enabled", expression = "java(true)"),
             @Mapping(target = "credentials", expression = "java(Arrays.asList(new CredentialRequest(\"password\", appUser.getPassword() )))")
     })
