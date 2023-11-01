@@ -7,7 +7,9 @@ import org.springframework.web.bind.annotation.*;
 import ru.mephi.ourbookstore.domain.dto.orderPosition.OrderPosition;
 import ru.mephi.ourbookstore.domain.dto.orderPosition.OrderPositionCreateDto;
 import ru.mephi.ourbookstore.domain.dto.orderPosition.OrderPositionDto;
+import ru.mephi.ourbookstore.domain.dto.orderPosition.OrderPositionRemoveFromCartDto;
 import ru.mephi.ourbookstore.domain.dto.orderPosition.OrderPositionUpdateDto;
+import ru.mephi.ourbookstore.domain.dto.orderPosition.OrderPositionAddToCartDto;
 import ru.mephi.ourbookstore.mapper.orderPosition.OrderPositionDtoMapper;
 import ru.mephi.ourbookstore.service.orderPosition.OrderPositionService;
 
@@ -30,6 +32,25 @@ public class OrderPositionController {
     public Long updateOrderPosition(@RequestBody OrderPositionUpdateDto orderPositionCreateDto) {
         OrderPosition orderPosition = orderPositionDtoMapper.dtoToObject(orderPositionCreateDto);
         return orderPositionService.update(orderPosition);
+    }
+
+    @PutMapping("/add-to-cart")
+    public void addToCartOrderPosition(
+            @RequestBody OrderPositionAddToCartDto orderPositionAddToCartDto
+    ) {
+        orderPositionService.addToCart(
+                orderPositionAddToCartDto.getOrderPositionId(),
+                orderPositionAddToCartDto.getCartId()
+        );
+    }
+
+    @PutMapping("/remove-from-cart")
+    public void removeToCartOrderPosition(
+            @RequestBody OrderPositionRemoveFromCartDto orderPositionRemoveFromCartDto
+    ) {
+        orderPositionService.removeFromCart(
+                orderPositionRemoveFromCartDto.getOrderPositionId()
+        );
     }
 
     @GetMapping("/{orderPositionId}")

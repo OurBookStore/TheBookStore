@@ -16,6 +16,7 @@ import ru.mephi.ourbookstore.domain.dto.appUser.AppUserCreateDto;
 import ru.mephi.ourbookstore.domain.dto.appUser.AppUserDto;
 import ru.mephi.ourbookstore.domain.dto.appUser.AppUserUpdateDto;
 import ru.mephi.ourbookstore.repository.appUser.AppUserRepository;
+import ru.mephi.ourbookstore.repository.cart.CartRepository;
 import ru.mephi.ourbookstore.service.exceptions.AlreadyExistException;
 import ru.mephi.ourbookstore.service.exceptions.NotFoundException;
 import ru.mephi.ourbookstore.service.exceptions.ValidationException;
@@ -30,6 +31,8 @@ public class AppUserTests extends BookStoreTest {
     AppUserController appUserController;
     @Autowired
     AppUserRepository appUserRepository;
+    @Autowired
+    CartRepository cartRepository;
 
     final AppUserModel APP_USER_CORRECT_1 = AppUserModel.builder()
             .id(1L)

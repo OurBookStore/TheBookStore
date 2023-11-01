@@ -22,4 +22,6 @@ public class OrderPositionModel {
     OrderModel order;
     int count;
     double price;
+    @ManyToOne(cascade = {CascadeType.MERGE})
+    CartModel cart;
 }
