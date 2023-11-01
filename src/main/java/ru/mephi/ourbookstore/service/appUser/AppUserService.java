@@ -7,6 +7,7 @@ import java.util.Optional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -37,6 +38,8 @@ public class AppUserService {
     final AppUserRepository appUserRepository;
     final AppUserModelMapper appUserModelMapper;
     final KeyCloakClient keyCloakClient;
+    @Value("${security.enable}")
+    Boolean isSecurityEnable;
 
     @Transactional(readOnly = true)
     public AppUser getById(long appUserId) {
@@ -69,7 +72,9 @@ public class AppUserService {
         if (appUserRepository.findByEmail(email).isPresent()) {
             throw new AlreadyExistException(APP_USER, "email", email);
         }
-        appUser.setKeycloakId( keyCloakClient.createUser(appUserModelMapper.objectToClientModel(appUser)));
+        if(isSecurityEnable){
+            appUser.setKeycloakId( keyCloakClient.createUser(appUserModelMapper.objectToClientModel(appUser)));
+        }
         AppUserModel appUserModel = appUserModelMapper.objectToModel(appUser);
         return appUserRepository.save(appUserModel).getId();
     }
@@ -88,7 +93,9 @@ public class AppUserService {
         if (appUserRepository.findByEmail(email).isPresent()) {
             throw new AlreadyExistException(APP_USER, "email", email);
         }
-        keyCloakClient.updateUser(appUserModelMapper.objectToClientModel(appUser),old.getKeycloakId());
+        if(isSecurityEnable){
+            keyCloakClient.updateUser(appUserModelMapper.objectToClientModel(appUser),old.getKeycloakId());
+        }
         AppUserModel appUserModel = appUserModelMapper.objectToModel(appUser);
         appUserRepository.save(appUserModel);
     }
@@ -97,7 +104,9 @@ public class AppUserService {
     public void delete(Long appUserId) {
         AppUserModel old = appUserRepository.findById(appUserId)
                 .orElseThrow(() -> new NotFoundException(APP_USER, "id", appUserId));
-        keyCloakClient.deleteUser(old.getKeycloakId());
+        if(isSecurityEnable){
+            keyCloakClient.deleteUser(old.getKeycloakId());
+        }
         appUserRepository.deleteById(appUserId);
     }
 

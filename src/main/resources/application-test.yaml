@@ -3,8 +3,9 @@ server:
     context-path: /app
   error:
     include-message: always
-  security:
-    security-enable: false
+
+security:
+  enable: false
 
 spring:
   datasource:

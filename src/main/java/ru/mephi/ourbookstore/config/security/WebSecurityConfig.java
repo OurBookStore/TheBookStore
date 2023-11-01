@@ -4,6 +4,7 @@ import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.PathNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,6 +13,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -26,6 +28,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.stereotype.Component;
 import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
@@ -37,13 +40,12 @@ import java.util.stream.Stream;
 
 @Configuration
 @EnableWebSecurity
-@EnableMethodSecurity
 public class WebSecurityConfig {
 
     @Value("${spring.security.oauth2.resourceserver.jwt.public-key-location}")
     private RSAPublicKey publicKey;
 
-    @Value("${server.security.security-enable}")
+    @Value("${security.enable}")
     private Boolean isSecurityEnable;
 
     @Bean
@@ -53,12 +55,14 @@ public class WebSecurityConfig {
 
 //        // Enable and configure CORS
 //        http.cors(cors -> cors.configurationSource(corsConfigurationSource("http://localhost:8080")));
+        http.cors(cors -> cors.configurationSource(corsConfigurationSource()));
 
         // State-less session (state in access-token only)
         http.sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         // Disable CSRF because of state-less session-management
         http.csrf(csrf -> csrf.disable());
+
 
         // Return 401 (unauthorized) instead of 302 (redirect to login) when
         // authorization is missing or invalid
@@ -99,6 +103,12 @@ public class WebSecurityConfig {
         return http.build();
     }
 
+    @ConditionalOnProperty(prefix = "security",
+            name = "enabled",
+            havingValue = "true")
+    @EnableMethodSecurity(prePostEnabled = true)
+    static class Dummy {
+    }
 //    private UrlBasedCorsConfigurationSource corsConfigurationSource(String... origins) {
 //        final var configuration = new CorsConfiguration();
 //        configuration.setAllowedOrigins(Arrays.asList(origins));
@@ -111,18 +121,30 @@ public class WebSecurityConfig {
 //        return source;
 //    }
 
+//    @Bean
+//    public FilterRegistrationBean corsFilter() {
+//        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+//        CorsConfiguration config = new CorsConfiguration();
+//        config.addAllowedOrigin("*");
+//        config.addAllowedHeader("*");
+//        config.addAllowedMethod("*");
+//        source.registerCorsConfiguration("/**", config);
+//        FilterRegistrationBean bean = new FilterRegistrationBean(new CorsFilter(source));
+//        bean.setOrder(0);
+//        return bean;
+//    }
+
     @Bean
-    public FilterRegistrationBean corsFilter() {
+    CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(Arrays.asList("*"));
+        configuration.setAllowedMethods(Arrays.asList("*"));
+        configuration.setAllowedHeaders(Arrays.asList("*"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        CorsConfiguration config = new CorsConfiguration();
-        config.addAllowedOrigin("*");
-        config.addAllowedHeader("*");
-        config.addAllowedMethod("*");
-        source.registerCorsConfiguration("/**", config);
-        FilterRegistrationBean bean = new FilterRegistrationBean(new CorsFilter(source));
-        bean.setOrder(0);
-        return bean;
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
+
     @RequiredArgsConstructor
     static class JwtGrantedAuthoritiesConverter implements Converter<Jwt, Collection<? extends GrantedAuthority>> {
 

@@ -3,8 +3,9 @@ server:
     context-path: /app
   error:
     include-message: always
-  security:
-    security-enable: true
+
+security:
+  enable: false
 
 logging:
   level:
@@ -23,7 +24,7 @@ spring:
     generate-ddl: true
     show-sql: true
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
