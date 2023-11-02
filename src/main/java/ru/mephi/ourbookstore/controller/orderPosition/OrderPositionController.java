@@ -23,19 +23,19 @@ public class OrderPositionController {
     final OrderPositionDtoMapper orderPositionDtoMapper;
 
     @PostMapping
-    public Long createOrderPosition(@RequestBody OrderPositionCreateDto orderPositionCreateDto) {
+    public Long create(@RequestBody OrderPositionCreateDto orderPositionCreateDto) {
         OrderPosition orderPosition = orderPositionDtoMapper.dtoToObject(orderPositionCreateDto);
         return orderPositionService.create(orderPosition);
     }
 
     @PutMapping
-    public Long updateOrderPosition(@RequestBody OrderPositionUpdateDto orderPositionCreateDto) {
+    public Long update(@RequestBody OrderPositionUpdateDto orderPositionCreateDto) {
         OrderPosition orderPosition = orderPositionDtoMapper.dtoToObject(orderPositionCreateDto);
         return orderPositionService.update(orderPosition);
     }
 
     @PutMapping("/add-to-cart")
-    public void addToCartOrderPosition(
+    public void addToCart(
             @RequestBody OrderPositionAddToCartDto orderPositionAddToCartDto
     ) {
         orderPositionService.addToCart(
@@ -45,7 +45,7 @@ public class OrderPositionController {
     }
 
     @PutMapping("/remove-from-cart")
-    public void removeToCartOrderPosition(
+    public void removeFromCart(
             @RequestBody OrderPositionRemoveFromCartDto orderPositionRemoveFromCartDto
     ) {
         orderPositionService.removeFromCart(
@@ -54,12 +54,12 @@ public class OrderPositionController {
     }
 
     @GetMapping("/{orderPositionId}")
-    public OrderPositionDto getOrderPosition(@PathVariable Long orderPositionId) {
+    public OrderPositionDto get(@PathVariable Long orderPositionId) {
         return orderPositionDtoMapper.objectToDto(orderPositionService.getById(orderPositionId));
     }
 
     @DeleteMapping("/{orderPositionId}")
-    public void deleteOrderPosition(@PathVariable Long orderPositionId) {
+    public void delete(@PathVariable Long orderPositionId) {
         orderPositionService.delete(orderPositionId);
     }
 }

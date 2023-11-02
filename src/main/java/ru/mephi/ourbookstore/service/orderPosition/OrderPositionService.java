@@ -124,6 +124,7 @@ public class OrderPositionService {
         orderPositionRepository.deleteById(orderPositionId);
     }
 
+    @Transactional
     public void addToCart(long orderPositionId, long cartId) {
         OrderPositionModel orderPositionModel = orderPositionRepository.findById(orderPositionId)
                 .orElseThrow(() -> new NotFoundException(ORDER_POSITION, "id", orderPositionId));
@@ -133,6 +134,7 @@ public class OrderPositionService {
         orderPositionRepository.save(orderPositionModel);
     }
 
+    @Transactional
     public void removeFromCart(long orderPositionId) {
         OrderPositionModel orderPositionModel = orderPositionRepository.findById(orderPositionId)
                 .orElseThrow(() -> new NotFoundException(ORDER_POSITION, "id", orderPositionId));
