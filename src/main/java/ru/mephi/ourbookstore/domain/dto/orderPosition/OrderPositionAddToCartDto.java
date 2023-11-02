@@ -5,20 +5,16 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
-import ru.mephi.ourbookstore.domain.dto.book.Book;
-import ru.mephi.ourbookstore.domain.dto.cart.Cart;
-import ru.mephi.ourbookstore.domain.dto.order.Order;
 
+/**
+ * @author Aleksei Iagnenkov (alekseiiagn)
+ */
 @Data
 @Builder
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class OrderPosition {
+public class OrderPositionAddToCartDto {
 
-    Long id;
-    Book book;
-    Order order;
-    int count;
-    double price;
-    Cart cart;
+    Long orderPositionId;
+    Long cartId;
 }

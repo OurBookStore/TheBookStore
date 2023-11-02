@@ -26,4 +26,6 @@ public class AppUserModel {
     @OneToMany(mappedBy = "appUser", fetch = FetchType.LAZY)
     @ToString.Exclude
     List<OrderModel> orders;
+    @OneToOne(cascade = CascadeType.ALL)
+    CartModel cart;
 }

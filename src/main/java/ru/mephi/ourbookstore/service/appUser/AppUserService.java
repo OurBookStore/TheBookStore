@@ -10,8 +10,10 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import ru.mephi.ourbookstore.domain.AppUserModel;
 import ru.mephi.ourbookstore.domain.dto.appUser.AppUser;
+import ru.mephi.ourbookstore.domain.dto.cart.Cart;
 import ru.mephi.ourbookstore.mapper.appUser.AppUserModelMapper;
 import ru.mephi.ourbookstore.repository.appUser.AppUserRepository;
+import ru.mephi.ourbookstore.service.cart.CartService;
 import ru.mephi.ourbookstore.service.exceptions.AlreadyExistException;
 import ru.mephi.ourbookstore.service.exceptions.NotFoundException;
 import ru.mephi.ourbookstore.service.exceptions.ValidationException;
@@ -29,6 +31,7 @@ public class AppUserService {
 
     final AppUserRepository appUserRepository;
     final AppUserModelMapper appUserModelMapper;
+    final CartService cartService;
 
     @Transactional(propagation = Propagation.REQUIRED, readOnly = true, noRollbackFor = Exception.class)
     public AppUser getById(long appUserId) {
@@ -55,8 +58,17 @@ public class AppUserService {
         if (appUserRepository.findByEmail(email).isPresent()) {
             throw new AlreadyExistException(APP_USER, "email", email);
         }
+
+        Cart cart = Cart.builder().build();;
+        appUser.setCart(cart);
+
         AppUserModel appUserModel = appUserModelMapper.objectToModel(appUser);
         return appUserRepository.save(appUserModel).getId();
+    }
+
+    private void createCartFromAppUser(AppUser appUser) {
+        Cart cart = Cart.builder().build();;
+        appUser.setCart(cart);
     }
 
     @Transactional
