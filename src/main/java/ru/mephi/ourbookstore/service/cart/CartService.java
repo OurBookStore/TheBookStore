@@ -33,8 +33,4 @@ public class CartService {
                 .map(cartMapper::modelToObject)
                 .orElseThrow(() -> new NotFoundException(CART, "appUserId", appUserId));
     }
-
-    public Cart createEmptyCart() {
-        return Cart.builder().build();
-    }
 }

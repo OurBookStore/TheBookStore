@@ -34,7 +34,7 @@ public class OrderPositionController {
         return orderPositionService.update(orderPosition);
     }
 
-    @PutMapping("/add-to-cart")
+    @PostMapping("/carts")
     public void addToCart(
             @RequestBody OrderPositionAddToCartDto orderPositionAddToCartDto
     ) {
@@ -44,7 +44,7 @@ public class OrderPositionController {
         );
     }
 
-    @PutMapping("/remove-from-cart")
+    @DeleteMapping("/carts")
     public void removeFromCart(
             @RequestBody OrderPositionRemoveFromCartDto orderPositionRemoveFromCartDto
     ) {

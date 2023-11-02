@@ -58,13 +58,16 @@ public class AppUserService {
         if (appUserRepository.findByEmail(email).isPresent()) {
             throw new AlreadyExistException(APP_USER, "email", email);
         }
-        createCartFromAppUser(appUser);
+
+        Cart cart = Cart.builder().build();;
+        appUser.setCart(cart);
+
         AppUserModel appUserModel = appUserModelMapper.objectToModel(appUser);
         return appUserRepository.save(appUserModel).getId();
     }
 
     private void createCartFromAppUser(AppUser appUser) {
-        Cart cart = cartService.createEmptyCart();
+        Cart cart = Cart.builder().build();;
         appUser.setCart(cart);
     }
 
