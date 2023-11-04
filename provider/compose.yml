@@ -39,8 +39,6 @@ services:
       KC_PASSWORD: admin
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: admin
-    stdin_open: true # docker run -i
-    tty: true        # docker run -t
     networks:
       - app_network
     restart: no
