@@ -1,21 +1,20 @@
 services:
-  postgres-keycloak:
-    image: postgres:15.4
+  postgres:
+    image: bookstore/postgres
+    container_name: book_store_postgres
     build:
-      context: ./Docker
-      dockerfile: keycloak-postgres-docker
+      context: ./postgres
     volumes:
-      - keycloak-postgres:/var/lib/postgresql/data
+      - postgres:/var/lib/postgresql/data
     environment:
-      POSTGRES_DB: book-store-db
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: admin
     networks:
-      - keycloak-network
+      - app_network
     ports:
-      - 5433:5432
+      - 5432:5432
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB -h 127.0.0.1"]
+      test: ["CMD-SHELL", "pg_isready -U admin -d admin -h 127.0.0.1"]
       interval: 10s
       timeout: 5s
       retries: 3
@@ -24,13 +23,13 @@ services:
 
   keycloak:
     image: quay.io/keycloak/keycloak:22.0.1
+    container_name: book_store_keycloak
     command: start-dev
     ports:
       - 8082:8080
     environment:
       KC_DB: postgres
-      KC_DB_URL_HOST: postgres-keycloak
-      KC_DB_URL_DATABASE: book-store-db
+      KC_DB_URL: "jdbc:postgresql://book_store_postgres:5432/book-store-db"
       KC_DB_USERNAME: admin
       KC_DB_PASSWORD: admin
       KC_DB_SCHEMA: public
@@ -41,15 +40,16 @@ services:
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: admin
     networks:
-      - keycloak-network
-    restart: unless-stopped
+      - app_network
+    restart: no
     depends_on:
-      postgres-keycloak:
+      postgres:
         condition: service_healthy
 
 networks:
-  keycloak-network:
+  app_network:
     driver: bridge
+
 volumes:
-  keycloak-postgres:
+  postgres:
     driver: local
