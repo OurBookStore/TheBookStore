@@ -38,6 +38,7 @@ public class AppUserAuthService {
             case ORDER_POSITION -> appUserReq.getOrders().stream()
                     .flatMap(orderModel -> orderModel.getOrderPositions().stream())
                     .anyMatch(orderPositionModel -> orderPositionModel.getId().equals(resourceId));
+            case CART -> appUserReq.getCart().getId().equals(resourceId);
         };
     }
 }

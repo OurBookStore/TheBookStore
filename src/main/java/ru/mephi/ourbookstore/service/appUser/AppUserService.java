@@ -1,7 +1,5 @@
 package ru.mephi.ourbookstore.service.appUser;
 
-import java.util.List;
-
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -14,11 +12,12 @@ import ru.mephi.ourbookstore.domain.dto.appUser.AppUser;
 import ru.mephi.ourbookstore.domain.dto.cart.Cart;
 import ru.mephi.ourbookstore.mapper.appUser.AppUserModelMapper;
 import ru.mephi.ourbookstore.repository.appUser.AppUserRepository;
-import ru.mephi.ourbookstore.service.cart.CartService;
 import ru.mephi.ourbookstore.service.exceptions.AlreadyExistException;
 import ru.mephi.ourbookstore.service.exceptions.NotFoundException;
 import ru.mephi.ourbookstore.service.exceptions.ValidationException;
 import ru.mephi.ourbookstore.service.keyCloak.KeyCloakClient;
+
+import java.util.List;
 
 import static ru.mephi.ourbookstore.domain.Entities.APP_USER;
 
@@ -34,9 +33,8 @@ public class AppUserService {
     final AppUserRepository appUserRepository;
     final AppUserModelMapper appUserModelMapper;
     final KeyCloakClient keyCloakClient;
-    final CartService cartService;
 
-    @Transactional(propagation = Propagation.REQUIRED, readOnly = true, noRollbackFor = Exception.class)
+    @Transactional(readOnly = true)
     public AppUser getById(long appUserId) {
         AppUserModel appUserModel = appUserRepository.findById(appUserId)
                 .orElseThrow(() -> new NotFoundException(APP_USER, "id", appUserId));
@@ -68,18 +66,13 @@ public class AppUserService {
         if (appUserRepository.findByEmail(email).isPresent()) {
             throw new AlreadyExistException(APP_USER, "email", email);
         }
-        appUser.setKeycloakId( keyCloakClient.createUser(appUserModelMapper.objectToClientModel(appUser)));
+        appUser.setKeycloakId(keyCloakClient.createUser(appUserModelMapper.objectToClientModel(appUser)));
 
-        Cart cart = Cart.builder().build();;
+        Cart cart = Cart.builder().build();
         appUser.setCart(cart);
 
         AppUserModel appUserModel = appUserModelMapper.objectToModel(appUser);
         return appUserRepository.save(appUserModel).getId();
-    }
-
-    private void createCartFromAppUser(AppUser appUser) {
-        Cart cart = Cart.builder().build();;
-        appUser.setCart(cart);
     }
 
     @Transactional
@@ -96,7 +89,7 @@ public class AppUserService {
         if (appUserRepository.findByEmail(email).isPresent()) {
             throw new AlreadyExistException(APP_USER, "email", email);
         }
-        keyCloakClient.updateUser(appUserModelMapper.objectToClientModel(appUser),old.getKeycloakId());
+        keyCloakClient.updateUser(appUserModelMapper.objectToClientModel(appUser), old.getKeycloakId());
         AppUserModel appUserModel = appUserModelMapper.objectToModel(appUser);
         appUserRepository.save(appUserModel);
     }

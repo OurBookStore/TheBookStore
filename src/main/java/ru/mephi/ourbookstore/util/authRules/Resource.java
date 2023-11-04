@@ -9,6 +9,7 @@ import lombok.experimental.FieldDefaults;
 public enum Resource {
     APP_USER("app user"),
     ORDER_POSITION("order position"),
+    CART("cart"),
     ORDER("order");
 
     final String name;
