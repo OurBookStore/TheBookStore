@@ -36,21 +36,11 @@ import ru.mephi.ourbookstore.service.keyCloak.KeyCloakClient;
  * @author Aleksei Iagnenkov (alekseiiagn)
  */
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@ExtendWith(MockitoExtension.class)
 public class AppUserTests extends BookStoreTest {
 
 
-    @InjectMocks
+    @Autowired
     AppUserController appUserController;
-
-    @Spy
-//    @Autowired
-    AppUserRepository appUserRepository;
-
-//    @InjectMocks
-//    @Autowired
-//    AppUserService appUserService;
-
     @Mock
     KeyCloakClient keyCloakClient;
 
@@ -291,17 +281,7 @@ public class AppUserTests extends BookStoreTest {
                 .email("new email")
                 .password("new password")
                 .build();
-//        AppUser appUser = AppUser.builder()
-//                .id(appUserId)
-//                .nickname("new nickname")
-//                .email("new email")
-//                .password("new password")
-//                .build();
-//
-//
-//        Mockito
-//                .when(keyCloakClient.updateUser(appUserModelMapper.objectToClientModel(appUser),null))
-//                .thenAnswer(invocation -> "Always the same")
+
         appUserController.update(appUserRqDto);
 
         AppUserModel appUserModel = appUserRepository.findById(appUserId).get();
