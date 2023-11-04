@@ -16,9 +16,9 @@ import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 import ru.mephi.ourbookstore.domain.dto.keyCloak.*;
-import ru.mephi.ourbookstore.service.exceptions.BookStoreLocalError;
-import ru.mephi.ourbookstore.service.exceptions.InvalidRequestException;
-import ru.mephi.ourbookstore.service.exceptions.KeycloakIntegrationException;
+import ru.mephi.ourbookstore.service.exceptions.keyclaok.BookStoreLocalError;
+import ru.mephi.ourbookstore.service.exceptions.keyclaok.InvalidRequestException;
+import ru.mephi.ourbookstore.service.exceptions.keyclaok.KeycloakIntegrationException;
 
 import java.util.Objects;
 
@@ -26,6 +26,7 @@ import java.util.Objects;
 @Component
 @RequiredArgsConstructor
 public class KeyCloakClient {
+
     private final WebClient webClient;
     private final ObjectWriter objectWriter;
     @Value("${keycloak.client-name}")
@@ -164,7 +165,8 @@ public class KeyCloakClient {
      * Запрос не отработает в случаях:<br>
      * 1) Неверного импорта realm_name;<br>
      * 2) Если не удалось подключится к Keycloak;<br>
-     * 3) Если такой пользователей уже существует.<br>
+     * 3) Если такой пользователей уже существует;<br>
+     * 4) Если запрос не валиден.<br>
      * <p>
      * Пример тела запроса:
      * <code>
@@ -203,7 +205,11 @@ public class KeyCloakClient {
                             .body(BodyInserters.fromValue(objectWriter.writeValueAsString(userRequest)))
                             .retrieve()
                             .onStatus(httpStatus -> httpStatus.equals(HttpStatus.CONFLICT),
-                                    clientResponse -> Mono.error(new InvalidRequestException(userRequest)))
+                                    clientResponse -> Mono.error(new InvalidRequestException(userRequest,
+                                            BookStoreLocalError.KEYCLOAK_USER_CONFLICT_EXCEPTION)))
+                            .onStatus(httpStatus -> httpStatus.equals(HttpStatus.BAD_REQUEST),
+                                    clientResponse -> Mono.error(new InvalidRequestException(userRequest,
+                                            BookStoreLocalError.KEYCLOAK_USER_VALID_EXCEPTION)))
                             .onStatus(HttpStatusCode::isError, clientResponse ->
                                     Mono.error(new KeycloakIntegrationException()))
                             .toBodilessEntity()
@@ -266,7 +272,11 @@ public class KeyCloakClient {
                     .body(BodyInserters.fromValue(objectWriter.writeValueAsString(userRequest)))
                     .retrieve()
                     .onStatus(httpStatus -> httpStatus.equals(HttpStatus.CONFLICT),
-                            clientResponse -> Mono.error(new InvalidRequestException(userRequest)))
+                            clientResponse -> Mono.error(new InvalidRequestException(userRequest,
+                                    BookStoreLocalError.KEYCLOAK_USER_CONFLICT_EXCEPTION)))
+                    .onStatus(httpStatus -> httpStatus.equals(HttpStatus.BAD_REQUEST),
+                            clientResponse -> Mono.error(new InvalidRequestException(userRequest,
+                                    BookStoreLocalError.KEYCLOAK_USER_VALID_EXCEPTION)))
                     .onStatus(HttpStatusCode::isError, clientResponse ->
                             Mono.error(new KeycloakIntegrationException()))
                     .toBodilessEntity()
@@ -297,17 +307,22 @@ public class KeyCloakClient {
     public void deleteUser(String userId) {
         AccessTokenResponse accessTokenResponse =
                 adminAuthenticate(new AuthRequest(adminLogin, adminPassword));
+        try {
 
-        webClient
-                .delete()
-                .uri(uriBuilder -> uriBuilder
-                        .path("/admin/realms/{realm_name}/users/{user_id}")
-                        .build(realm, userId))
-                .headers(h -> h.setBearerAuth(accessTokenResponse.getToken()))
-                .retrieve()
-                .onStatus(HttpStatusCode::isError, clientResponse ->
-                        Mono.error(new KeycloakIntegrationException()))
-                .toBodilessEntity()
-                .block();
+            webClient
+                    .delete()
+                    .uri(uriBuilder -> uriBuilder
+                            .path("/admin/realms/{realm_name}/users/{user_id}")
+                            .build(realm, userId))
+                    .headers(h -> h.setBearerAuth(accessTokenResponse.getToken()))
+                    .retrieve()
+                    .onStatus(HttpStatusCode::isError, clientResponse ->
+                            Mono.error(new KeycloakIntegrationException()))
+                    .toBodilessEntity()
+                    .block();
+        }catch (KeycloakIntegrationException e){
+            e.printStackTrace();
+            throw e;
+        }
     }
 }

@@ -10,6 +10,10 @@ import org.springframework.web.reactive.function.client.ExchangeFilterFunction;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
+/**
+ * Класс, необходимый для правилной конфигурации Rest клиента,
+ * который будет общаться с KeyCloak
+ */
 @Configuration
 @Slf4j
 public class KeyCloakConfig {

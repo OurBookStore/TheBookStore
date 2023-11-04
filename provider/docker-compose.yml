@@ -1,6 +1,9 @@
 services:
   postgres-keycloak:
     image: postgres:15.4
+    build:
+      context: ./Docker
+      dockerfile: keycloak-postgres-docker
     volumes:
       - keycloak-postgres:/var/lib/postgresql/data
     environment:
@@ -49,3 +52,4 @@ networks:
     driver: bridge
 volumes:
   keycloak-postgres:
+    driver: local

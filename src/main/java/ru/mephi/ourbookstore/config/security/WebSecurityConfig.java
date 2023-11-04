@@ -5,7 +5,6 @@ import com.jayway.jsonpath.PathNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.converter.Converter;
@@ -13,7 +12,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -25,21 +23,17 @@ import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.stereotype.Component;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.filter.CorsFilter;
 
 import java.security.interfaces.RSAPublicKey;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
 import java.util.stream.Stream;
 
 @Configuration
-@EnableWebSecurity
 public class WebSecurityConfig {
 
     @Value("${spring.security.oauth2.resourceserver.jwt.public-key-location}")
@@ -48,13 +42,19 @@ public class WebSecurityConfig {
     @Value("${security.enable}")
     private Boolean isSecurityEnable;
 
+    /**
+     * Реализация фитьра безопасности с учетом Aoth2 KeyCloak сервера
+     *
+     * @param http                       - атрубут безопасности, на котором настраивается работа фильтра
+     * @param jwtAuthenticationConverter JWT Converter для четения JWT токена
+     * @return фитр безопасности
+     * @throws Exception есть методы с checked исключением
+     */
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http, Converter<Jwt, ? extends AbstractAuthenticationToken> jwtAuthenticationConverter) throws Exception {
 
         http.oauth2ResourceServer(oauth2 -> oauth2.jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter)));
 
-//        // Enable and configure CORS
-//        http.cors(cors -> cors.configurationSource(corsConfigurationSource("http://localhost:8080")));
         http.cors(cors -> cors.configurationSource(corsConfigurationSource()));
 
         // State-less session (state in access-token only)
@@ -62,7 +62,6 @@ public class WebSecurityConfig {
 
         // Disable CSRF because of state-less session-management
         http.csrf(csrf -> csrf.disable());
-
 
         // Return 401 (unauthorized) instead of 302 (redirect to login) when
         // authorization is missing or invalid
@@ -103,36 +102,17 @@ public class WebSecurityConfig {
         return http.build();
     }
 
+    /**
+     * Необходимый класс-пустышка
+     * для реализации switch режимов работы безопасности
+     */
     @ConditionalOnProperty(prefix = "security",
             name = "enabled",
             havingValue = "true")
-    @EnableMethodSecurity(prePostEnabled = true)
+    @EnableWebSecurity
+    @EnableMethodSecurity
     static class Dummy {
     }
-//    private UrlBasedCorsConfigurationSource corsConfigurationSource(String... origins) {
-//        final var configuration = new CorsConfiguration();
-//        configuration.setAllowedOrigins(Arrays.asList(origins));
-//        configuration.setAllowedMethods(List.of("*"));
-//        configuration.setAllowedHeaders(List.of("*"));
-//        configuration.setExposedHeaders(List.of("*"));
-//
-//        final var source = new UrlBasedCorsConfigurationSource();
-//        source.registerCorsConfiguration("/**", configuration);
-//        return source;
-//    }
-
-//    @Bean
-//    public FilterRegistrationBean corsFilter() {
-//        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-//        CorsConfiguration config = new CorsConfiguration();
-//        config.addAllowedOrigin("*");
-//        config.addAllowedHeader("*");
-//        config.addAllowedMethod("*");
-//        source.registerCorsConfiguration("/**", config);
-//        FilterRegistrationBean bean = new FilterRegistrationBean(new CorsFilter(source));
-//        bean.setOrder(0);
-//        return bean;
-//    }
 
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
@@ -145,6 +125,10 @@ public class WebSecurityConfig {
         return source;
     }
 
+    /**
+     * Внутренний класс-помошник
+     * для реализации чтения JWT-токена
+     */
     @RequiredArgsConstructor
     static class JwtGrantedAuthoritiesConverter implements Converter<Jwt, Collection<? extends GrantedAuthority>> {
 
@@ -183,14 +167,14 @@ public class WebSecurityConfig {
                         }
                         return Stream.empty();
                     })
-                    /* Insert some transformation here if you want to add a prefix like "ROLE_" or force upper-case authorities */
-//                    .filter(t -> t.contains("ROLE_"))
-//                    .map(grand -> new SimpleGrantedAuthority(grand.substring(5))).toList();
                     .filter(t -> t.contains("ROLE_"))
                     .map(SimpleGrantedAuthority::new).toList();
         }
     }
 
+    /**
+     * Реализация JWT конвертера для токенов KeyCloak
+     */
     @Component
     @RequiredArgsConstructor
     static class SpringAddonsJwtAuthenticationConverter implements Converter<Jwt, JwtAuthenticationToken> {
@@ -203,11 +187,25 @@ public class WebSecurityConfig {
         }
     }
 
+    /**
+     * Необходимый класс для получения Public ключа, необходимого для
+     * проверки сертификатов подписывающего сервиса
+     * (Для валидации аутентификации)
+     *
+     * @return класс-котейнер RSA public key
+     */
     @Bean
     public RSAPublicKey jwtValidationKey() {
         return publicKey;
     }
 
+    /**
+     * Jwt декодер, он ищет сигнатуру токена
+     * пытается ее расшифровать открытым ключем
+     *
+     * @param rsaPublicKey открытый ключ RSA
+     * @return JwtDecoder с установленными параметрами
+     */
     @Bean
     public JwtDecoder jwtDecoder(RSAPublicKey rsaPublicKey) {
         return NimbusJwtDecoder.withPublicKey(rsaPublicKey).build();

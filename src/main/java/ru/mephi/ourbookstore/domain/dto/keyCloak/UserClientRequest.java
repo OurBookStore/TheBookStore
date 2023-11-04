@@ -8,9 +8,9 @@ import java.util.List;
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class UserClientRequest {
+
     private String username;
     private Boolean enabled;
-//    private Boolean emailVerified;
     private String firstName;
     private String lastName;
     private String email;

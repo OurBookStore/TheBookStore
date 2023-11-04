@@ -6,6 +6,7 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class CredentialRequest {
+
     private String type;
     private String value;
 }

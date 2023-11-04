@@ -3,7 +3,6 @@ package ru.mephi.ourbookstore.config.swagger;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
-import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,7 +14,6 @@ public class SwaggerConfig {
     private static final String SWAGGER_DESC = "This are some implementation book store";
     private static final String SWAGGER_VERSION = "1.0";
 
-
     @Bean
     public OpenAPI apiInfo() {
         return new OpenAPI()
@@ -25,17 +23,13 @@ public class SwaggerConfig {
                                 .description(SWAGGER_DESC)
                                 .version(SWAGGER_VERSION)
                 )
-//                .addSecurityItem(
-//                        new SecurityRequirement()
-//                        .addList(securitySchemeName)
-//                )
                 .components(
                         new Components()
-                        .addSecuritySchemes(securitySchemeName, new SecurityScheme()
-                                .name(securitySchemeName)
-                                .type(SecurityScheme.Type.HTTP)
-                                .scheme("bearer")
-                                .bearerFormat("JWT"))
+                                .addSecuritySchemes(securitySchemeName, new SecurityScheme()
+                                        .name(securitySchemeName)
+                                        .type(SecurityScheme.Type.HTTP)
+                                        .scheme("bearer")
+                                        .bearerFormat("JWT"))
                 );
     }
 

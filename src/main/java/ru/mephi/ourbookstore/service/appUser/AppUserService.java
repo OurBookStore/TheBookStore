@@ -1,16 +1,10 @@
 package ru.mephi.ourbookstore.service.appUser;
 
-import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
 
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,7 +13,6 @@ import ru.mephi.ourbookstore.domain.dto.appUser.AppUser;
 import ru.mephi.ourbookstore.mapper.appUser.AppUserModelMapper;
 import ru.mephi.ourbookstore.repository.appUser.AppUserRepository;
 import ru.mephi.ourbookstore.service.exceptions.AlreadyExistException;
-import ru.mephi.ourbookstore.service.exceptions.KeycloakIntegrationException;
 import ru.mephi.ourbookstore.service.exceptions.NotFoundException;
 import ru.mephi.ourbookstore.service.exceptions.ValidationException;
 import ru.mephi.ourbookstore.service.keyCloak.KeyCloakClient;
@@ -38,8 +31,6 @@ public class AppUserService {
     final AppUserRepository appUserRepository;
     final AppUserModelMapper appUserModelMapper;
     final KeyCloakClient keyCloakClient;
-    @Value("${security.enable}")
-    Boolean isSecurityEnable;
 
     @Transactional(readOnly = true)
     public AppUser getById(long appUserId) {
@@ -72,9 +63,7 @@ public class AppUserService {
         if (appUserRepository.findByEmail(email).isPresent()) {
             throw new AlreadyExistException(APP_USER, "email", email);
         }
-        if(isSecurityEnable){
-            appUser.setKeycloakId( keyCloakClient.createUser(appUserModelMapper.objectToClientModel(appUser)));
-        }
+        appUser.setKeycloakId( keyCloakClient.createUser(appUserModelMapper.objectToClientModel(appUser)));
         AppUserModel appUserModel = appUserModelMapper.objectToModel(appUser);
         return appUserRepository.save(appUserModel).getId();
     }
@@ -93,9 +82,7 @@ public class AppUserService {
         if (appUserRepository.findByEmail(email).isPresent()) {
             throw new AlreadyExistException(APP_USER, "email", email);
         }
-        if(isSecurityEnable){
-            keyCloakClient.updateUser(appUserModelMapper.objectToClientModel(appUser),old.getKeycloakId());
-        }
+        keyCloakClient.updateUser(appUserModelMapper.objectToClientModel(appUser),old.getKeycloakId());
         AppUserModel appUserModel = appUserModelMapper.objectToModel(appUser);
         appUserRepository.save(appUserModel);
     }
@@ -104,9 +91,7 @@ public class AppUserService {
     public void delete(Long appUserId) {
         AppUserModel old = appUserRepository.findById(appUserId)
                 .orElseThrow(() -> new NotFoundException(APP_USER, "id", appUserId));
-        if(isSecurityEnable){
-            keyCloakClient.deleteUser(old.getKeycloakId());
-        }
+        keyCloakClient.deleteUser(old.getKeycloakId());
         appUserRepository.deleteById(appUserId);
     }
 
