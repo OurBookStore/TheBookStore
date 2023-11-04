@@ -3,6 +3,7 @@ package ru.mephi.ourbookstore.domain.dto.appUser;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import ru.mephi.ourbookstore.domain.OrderModel;
+import ru.mephi.ourbookstore.domain.dto.cart.Cart;
 
 import java.util.List;
 
@@ -22,4 +23,5 @@ public class AppUser {
     String password;
     String keycloakId;
     List<OrderModel> orders;
+    Cart cart;
 }

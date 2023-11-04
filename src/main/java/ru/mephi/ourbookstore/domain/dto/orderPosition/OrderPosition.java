@@ -3,6 +3,7 @@ package ru.mephi.ourbookstore.domain.dto.orderPosition;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import ru.mephi.ourbookstore.domain.dto.book.Book;
+import ru.mephi.ourbookstore.domain.dto.cart.Cart;
 import ru.mephi.ourbookstore.domain.dto.order.Order;
 
 @Data
@@ -17,4 +18,5 @@ public class OrderPosition {
     Order order;
     int count;
     double price;
+    Cart cart;
 }

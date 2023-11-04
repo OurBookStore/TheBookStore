@@ -13,7 +13,9 @@ public enum Entities {
     APP_USER("appUser"),
     ORDER("order"),
     ORDER_POSITION("orderPosition"),
-    ORDER_STATUS("orderStatus");
+    ORDER_STATUS("orderStatus"),
+    CART("orderStatus"),
+    ;
 
     final String name;
 

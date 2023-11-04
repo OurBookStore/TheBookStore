@@ -5,12 +5,16 @@ import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 import ru.mephi.ourbookstore.domain.AppUserModel;
 import ru.mephi.ourbookstore.domain.dto.appUser.AppUser;
+import ru.mephi.ourbookstore.mapper.cart.CartModelMapper;
 import ru.mephi.ourbookstore.domain.dto.keyCloak.UserClientRequest;
 
 /**
  * @author Aleksei Iagnenkov (alekseiiagn)
  */
-@Mapper(componentModel = "spring" ,imports = {java.util.Arrays.class,
+@Mapper(componentModel = "spring",
+        uses = {
+        CartModelMapper.class,},
+        imports = {java.util.Arrays.class,
         ru.mephi.ourbookstore.domain.dto.keyCloak.CredentialRequest.class})
 public interface AppUserModelMapper {
 

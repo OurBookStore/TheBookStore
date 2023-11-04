@@ -25,6 +25,7 @@ import ru.mephi.ourbookstore.domain.dto.appUser.AppUserDto;
 import ru.mephi.ourbookstore.domain.dto.appUser.AppUserUpdateDto;
 import ru.mephi.ourbookstore.mapper.appUser.AppUserModelMapper;
 import ru.mephi.ourbookstore.repository.appUser.AppUserRepository;
+import ru.mephi.ourbookstore.repository.cart.CartRepository;
 import ru.mephi.ourbookstore.service.appUser.AppUserService;
 import ru.mephi.ourbookstore.service.exceptions.AlreadyExistException;
 import ru.mephi.ourbookstore.service.exceptions.NotFoundException;
@@ -54,6 +55,10 @@ public class AppUserTests extends BookStoreTest {
     KeyCloakClient keyCloakClient;
 
     @Autowired
+    AppUserRepository appUserRepository;
+    @Autowired
+    CartRepository cartRepository;
+
     AppUserModelMapper appUserModelMapper;
     final AppUserModel APP_USER_CORRECT_1 = AppUserModel.builder()
             .id(1L)

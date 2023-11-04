@@ -7,13 +7,17 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.mephi.ourbookstore.domain.BookModel;
+import ru.mephi.ourbookstore.domain.CartModel;
 import ru.mephi.ourbookstore.domain.OrderModel;
 import ru.mephi.ourbookstore.domain.OrderPositionModel;
+import ru.mephi.ourbookstore.domain.dto.cart.Cart;
 import ru.mephi.ourbookstore.domain.dto.orderPosition.OrderPosition;
 import ru.mephi.ourbookstore.domain.dto.orderPosition.OrderPositionLink;
+import ru.mephi.ourbookstore.mapper.cart.CartModelMapper;
 import ru.mephi.ourbookstore.mapper.orderPosition.OrderPositionModelMapper;
 import ru.mephi.ourbookstore.repository.orderPosition.OrderPositionRepository;
 import ru.mephi.ourbookstore.service.book.BookService;
+import ru.mephi.ourbookstore.service.cart.CartService;
 import ru.mephi.ourbookstore.service.exceptions.BookCountException;
 import ru.mephi.ourbookstore.service.exceptions.NotFoundException;
 import ru.mephi.ourbookstore.service.exceptions.ValidationException;
@@ -28,7 +32,9 @@ public class OrderPositionService {
 
     final OrderService orderService;
     final BookService bookService;
+    final CartService cartService;
     final OrderPositionModelMapper orderModelMapper;
+    final CartModelMapper cartModelMapper;
     final OrderPositionRepository orderPositionRepository;
 
     public OrderPosition getById(long orderPositionId) {
@@ -116,6 +122,24 @@ public class OrderPositionService {
             orderPositionRepository.save(orderPositionModel);
         }
         orderPositionRepository.deleteById(orderPositionId);
+    }
+
+    @Transactional
+    public void addToCart(long orderPositionId, long cartId) {
+        OrderPositionModel orderPositionModel = orderPositionRepository.findById(orderPositionId)
+                .orElseThrow(() -> new NotFoundException(ORDER_POSITION, "id", orderPositionId));
+        Cart cart = cartService.getById(cartId);
+        CartModel cartModel = cartModelMapper.objectToModel(cart);
+        orderPositionModel.setCart(cartModel);
+        orderPositionRepository.save(orderPositionModel);
+    }
+
+    @Transactional
+    public void removeFromCart(long orderPositionId) {
+        OrderPositionModel orderPositionModel = orderPositionRepository.findById(orderPositionId)
+                .orElseThrow(() -> new NotFoundException(ORDER_POSITION, "id", orderPositionId));
+        orderPositionModel.setCart(null);
+        orderPositionRepository.save(orderPositionModel);
     }
 
     private void validation(OrderPosition orderPosition) {
