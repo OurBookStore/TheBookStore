@@ -9,15 +9,15 @@ import ru.mephi.ourbookstore.domain.dto.keyCloak.UserClientRequest;
 public class InvalidRequestException extends ResponseStatusException {
 
     public InvalidRequestException(AuthRequest authRequest) {
-        super(HttpStatus.BAD_REQUEST, String.format(BookStoreLocalError.INVALID_LOGIN_EXCEPTION.getMessage(),
+        super(HttpStatus.BAD_REQUEST, String.format(BookStoreKeycloakError.INVALID_LOGIN_EXCEPTION.getMessage(),
                         authRequest.getUsername(),
                         authRequest.getPassword()
                 )
         );
     }
 
-    public InvalidRequestException(UserClientRequest userClientRequest, BookStoreLocalError bookStoreLocalError) {
-        super(HttpStatus.CONFLICT, String.format(bookStoreLocalError.getMessage(),
+    public InvalidRequestException(UserClientRequest userClientRequest, BookStoreKeycloakError bookStoreKeycloakError) {
+        super(HttpStatus.CONFLICT, String.format(bookStoreKeycloakError.getMessage(),
                         userClientRequest.getUsername(),
                         userClientRequest.getEmail()
                 )
@@ -25,7 +25,7 @@ public class InvalidRequestException extends ResponseStatusException {
     }
 
     public InvalidRequestException(String refreshToken) {
-        super(HttpStatus.CONFLICT, String.format(BookStoreLocalError.INVALID_REFRESH_TOKEN_EXCEPTION.getMessage(),
+        super(HttpStatus.CONFLICT, String.format(BookStoreKeycloakError.INVALID_REFRESH_TOKEN_EXCEPTION.getMessage(),
                         refreshToken
                 )
         );

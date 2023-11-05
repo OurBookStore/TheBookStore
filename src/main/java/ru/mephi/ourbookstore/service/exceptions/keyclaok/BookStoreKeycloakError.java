@@ -6,7 +6,7 @@ import lombok.experimental.FieldDefaults;
 
 @Getter
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public enum BookStoreLocalError {
+public enum BookStoreKeycloakError {
 
     KEYCLOAK_INTEGRATION_EXCEPTION("Keycloak failed for the following reason: %s"),
     INVALID_LOGIN_EXCEPTION("Incorrect authorization fields were entered: [login = %s, pass = %s]"),
@@ -17,7 +17,7 @@ public enum BookStoreLocalError {
 
     private final String message;
 
-    BookStoreLocalError(final String message) {
+    BookStoreKeycloakError(final String message) {
         this.message = message;
     }
 
