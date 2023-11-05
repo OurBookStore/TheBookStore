@@ -10,11 +10,11 @@
 
 Настройка по развертыванию 
 ```sh
-cd providers
+cd provider
 ```
 
 ```sh
-docker-compose up -d
+docker-compose up
 ```
 Далее Keyclaok должен быть доступен по адресу:
 
