@@ -71,6 +71,27 @@ public class BookService {
         bookRepository.deleteById(bookId);
     }
 
+    public void addImageToBook(String imageId, Long bookId) {
+        BookModel bookModel = bookRepository.findById(bookId)
+                .orElseThrow(() -> new NotFoundException(BOOK, "id", bookId));
+        bookModel.setImage(imageId);
+        bookRepository.save(bookModel);
+    }
+
+    public void removeImageFromBook(Long bookId) {
+        BookModel bookModel = bookRepository.findById(bookId)
+                .orElseThrow(() -> new NotFoundException(BOOK, "id", bookId));
+        bookModel.setImage(null);
+        bookRepository.save(bookModel);
+    }
+
+    public void removeImage(String imageId) {
+        List<BookModel> bookModels = bookRepository.findBookModelsByImage(imageId).stream()
+                .peek(book -> book.setImage(null))
+                .toList();
+        bookRepository.saveAll(bookModels);
+    }
+
     private void validate(Book book) {
         int count = book.getCount();
         if (count < 0) {

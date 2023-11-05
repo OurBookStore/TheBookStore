@@ -19,5 +19,6 @@ public class Book {
     String name;
     double price;
     int count;
+    String image;
     List<OrderPositionModel> orderPositions;
 }

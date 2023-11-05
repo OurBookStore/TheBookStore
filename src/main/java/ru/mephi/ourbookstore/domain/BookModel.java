@@ -23,6 +23,7 @@ public class BookModel {
     String name;
     double price;
     int count;
+    String image;
     @OneToMany(mappedBy = "book", fetch = FetchType.LAZY)
     @ToString.Exclude
     List<OrderPositionModel> orderPositions;

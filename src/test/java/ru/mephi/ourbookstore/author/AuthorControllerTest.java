@@ -1,4 +1,4 @@
-package ru.mephi.ourbookstore.controller.author;
+package ru.mephi.ourbookstore.author;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -18,10 +18,8 @@ import ru.mephi.ourbookstore.domain.dto.author.AuthorDto;
 import ru.mephi.ourbookstore.domain.dto.author.AuthorUpdateDto;
 import ru.mephi.ourbookstore.spec.BaseSpec;
 
-import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class AuthorControllerTest extends BookStoreTest {
 
