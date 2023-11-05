@@ -1,8 +1,10 @@
 package ru.mephi.ourbookstore.controller.cart;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,12 +27,16 @@ public class CartController {
     final CartDtoMapper mapper;
 
     @GetMapping("/{cartId}")
+    @SecurityRequirement(name = "bearerAuth")
+    @PreAuthorize("hasRole('ADMIN') or @appUserAuthService.checkPermission('CART',#cartId)")
     public CartDto getById(@PathVariable Long cartId) {
         Cart cart = cartService.getById(cartId);
         return mapper.objectToDto(cart);
     }
 
     @GetMapping("/app-user/{appUserId}")
+    @SecurityRequirement(name = "bearerAuth")
+    @PreAuthorize("hasRole('ADMIN') or @appUserAuthService.checkPermission('APP_USER',#appUserId)")
     public CartDto getByAppUserId(@PathVariable Long appUserId) {
         Cart cart = cartService.getByAppUserId(appUserId);
         return mapper.objectToDto(cart);

@@ -2,9 +2,11 @@ package ru.mephi.ourbookstore.controller.book;
 
 import java.util.List;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -41,19 +43,25 @@ public class BookController {
                 .toList();
     }
 
+    @SecurityRequirement(name = "bearerAuth")
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public Long create(@RequestBody BookCreateDto bookDto) {
         Book book = bookDtoMapper.dtoToObject(bookDto);
         return bookService.create(book);
     }
 
+    @SecurityRequirement(name = "bearerAuth")
     @PutMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public void update(@RequestBody BookUpdateDto bookDto) {
         Book book = bookDtoMapper.dtoToObject(bookDto);
         bookService.update(book);
     }
 
+    @SecurityRequirement(name = "bearerAuth")
     @DeleteMapping("/{bookId}")
+    @PreAuthorize("hasRole('ADMIN')")
     public void delete(@PathVariable long bookId) {
         bookService.delete(bookId);
     }

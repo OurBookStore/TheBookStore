@@ -1,8 +1,10 @@
 package ru.mephi.ourbookstore.controller.orderPosition;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ru.mephi.ourbookstore.domain.dto.orderPosition.OrderPosition;
 import ru.mephi.ourbookstore.domain.dto.orderPosition.OrderPositionCreateDto;
@@ -17,6 +19,7 @@ import ru.mephi.ourbookstore.service.orderPosition.OrderPositionService;
 @RequestMapping("/positions")
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
+@SecurityRequirement(name = "bearerAuth")
 public class OrderPositionController {
 
     final OrderPositionService orderPositionService;
@@ -29,12 +32,14 @@ public class OrderPositionController {
     }
 
     @PutMapping
-    public Long update(@RequestBody OrderPositionUpdateDto orderPositionCreateDto) {
-        OrderPosition orderPosition = orderPositionDtoMapper.dtoToObject(orderPositionCreateDto);
+    @PreAuthorize("hasRole('ADMIN') or @appUserAuthService.checkPermission('ORDER_POSITION',#positionUpdateDto.id)")
+    public Long update(@RequestBody OrderPositionUpdateDto positionUpdateDto) {
+        OrderPosition orderPosition = orderPositionDtoMapper.dtoToObject(positionUpdateDto);
         return orderPositionService.update(orderPosition);
     }
 
     @PostMapping("/carts")
+    @PreAuthorize("hasRole('ADMIN') or @appUserAuthService.checkPermission('CART',#orderPositionAddToCartDto.cartId)")
     public void addToCart(
             @RequestBody OrderPositionAddToCartDto orderPositionAddToCartDto
     ) {
@@ -45,6 +50,7 @@ public class OrderPositionController {
     }
 
     @DeleteMapping("/carts")
+    @PreAuthorize("hasRole('ADMIN') or @appUserAuthService.checkPermission('ORDER_POSITION',#orderPositionRemoveFromCartDto.orderPositionId)")
     public void removeFromCart(
             @RequestBody OrderPositionRemoveFromCartDto orderPositionRemoveFromCartDto
     ) {
@@ -54,11 +60,13 @@ public class OrderPositionController {
     }
 
     @GetMapping("/{orderPositionId}")
+    @PreAuthorize("hasRole('ADMIN') or @appUserAuthService.checkPermission('ORDER_POSITION',#orderPositionId)")
     public OrderPositionDto get(@PathVariable Long orderPositionId) {
         return orderPositionDtoMapper.objectToDto(orderPositionService.getById(orderPositionId));
     }
 
     @DeleteMapping("/{orderPositionId}")
+    @PreAuthorize("hasRole('ADMIN') or @appUserAuthService.checkPermission('ORDER_POSITION',#orderPositionId)")
     public void delete(@PathVariable Long orderPositionId) {
         orderPositionService.delete(orderPositionId);
     }

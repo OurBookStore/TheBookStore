@@ -15,6 +15,9 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
+@Table(indexes = {
+        @Index(columnList = "keycloak_id")
+})
 public class AppUserModel {
 
     @Id
@@ -23,6 +26,8 @@ public class AppUserModel {
     String nickname;
     String email;
     String password;
+    @Column(unique = true,name = "keycloak_id")
+    String keycloakId;
     @OneToMany(mappedBy = "appUser", fetch = FetchType.LAZY)
     @ToString.Exclude
     List<OrderModel> orders;
