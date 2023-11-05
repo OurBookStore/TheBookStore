@@ -1,4 +1,4 @@
-package ru.mephi.ourbookstore.author;
+package ru.mephi.ourbookstore.controller.author;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;

@@ -59,22 +59,26 @@ public class ImageTests extends BookStoreTest {
                 .get(BASE_URL + "/{imageId}", imageId)
                 .then()
                 .spec(BaseSpec.getResponseSpec(200));
+
+        Assertions.assertTrue(getImage(imageId).exists());
     }
 
     @Test
     public void saveImageTest() {
-        String imageId = IMAGE_ID_1;
+        String imageId = IMAGE_ID_2;
 
-        RestAssured.given()
+        String imageIdSaved = RestAssured.given()
                 .port(port)
                 .contentType(ContentType.MULTIPART)
                 .multiPart("image", getImagePrepared(imageId))
                 .when()
                 .post(BASE_URL)
                 .then()
-                .spec(BaseSpec.getResponseSpec(200));
+                .spec(BaseSpec.getResponseSpec(200))
+                .extract().asString();
 
-        Assertions.assertTrue(getImage(imageId).exists());
+        Assertions.assertTrue(getImage(imageIdSaved).exists());
+        new File(IMAGE_PATH + "/" + imageIdSaved + ".png").delete();
     }
 
     @Test
@@ -322,8 +326,8 @@ public class ImageTests extends BookStoreTest {
     }
 
     private void cleanImages() {
-        new File(IMAGE_PATH + "/" + IMAGE_ID_1).delete();
-        new File(IMAGE_PATH + "/" + IMAGE_ID_2).delete();
-        new File(IMAGE_PATH + "/" + IMAGE_ID_3).delete();
+        new File(IMAGE_PATH + "/" + IMAGE_ID_1 + ".png").delete();
+        new File(IMAGE_PATH + "/" + IMAGE_ID_2 + ".png").delete();
+        new File(IMAGE_PATH + "/" + IMAGE_ID_3 + ".png").delete();
     }
 }
