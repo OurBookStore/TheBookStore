@@ -26,11 +26,6 @@ import ru.mephi.ourbookstore.service.exceptions.ValidationException;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class BookTests extends BookStoreTest {
 
-    @Autowired
-    BookController bookController;
-    @Autowired
-    BookRepository bookRepository;
-
     final BookModel BOOK_CORRECT_1 = BookModel.builder()
             .id(1L)
             .name("1")
@@ -120,10 +115,9 @@ public class BookTests extends BookStoreTest {
             BOOK_CORRECT_2
     );
 
-    @AfterEach
-    public void dropDb() {
-        bookRepository.deleteAll();
-    }
+
+    @Autowired
+    BookController bookController;
 
     @Test
     public void getByIdTest() {

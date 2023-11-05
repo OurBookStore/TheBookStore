@@ -27,13 +27,6 @@ import ru.mephi.ourbookstore.service.exceptions.ValidationException;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class AppUserTests extends BookStoreTest {
 
-    @Autowired
-    AppUserController appUserController;
-    @Autowired
-    AppUserRepository appUserRepository;
-    @Autowired
-    CartRepository cartRepository;
-
     final AppUserModel APP_USER_CORRECT_1 = AppUserModel.builder()
             .id(1L)
             .nickname("1")
@@ -133,10 +126,8 @@ public class AppUserTests extends BookStoreTest {
             APP_USER_CORRECT_2
     );
 
-    @AfterEach
-    public void dropDb() {
-        appUserRepository.deleteAll();
-    }
+    @Autowired
+    AppUserController appUserController;
 
     @Test
     public void getByIdTest() {

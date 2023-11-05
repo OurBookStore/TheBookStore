@@ -34,24 +34,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static ru.mephi.ourbookstore.domain.Entities.BOOK;
 import static ru.mephi.ourbookstore.domain.Entities.ORDER_POSITION;
 
-@AutoConfigureMockMvc
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class OrderPositionTests extends BookStoreTest {
-
-    @Autowired
-    MockMvc mockMvc;
-
-    @Autowired
-    OrderRepository orderRepository;
-
-    @Autowired
-    AppUserRepository appUserRepository;
-
-    @Autowired
-    OrderPositionRepository orderPositionRepository;
-
-    @Autowired
-    BookRepository bookRepository;
 
     public OrderModel orderModel;
 
@@ -61,11 +45,6 @@ public class OrderPositionTests extends BookStoreTest {
 
     @BeforeEach
     public void setUp() {
-        orderRepository.deleteAll();
-        appUserRepository.deleteAll();
-        orderPositionRepository.deleteAll();
-        bookRepository.deleteAll();
-
         orderModel = EntityTestHelper.getTestOrderModel(1L);
         orderModel.setAppUser(appUserRepository.save(EntityTestHelper.getTetsAppUserModel(1L)));
         orderModel = orderRepository.save(orderModel);
