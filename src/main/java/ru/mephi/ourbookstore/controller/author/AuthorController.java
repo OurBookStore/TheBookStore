@@ -17,7 +17,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/authors")
 @RequiredArgsConstructor
-@SecurityRequirement(name = "bearerAuth")
 public class AuthorController {
 
     private final AuthorService authorService;

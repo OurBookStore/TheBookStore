@@ -78,8 +78,7 @@ public class WebSecurityConfig {
             response.sendError(HttpStatus.UNAUTHORIZED.value(), HttpStatus.UNAUTHORIZED.getReasonPhrase());
         }));
 
-        // @formatter:off
-        if(isSecurityEnable){
+        if (isSecurityEnable) {
             http.authorizeHttpRequests(accessManagement -> accessManagement
                     .requestMatchers(
                             "/swagger-ui/**",
@@ -98,14 +97,13 @@ public class WebSecurityConfig {
                     ).permitAll()
                     .anyRequest().authenticated()
             );
-        }else {
+        } else {
             http.authorizeHttpRequests(accessManagement -> accessManagement
                     .requestMatchers("/error").permitAll()
                     .requestMatchers("/**").permitAll()
                     .anyRequest().permitAll()
             );
         }
-        // @formatter:on
 
         return http.build();
     }

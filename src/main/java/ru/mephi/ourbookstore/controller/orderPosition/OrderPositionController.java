@@ -26,14 +26,12 @@ public class OrderPositionController {
     final OrderPositionDtoMapper orderPositionDtoMapper;
 
     @PostMapping
-    @SecurityRequirement(name = "bearerAuth")
     public Long create(@RequestBody OrderPositionCreateDto orderPositionCreateDto) {
         OrderPosition orderPosition = orderPositionDtoMapper.dtoToObject(orderPositionCreateDto);
         return orderPositionService.create(orderPosition);
     }
 
     @PutMapping
-    @SecurityRequirement(name = "bearerAuth")
     @PreAuthorize("hasRole('ADMIN') or @appUserAuthService.checkPermission('ORDER_POSITION',#positionUpdateDto.id)")
     public Long update(@RequestBody OrderPositionUpdateDto positionUpdateDto) {
         OrderPosition orderPosition = orderPositionDtoMapper.dtoToObject(positionUpdateDto);
@@ -41,7 +39,6 @@ public class OrderPositionController {
     }
 
     @PostMapping("/carts")
-    @SecurityRequirement(name = "bearerAuth")
     @PreAuthorize("hasRole('ADMIN') or @appUserAuthService.checkPermission('CART',#orderPositionAddToCartDto.orderPositionId)")
     public void addToCart(
             @RequestBody OrderPositionAddToCartDto orderPositionAddToCartDto
@@ -53,7 +50,6 @@ public class OrderPositionController {
     }
 
     @DeleteMapping("/carts")
-    @SecurityRequirement(name = "bearerAuth")
     @PreAuthorize("hasRole('ADMIN') or @appUserAuthService.checkPermission('ORDER_POSITION',#orderPositionRemoveFromCartDto.orderPositionId)")
     public void removeFromCart(
             @RequestBody OrderPositionRemoveFromCartDto orderPositionRemoveFromCartDto
@@ -64,14 +60,12 @@ public class OrderPositionController {
     }
 
     @GetMapping("/{orderPositionId}")
-    @SecurityRequirement(name = "bearerAuth")
     @PreAuthorize("hasRole('ADMIN') or @appUserAuthService.checkPermission('ORDER_POSITION',#orderPositionId)")
     public OrderPositionDto get(@PathVariable Long orderPositionId) {
         return orderPositionDtoMapper.objectToDto(orderPositionService.getById(orderPositionId));
     }
 
     @DeleteMapping("/{orderPositionId}")
-    @SecurityRequirement(name = "bearerAuth")
     @PreAuthorize("hasRole('ADMIN') or @appUserAuthService.checkPermission('ORDER_POSITION',#orderPositionId)")
     public void delete(@PathVariable Long orderPositionId) {
         orderPositionService.delete(orderPositionId);
