@@ -4,6 +4,7 @@ import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.PathNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.converter.Converter;
@@ -32,6 +33,11 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.stream.Stream;
 
+@ConditionalOnProperty(
+        prefix = "spring.security",
+        name = "enabled",
+        havingValue = "true"
+)
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
@@ -40,7 +46,7 @@ public class WebSecurityConfig {
     @Value("${spring.security.oauth2.resourceserver.jwt.public-key-location}")
     private RSAPublicKey publicKey;
 
-    @Value("${security.enable}")
+    @Value("${spring.security.enabled}")
     private Boolean isSecurityEnable;
 
     /**
@@ -52,7 +58,8 @@ public class WebSecurityConfig {
      * @throws Exception есть методы с checked исключением
      */
     @Bean
-    SecurityFilterChain filterChain(HttpSecurity http, Converter<Jwt, ? extends AbstractAuthenticationToken> jwtAuthenticationConverter) throws Exception {
+    SecurityFilterChain filterChain(HttpSecurity http,
+                                    Converter<Jwt, ? extends AbstractAuthenticationToken> jwtAuthenticationConverter) throws Exception {
 
         http.oauth2ResourceServer(oauth2 -> oauth2.jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter)));
 
