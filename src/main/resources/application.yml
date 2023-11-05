@@ -5,7 +5,7 @@ server:
     include-message: always
 
 security:
-  enable: false
+  enable: true
 
 logging:
   level:
@@ -16,8 +16,8 @@ logging:
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/book_store
-    username: "postgres"
-    password: "postgres"
+    username: "admin"
+    password: "admin"
     driver-class-name: org.postgresql.Driver
   sql:
     init:

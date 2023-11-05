@@ -4,7 +4,6 @@ import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.PathNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.converter.Converter;
@@ -34,6 +33,8 @@ import java.util.Collection;
 import java.util.stream.Stream;
 
 @Configuration
+@EnableWebSecurity
+@EnableMethodSecurity
 public class WebSecurityConfig {
 
     @Value("${spring.security.oauth2.resourceserver.jwt.public-key-location}")
@@ -100,18 +101,6 @@ public class WebSecurityConfig {
         // @formatter:on
 
         return http.build();
-    }
-
-    /**
-     * Необходимый класс-пустышка
-     * для реализации switch режимов работы безопасности
-     */
-    @ConditionalOnProperty(prefix = "security",
-            name = "enabled",
-            havingValue = "true")
-    @EnableWebSecurity
-    @EnableMethodSecurity
-    static class Dummy {
     }
 
     @Bean

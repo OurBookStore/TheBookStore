@@ -7,7 +7,7 @@ services:
     volumes:
       - postgres:/var/lib/postgresql/data
     environment:
-      POSTGRES_USER: admin
+#      POSTGRES_USER: admin
       POSTGRES_PASSWORD: admin
     networks:
       - app_network
@@ -29,7 +29,7 @@ services:
       - 8082:8080
     environment:
       KC_DB: postgres
-      KC_DB_URL: "jdbc:postgresql://book_store_postgres:5432/book-store-db"
+      KC_DB_URL: "jdbc:postgresql://book_store_postgres:5432/book_store_keycloak"
       KC_DB_USERNAME: admin
       KC_DB_PASSWORD: admin
       KC_DB_SCHEMA: public

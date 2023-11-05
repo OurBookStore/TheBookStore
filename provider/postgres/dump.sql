@@ -1,4 +1,41 @@
 --
+-- PostgreSQL database cluster dump
+--
+
+SET default_transaction_read_only = off;
+
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+
+--
+-- Roles
+--
+
+CREATE ROLE admin;
+ALTER ROLE admin WITH SUPERUSER INHERIT CREATEROLE CREATEDB LOGIN REPLICATION BYPASSRLS PASSWORD 'SCRAM-SHA-256$4096:l54qkNoSt2BVS7mXnj4SRQ==$X6MORVjih6JlVw9G0l3fZApPhcQRR/peM+7BjeMWyc8=:tBW4w28ol4qWaD1Jzn7BTdhijZZK47QgZdp403IyBEg=';
+
+--
+-- User Configurations
+--
+
+
+
+
+
+
+
+
+--
+-- Databases
+--
+
+--
+-- Database "template1" dump
+--
+
+\connect template1
+
+--
 -- PostgreSQL database dump
 --
 
@@ -17,15 +54,666 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 --
--- Name: book-store-db; Type: DATABASE; Schema: -; Owner: admin
+-- PostgreSQL database dump complete
 --
 
-CREATE DATABASE "book-store-db" WITH TEMPLATE = template0 ENCODING = 'UTF8' LOCALE_PROVIDER = libc LOCALE = 'en_US.utf8';
+--
+-- Database "admin" dump
+--
+
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 15.4 (Debian 15.4-2.pgdg120+1)
+-- Dumped by pg_dump version 15.3
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- Name: admin; Type: DATABASE; Schema: -; Owner: admin
+--
+
+CREATE DATABASE admin WITH TEMPLATE = template0 ENCODING = 'UTF8' LOCALE_PROVIDER = libc LOCALE = 'en_US.utf8';
 
 
-ALTER DATABASE "book-store-db" OWNER TO admin;
+ALTER DATABASE admin OWNER TO admin;
 
-\connect -reuse-previous=on "dbname='book-store-db'"
+\connect admin
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- PostgreSQL database dump complete
+--
+
+--
+-- Database "book_store" dump
+--
+
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 15.4 (Debian 15.4-2.pgdg120+1)
+-- Dumped by pg_dump version 15.3
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- Name: book_store; Type: DATABASE; Schema: -; Owner: admin
+--
+
+CREATE DATABASE book_store WITH TEMPLATE = template0 ENCODING = 'UTF8' LOCALE_PROVIDER = libc LOCALE = 'en_US.utf8';
+
+
+ALTER DATABASE book_store OWNER TO admin;
+
+\connect book_store
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+SET default_tablespace = '';
+
+SET default_table_access_method = heap;
+
+--
+-- Name: app_user_model; Type: TABLE; Schema: public; Owner: admin
+--
+
+CREATE TABLE public.app_user_model (
+                                       id bigint NOT NULL,
+                                       email character varying(255),
+                                       keycloak_id character varying(255),
+                                       nickname character varying(255),
+                                       password character varying(255),
+                                       cart_id bigint
+);
+
+
+ALTER TABLE public.app_user_model OWNER TO admin;
+
+--
+-- Name: app_user_model_id_seq; Type: SEQUENCE; Schema: public; Owner: admin
+--
+
+CREATE SEQUENCE public.app_user_model_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.app_user_model_id_seq OWNER TO admin;
+
+--
+-- Name: app_user_model_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: admin
+--
+
+ALTER SEQUENCE public.app_user_model_id_seq OWNED BY public.app_user_model.id;
+
+
+--
+-- Name: author_model; Type: TABLE; Schema: public; Owner: admin
+--
+
+CREATE TABLE public.author_model (
+                                     id bigint NOT NULL,
+                                     country character varying(255),
+                                     date_of_birth date,
+                                     full_name character varying(255)
+);
+
+
+ALTER TABLE public.author_model OWNER TO admin;
+
+--
+-- Name: author_model_id_seq; Type: SEQUENCE; Schema: public; Owner: admin
+--
+
+CREATE SEQUENCE public.author_model_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.author_model_id_seq OWNER TO admin;
+
+--
+-- Name: author_model_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: admin
+--
+
+ALTER SEQUENCE public.author_model_id_seq OWNED BY public.author_model.id;
+
+
+--
+-- Name: book_model; Type: TABLE; Schema: public; Owner: admin
+--
+
+CREATE TABLE public.book_model (
+                                   id bigint NOT NULL,
+                                   count integer NOT NULL,
+                                   name character varying(255),
+                                   price double precision NOT NULL
+);
+
+
+ALTER TABLE public.book_model OWNER TO admin;
+
+--
+-- Name: book_model_id_seq; Type: SEQUENCE; Schema: public; Owner: admin
+--
+
+CREATE SEQUENCE public.book_model_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.book_model_id_seq OWNER TO admin;
+
+--
+-- Name: book_model_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: admin
+--
+
+ALTER SEQUENCE public.book_model_id_seq OWNED BY public.book_model.id;
+
+
+--
+-- Name: cart_model; Type: TABLE; Schema: public; Owner: admin
+--
+
+CREATE TABLE public.cart_model (
+    id bigint NOT NULL
+);
+
+
+ALTER TABLE public.cart_model OWNER TO admin;
+
+--
+-- Name: cart_model_id_seq; Type: SEQUENCE; Schema: public; Owner: admin
+--
+
+CREATE SEQUENCE public.cart_model_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.cart_model_id_seq OWNER TO admin;
+
+--
+-- Name: cart_model_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: admin
+--
+
+ALTER SEQUENCE public.cart_model_id_seq OWNED BY public.cart_model.id;
+
+
+--
+-- Name: order_model; Type: TABLE; Schema: public; Owner: admin
+--
+
+CREATE TABLE public.order_model (
+                                    id bigint NOT NULL,
+                                    address character varying(255),
+                                    total_price double precision NOT NULL,
+                                    app_user_id bigint
+);
+
+
+ALTER TABLE public.order_model OWNER TO admin;
+
+--
+-- Name: order_model_id_seq; Type: SEQUENCE; Schema: public; Owner: admin
+--
+
+CREATE SEQUENCE public.order_model_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.order_model_id_seq OWNER TO admin;
+
+--
+-- Name: order_model_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: admin
+--
+
+ALTER SEQUENCE public.order_model_id_seq OWNED BY public.order_model.id;
+
+
+--
+-- Name: order_position_model; Type: TABLE; Schema: public; Owner: admin
+--
+
+CREATE TABLE public.order_position_model (
+                                             id bigint NOT NULL,
+                                             count integer NOT NULL,
+                                             price double precision NOT NULL,
+                                             book_id bigint,
+                                             cart_id bigint,
+                                             order_id bigint
+);
+
+
+ALTER TABLE public.order_position_model OWNER TO admin;
+
+--
+-- Name: order_position_model_id_seq; Type: SEQUENCE; Schema: public; Owner: admin
+--
+
+CREATE SEQUENCE public.order_position_model_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.order_position_model_id_seq OWNER TO admin;
+
+--
+-- Name: order_position_model_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: admin
+--
+
+ALTER SEQUENCE public.order_position_model_id_seq OWNED BY public.order_position_model.id;
+
+
+--
+-- Name: order_status_history_model; Type: TABLE; Schema: public; Owner: admin
+--
+
+CREATE TABLE public.order_status_history_model (
+                                                   id bigint NOT NULL,
+                                                   date_time timestamp(6) without time zone,
+                                                   is_actual boolean NOT NULL,
+                                                   status character varying(255),
+                                                   order_id bigint
+);
+
+
+ALTER TABLE public.order_status_history_model OWNER TO admin;
+
+--
+-- Name: order_status_history_model_id_seq; Type: SEQUENCE; Schema: public; Owner: admin
+--
+
+CREATE SEQUENCE public.order_status_history_model_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.order_status_history_model_id_seq OWNER TO admin;
+
+--
+-- Name: order_status_history_model_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: admin
+--
+
+ALTER SEQUENCE public.order_status_history_model_id_seq OWNED BY public.order_status_history_model.id;
+
+
+--
+-- Name: app_user_model id; Type: DEFAULT; Schema: public; Owner: admin
+--
+
+ALTER TABLE ONLY public.app_user_model ALTER COLUMN id SET DEFAULT nextval('public.app_user_model_id_seq'::regclass);
+
+
+--
+-- Name: author_model id; Type: DEFAULT; Schema: public; Owner: admin
+--
+
+ALTER TABLE ONLY public.author_model ALTER COLUMN id SET DEFAULT nextval('public.author_model_id_seq'::regclass);
+
+
+--
+-- Name: book_model id; Type: DEFAULT; Schema: public; Owner: admin
+--
+
+ALTER TABLE ONLY public.book_model ALTER COLUMN id SET DEFAULT nextval('public.book_model_id_seq'::regclass);
+
+
+--
+-- Name: cart_model id; Type: DEFAULT; Schema: public; Owner: admin
+--
+
+ALTER TABLE ONLY public.cart_model ALTER COLUMN id SET DEFAULT nextval('public.cart_model_id_seq'::regclass);
+
+
+--
+-- Name: order_model id; Type: DEFAULT; Schema: public; Owner: admin
+--
+
+ALTER TABLE ONLY public.order_model ALTER COLUMN id SET DEFAULT nextval('public.order_model_id_seq'::regclass);
+
+
+--
+-- Name: order_position_model id; Type: DEFAULT; Schema: public; Owner: admin
+--
+
+ALTER TABLE ONLY public.order_position_model ALTER COLUMN id SET DEFAULT nextval('public.order_position_model_id_seq'::regclass);
+
+
+--
+-- Name: order_status_history_model id; Type: DEFAULT; Schema: public; Owner: admin
+--
+
+ALTER TABLE ONLY public.order_status_history_model ALTER COLUMN id SET DEFAULT nextval('public.order_status_history_model_id_seq'::regclass);
+
+
+--
+-- Data for Name: app_user_model; Type: TABLE DATA; Schema: public; Owner: admin
+--
+
+INSERT INTO public.app_user_model VALUES (1, 'user@user', 'b387010c-2582-48ce-aab7-f28371cd9fee', 'user', 'user', 1);
+INSERT INTO public.app_user_model VALUES (2, 'admin@admin', '24756198-f4c1-4899-8a0d-1bcadd115f33', 'admin', 'admin', 2);
+
+
+--
+-- Data for Name: author_model; Type: TABLE DATA; Schema: public; Owner: admin
+--
+
+
+
+--
+-- Data for Name: book_model; Type: TABLE DATA; Schema: public; Owner: admin
+--
+
+
+
+--
+-- Data for Name: cart_model; Type: TABLE DATA; Schema: public; Owner: admin
+--
+
+INSERT INTO public.cart_model VALUES (1);
+INSERT INTO public.cart_model VALUES (2);
+
+
+--
+-- Data for Name: order_model; Type: TABLE DATA; Schema: public; Owner: admin
+--
+
+
+
+--
+-- Data for Name: order_position_model; Type: TABLE DATA; Schema: public; Owner: admin
+--
+
+
+
+--
+-- Data for Name: order_status_history_model; Type: TABLE DATA; Schema: public; Owner: admin
+--
+
+
+
+--
+-- Name: app_user_model_id_seq; Type: SEQUENCE SET; Schema: public; Owner: admin
+--
+
+SELECT pg_catalog.setval('public.app_user_model_id_seq', 2, true);
+
+
+--
+-- Name: author_model_id_seq; Type: SEQUENCE SET; Schema: public; Owner: admin
+--
+
+SELECT pg_catalog.setval('public.author_model_id_seq', 1, false);
+
+
+--
+-- Name: book_model_id_seq; Type: SEQUENCE SET; Schema: public; Owner: admin
+--
+
+SELECT pg_catalog.setval('public.book_model_id_seq', 1, false);
+
+
+--
+-- Name: cart_model_id_seq; Type: SEQUENCE SET; Schema: public; Owner: admin
+--
+
+SELECT pg_catalog.setval('public.cart_model_id_seq', 2, true);
+
+
+--
+-- Name: order_model_id_seq; Type: SEQUENCE SET; Schema: public; Owner: admin
+--
+
+SELECT pg_catalog.setval('public.order_model_id_seq', 1, false);
+
+
+--
+-- Name: order_position_model_id_seq; Type: SEQUENCE SET; Schema: public; Owner: admin
+--
+
+SELECT pg_catalog.setval('public.order_position_model_id_seq', 1, false);
+
+
+--
+-- Name: order_status_history_model_id_seq; Type: SEQUENCE SET; Schema: public; Owner: admin
+--
+
+SELECT pg_catalog.setval('public.order_status_history_model_id_seq', 1, false);
+
+
+--
+-- Name: app_user_model app_user_model_pkey; Type: CONSTRAINT; Schema: public; Owner: admin
+--
+
+ALTER TABLE ONLY public.app_user_model
+    ADD CONSTRAINT app_user_model_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: author_model author_model_pkey; Type: CONSTRAINT; Schema: public; Owner: admin
+--
+
+ALTER TABLE ONLY public.author_model
+    ADD CONSTRAINT author_model_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: book_model book_model_pkey; Type: CONSTRAINT; Schema: public; Owner: admin
+--
+
+ALTER TABLE ONLY public.book_model
+    ADD CONSTRAINT book_model_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: cart_model cart_model_pkey; Type: CONSTRAINT; Schema: public; Owner: admin
+--
+
+ALTER TABLE ONLY public.cart_model
+    ADD CONSTRAINT cart_model_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: order_model order_model_pkey; Type: CONSTRAINT; Schema: public; Owner: admin
+--
+
+ALTER TABLE ONLY public.order_model
+    ADD CONSTRAINT order_model_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: order_position_model order_position_model_pkey; Type: CONSTRAINT; Schema: public; Owner: admin
+--
+
+ALTER TABLE ONLY public.order_position_model
+    ADD CONSTRAINT order_position_model_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: order_status_history_model order_status_history_model_pkey; Type: CONSTRAINT; Schema: public; Owner: admin
+--
+
+ALTER TABLE ONLY public.order_status_history_model
+    ADD CONSTRAINT order_status_history_model_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: app_user_model uk_91d0708apcws8l9ymel9cktju; Type: CONSTRAINT; Schema: public; Owner: admin
+--
+
+ALTER TABLE ONLY public.app_user_model
+    ADD CONSTRAINT uk_91d0708apcws8l9ymel9cktju UNIQUE (keycloak_id);
+
+
+--
+-- Name: order_status_history_model ukh0a02jy038c5hi701gt0205lp; Type: CONSTRAINT; Schema: public; Owner: admin
+--
+
+ALTER TABLE ONLY public.order_status_history_model
+    ADD CONSTRAINT ukh0a02jy038c5hi701gt0205lp UNIQUE (order_id, status);
+
+
+--
+-- Name: idx7998rlv3aq5q68hhiuudkktlg; Type: INDEX; Schema: public; Owner: admin
+--
+
+CREATE INDEX idx7998rlv3aq5q68hhiuudkktlg ON public.order_model USING btree (app_user_id);
+
+
+--
+-- Name: idx91d0708apcws8l9ymel9cktju; Type: INDEX; Schema: public; Owner: admin
+--
+
+CREATE INDEX idx91d0708apcws8l9ymel9cktju ON public.app_user_model USING btree (keycloak_id);
+
+
+--
+-- Name: order_model fk67x3rqt5g0e5ksdtbnuahy8p1; Type: FK CONSTRAINT; Schema: public; Owner: admin
+--
+
+ALTER TABLE ONLY public.order_model
+    ADD CONSTRAINT fk67x3rqt5g0e5ksdtbnuahy8p1 FOREIGN KEY (app_user_id) REFERENCES public.app_user_model(id);
+
+
+--
+-- Name: order_position_model fkaabd4q0h6x4daywnj4mbc4ebr; Type: FK CONSTRAINT; Schema: public; Owner: admin
+--
+
+ALTER TABLE ONLY public.order_position_model
+    ADD CONSTRAINT fkaabd4q0h6x4daywnj4mbc4ebr FOREIGN KEY (book_id) REFERENCES public.book_model(id);
+
+
+--
+-- Name: order_position_model fkbei934attcbj7udts8we6sov0; Type: FK CONSTRAINT; Schema: public; Owner: admin
+--
+
+ALTER TABLE ONLY public.order_position_model
+    ADD CONSTRAINT fkbei934attcbj7udts8we6sov0 FOREIGN KEY (cart_id) REFERENCES public.cart_model(id);
+
+
+--
+-- Name: order_position_model fkelu1l2yurfuvq7ah979q5ot2h; Type: FK CONSTRAINT; Schema: public; Owner: admin
+--
+
+ALTER TABLE ONLY public.order_position_model
+    ADD CONSTRAINT fkelu1l2yurfuvq7ah979q5ot2h FOREIGN KEY (order_id) REFERENCES public.order_model(id);
+
+
+--
+-- Name: app_user_model fkp04njt87rh9c5muq69y6ey5kk; Type: FK CONSTRAINT; Schema: public; Owner: admin
+--
+
+ALTER TABLE ONLY public.app_user_model
+    ADD CONSTRAINT fkp04njt87rh9c5muq69y6ey5kk FOREIGN KEY (cart_id) REFERENCES public.cart_model(id);
+
+
+--
+-- Name: order_status_history_model fkybgu7daw3vh3qdj59c6pqxse; Type: FK CONSTRAINT; Schema: public; Owner: admin
+--
+
+ALTER TABLE ONLY public.order_status_history_model
+    ADD CONSTRAINT fkybgu7daw3vh3qdj59c6pqxse FOREIGN KEY (order_id) REFERENCES public.order_model(id);
+
+
+--
+-- PostgreSQL database dump complete
+--
+
+--
+-- Database "book_store_keycloak" dump
+--
+
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 15.4 (Debian 15.4-2.pgdg120+1)
+-- Dumped by pg_dump version 15.3
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- Name: book_store_keycloak; Type: DATABASE; Schema: -; Owner: admin
+--
+
+CREATE DATABASE book_store_keycloak WITH TEMPLATE = template0 ENCODING = 'UTF8' LOCALE_PROVIDER = libc LOCALE = 'en_US.utf8';
+
+
+ALTER DATABASE book_store_keycloak OWNER TO admin;
+
+\connect book_store_keycloak
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -1486,115 +2174,115 @@ ALTER TABLE public.web_origins OWNER TO admin;
 -- Data for Name: authentication_execution; Type: TABLE DATA; Schema: public; Owner: admin
 --
 
-INSERT INTO public.authentication_execution VALUES ('7224e571-b0df-4862-8701-f4f34f968c18', NULL, 'auth-cookie', '22037ef2-30b3-470d-85d6-637d3c8b987f', '939b4814-33da-4863-8614-148695102913', 2, 10, false, NULL, NULL);
-INSERT INTO public.authentication_execution VALUES ('fda5ebd0-e2b0-4701-8283-f62a01becd16', NULL, 'auth-spnego', '22037ef2-30b3-470d-85d6-637d3c8b987f', '939b4814-33da-4863-8614-148695102913', 3, 20, false, NULL, NULL);
-INSERT INTO public.authentication_execution VALUES ('7fa412b8-00a3-4cff-94f3-097309ada738', NULL, 'identity-provider-redirector', '22037ef2-30b3-470d-85d6-637d3c8b987f', '939b4814-33da-4863-8614-148695102913', 2, 25, false, NULL, NULL);
-INSERT INTO public.authentication_execution VALUES ('69e2d88b-2c8e-4a39-9a80-274112c8626c', NULL, NULL, '22037ef2-30b3-470d-85d6-637d3c8b987f', '939b4814-33da-4863-8614-148695102913', 2, 30, true, '1bef60df-5a43-4fae-9b4d-0cd5772f7825', NULL);
-INSERT INTO public.authentication_execution VALUES ('1031a3aa-6185-452e-b293-2230dd489a94', NULL, 'auth-username-password-form', '22037ef2-30b3-470d-85d6-637d3c8b987f', '1bef60df-5a43-4fae-9b4d-0cd5772f7825', 0, 10, false, NULL, NULL);
-INSERT INTO public.authentication_execution VALUES ('6e162f87-3755-44b0-bb7f-4316186d2d77', NULL, NULL, '22037ef2-30b3-470d-85d6-637d3c8b987f', '1bef60df-5a43-4fae-9b4d-0cd5772f7825', 1, 20, true, '78cb7b46-0d41-4ee0-8c58-9a78d88eb22e', NULL);
-INSERT INTO public.authentication_execution VALUES ('df93ef79-992a-42d2-a4ba-77f196af9a5b', NULL, 'conditional-user-configured', '22037ef2-30b3-470d-85d6-637d3c8b987f', '78cb7b46-0d41-4ee0-8c58-9a78d88eb22e', 0, 10, false, NULL, NULL);
-INSERT INTO public.authentication_execution VALUES ('c2e4ce8a-87a7-4b85-a813-cf560cd4a6a5', NULL, 'auth-otp-form', '22037ef2-30b3-470d-85d6-637d3c8b987f', '78cb7b46-0d41-4ee0-8c58-9a78d88eb22e', 0, 20, false, NULL, NULL);
-INSERT INTO public.authentication_execution VALUES ('2de2cbbd-4de1-4993-80fc-5362a7d4e719', NULL, 'direct-grant-validate-username', '22037ef2-30b3-470d-85d6-637d3c8b987f', '8b22fc3b-9675-4f23-85c9-51a2c27cd948', 0, 10, false, NULL, NULL);
-INSERT INTO public.authentication_execution VALUES ('b2cd00bb-ebe6-4414-a7b3-ed47ce5cfd94', NULL, 'direct-grant-validate-password', '22037ef2-30b3-470d-85d6-637d3c8b987f', '8b22fc3b-9675-4f23-85c9-51a2c27cd948', 0, 20, false, NULL, NULL);
-INSERT INTO public.authentication_execution VALUES ('7d6765e5-03f3-4caf-9564-27f9bbf0677f', NULL, NULL, '22037ef2-30b3-470d-85d6-637d3c8b987f', '8b22fc3b-9675-4f23-85c9-51a2c27cd948', 1, 30, true, 'ec3912e5-b896-4c68-82ca-f7a1d14998c9', NULL);
-INSERT INTO public.authentication_execution VALUES ('0ef06034-2e79-4dde-8149-c3f6921f3dc6', NULL, 'conditional-user-configured', '22037ef2-30b3-470d-85d6-637d3c8b987f', 'ec3912e5-b896-4c68-82ca-f7a1d14998c9', 0, 10, false, NULL, NULL);
-INSERT INTO public.authentication_execution VALUES ('533fa689-56d0-49a3-aa83-79b5e2ccf54a', NULL, 'direct-grant-validate-otp', '22037ef2-30b3-470d-85d6-637d3c8b987f', 'ec3912e5-b896-4c68-82ca-f7a1d14998c9', 0, 20, false, NULL, NULL);
-INSERT INTO public.authentication_execution VALUES ('3b372838-2f21-434e-8297-bd843fa119ef', NULL, 'registration-page-form', '22037ef2-30b3-470d-85d6-637d3c8b987f', '634c1c33-d32b-44f1-b594-8ad69f8a9874', 0, 10, true, '32289ba9-06b5-489a-889b-49abad42dfbf', NULL);
-INSERT INTO public.authentication_execution VALUES ('9d692706-c520-4a60-898c-b153c8e31c65', NULL, 'registration-user-creation', '22037ef2-30b3-470d-85d6-637d3c8b987f', '32289ba9-06b5-489a-889b-49abad42dfbf', 0, 20, false, NULL, NULL);
-INSERT INTO public.authentication_execution VALUES ('7b04ec98-0e8e-476c-9d38-f747cddf51d6', NULL, 'registration-profile-action', '22037ef2-30b3-470d-85d6-637d3c8b987f', '32289ba9-06b5-489a-889b-49abad42dfbf', 0, 40, false, NULL, NULL);
-INSERT INTO public.authentication_execution VALUES ('0d2375bb-6217-4c57-8854-1fc1fb7b85d8', NULL, 'registration-password-action', '22037ef2-30b3-470d-85d6-637d3c8b987f', '32289ba9-06b5-489a-889b-49abad42dfbf', 0, 50, false, NULL, NULL);
-INSERT INTO public.authentication_execution VALUES ('b6126e40-16eb-4ff8-9a5b-1d95e79394ab', NULL, 'registration-recaptcha-action', '22037ef2-30b3-470d-85d6-637d3c8b987f', '32289ba9-06b5-489a-889b-49abad42dfbf', 3, 60, false, NULL, NULL);
-INSERT INTO public.authentication_execution VALUES ('7b1b5db7-0887-4df1-a0f4-fdee5e3dc1dc', NULL, 'registration-terms-and-conditions', '22037ef2-30b3-470d-85d6-637d3c8b987f', '32289ba9-06b5-489a-889b-49abad42dfbf', 3, 70, false, NULL, NULL);
-INSERT INTO public.authentication_execution VALUES ('8a46c4c1-038a-4ff5-8e88-e86bc2b1748c', NULL, 'reset-credentials-choose-user', '22037ef2-30b3-470d-85d6-637d3c8b987f', '524ab0a5-b0f6-472a-a792-4780f4189f3d', 0, 10, false, NULL, NULL);
-INSERT INTO public.authentication_execution VALUES ('4892f640-a46b-4df1-b72d-7a02bf726448', NULL, 'reset-credential-email', '22037ef2-30b3-470d-85d6-637d3c8b987f', '524ab0a5-b0f6-472a-a792-4780f4189f3d', 0, 20, false, NULL, NULL);
-INSERT INTO public.authentication_execution VALUES ('afa9e217-bdea-4686-a8ce-277cd1b25031', NULL, 'reset-password', '22037ef2-30b3-470d-85d6-637d3c8b987f', '524ab0a5-b0f6-472a-a792-4780f4189f3d', 0, 30, false, NULL, NULL);
-INSERT INTO public.authentication_execution VALUES ('2dd9a1e9-c91f-4b8c-9088-477d0cdcb337', NULL, NULL, '22037ef2-30b3-470d-85d6-637d3c8b987f', '524ab0a5-b0f6-472a-a792-4780f4189f3d', 1, 40, true, '5809c4c0-80a4-4925-9cad-43540b837924', NULL);
-INSERT INTO public.authentication_execution VALUES ('2542e01e-c8c4-4b1a-8286-e181b4de9074', NULL, 'conditional-user-configured', '22037ef2-30b3-470d-85d6-637d3c8b987f', '5809c4c0-80a4-4925-9cad-43540b837924', 0, 10, false, NULL, NULL);
-INSERT INTO public.authentication_execution VALUES ('f79c63d0-e028-4f43-978a-9aa22d1c3be7', NULL, 'reset-otp', '22037ef2-30b3-470d-85d6-637d3c8b987f', '5809c4c0-80a4-4925-9cad-43540b837924', 0, 20, false, NULL, NULL);
-INSERT INTO public.authentication_execution VALUES ('9640249d-2065-41ce-a070-5db3bdfb2bd3', NULL, 'client-secret', '22037ef2-30b3-470d-85d6-637d3c8b987f', '33952e99-a84e-4c60-b590-4cb507237dd4', 2, 10, false, NULL, NULL);
-INSERT INTO public.authentication_execution VALUES ('321dde1e-cdcc-4708-81c7-c4d3d94db52c', NULL, 'client-jwt', '22037ef2-30b3-470d-85d6-637d3c8b987f', '33952e99-a84e-4c60-b590-4cb507237dd4', 2, 20, false, NULL, NULL);
-INSERT INTO public.authentication_execution VALUES ('7f29861a-fae5-4f85-a780-59d05ffc72cd', NULL, 'client-secret-jwt', '22037ef2-30b3-470d-85d6-637d3c8b987f', '33952e99-a84e-4c60-b590-4cb507237dd4', 2, 30, false, NULL, NULL);
-INSERT INTO public.authentication_execution VALUES ('4d0bc112-fc09-40a1-b9cd-6bfee851f272', NULL, 'client-x509', '22037ef2-30b3-470d-85d6-637d3c8b987f', '33952e99-a84e-4c60-b590-4cb507237dd4', 2, 40, false, NULL, NULL);
-INSERT INTO public.authentication_execution VALUES ('a57c878f-dfa1-4088-bb6e-e5ecd6de7f3d', NULL, 'idp-review-profile', '22037ef2-30b3-470d-85d6-637d3c8b987f', '8e1a8fab-8003-4d35-ace4-f2efc6e5c1a4', 0, 10, false, NULL, 'a7398ce0-07a0-4117-8767-8c66c2b160b8');
-INSERT INTO public.authentication_execution VALUES ('f68cf80a-9960-4370-96b6-7a8bb4622a79', NULL, NULL, '22037ef2-30b3-470d-85d6-637d3c8b987f', '8e1a8fab-8003-4d35-ace4-f2efc6e5c1a4', 0, 20, true, '6867cc25-0c1f-42c2-9bfb-a662e86378fe', NULL);
-INSERT INTO public.authentication_execution VALUES ('64261b7b-170f-4d19-88b8-cd48b4a47a73', NULL, 'idp-create-user-if-unique', '22037ef2-30b3-470d-85d6-637d3c8b987f', '6867cc25-0c1f-42c2-9bfb-a662e86378fe', 2, 10, false, NULL, 'd81ffc4b-143c-4f70-a0cd-550b697f3f90');
-INSERT INTO public.authentication_execution VALUES ('61704913-6ef7-4eee-a628-ec8e16367b6c', NULL, NULL, '22037ef2-30b3-470d-85d6-637d3c8b987f', '6867cc25-0c1f-42c2-9bfb-a662e86378fe', 2, 20, true, '83dfbb4a-4f61-4661-ac16-c16d9996e26e', NULL);
-INSERT INTO public.authentication_execution VALUES ('9e63d596-16b3-4b40-9b2c-d328ff1ccd02', NULL, 'idp-confirm-link', '22037ef2-30b3-470d-85d6-637d3c8b987f', '83dfbb4a-4f61-4661-ac16-c16d9996e26e', 0, 10, false, NULL, NULL);
-INSERT INTO public.authentication_execution VALUES ('fd1850c8-e8d4-4049-9e60-2158f1a25024', NULL, NULL, '22037ef2-30b3-470d-85d6-637d3c8b987f', '83dfbb4a-4f61-4661-ac16-c16d9996e26e', 0, 20, true, '4fca0cb7-8131-4178-acc9-f150c9d80762', NULL);
-INSERT INTO public.authentication_execution VALUES ('f1b8fc3a-786b-4c19-82d7-07059742955b', NULL, 'idp-email-verification', '22037ef2-30b3-470d-85d6-637d3c8b987f', '4fca0cb7-8131-4178-acc9-f150c9d80762', 2, 10, false, NULL, NULL);
-INSERT INTO public.authentication_execution VALUES ('a8a029f0-ce3b-42b7-b19a-18f23878e5d1', NULL, NULL, '22037ef2-30b3-470d-85d6-637d3c8b987f', '4fca0cb7-8131-4178-acc9-f150c9d80762', 2, 20, true, '248f3627-cd0a-4159-9260-4e2f63d48415', NULL);
-INSERT INTO public.authentication_execution VALUES ('993622d2-e0b6-4504-9870-4ba38cefe45a', NULL, 'idp-username-password-form', '22037ef2-30b3-470d-85d6-637d3c8b987f', '248f3627-cd0a-4159-9260-4e2f63d48415', 0, 10, false, NULL, NULL);
-INSERT INTO public.authentication_execution VALUES ('61673f8e-6b6b-44c9-9f8b-e0fcb674d5f1', NULL, NULL, '22037ef2-30b3-470d-85d6-637d3c8b987f', '248f3627-cd0a-4159-9260-4e2f63d48415', 1, 20, true, 'c2331f94-cafd-4790-942d-bf4ba34441bc', NULL);
-INSERT INTO public.authentication_execution VALUES ('19e3e702-635b-483a-8395-efe9ea2d1fad', NULL, 'conditional-user-configured', '22037ef2-30b3-470d-85d6-637d3c8b987f', 'c2331f94-cafd-4790-942d-bf4ba34441bc', 0, 10, false, NULL, NULL);
-INSERT INTO public.authentication_execution VALUES ('0a62ee40-1ea1-4606-be16-9abf73d731d5', NULL, 'auth-otp-form', '22037ef2-30b3-470d-85d6-637d3c8b987f', 'c2331f94-cafd-4790-942d-bf4ba34441bc', 0, 20, false, NULL, NULL);
-INSERT INTO public.authentication_execution VALUES ('e95e1d2b-1328-4a86-9a16-528301c549a3', NULL, 'http-basic-authenticator', '22037ef2-30b3-470d-85d6-637d3c8b987f', 'cb45feeb-4741-45e7-afdd-5b524c6b26e4', 0, 10, false, NULL, NULL);
-INSERT INTO public.authentication_execution VALUES ('7528e8ca-9a15-4839-9ea1-e82772176be7', NULL, 'docker-http-basic-authenticator', '22037ef2-30b3-470d-85d6-637d3c8b987f', '1315e749-e301-4c8e-ba1d-ff0a753e7bca', 0, 10, false, NULL, NULL);
-INSERT INTO public.authentication_execution VALUES ('72ce7bcb-2c46-4047-bf85-2c5553b1493e', NULL, 'idp-email-verification', '662f6baf-45d0-437d-b002-c3f9ccdcb69d', '2c212dee-ad76-414c-a0a9-fdfae1dab9e7', 2, 10, false, NULL, NULL);
-INSERT INTO public.authentication_execution VALUES ('62f171e5-1f8a-4cec-b811-bd13e976c922', NULL, NULL, '662f6baf-45d0-437d-b002-c3f9ccdcb69d', '2c212dee-ad76-414c-a0a9-fdfae1dab9e7', 2, 20, true, '7e683a5b-de1a-4768-a163-457d57458978', NULL);
-INSERT INTO public.authentication_execution VALUES ('b37f31d1-43a5-4a2a-9d4c-9a4765795d68', NULL, 'conditional-user-configured', '662f6baf-45d0-437d-b002-c3f9ccdcb69d', '1d76af7e-8c7c-46e1-bbc0-3fc0f95ddfda', 0, 10, false, NULL, NULL);
-INSERT INTO public.authentication_execution VALUES ('763cfe15-f095-4438-aaca-039fe694bdc9', NULL, 'auth-otp-form', '662f6baf-45d0-437d-b002-c3f9ccdcb69d', '1d76af7e-8c7c-46e1-bbc0-3fc0f95ddfda', 0, 20, false, NULL, NULL);
-INSERT INTO public.authentication_execution VALUES ('899e994a-4c78-45c2-bc9b-530a163ad29f', NULL, 'conditional-user-configured', '662f6baf-45d0-437d-b002-c3f9ccdcb69d', '64ef3b81-6e8b-4ad7-a258-29e548388c11', 0, 10, false, NULL, NULL);
-INSERT INTO public.authentication_execution VALUES ('90861955-05a7-472e-ba84-8d5e27e04796', NULL, 'direct-grant-validate-otp', '662f6baf-45d0-437d-b002-c3f9ccdcb69d', '64ef3b81-6e8b-4ad7-a258-29e548388c11', 0, 20, false, NULL, NULL);
-INSERT INTO public.authentication_execution VALUES ('4e377a9b-b314-4719-b141-2eeae7361583', NULL, 'conditional-user-configured', '662f6baf-45d0-437d-b002-c3f9ccdcb69d', '9d4a44f5-09fc-4a13-8ca5-ca54f4ce38d9', 0, 10, false, NULL, NULL);
-INSERT INTO public.authentication_execution VALUES ('af855296-83a4-4202-8552-8b6d398e10e6', NULL, 'auth-otp-form', '662f6baf-45d0-437d-b002-c3f9ccdcb69d', '9d4a44f5-09fc-4a13-8ca5-ca54f4ce38d9', 0, 20, false, NULL, NULL);
-INSERT INTO public.authentication_execution VALUES ('f50bd3f2-fe1b-4655-b4cf-fa9d10165211', NULL, 'idp-confirm-link', '662f6baf-45d0-437d-b002-c3f9ccdcb69d', '2457a574-ea6d-4de8-b419-db9876bde108', 0, 10, false, NULL, NULL);
-INSERT INTO public.authentication_execution VALUES ('f2d7518d-d388-47f2-b914-851af881a697', NULL, NULL, '662f6baf-45d0-437d-b002-c3f9ccdcb69d', '2457a574-ea6d-4de8-b419-db9876bde108', 0, 20, true, '2c212dee-ad76-414c-a0a9-fdfae1dab9e7', NULL);
-INSERT INTO public.authentication_execution VALUES ('ae8a9962-cb8f-4242-ac63-7dfb82b729fe', NULL, 'conditional-user-configured', '662f6baf-45d0-437d-b002-c3f9ccdcb69d', '43ccd003-31b8-44da-93f8-6724bcb8b503', 0, 10, false, NULL, NULL);
-INSERT INTO public.authentication_execution VALUES ('c19c6061-946e-4125-bdce-398d4edf9484', NULL, 'reset-otp', '662f6baf-45d0-437d-b002-c3f9ccdcb69d', '43ccd003-31b8-44da-93f8-6724bcb8b503', 0, 20, false, NULL, NULL);
-INSERT INTO public.authentication_execution VALUES ('0a4d9a5a-2666-4b07-8667-d51a64c88008', NULL, 'idp-create-user-if-unique', '662f6baf-45d0-437d-b002-c3f9ccdcb69d', '2cfc1295-cd45-43c7-b8e6-bd14ae5e685e', 2, 10, false, NULL, '9295d203-65a1-4d61-ad4a-081a4dc16aee');
-INSERT INTO public.authentication_execution VALUES ('33617fec-94a5-4b94-bde1-3ce813920f70', NULL, NULL, '662f6baf-45d0-437d-b002-c3f9ccdcb69d', '2cfc1295-cd45-43c7-b8e6-bd14ae5e685e', 2, 20, true, '2457a574-ea6d-4de8-b419-db9876bde108', NULL);
-INSERT INTO public.authentication_execution VALUES ('02ca5f4e-14b8-4c01-a686-8f25a3e40d2b', NULL, 'idp-username-password-form', '662f6baf-45d0-437d-b002-c3f9ccdcb69d', '7e683a5b-de1a-4768-a163-457d57458978', 0, 10, false, NULL, NULL);
-INSERT INTO public.authentication_execution VALUES ('4728e30a-c39c-4c82-8e68-0a61b0fddf8c', NULL, NULL, '662f6baf-45d0-437d-b002-c3f9ccdcb69d', '7e683a5b-de1a-4768-a163-457d57458978', 1, 20, true, '9d4a44f5-09fc-4a13-8ca5-ca54f4ce38d9', NULL);
-INSERT INTO public.authentication_execution VALUES ('f91f66a4-bfee-4091-b6e8-31b7e107706e', NULL, 'auth-cookie', '662f6baf-45d0-437d-b002-c3f9ccdcb69d', '520fad15-8981-402d-a4a1-501d74ff1e5d', 2, 10, false, NULL, NULL);
-INSERT INTO public.authentication_execution VALUES ('e0742228-b70c-4ba5-82d6-ce739ed9b9cd', NULL, 'auth-spnego', '662f6baf-45d0-437d-b002-c3f9ccdcb69d', '520fad15-8981-402d-a4a1-501d74ff1e5d', 3, 20, false, NULL, NULL);
-INSERT INTO public.authentication_execution VALUES ('5143d505-aa09-4c88-ba45-a1bd14d68b75', NULL, 'identity-provider-redirector', '662f6baf-45d0-437d-b002-c3f9ccdcb69d', '520fad15-8981-402d-a4a1-501d74ff1e5d', 2, 25, false, NULL, NULL);
-INSERT INTO public.authentication_execution VALUES ('cb2a3b58-c4e1-4fb3-a708-ea121c8cfbb9', NULL, NULL, '662f6baf-45d0-437d-b002-c3f9ccdcb69d', '520fad15-8981-402d-a4a1-501d74ff1e5d', 2, 30, true, '6a6972fe-39d2-46ad-b0c3-675e4c7494f8', NULL);
-INSERT INTO public.authentication_execution VALUES ('e347f297-84b3-4ef5-ac45-c7119c643380', NULL, 'client-secret', '662f6baf-45d0-437d-b002-c3f9ccdcb69d', '624a9489-d8ed-4b14-a78f-975f06c16818', 2, 10, false, NULL, NULL);
-INSERT INTO public.authentication_execution VALUES ('fa09fe83-687d-4441-9e84-5539c5741536', NULL, 'client-jwt', '662f6baf-45d0-437d-b002-c3f9ccdcb69d', '624a9489-d8ed-4b14-a78f-975f06c16818', 2, 20, false, NULL, NULL);
-INSERT INTO public.authentication_execution VALUES ('4bb03b38-11bb-436d-8d74-a1d7f459612d', NULL, 'client-secret-jwt', '662f6baf-45d0-437d-b002-c3f9ccdcb69d', '624a9489-d8ed-4b14-a78f-975f06c16818', 2, 30, false, NULL, NULL);
-INSERT INTO public.authentication_execution VALUES ('4d03dabd-feef-4e56-8a35-8906ac19972c', NULL, 'client-x509', '662f6baf-45d0-437d-b002-c3f9ccdcb69d', '624a9489-d8ed-4b14-a78f-975f06c16818', 2, 40, false, NULL, NULL);
-INSERT INTO public.authentication_execution VALUES ('c2f39aaf-9e4e-4897-ae67-4d99564b59ef', NULL, 'direct-grant-validate-username', '662f6baf-45d0-437d-b002-c3f9ccdcb69d', '5f092739-61f4-41c0-bba6-24beb17d3692', 0, 10, false, NULL, NULL);
-INSERT INTO public.authentication_execution VALUES ('dfca1109-5aff-451b-ab11-7f33dbeb94fc', NULL, 'direct-grant-validate-password', '662f6baf-45d0-437d-b002-c3f9ccdcb69d', '5f092739-61f4-41c0-bba6-24beb17d3692', 0, 20, false, NULL, NULL);
-INSERT INTO public.authentication_execution VALUES ('0644d8a6-ae92-4a6b-9185-e638a900e3b6', NULL, NULL, '662f6baf-45d0-437d-b002-c3f9ccdcb69d', '5f092739-61f4-41c0-bba6-24beb17d3692', 1, 30, true, '64ef3b81-6e8b-4ad7-a258-29e548388c11', NULL);
-INSERT INTO public.authentication_execution VALUES ('70e2eba1-6fa1-4dd5-9539-5ab0e99bf7b9', NULL, 'docker-http-basic-authenticator', '662f6baf-45d0-437d-b002-c3f9ccdcb69d', '128ad414-638b-47ef-9596-d9296d7b785d', 0, 10, false, NULL, NULL);
-INSERT INTO public.authentication_execution VALUES ('15f8201e-bf51-44a0-9701-e5e13ba535ed', NULL, 'idp-review-profile', '662f6baf-45d0-437d-b002-c3f9ccdcb69d', 'd31ee24b-2d32-4f28-a496-168400c7c27f', 0, 10, false, NULL, '05f5f1a3-e153-4fc8-af4a-cb39f4a3ffa0');
-INSERT INTO public.authentication_execution VALUES ('ca72f9e0-6b72-405b-b5b3-07a28be7049a', NULL, NULL, '662f6baf-45d0-437d-b002-c3f9ccdcb69d', 'd31ee24b-2d32-4f28-a496-168400c7c27f', 0, 20, true, '2cfc1295-cd45-43c7-b8e6-bd14ae5e685e', NULL);
-INSERT INTO public.authentication_execution VALUES ('3ce6cb98-5c7d-4dc8-ab39-95ab1f660954', NULL, 'auth-username-password-form', '662f6baf-45d0-437d-b002-c3f9ccdcb69d', '6a6972fe-39d2-46ad-b0c3-675e4c7494f8', 0, 10, false, NULL, NULL);
-INSERT INTO public.authentication_execution VALUES ('95ad9a19-9958-4333-bd8b-fd70f98062f6', NULL, NULL, '662f6baf-45d0-437d-b002-c3f9ccdcb69d', '6a6972fe-39d2-46ad-b0c3-675e4c7494f8', 1, 20, true, '1d76af7e-8c7c-46e1-bbc0-3fc0f95ddfda', NULL);
-INSERT INTO public.authentication_execution VALUES ('feb9d62f-41cd-4a9b-9a33-b04b56d2eb21', NULL, 'registration-page-form', '662f6baf-45d0-437d-b002-c3f9ccdcb69d', '2702976c-d524-4ac9-aecb-d15bdc2e106c', 0, 10, true, 'e70d46c7-23b9-4274-9211-275c58d18c07', NULL);
-INSERT INTO public.authentication_execution VALUES ('32116033-05c3-4f67-a1dc-a43482ead171', NULL, 'registration-user-creation', '662f6baf-45d0-437d-b002-c3f9ccdcb69d', 'e70d46c7-23b9-4274-9211-275c58d18c07', 0, 20, false, NULL, NULL);
-INSERT INTO public.authentication_execution VALUES ('ead5b8f0-c85d-4220-94c1-ec503991a905', NULL, 'registration-profile-action', '662f6baf-45d0-437d-b002-c3f9ccdcb69d', 'e70d46c7-23b9-4274-9211-275c58d18c07', 0, 40, false, NULL, NULL);
-INSERT INTO public.authentication_execution VALUES ('e2ec38f1-a799-47fa-ac48-dc49d823582b', NULL, 'registration-password-action', '662f6baf-45d0-437d-b002-c3f9ccdcb69d', 'e70d46c7-23b9-4274-9211-275c58d18c07', 0, 50, false, NULL, NULL);
-INSERT INTO public.authentication_execution VALUES ('c7c747eb-baa0-47d4-8b47-5a3478099e53', NULL, 'registration-recaptcha-action', '662f6baf-45d0-437d-b002-c3f9ccdcb69d', 'e70d46c7-23b9-4274-9211-275c58d18c07', 3, 60, false, NULL, NULL);
-INSERT INTO public.authentication_execution VALUES ('ce2a67ef-2958-4bab-958b-e2b88122e499', NULL, 'reset-credentials-choose-user', '662f6baf-45d0-437d-b002-c3f9ccdcb69d', '066486dd-fef3-4290-a604-5a552c223679', 0, 10, false, NULL, NULL);
-INSERT INTO public.authentication_execution VALUES ('af63fe0c-45fd-4cbf-8c2b-cb24209bbad0', NULL, 'reset-credential-email', '662f6baf-45d0-437d-b002-c3f9ccdcb69d', '066486dd-fef3-4290-a604-5a552c223679', 0, 20, false, NULL, NULL);
-INSERT INTO public.authentication_execution VALUES ('bbcb8529-7dcc-497b-bccc-3c800caefdf9', NULL, 'reset-password', '662f6baf-45d0-437d-b002-c3f9ccdcb69d', '066486dd-fef3-4290-a604-5a552c223679', 0, 30, false, NULL, NULL);
-INSERT INTO public.authentication_execution VALUES ('38e51a77-ecf6-459a-b9d2-b22eca15e6d5', NULL, NULL, '662f6baf-45d0-437d-b002-c3f9ccdcb69d', '066486dd-fef3-4290-a604-5a552c223679', 1, 40, true, '43ccd003-31b8-44da-93f8-6724bcb8b503', NULL);
-INSERT INTO public.authentication_execution VALUES ('61db0574-b89b-44f1-b015-f67de21385b3', NULL, 'http-basic-authenticator', '662f6baf-45d0-437d-b002-c3f9ccdcb69d', 'c25faa73-2fa4-4a7b-9c75-9d135ae5b858', 0, 10, false, NULL, NULL);
+INSERT INTO public.authentication_execution VALUES ('b607d2a6-c446-4039-8541-4c32721a9b7b', NULL, 'auth-cookie', '546da6ad-8f65-4ce7-ba91-1346136c584b', '1831a8a7-b095-47cb-af32-34358c910c23', 2, 10, false, NULL, NULL);
+INSERT INTO public.authentication_execution VALUES ('61f0c7f8-1469-4841-b78c-727c21649e74', NULL, 'auth-spnego', '546da6ad-8f65-4ce7-ba91-1346136c584b', '1831a8a7-b095-47cb-af32-34358c910c23', 3, 20, false, NULL, NULL);
+INSERT INTO public.authentication_execution VALUES ('e8f8bb40-a016-4007-a69a-472ebc3a2633', NULL, 'identity-provider-redirector', '546da6ad-8f65-4ce7-ba91-1346136c584b', '1831a8a7-b095-47cb-af32-34358c910c23', 2, 25, false, NULL, NULL);
+INSERT INTO public.authentication_execution VALUES ('288f4d73-1057-40ca-a668-f6614a686746', NULL, NULL, '546da6ad-8f65-4ce7-ba91-1346136c584b', '1831a8a7-b095-47cb-af32-34358c910c23', 2, 30, true, '8854db31-b2bc-4e56-9711-e0c8d67d24da', NULL);
+INSERT INTO public.authentication_execution VALUES ('81ab87ac-8ad7-4c54-944b-79e2c91b3bdd', NULL, 'auth-username-password-form', '546da6ad-8f65-4ce7-ba91-1346136c584b', '8854db31-b2bc-4e56-9711-e0c8d67d24da', 0, 10, false, NULL, NULL);
+INSERT INTO public.authentication_execution VALUES ('ccdcbfc7-1a41-4c77-a530-371964a78724', NULL, NULL, '546da6ad-8f65-4ce7-ba91-1346136c584b', '8854db31-b2bc-4e56-9711-e0c8d67d24da', 1, 20, true, 'bbf5022a-fc0d-4eb7-bef5-cb2ad59b0314', NULL);
+INSERT INTO public.authentication_execution VALUES ('b148408d-0431-49e2-9987-bddfcc6b6bd4', NULL, 'conditional-user-configured', '546da6ad-8f65-4ce7-ba91-1346136c584b', 'bbf5022a-fc0d-4eb7-bef5-cb2ad59b0314', 0, 10, false, NULL, NULL);
+INSERT INTO public.authentication_execution VALUES ('68e4593f-caec-402f-b4ce-0320c7428ea4', NULL, 'auth-otp-form', '546da6ad-8f65-4ce7-ba91-1346136c584b', 'bbf5022a-fc0d-4eb7-bef5-cb2ad59b0314', 0, 20, false, NULL, NULL);
+INSERT INTO public.authentication_execution VALUES ('f58c5160-f704-4fb9-8aa8-dfede82ec5cc', NULL, 'direct-grant-validate-username', '546da6ad-8f65-4ce7-ba91-1346136c584b', 'eb488667-0489-455d-a132-6495674e968d', 0, 10, false, NULL, NULL);
+INSERT INTO public.authentication_execution VALUES ('b1988703-7e4f-4084-a949-925abf8e9f20', NULL, 'direct-grant-validate-password', '546da6ad-8f65-4ce7-ba91-1346136c584b', 'eb488667-0489-455d-a132-6495674e968d', 0, 20, false, NULL, NULL);
+INSERT INTO public.authentication_execution VALUES ('381addc9-3a93-4c3d-96a5-86627943b64c', NULL, NULL, '546da6ad-8f65-4ce7-ba91-1346136c584b', 'eb488667-0489-455d-a132-6495674e968d', 1, 30, true, '32a73661-dc51-461b-88d0-302739cf7aa6', NULL);
+INSERT INTO public.authentication_execution VALUES ('8c2cbd04-8213-4a4a-8af3-9891b0c8f656', NULL, 'conditional-user-configured', '546da6ad-8f65-4ce7-ba91-1346136c584b', '32a73661-dc51-461b-88d0-302739cf7aa6', 0, 10, false, NULL, NULL);
+INSERT INTO public.authentication_execution VALUES ('223dae35-0fd3-43c5-b145-c1c58579d5c5', NULL, 'direct-grant-validate-otp', '546da6ad-8f65-4ce7-ba91-1346136c584b', '32a73661-dc51-461b-88d0-302739cf7aa6', 0, 20, false, NULL, NULL);
+INSERT INTO public.authentication_execution VALUES ('178f13b2-caaf-4bf3-910b-71610936230e', NULL, 'registration-page-form', '546da6ad-8f65-4ce7-ba91-1346136c584b', '9c2febd6-149f-4fb8-8894-5c6c672bb61a', 0, 10, true, 'f4d19d2b-72b6-48d1-8fad-d866d3e10b31', NULL);
+INSERT INTO public.authentication_execution VALUES ('f1db0b6f-6974-4446-9ba4-2e11a9ef0346', NULL, 'registration-user-creation', '546da6ad-8f65-4ce7-ba91-1346136c584b', 'f4d19d2b-72b6-48d1-8fad-d866d3e10b31', 0, 20, false, NULL, NULL);
+INSERT INTO public.authentication_execution VALUES ('f96aa456-7ef3-4f07-9eeb-7a7349c85c9b', NULL, 'registration-profile-action', '546da6ad-8f65-4ce7-ba91-1346136c584b', 'f4d19d2b-72b6-48d1-8fad-d866d3e10b31', 0, 40, false, NULL, NULL);
+INSERT INTO public.authentication_execution VALUES ('7bf70f59-6c1a-4c57-819b-014a4b83e52b', NULL, 'registration-password-action', '546da6ad-8f65-4ce7-ba91-1346136c584b', 'f4d19d2b-72b6-48d1-8fad-d866d3e10b31', 0, 50, false, NULL, NULL);
+INSERT INTO public.authentication_execution VALUES ('abe892dc-20a1-43f5-b3a4-d5f5ab7cfbcf', NULL, 'registration-recaptcha-action', '546da6ad-8f65-4ce7-ba91-1346136c584b', 'f4d19d2b-72b6-48d1-8fad-d866d3e10b31', 3, 60, false, NULL, NULL);
+INSERT INTO public.authentication_execution VALUES ('89749c3f-aca7-4928-813f-f4c0b0abbb91', NULL, 'registration-terms-and-conditions', '546da6ad-8f65-4ce7-ba91-1346136c584b', 'f4d19d2b-72b6-48d1-8fad-d866d3e10b31', 3, 70, false, NULL, NULL);
+INSERT INTO public.authentication_execution VALUES ('3c4ac9f1-2dd0-4d9e-b06a-7cd1cc8477e0', NULL, 'reset-credentials-choose-user', '546da6ad-8f65-4ce7-ba91-1346136c584b', 'd74d02e8-2af3-43b9-9f80-031307f593a8', 0, 10, false, NULL, NULL);
+INSERT INTO public.authentication_execution VALUES ('8179c7bb-046f-4764-a51c-5c4fc3f11e27', NULL, 'reset-credential-email', '546da6ad-8f65-4ce7-ba91-1346136c584b', 'd74d02e8-2af3-43b9-9f80-031307f593a8', 0, 20, false, NULL, NULL);
+INSERT INTO public.authentication_execution VALUES ('921b546f-1b7f-4e60-b205-f0da55b4ae11', NULL, 'reset-password', '546da6ad-8f65-4ce7-ba91-1346136c584b', 'd74d02e8-2af3-43b9-9f80-031307f593a8', 0, 30, false, NULL, NULL);
+INSERT INTO public.authentication_execution VALUES ('143db70b-aab9-47dc-8dbf-06602aeee0ce', NULL, NULL, '546da6ad-8f65-4ce7-ba91-1346136c584b', 'd74d02e8-2af3-43b9-9f80-031307f593a8', 1, 40, true, '5a411131-bdf5-482f-a77e-8eb82136f1e6', NULL);
+INSERT INTO public.authentication_execution VALUES ('638c9bb1-918b-48e6-8ec0-c746ee17f8cf', NULL, 'conditional-user-configured', '546da6ad-8f65-4ce7-ba91-1346136c584b', '5a411131-bdf5-482f-a77e-8eb82136f1e6', 0, 10, false, NULL, NULL);
+INSERT INTO public.authentication_execution VALUES ('18aab01f-beac-4516-9c9a-a800e180daac', NULL, 'reset-otp', '546da6ad-8f65-4ce7-ba91-1346136c584b', '5a411131-bdf5-482f-a77e-8eb82136f1e6', 0, 20, false, NULL, NULL);
+INSERT INTO public.authentication_execution VALUES ('80a16829-d019-47fe-990c-a2da89265f97', NULL, 'client-secret', '546da6ad-8f65-4ce7-ba91-1346136c584b', '87347a35-0c82-4c71-933f-620d48e892cc', 2, 10, false, NULL, NULL);
+INSERT INTO public.authentication_execution VALUES ('25d653b9-eaed-40c5-842a-670ca843764d', NULL, 'client-jwt', '546da6ad-8f65-4ce7-ba91-1346136c584b', '87347a35-0c82-4c71-933f-620d48e892cc', 2, 20, false, NULL, NULL);
+INSERT INTO public.authentication_execution VALUES ('3cb85582-e5f0-4766-8cdc-00a3488e3599', NULL, 'client-secret-jwt', '546da6ad-8f65-4ce7-ba91-1346136c584b', '87347a35-0c82-4c71-933f-620d48e892cc', 2, 30, false, NULL, NULL);
+INSERT INTO public.authentication_execution VALUES ('1f84856b-40ea-45a9-a060-3844d4375e38', NULL, 'client-x509', '546da6ad-8f65-4ce7-ba91-1346136c584b', '87347a35-0c82-4c71-933f-620d48e892cc', 2, 40, false, NULL, NULL);
+INSERT INTO public.authentication_execution VALUES ('05f2d85b-d679-4fe4-ae39-0f14b56c9727', NULL, 'idp-review-profile', '546da6ad-8f65-4ce7-ba91-1346136c584b', '8adc6aa2-a108-49eb-ac19-f3fd8503329a', 0, 10, false, NULL, '5a8f8abf-fcde-4558-9aa3-557f9617bd53');
+INSERT INTO public.authentication_execution VALUES ('3ce38104-8f1d-4156-a5ed-40a5d9e8dd61', NULL, NULL, '546da6ad-8f65-4ce7-ba91-1346136c584b', '8adc6aa2-a108-49eb-ac19-f3fd8503329a', 0, 20, true, '9c5e6fcf-7127-4f4e-9167-d756b9c0a511', NULL);
+INSERT INTO public.authentication_execution VALUES ('b1255128-ff07-4de7-8bcb-5a8cfb964357', NULL, 'idp-create-user-if-unique', '546da6ad-8f65-4ce7-ba91-1346136c584b', '9c5e6fcf-7127-4f4e-9167-d756b9c0a511', 2, 10, false, NULL, '3e692b0d-860d-4a4c-9ccb-e53256019298');
+INSERT INTO public.authentication_execution VALUES ('d6ac7780-847a-46db-a277-5bb0a349bf01', NULL, NULL, '546da6ad-8f65-4ce7-ba91-1346136c584b', '9c5e6fcf-7127-4f4e-9167-d756b9c0a511', 2, 20, true, '5a83dac7-d0f3-4404-882d-0259e4f03689', NULL);
+INSERT INTO public.authentication_execution VALUES ('83b3ec03-b57d-4f0d-8a8e-660adfcd7a39', NULL, 'idp-confirm-link', '546da6ad-8f65-4ce7-ba91-1346136c584b', '5a83dac7-d0f3-4404-882d-0259e4f03689', 0, 10, false, NULL, NULL);
+INSERT INTO public.authentication_execution VALUES ('5ff6e323-4834-4f3b-981a-b5c641b6610b', NULL, NULL, '546da6ad-8f65-4ce7-ba91-1346136c584b', '5a83dac7-d0f3-4404-882d-0259e4f03689', 0, 20, true, 'd18a8e6c-c27b-4bb0-bae4-e49c67c50a93', NULL);
+INSERT INTO public.authentication_execution VALUES ('463ca8c2-b640-4dd9-9e10-90d9b1ceecf7', NULL, 'idp-email-verification', '546da6ad-8f65-4ce7-ba91-1346136c584b', 'd18a8e6c-c27b-4bb0-bae4-e49c67c50a93', 2, 10, false, NULL, NULL);
+INSERT INTO public.authentication_execution VALUES ('f7d242e9-ffd5-485b-a316-60af3322babf', NULL, NULL, '546da6ad-8f65-4ce7-ba91-1346136c584b', 'd18a8e6c-c27b-4bb0-bae4-e49c67c50a93', 2, 20, true, '88603a14-b067-4f20-8675-d56c30e21410', NULL);
+INSERT INTO public.authentication_execution VALUES ('b7ad71fc-888f-4f5e-844b-6a5ca7676673', NULL, 'idp-username-password-form', '546da6ad-8f65-4ce7-ba91-1346136c584b', '88603a14-b067-4f20-8675-d56c30e21410', 0, 10, false, NULL, NULL);
+INSERT INTO public.authentication_execution VALUES ('fec21900-6300-40f3-b196-4c2412d9eebd', NULL, NULL, '546da6ad-8f65-4ce7-ba91-1346136c584b', '88603a14-b067-4f20-8675-d56c30e21410', 1, 20, true, '37abbb43-a790-42f3-ad41-23ca25248d16', NULL);
+INSERT INTO public.authentication_execution VALUES ('34d672f3-5f18-4da8-8833-242f809147d1', NULL, 'conditional-user-configured', '546da6ad-8f65-4ce7-ba91-1346136c584b', '37abbb43-a790-42f3-ad41-23ca25248d16', 0, 10, false, NULL, NULL);
+INSERT INTO public.authentication_execution VALUES ('bc4f99c3-9caf-4ef2-9354-443acdd1bc21', NULL, 'auth-otp-form', '546da6ad-8f65-4ce7-ba91-1346136c584b', '37abbb43-a790-42f3-ad41-23ca25248d16', 0, 20, false, NULL, NULL);
+INSERT INTO public.authentication_execution VALUES ('2807cc37-903a-4d33-a8c7-424de7aef0bb', NULL, 'http-basic-authenticator', '546da6ad-8f65-4ce7-ba91-1346136c584b', 'c1a4df24-f7c9-49c3-9890-c732400c9eb2', 0, 10, false, NULL, NULL);
+INSERT INTO public.authentication_execution VALUES ('1905ddcb-1a11-4bc5-9d8e-63709ad74535', NULL, 'docker-http-basic-authenticator', '546da6ad-8f65-4ce7-ba91-1346136c584b', '8e153df5-1eb8-4a51-964c-d232169522e8', 0, 10, false, NULL, NULL);
+INSERT INTO public.authentication_execution VALUES ('5244ea5d-5182-4fa3-8347-7651baa5602b', NULL, 'idp-email-verification', '662f6baf-45d0-437d-b002-c3f9ccdcb69d', '2c212dee-ad76-414c-a0a9-fdfae1dab9e7', 2, 10, false, NULL, NULL);
+INSERT INTO public.authentication_execution VALUES ('214760f4-6df9-4db5-bb72-be6cf611186d', NULL, NULL, '662f6baf-45d0-437d-b002-c3f9ccdcb69d', '2c212dee-ad76-414c-a0a9-fdfae1dab9e7', 2, 20, true, '7e683a5b-de1a-4768-a163-457d57458978', NULL);
+INSERT INTO public.authentication_execution VALUES ('a81387cf-3ee9-4036-8c07-16b4916c2c64', NULL, 'conditional-user-configured', '662f6baf-45d0-437d-b002-c3f9ccdcb69d', '1d76af7e-8c7c-46e1-bbc0-3fc0f95ddfda', 0, 10, false, NULL, NULL);
+INSERT INTO public.authentication_execution VALUES ('bc5a135b-7b4a-4474-a782-838d9a079629', NULL, 'auth-otp-form', '662f6baf-45d0-437d-b002-c3f9ccdcb69d', '1d76af7e-8c7c-46e1-bbc0-3fc0f95ddfda', 0, 20, false, NULL, NULL);
+INSERT INTO public.authentication_execution VALUES ('ebf23f53-023f-4b8d-a2f9-c0b6adff862f', NULL, 'conditional-user-configured', '662f6baf-45d0-437d-b002-c3f9ccdcb69d', '64ef3b81-6e8b-4ad7-a258-29e548388c11', 0, 10, false, NULL, NULL);
+INSERT INTO public.authentication_execution VALUES ('8606363f-514c-4bce-a853-73dcda73c51a', NULL, 'direct-grant-validate-otp', '662f6baf-45d0-437d-b002-c3f9ccdcb69d', '64ef3b81-6e8b-4ad7-a258-29e548388c11', 0, 20, false, NULL, NULL);
+INSERT INTO public.authentication_execution VALUES ('3c39d26c-a0f4-41c0-9317-2b85df626068', NULL, 'conditional-user-configured', '662f6baf-45d0-437d-b002-c3f9ccdcb69d', '9d4a44f5-09fc-4a13-8ca5-ca54f4ce38d9', 0, 10, false, NULL, NULL);
+INSERT INTO public.authentication_execution VALUES ('f348ea3a-75fc-4e48-92ae-92d33297c09c', NULL, 'auth-otp-form', '662f6baf-45d0-437d-b002-c3f9ccdcb69d', '9d4a44f5-09fc-4a13-8ca5-ca54f4ce38d9', 0, 20, false, NULL, NULL);
+INSERT INTO public.authentication_execution VALUES ('8377ac9e-8de9-4b5b-a9f5-0ec49326a914', NULL, 'idp-confirm-link', '662f6baf-45d0-437d-b002-c3f9ccdcb69d', '2457a574-ea6d-4de8-b419-db9876bde108', 0, 10, false, NULL, NULL);
+INSERT INTO public.authentication_execution VALUES ('e21908f2-7ad5-4445-a0dd-2194b52bb86c', NULL, NULL, '662f6baf-45d0-437d-b002-c3f9ccdcb69d', '2457a574-ea6d-4de8-b419-db9876bde108', 0, 20, true, '2c212dee-ad76-414c-a0a9-fdfae1dab9e7', NULL);
+INSERT INTO public.authentication_execution VALUES ('3e3884ba-b4db-4103-99f8-c62b2ac13219', NULL, 'conditional-user-configured', '662f6baf-45d0-437d-b002-c3f9ccdcb69d', '43ccd003-31b8-44da-93f8-6724bcb8b503', 0, 10, false, NULL, NULL);
+INSERT INTO public.authentication_execution VALUES ('bb5e89a6-a878-413d-a966-9eced5fc0d9b', NULL, 'reset-otp', '662f6baf-45d0-437d-b002-c3f9ccdcb69d', '43ccd003-31b8-44da-93f8-6724bcb8b503', 0, 20, false, NULL, NULL);
+INSERT INTO public.authentication_execution VALUES ('f1cdf5d0-176f-47b5-9ef5-29303585b130', NULL, 'idp-create-user-if-unique', '662f6baf-45d0-437d-b002-c3f9ccdcb69d', '2cfc1295-cd45-43c7-b8e6-bd14ae5e685e', 2, 10, false, NULL, '9295d203-65a1-4d61-ad4a-081a4dc16aee');
+INSERT INTO public.authentication_execution VALUES ('0c0a2eba-14a5-48f7-a0d6-43d53c6dc380', NULL, NULL, '662f6baf-45d0-437d-b002-c3f9ccdcb69d', '2cfc1295-cd45-43c7-b8e6-bd14ae5e685e', 2, 20, true, '2457a574-ea6d-4de8-b419-db9876bde108', NULL);
+INSERT INTO public.authentication_execution VALUES ('961d89b9-cdfe-42f8-b8c6-db068d61cd3c', NULL, 'idp-username-password-form', '662f6baf-45d0-437d-b002-c3f9ccdcb69d', '7e683a5b-de1a-4768-a163-457d57458978', 0, 10, false, NULL, NULL);
+INSERT INTO public.authentication_execution VALUES ('0990ef53-74e1-48ee-83dc-22d0e6bdd8a0', NULL, NULL, '662f6baf-45d0-437d-b002-c3f9ccdcb69d', '7e683a5b-de1a-4768-a163-457d57458978', 1, 20, true, '9d4a44f5-09fc-4a13-8ca5-ca54f4ce38d9', NULL);
+INSERT INTO public.authentication_execution VALUES ('8a65a385-8aad-4dfe-ac1f-f0eea5f6d267', NULL, 'auth-cookie', '662f6baf-45d0-437d-b002-c3f9ccdcb69d', '520fad15-8981-402d-a4a1-501d74ff1e5d', 2, 10, false, NULL, NULL);
+INSERT INTO public.authentication_execution VALUES ('4d1e8920-6b31-4708-ae4f-b4a1be4da3f1', NULL, 'auth-spnego', '662f6baf-45d0-437d-b002-c3f9ccdcb69d', '520fad15-8981-402d-a4a1-501d74ff1e5d', 3, 20, false, NULL, NULL);
+INSERT INTO public.authentication_execution VALUES ('69f2fdad-48f2-434d-9832-275dc82a20c5', NULL, 'identity-provider-redirector', '662f6baf-45d0-437d-b002-c3f9ccdcb69d', '520fad15-8981-402d-a4a1-501d74ff1e5d', 2, 25, false, NULL, NULL);
+INSERT INTO public.authentication_execution VALUES ('ba813c6c-b789-4347-84ac-79c610df1c4d', NULL, NULL, '662f6baf-45d0-437d-b002-c3f9ccdcb69d', '520fad15-8981-402d-a4a1-501d74ff1e5d', 2, 30, true, '6a6972fe-39d2-46ad-b0c3-675e4c7494f8', NULL);
+INSERT INTO public.authentication_execution VALUES ('6215c865-3a16-4e23-81b1-2023ec59f682', NULL, 'client-secret', '662f6baf-45d0-437d-b002-c3f9ccdcb69d', '624a9489-d8ed-4b14-a78f-975f06c16818', 2, 10, false, NULL, NULL);
+INSERT INTO public.authentication_execution VALUES ('c192c26e-a9dd-4ea5-880f-44ef88b88ccf', NULL, 'client-jwt', '662f6baf-45d0-437d-b002-c3f9ccdcb69d', '624a9489-d8ed-4b14-a78f-975f06c16818', 2, 20, false, NULL, NULL);
+INSERT INTO public.authentication_execution VALUES ('704eb5ab-83b2-4b36-82fb-5e65cdcf95f9', NULL, 'client-secret-jwt', '662f6baf-45d0-437d-b002-c3f9ccdcb69d', '624a9489-d8ed-4b14-a78f-975f06c16818', 2, 30, false, NULL, NULL);
+INSERT INTO public.authentication_execution VALUES ('0b6d8870-6a68-4645-9ee2-71847750432a', NULL, 'client-x509', '662f6baf-45d0-437d-b002-c3f9ccdcb69d', '624a9489-d8ed-4b14-a78f-975f06c16818', 2, 40, false, NULL, NULL);
+INSERT INTO public.authentication_execution VALUES ('b639823a-c417-4e5b-97e1-4beba67e0cab', NULL, 'direct-grant-validate-username', '662f6baf-45d0-437d-b002-c3f9ccdcb69d', '5f092739-61f4-41c0-bba6-24beb17d3692', 0, 10, false, NULL, NULL);
+INSERT INTO public.authentication_execution VALUES ('e810e226-003a-45b6-a3be-e457e5e92c93', NULL, 'direct-grant-validate-password', '662f6baf-45d0-437d-b002-c3f9ccdcb69d', '5f092739-61f4-41c0-bba6-24beb17d3692', 0, 20, false, NULL, NULL);
+INSERT INTO public.authentication_execution VALUES ('c7679986-cfce-4266-939e-0da2215d6a5c', NULL, NULL, '662f6baf-45d0-437d-b002-c3f9ccdcb69d', '5f092739-61f4-41c0-bba6-24beb17d3692', 1, 30, true, '64ef3b81-6e8b-4ad7-a258-29e548388c11', NULL);
+INSERT INTO public.authentication_execution VALUES ('09b1a5b2-c21e-46c2-bcc8-5da9435fae56', NULL, 'docker-http-basic-authenticator', '662f6baf-45d0-437d-b002-c3f9ccdcb69d', '128ad414-638b-47ef-9596-d9296d7b785d', 0, 10, false, NULL, NULL);
+INSERT INTO public.authentication_execution VALUES ('34d75142-6385-4772-b276-c12f5f3527b1', NULL, 'idp-review-profile', '662f6baf-45d0-437d-b002-c3f9ccdcb69d', 'd31ee24b-2d32-4f28-a496-168400c7c27f', 0, 10, false, NULL, '05f5f1a3-e153-4fc8-af4a-cb39f4a3ffa0');
+INSERT INTO public.authentication_execution VALUES ('129c5d82-03a8-4ca7-b2e8-2885048de9b5', NULL, NULL, '662f6baf-45d0-437d-b002-c3f9ccdcb69d', 'd31ee24b-2d32-4f28-a496-168400c7c27f', 0, 20, true, '2cfc1295-cd45-43c7-b8e6-bd14ae5e685e', NULL);
+INSERT INTO public.authentication_execution VALUES ('df95c1e9-65bb-45e1-bdf1-98efb860befc', NULL, 'auth-username-password-form', '662f6baf-45d0-437d-b002-c3f9ccdcb69d', '6a6972fe-39d2-46ad-b0c3-675e4c7494f8', 0, 10, false, NULL, NULL);
+INSERT INTO public.authentication_execution VALUES ('185b6220-5fc9-477e-b103-fd9ab2f83e52', NULL, NULL, '662f6baf-45d0-437d-b002-c3f9ccdcb69d', '6a6972fe-39d2-46ad-b0c3-675e4c7494f8', 1, 20, true, '1d76af7e-8c7c-46e1-bbc0-3fc0f95ddfda', NULL);
+INSERT INTO public.authentication_execution VALUES ('ecfe11be-bd3b-4d93-ab4f-af4d0b128221', NULL, 'registration-page-form', '662f6baf-45d0-437d-b002-c3f9ccdcb69d', '2702976c-d524-4ac9-aecb-d15bdc2e106c', 0, 10, true, 'e70d46c7-23b9-4274-9211-275c58d18c07', NULL);
+INSERT INTO public.authentication_execution VALUES ('01428909-5bfa-4979-829f-3d788e79de73', NULL, 'registration-user-creation', '662f6baf-45d0-437d-b002-c3f9ccdcb69d', 'e70d46c7-23b9-4274-9211-275c58d18c07', 0, 20, false, NULL, NULL);
+INSERT INTO public.authentication_execution VALUES ('be74e6ad-13aa-48f4-a6ca-1f0ee2bdb3fa', NULL, 'registration-profile-action', '662f6baf-45d0-437d-b002-c3f9ccdcb69d', 'e70d46c7-23b9-4274-9211-275c58d18c07', 0, 40, false, NULL, NULL);
+INSERT INTO public.authentication_execution VALUES ('01f4537c-0d54-4b6a-8148-bcb7c506f00a', NULL, 'registration-password-action', '662f6baf-45d0-437d-b002-c3f9ccdcb69d', 'e70d46c7-23b9-4274-9211-275c58d18c07', 0, 50, false, NULL, NULL);
+INSERT INTO public.authentication_execution VALUES ('a95db29c-e05e-4ac3-a64a-0f1f6efeee8d', NULL, 'registration-recaptcha-action', '662f6baf-45d0-437d-b002-c3f9ccdcb69d', 'e70d46c7-23b9-4274-9211-275c58d18c07', 3, 60, false, NULL, NULL);
+INSERT INTO public.authentication_execution VALUES ('b71c04ae-6ec1-4bd8-993b-e519a7e5f0d2', NULL, 'reset-credentials-choose-user', '662f6baf-45d0-437d-b002-c3f9ccdcb69d', '066486dd-fef3-4290-a604-5a552c223679', 0, 10, false, NULL, NULL);
+INSERT INTO public.authentication_execution VALUES ('9ec1d67b-9e46-42aa-8bde-78db1ceae090', NULL, 'reset-credential-email', '662f6baf-45d0-437d-b002-c3f9ccdcb69d', '066486dd-fef3-4290-a604-5a552c223679', 0, 20, false, NULL, NULL);
+INSERT INTO public.authentication_execution VALUES ('63beb180-1338-4fd2-b4f1-86fd5060a6e0', NULL, 'reset-password', '662f6baf-45d0-437d-b002-c3f9ccdcb69d', '066486dd-fef3-4290-a604-5a552c223679', 0, 30, false, NULL, NULL);
+INSERT INTO public.authentication_execution VALUES ('d85ce12d-613b-478b-b990-9bc6498d1f5d', NULL, NULL, '662f6baf-45d0-437d-b002-c3f9ccdcb69d', '066486dd-fef3-4290-a604-5a552c223679', 1, 40, true, '43ccd003-31b8-44da-93f8-6724bcb8b503', NULL);
+INSERT INTO public.authentication_execution VALUES ('8b5d1087-b946-4c84-b1ca-b0cf1060f834', NULL, 'http-basic-authenticator', '662f6baf-45d0-437d-b002-c3f9ccdcb69d', 'c25faa73-2fa4-4a7b-9c75-9d135ae5b858', 0, 10, false, NULL, NULL);
 
 
 --
 -- Data for Name: authentication_flow; Type: TABLE DATA; Schema: public; Owner: admin
 --
 
-INSERT INTO public.authentication_flow VALUES ('939b4814-33da-4863-8614-148695102913', 'browser', 'browser based authentication', '22037ef2-30b3-470d-85d6-637d3c8b987f', 'basic-flow', true, true);
-INSERT INTO public.authentication_flow VALUES ('1bef60df-5a43-4fae-9b4d-0cd5772f7825', 'forms', 'Username, password, otp and other auth forms.', '22037ef2-30b3-470d-85d6-637d3c8b987f', 'basic-flow', false, true);
-INSERT INTO public.authentication_flow VALUES ('78cb7b46-0d41-4ee0-8c58-9a78d88eb22e', 'Browser - Conditional OTP', 'Flow to determine if the OTP is required for the authentication', '22037ef2-30b3-470d-85d6-637d3c8b987f', 'basic-flow', false, true);
-INSERT INTO public.authentication_flow VALUES ('8b22fc3b-9675-4f23-85c9-51a2c27cd948', 'direct grant', 'OpenID Connect Resource Owner Grant', '22037ef2-30b3-470d-85d6-637d3c8b987f', 'basic-flow', true, true);
-INSERT INTO public.authentication_flow VALUES ('ec3912e5-b896-4c68-82ca-f7a1d14998c9', 'Direct Grant - Conditional OTP', 'Flow to determine if the OTP is required for the authentication', '22037ef2-30b3-470d-85d6-637d3c8b987f', 'basic-flow', false, true);
-INSERT INTO public.authentication_flow VALUES ('634c1c33-d32b-44f1-b594-8ad69f8a9874', 'registration', 'registration flow', '22037ef2-30b3-470d-85d6-637d3c8b987f', 'basic-flow', true, true);
-INSERT INTO public.authentication_flow VALUES ('32289ba9-06b5-489a-889b-49abad42dfbf', 'registration form', 'registration form', '22037ef2-30b3-470d-85d6-637d3c8b987f', 'form-flow', false, true);
-INSERT INTO public.authentication_flow VALUES ('524ab0a5-b0f6-472a-a792-4780f4189f3d', 'reset credentials', 'Reset credentials for a user if they forgot their password or something', '22037ef2-30b3-470d-85d6-637d3c8b987f', 'basic-flow', true, true);
-INSERT INTO public.authentication_flow VALUES ('5809c4c0-80a4-4925-9cad-43540b837924', 'Reset - Conditional OTP', 'Flow to determine if the OTP should be reset or not. Set to REQUIRED to force.', '22037ef2-30b3-470d-85d6-637d3c8b987f', 'basic-flow', false, true);
-INSERT INTO public.authentication_flow VALUES ('33952e99-a84e-4c60-b590-4cb507237dd4', 'clients', 'Base authentication for clients', '22037ef2-30b3-470d-85d6-637d3c8b987f', 'client-flow', true, true);
-INSERT INTO public.authentication_flow VALUES ('8e1a8fab-8003-4d35-ace4-f2efc6e5c1a4', 'first broker login', 'Actions taken after first broker login with identity provider account, which is not yet linked to any Keycloak account', '22037ef2-30b3-470d-85d6-637d3c8b987f', 'basic-flow', true, true);
-INSERT INTO public.authentication_flow VALUES ('6867cc25-0c1f-42c2-9bfb-a662e86378fe', 'User creation or linking', 'Flow for the existing/non-existing user alternatives', '22037ef2-30b3-470d-85d6-637d3c8b987f', 'basic-flow', false, true);
-INSERT INTO public.authentication_flow VALUES ('83dfbb4a-4f61-4661-ac16-c16d9996e26e', 'Handle Existing Account', 'Handle what to do if there is existing account with same email/username like authenticated identity provider', '22037ef2-30b3-470d-85d6-637d3c8b987f', 'basic-flow', false, true);
-INSERT INTO public.authentication_flow VALUES ('4fca0cb7-8131-4178-acc9-f150c9d80762', 'Account verification options', 'Method with which to verity the existing account', '22037ef2-30b3-470d-85d6-637d3c8b987f', 'basic-flow', false, true);
-INSERT INTO public.authentication_flow VALUES ('248f3627-cd0a-4159-9260-4e2f63d48415', 'Verify Existing Account by Re-authentication', 'Reauthentication of existing account', '22037ef2-30b3-470d-85d6-637d3c8b987f', 'basic-flow', false, true);
-INSERT INTO public.authentication_flow VALUES ('c2331f94-cafd-4790-942d-bf4ba34441bc', 'First broker login - Conditional OTP', 'Flow to determine if the OTP is required for the authentication', '22037ef2-30b3-470d-85d6-637d3c8b987f', 'basic-flow', false, true);
-INSERT INTO public.authentication_flow VALUES ('cb45feeb-4741-45e7-afdd-5b524c6b26e4', 'saml ecp', 'SAML ECP Profile Authentication Flow', '22037ef2-30b3-470d-85d6-637d3c8b987f', 'basic-flow', true, true);
-INSERT INTO public.authentication_flow VALUES ('1315e749-e301-4c8e-ba1d-ff0a753e7bca', 'docker auth', 'Used by Docker clients to authenticate against the IDP', '22037ef2-30b3-470d-85d6-637d3c8b987f', 'basic-flow', true, true);
+INSERT INTO public.authentication_flow VALUES ('1831a8a7-b095-47cb-af32-34358c910c23', 'browser', 'browser based authentication', '546da6ad-8f65-4ce7-ba91-1346136c584b', 'basic-flow', true, true);
+INSERT INTO public.authentication_flow VALUES ('8854db31-b2bc-4e56-9711-e0c8d67d24da', 'forms', 'Username, password, otp and other auth forms.', '546da6ad-8f65-4ce7-ba91-1346136c584b', 'basic-flow', false, true);
+INSERT INTO public.authentication_flow VALUES ('bbf5022a-fc0d-4eb7-bef5-cb2ad59b0314', 'Browser - Conditional OTP', 'Flow to determine if the OTP is required for the authentication', '546da6ad-8f65-4ce7-ba91-1346136c584b', 'basic-flow', false, true);
+INSERT INTO public.authentication_flow VALUES ('eb488667-0489-455d-a132-6495674e968d', 'direct grant', 'OpenID Connect Resource Owner Grant', '546da6ad-8f65-4ce7-ba91-1346136c584b', 'basic-flow', true, true);
+INSERT INTO public.authentication_flow VALUES ('32a73661-dc51-461b-88d0-302739cf7aa6', 'Direct Grant - Conditional OTP', 'Flow to determine if the OTP is required for the authentication', '546da6ad-8f65-4ce7-ba91-1346136c584b', 'basic-flow', false, true);
+INSERT INTO public.authentication_flow VALUES ('9c2febd6-149f-4fb8-8894-5c6c672bb61a', 'registration', 'registration flow', '546da6ad-8f65-4ce7-ba91-1346136c584b', 'basic-flow', true, true);
+INSERT INTO public.authentication_flow VALUES ('f4d19d2b-72b6-48d1-8fad-d866d3e10b31', 'registration form', 'registration form', '546da6ad-8f65-4ce7-ba91-1346136c584b', 'form-flow', false, true);
+INSERT INTO public.authentication_flow VALUES ('d74d02e8-2af3-43b9-9f80-031307f593a8', 'reset credentials', 'Reset credentials for a user if they forgot their password or something', '546da6ad-8f65-4ce7-ba91-1346136c584b', 'basic-flow', true, true);
+INSERT INTO public.authentication_flow VALUES ('5a411131-bdf5-482f-a77e-8eb82136f1e6', 'Reset - Conditional OTP', 'Flow to determine if the OTP should be reset or not. Set to REQUIRED to force.', '546da6ad-8f65-4ce7-ba91-1346136c584b', 'basic-flow', false, true);
+INSERT INTO public.authentication_flow VALUES ('87347a35-0c82-4c71-933f-620d48e892cc', 'clients', 'Base authentication for clients', '546da6ad-8f65-4ce7-ba91-1346136c584b', 'client-flow', true, true);
+INSERT INTO public.authentication_flow VALUES ('8adc6aa2-a108-49eb-ac19-f3fd8503329a', 'first broker login', 'Actions taken after first broker login with identity provider account, which is not yet linked to any Keycloak account', '546da6ad-8f65-4ce7-ba91-1346136c584b', 'basic-flow', true, true);
+INSERT INTO public.authentication_flow VALUES ('9c5e6fcf-7127-4f4e-9167-d756b9c0a511', 'User creation or linking', 'Flow for the existing/non-existing user alternatives', '546da6ad-8f65-4ce7-ba91-1346136c584b', 'basic-flow', false, true);
+INSERT INTO public.authentication_flow VALUES ('5a83dac7-d0f3-4404-882d-0259e4f03689', 'Handle Existing Account', 'Handle what to do if there is existing account with same email/username like authenticated identity provider', '546da6ad-8f65-4ce7-ba91-1346136c584b', 'basic-flow', false, true);
+INSERT INTO public.authentication_flow VALUES ('d18a8e6c-c27b-4bb0-bae4-e49c67c50a93', 'Account verification options', 'Method with which to verity the existing account', '546da6ad-8f65-4ce7-ba91-1346136c584b', 'basic-flow', false, true);
+INSERT INTO public.authentication_flow VALUES ('88603a14-b067-4f20-8675-d56c30e21410', 'Verify Existing Account by Re-authentication', 'Reauthentication of existing account', '546da6ad-8f65-4ce7-ba91-1346136c584b', 'basic-flow', false, true);
+INSERT INTO public.authentication_flow VALUES ('37abbb43-a790-42f3-ad41-23ca25248d16', 'First broker login - Conditional OTP', 'Flow to determine if the OTP is required for the authentication', '546da6ad-8f65-4ce7-ba91-1346136c584b', 'basic-flow', false, true);
+INSERT INTO public.authentication_flow VALUES ('c1a4df24-f7c9-49c3-9890-c732400c9eb2', 'saml ecp', 'SAML ECP Profile Authentication Flow', '546da6ad-8f65-4ce7-ba91-1346136c584b', 'basic-flow', true, true);
+INSERT INTO public.authentication_flow VALUES ('8e153df5-1eb8-4a51-964c-d232169522e8', 'docker auth', 'Used by Docker clients to authenticate against the IDP', '546da6ad-8f65-4ce7-ba91-1346136c584b', 'basic-flow', true, true);
 INSERT INTO public.authentication_flow VALUES ('2c212dee-ad76-414c-a0a9-fdfae1dab9e7', 'Account verification options', 'Method with which to verity the existing account', '662f6baf-45d0-437d-b002-c3f9ccdcb69d', 'basic-flow', false, true);
 INSERT INTO public.authentication_flow VALUES ('1d76af7e-8c7c-46e1-bbc0-3fc0f95ddfda', 'Browser - Conditional OTP', 'Flow to determine if the OTP is required for the authentication', '662f6baf-45d0-437d-b002-c3f9ccdcb69d', 'basic-flow', false, true);
 INSERT INTO public.authentication_flow VALUES ('64ef3b81-6e8b-4ad7-a258-29e548388c11', 'Direct Grant - Conditional OTP', 'Flow to determine if the OTP is required for the authentication', '662f6baf-45d0-437d-b002-c3f9ccdcb69d', 'basic-flow', false, true);
@@ -1619,8 +2307,8 @@ INSERT INTO public.authentication_flow VALUES ('c25faa73-2fa4-4a7b-9c75-9d135ae5
 -- Data for Name: authenticator_config; Type: TABLE DATA; Schema: public; Owner: admin
 --
 
-INSERT INTO public.authenticator_config VALUES ('a7398ce0-07a0-4117-8767-8c66c2b160b8', 'review profile config', '22037ef2-30b3-470d-85d6-637d3c8b987f');
-INSERT INTO public.authenticator_config VALUES ('d81ffc4b-143c-4f70-a0cd-550b697f3f90', 'create unique user config', '22037ef2-30b3-470d-85d6-637d3c8b987f');
+INSERT INTO public.authenticator_config VALUES ('5a8f8abf-fcde-4558-9aa3-557f9617bd53', 'review profile config', '546da6ad-8f65-4ce7-ba91-1346136c584b');
+INSERT INTO public.authenticator_config VALUES ('3e692b0d-860d-4a4c-9ccb-e53256019298', 'create unique user config', '546da6ad-8f65-4ce7-ba91-1346136c584b');
 INSERT INTO public.authenticator_config VALUES ('9295d203-65a1-4d61-ad4a-081a4dc16aee', 'create unique user config', '662f6baf-45d0-437d-b002-c3f9ccdcb69d');
 INSERT INTO public.authenticator_config VALUES ('05f5f1a3-e153-4fc8-af4a-cb39f4a3ffa0', 'review profile config', '662f6baf-45d0-437d-b002-c3f9ccdcb69d');
 
@@ -1629,8 +2317,8 @@ INSERT INTO public.authenticator_config VALUES ('05f5f1a3-e153-4fc8-af4a-cb39f4a
 -- Data for Name: authenticator_config_entry; Type: TABLE DATA; Schema: public; Owner: admin
 --
 
-INSERT INTO public.authenticator_config_entry VALUES ('a7398ce0-07a0-4117-8767-8c66c2b160b8', 'missing', 'update.profile.on.first.login');
-INSERT INTO public.authenticator_config_entry VALUES ('d81ffc4b-143c-4f70-a0cd-550b697f3f90', 'false', 'require.password.update.after.registration');
+INSERT INTO public.authenticator_config_entry VALUES ('3e692b0d-860d-4a4c-9ccb-e53256019298', 'false', 'require.password.update.after.registration');
+INSERT INTO public.authenticator_config_entry VALUES ('5a8f8abf-fcde-4558-9aa3-557f9617bd53', 'missing', 'update.profile.on.first.login');
 INSERT INTO public.authenticator_config_entry VALUES ('05f5f1a3-e153-4fc8-af4a-cb39f4a3ffa0', 'missing', 'update.profile.on.first.login');
 INSERT INTO public.authenticator_config_entry VALUES ('9295d203-65a1-4d61-ad4a-081a4dc16aee', 'false', 'require.password.update.after.registration');
 
@@ -1645,13 +2333,13 @@ INSERT INTO public.authenticator_config_entry VALUES ('9295d203-65a1-4d61-ad4a-0
 -- Data for Name: client; Type: TABLE DATA; Schema: public; Owner: admin
 --
 
-INSERT INTO public.client VALUES ('109f3c90-f5d8-49f4-ac95-17874d87788a', true, false, 'master-realm', 0, false, NULL, NULL, true, NULL, false, '22037ef2-30b3-470d-85d6-637d3c8b987f', NULL, 0, false, false, 'master Realm', false, 'client-secret', NULL, NULL, NULL, true, false, false, false);
-INSERT INTO public.client VALUES ('afd73214-e3a5-4289-ae35-0732685112b0', true, false, 'account', 0, true, NULL, '/realms/master/account/', false, NULL, false, '22037ef2-30b3-470d-85d6-637d3c8b987f', 'openid-connect', 0, false, false, '${client_account}', false, 'client-secret', '${authBaseUrl}', NULL, NULL, true, false, false, false);
-INSERT INTO public.client VALUES ('4a2dc3f0-8d1e-4947-a648-f2f935a8cd20', true, false, 'account-console', 0, true, NULL, '/realms/master/account/', false, NULL, false, '22037ef2-30b3-470d-85d6-637d3c8b987f', 'openid-connect', 0, false, false, '${client_account-console}', false, 'client-secret', '${authBaseUrl}', NULL, NULL, true, false, false, false);
-INSERT INTO public.client VALUES ('fca6f700-c50c-4d30-927b-341e1106aa38', true, false, 'broker', 0, false, NULL, NULL, true, NULL, false, '22037ef2-30b3-470d-85d6-637d3c8b987f', 'openid-connect', 0, false, false, '${client_broker}', false, 'client-secret', NULL, NULL, NULL, true, false, false, false);
-INSERT INTO public.client VALUES ('3289e176-4211-420c-8a77-40debd6547e8', true, false, 'security-admin-console', 0, true, NULL, '/admin/master/console/', false, NULL, false, '22037ef2-30b3-470d-85d6-637d3c8b987f', 'openid-connect', 0, false, false, '${client_security-admin-console}', false, 'client-secret', '${authAdminUrl}', NULL, NULL, true, false, false, false);
-INSERT INTO public.client VALUES ('430a97dc-5aa9-4b96-a3e9-e1141eed1aae', true, false, 'admin-cli', 0, true, NULL, NULL, false, NULL, false, '22037ef2-30b3-470d-85d6-637d3c8b987f', 'openid-connect', 0, false, false, '${client_admin-cli}', false, 'client-secret', NULL, NULL, NULL, false, false, true, false);
-INSERT INTO public.client VALUES ('5a3433aa-cbcb-47ec-85ca-0842bbd5889f', true, false, 'book-store-realm', 0, false, NULL, NULL, true, NULL, false, '22037ef2-30b3-470d-85d6-637d3c8b987f', NULL, 0, false, false, 'book-store Realm', false, 'client-secret', NULL, NULL, NULL, true, false, false, false);
+INSERT INTO public.client VALUES ('15d3b017-9733-4647-9d40-09228e5022ce', true, false, 'master-realm', 0, false, NULL, NULL, true, NULL, false, '546da6ad-8f65-4ce7-ba91-1346136c584b', NULL, 0, false, false, 'master Realm', false, 'client-secret', NULL, NULL, NULL, true, false, false, false);
+INSERT INTO public.client VALUES ('cb62ec47-aa85-4d1e-9187-3f8218923968', true, false, 'account', 0, true, NULL, '/realms/master/account/', false, NULL, false, '546da6ad-8f65-4ce7-ba91-1346136c584b', 'openid-connect', 0, false, false, '${client_account}', false, 'client-secret', '${authBaseUrl}', NULL, NULL, true, false, false, false);
+INSERT INTO public.client VALUES ('effe1a3e-a1ce-4c4f-80ce-cebeca28c9fe', true, false, 'account-console', 0, true, NULL, '/realms/master/account/', false, NULL, false, '546da6ad-8f65-4ce7-ba91-1346136c584b', 'openid-connect', 0, false, false, '${client_account-console}', false, 'client-secret', '${authBaseUrl}', NULL, NULL, true, false, false, false);
+INSERT INTO public.client VALUES ('a73d5d17-836e-426e-8c1e-cee828e18977', true, false, 'broker', 0, false, NULL, NULL, true, NULL, false, '546da6ad-8f65-4ce7-ba91-1346136c584b', 'openid-connect', 0, false, false, '${client_broker}', false, 'client-secret', NULL, NULL, NULL, true, false, false, false);
+INSERT INTO public.client VALUES ('5d42a7c4-7ab0-4d78-9aec-481ac699856e', true, false, 'security-admin-console', 0, true, NULL, '/admin/master/console/', false, NULL, false, '546da6ad-8f65-4ce7-ba91-1346136c584b', 'openid-connect', 0, false, false, '${client_security-admin-console}', false, 'client-secret', '${authAdminUrl}', NULL, NULL, true, false, false, false);
+INSERT INTO public.client VALUES ('c2ee8c08-60c9-4aa0-bfad-70b01bda16e2', true, false, 'admin-cli', 0, true, NULL, NULL, false, NULL, false, '546da6ad-8f65-4ce7-ba91-1346136c584b', 'openid-connect', 0, false, false, '${client_admin-cli}', false, 'client-secret', NULL, NULL, NULL, false, false, true, false);
+INSERT INTO public.client VALUES ('5c7a7da9-bf8d-4b3d-b0a0-d4d7aada00ea', true, false, 'book-store-realm', 0, false, NULL, NULL, true, NULL, false, '546da6ad-8f65-4ce7-ba91-1346136c584b', NULL, 0, false, false, 'book-store Realm', false, 'client-secret', NULL, NULL, NULL, true, false, false, false);
 INSERT INTO public.client VALUES ('ba615863-d949-4598-8196-54c21b254108', true, false, 'account', 0, true, NULL, '/realms/book-store/account/', false, NULL, false, '662f6baf-45d0-437d-b002-c3f9ccdcb69d', 'openid-connect', 0, false, false, '${client_account}', false, 'client-secret', '${authBaseUrl}', NULL, NULL, true, false, false, false);
 INSERT INTO public.client VALUES ('68386798-a2f4-4e98-8a57-5454fb60df2d', true, false, 'account-console', 0, true, NULL, '/realms/book-store/account/', false, NULL, false, '662f6baf-45d0-437d-b002-c3f9ccdcb69d', 'openid-connect', 0, false, false, '${client_account-console}', false, 'client-secret', '${authBaseUrl}', NULL, NULL, true, false, false, false);
 INSERT INTO public.client VALUES ('3116363e-8efe-4679-a852-89a7bf206afd', true, false, 'admin-cli', 0, true, NULL, NULL, false, NULL, false, '662f6baf-45d0-437d-b002-c3f9ccdcb69d', 'openid-connect', 0, false, false, '${client_admin-cli}', false, 'client-secret', NULL, NULL, NULL, false, false, true, false);
@@ -1665,11 +2353,11 @@ INSERT INTO public.client VALUES ('a7d51e28-21a4-49e0-9430-d5d9057589ed', true, 
 -- Data for Name: client_attributes; Type: TABLE DATA; Schema: public; Owner: admin
 --
 
-INSERT INTO public.client_attributes VALUES ('afd73214-e3a5-4289-ae35-0732685112b0', 'post.logout.redirect.uris', '+');
-INSERT INTO public.client_attributes VALUES ('4a2dc3f0-8d1e-4947-a648-f2f935a8cd20', 'post.logout.redirect.uris', '+');
-INSERT INTO public.client_attributes VALUES ('4a2dc3f0-8d1e-4947-a648-f2f935a8cd20', 'pkce.code.challenge.method', 'S256');
-INSERT INTO public.client_attributes VALUES ('3289e176-4211-420c-8a77-40debd6547e8', 'post.logout.redirect.uris', '+');
-INSERT INTO public.client_attributes VALUES ('3289e176-4211-420c-8a77-40debd6547e8', 'pkce.code.challenge.method', 'S256');
+INSERT INTO public.client_attributes VALUES ('cb62ec47-aa85-4d1e-9187-3f8218923968', 'post.logout.redirect.uris', '+');
+INSERT INTO public.client_attributes VALUES ('effe1a3e-a1ce-4c4f-80ce-cebeca28c9fe', 'post.logout.redirect.uris', '+');
+INSERT INTO public.client_attributes VALUES ('effe1a3e-a1ce-4c4f-80ce-cebeca28c9fe', 'pkce.code.challenge.method', 'S256');
+INSERT INTO public.client_attributes VALUES ('5d42a7c4-7ab0-4d78-9aec-481ac699856e', 'post.logout.redirect.uris', '+');
+INSERT INTO public.client_attributes VALUES ('5d42a7c4-7ab0-4d78-9aec-481ac699856e', 'pkce.code.challenge.method', 'S256');
 INSERT INTO public.client_attributes VALUES ('ba615863-d949-4598-8196-54c21b254108', 'post.logout.redirect.uris', '+');
 INSERT INTO public.client_attributes VALUES ('68386798-a2f4-4e98-8a57-5454fb60df2d', 'post.logout.redirect.uris', '+');
 INSERT INTO public.client_attributes VALUES ('68386798-a2f4-4e98-8a57-5454fb60df2d', 'pkce.code.challenge.method', 'S256');
@@ -1715,16 +2403,16 @@ INSERT INTO public.client_attributes VALUES ('a7d51e28-21a4-49e0-9430-d5d9057589
 -- Data for Name: client_scope; Type: TABLE DATA; Schema: public; Owner: admin
 --
 
-INSERT INTO public.client_scope VALUES ('d4b83deb-5e20-4c07-859e-bf61986ca0b3', 'offline_access', '22037ef2-30b3-470d-85d6-637d3c8b987f', 'OpenID Connect built-in scope: offline_access', 'openid-connect');
-INSERT INTO public.client_scope VALUES ('7be9df09-0869-4fa5-a827-aed8f1774836', 'role_list', '22037ef2-30b3-470d-85d6-637d3c8b987f', 'SAML role list', 'saml');
-INSERT INTO public.client_scope VALUES ('2e7104a4-61bc-49eb-9275-b00a23e94785', 'profile', '22037ef2-30b3-470d-85d6-637d3c8b987f', 'OpenID Connect built-in scope: profile', 'openid-connect');
-INSERT INTO public.client_scope VALUES ('0a720260-d8b4-4f87-92bf-0189e5c50f6e', 'email', '22037ef2-30b3-470d-85d6-637d3c8b987f', 'OpenID Connect built-in scope: email', 'openid-connect');
-INSERT INTO public.client_scope VALUES ('b46b5dd5-cfb8-40d3-814d-6b1962f165df', 'address', '22037ef2-30b3-470d-85d6-637d3c8b987f', 'OpenID Connect built-in scope: address', 'openid-connect');
-INSERT INTO public.client_scope VALUES ('a2afbdf1-3bf7-4d41-8622-36160bd08504', 'phone', '22037ef2-30b3-470d-85d6-637d3c8b987f', 'OpenID Connect built-in scope: phone', 'openid-connect');
-INSERT INTO public.client_scope VALUES ('582567ed-3b58-4b1e-bf91-3540c389b1c1', 'roles', '22037ef2-30b3-470d-85d6-637d3c8b987f', 'OpenID Connect scope for add user roles to the access token', 'openid-connect');
-INSERT INTO public.client_scope VALUES ('105b96cb-1aea-4e1f-88eb-4fa290fe1987', 'web-origins', '22037ef2-30b3-470d-85d6-637d3c8b987f', 'OpenID Connect scope for add allowed web origins to the access token', 'openid-connect');
-INSERT INTO public.client_scope VALUES ('94ee8b1b-a58f-437a-a3b8-ca7920f6ffcb', 'microprofile-jwt', '22037ef2-30b3-470d-85d6-637d3c8b987f', 'Microprofile - JWT built-in scope', 'openid-connect');
-INSERT INTO public.client_scope VALUES ('399fe0b7-d548-4fb1-a429-6780db1c0762', 'acr', '22037ef2-30b3-470d-85d6-637d3c8b987f', 'OpenID Connect scope for add acr (authentication context class reference) to the token', 'openid-connect');
+INSERT INTO public.client_scope VALUES ('56c0fbee-c694-4365-b572-85ef06172931', 'offline_access', '546da6ad-8f65-4ce7-ba91-1346136c584b', 'OpenID Connect built-in scope: offline_access', 'openid-connect');
+INSERT INTO public.client_scope VALUES ('3fc1c611-b6f3-4b9b-ae80-473d70f0e704', 'role_list', '546da6ad-8f65-4ce7-ba91-1346136c584b', 'SAML role list', 'saml');
+INSERT INTO public.client_scope VALUES ('3f25582f-18eb-4043-85b6-e35d3dc3ebcb', 'profile', '546da6ad-8f65-4ce7-ba91-1346136c584b', 'OpenID Connect built-in scope: profile', 'openid-connect');
+INSERT INTO public.client_scope VALUES ('23f79b31-a24e-4376-b70a-b3f54004122a', 'email', '546da6ad-8f65-4ce7-ba91-1346136c584b', 'OpenID Connect built-in scope: email', 'openid-connect');
+INSERT INTO public.client_scope VALUES ('a03445b7-d0d9-438f-ac78-aed73cc6720c', 'address', '546da6ad-8f65-4ce7-ba91-1346136c584b', 'OpenID Connect built-in scope: address', 'openid-connect');
+INSERT INTO public.client_scope VALUES ('588e4ed0-ad19-45f7-89f6-74ace21372e8', 'phone', '546da6ad-8f65-4ce7-ba91-1346136c584b', 'OpenID Connect built-in scope: phone', 'openid-connect');
+INSERT INTO public.client_scope VALUES ('3794702d-a4a4-465c-a39f-d4d13e74f446', 'roles', '546da6ad-8f65-4ce7-ba91-1346136c584b', 'OpenID Connect scope for add user roles to the access token', 'openid-connect');
+INSERT INTO public.client_scope VALUES ('28086f97-41df-44ab-aa26-f2f377823664', 'web-origins', '546da6ad-8f65-4ce7-ba91-1346136c584b', 'OpenID Connect scope for add allowed web origins to the access token', 'openid-connect');
+INSERT INTO public.client_scope VALUES ('3b6d04fe-1f5f-4414-b9df-76e6b032bb78', 'microprofile-jwt', '546da6ad-8f65-4ce7-ba91-1346136c584b', 'Microprofile - JWT built-in scope', 'openid-connect');
+INSERT INTO public.client_scope VALUES ('24add800-76ab-4a04-9d30-bdc31fc532a0', 'acr', '546da6ad-8f65-4ce7-ba91-1346136c584b', 'OpenID Connect scope for add acr (authentication context class reference) to the token', 'openid-connect');
 INSERT INTO public.client_scope VALUES ('12fc35b7-afa6-4605-8ec5-9001a0f17249', 'web-origins', '662f6baf-45d0-437d-b002-c3f9ccdcb69d', 'OpenID Connect scope for add allowed web origins to the access token', 'openid-connect');
 INSERT INTO public.client_scope VALUES ('10b81998-d0dd-43fa-8a0b-ddf2e775091d', 'acr', '662f6baf-45d0-437d-b002-c3f9ccdcb69d', 'OpenID Connect scope for add acr (authentication context class reference) to the token', 'openid-connect');
 INSERT INTO public.client_scope VALUES ('3562dbfe-5f4f-4e89-b933-9d2ff9ec974a', 'profile', '662f6baf-45d0-437d-b002-c3f9ccdcb69d', 'OpenID Connect built-in scope: profile', 'openid-connect');
@@ -1741,32 +2429,32 @@ INSERT INTO public.client_scope VALUES ('6f55dc1e-f7c5-4024-b51f-a588bd525ad7', 
 -- Data for Name: client_scope_attributes; Type: TABLE DATA; Schema: public; Owner: admin
 --
 
-INSERT INTO public.client_scope_attributes VALUES ('d4b83deb-5e20-4c07-859e-bf61986ca0b3', 'true', 'display.on.consent.screen');
-INSERT INTO public.client_scope_attributes VALUES ('d4b83deb-5e20-4c07-859e-bf61986ca0b3', '${offlineAccessScopeConsentText}', 'consent.screen.text');
-INSERT INTO public.client_scope_attributes VALUES ('7be9df09-0869-4fa5-a827-aed8f1774836', 'true', 'display.on.consent.screen');
-INSERT INTO public.client_scope_attributes VALUES ('7be9df09-0869-4fa5-a827-aed8f1774836', '${samlRoleListScopeConsentText}', 'consent.screen.text');
-INSERT INTO public.client_scope_attributes VALUES ('2e7104a4-61bc-49eb-9275-b00a23e94785', 'true', 'display.on.consent.screen');
-INSERT INTO public.client_scope_attributes VALUES ('2e7104a4-61bc-49eb-9275-b00a23e94785', '${profileScopeConsentText}', 'consent.screen.text');
-INSERT INTO public.client_scope_attributes VALUES ('2e7104a4-61bc-49eb-9275-b00a23e94785', 'true', 'include.in.token.scope');
-INSERT INTO public.client_scope_attributes VALUES ('0a720260-d8b4-4f87-92bf-0189e5c50f6e', 'true', 'display.on.consent.screen');
-INSERT INTO public.client_scope_attributes VALUES ('0a720260-d8b4-4f87-92bf-0189e5c50f6e', '${emailScopeConsentText}', 'consent.screen.text');
-INSERT INTO public.client_scope_attributes VALUES ('0a720260-d8b4-4f87-92bf-0189e5c50f6e', 'true', 'include.in.token.scope');
-INSERT INTO public.client_scope_attributes VALUES ('b46b5dd5-cfb8-40d3-814d-6b1962f165df', 'true', 'display.on.consent.screen');
-INSERT INTO public.client_scope_attributes VALUES ('b46b5dd5-cfb8-40d3-814d-6b1962f165df', '${addressScopeConsentText}', 'consent.screen.text');
-INSERT INTO public.client_scope_attributes VALUES ('b46b5dd5-cfb8-40d3-814d-6b1962f165df', 'true', 'include.in.token.scope');
-INSERT INTO public.client_scope_attributes VALUES ('a2afbdf1-3bf7-4d41-8622-36160bd08504', 'true', 'display.on.consent.screen');
-INSERT INTO public.client_scope_attributes VALUES ('a2afbdf1-3bf7-4d41-8622-36160bd08504', '${phoneScopeConsentText}', 'consent.screen.text');
-INSERT INTO public.client_scope_attributes VALUES ('a2afbdf1-3bf7-4d41-8622-36160bd08504', 'true', 'include.in.token.scope');
-INSERT INTO public.client_scope_attributes VALUES ('582567ed-3b58-4b1e-bf91-3540c389b1c1', 'true', 'display.on.consent.screen');
-INSERT INTO public.client_scope_attributes VALUES ('582567ed-3b58-4b1e-bf91-3540c389b1c1', '${rolesScopeConsentText}', 'consent.screen.text');
-INSERT INTO public.client_scope_attributes VALUES ('582567ed-3b58-4b1e-bf91-3540c389b1c1', 'false', 'include.in.token.scope');
-INSERT INTO public.client_scope_attributes VALUES ('105b96cb-1aea-4e1f-88eb-4fa290fe1987', 'false', 'display.on.consent.screen');
-INSERT INTO public.client_scope_attributes VALUES ('105b96cb-1aea-4e1f-88eb-4fa290fe1987', '', 'consent.screen.text');
-INSERT INTO public.client_scope_attributes VALUES ('105b96cb-1aea-4e1f-88eb-4fa290fe1987', 'false', 'include.in.token.scope');
-INSERT INTO public.client_scope_attributes VALUES ('94ee8b1b-a58f-437a-a3b8-ca7920f6ffcb', 'false', 'display.on.consent.screen');
-INSERT INTO public.client_scope_attributes VALUES ('94ee8b1b-a58f-437a-a3b8-ca7920f6ffcb', 'true', 'include.in.token.scope');
-INSERT INTO public.client_scope_attributes VALUES ('399fe0b7-d548-4fb1-a429-6780db1c0762', 'false', 'display.on.consent.screen');
-INSERT INTO public.client_scope_attributes VALUES ('399fe0b7-d548-4fb1-a429-6780db1c0762', 'false', 'include.in.token.scope');
+INSERT INTO public.client_scope_attributes VALUES ('56c0fbee-c694-4365-b572-85ef06172931', 'true', 'display.on.consent.screen');
+INSERT INTO public.client_scope_attributes VALUES ('56c0fbee-c694-4365-b572-85ef06172931', '${offlineAccessScopeConsentText}', 'consent.screen.text');
+INSERT INTO public.client_scope_attributes VALUES ('3fc1c611-b6f3-4b9b-ae80-473d70f0e704', 'true', 'display.on.consent.screen');
+INSERT INTO public.client_scope_attributes VALUES ('3fc1c611-b6f3-4b9b-ae80-473d70f0e704', '${samlRoleListScopeConsentText}', 'consent.screen.text');
+INSERT INTO public.client_scope_attributes VALUES ('3f25582f-18eb-4043-85b6-e35d3dc3ebcb', 'true', 'display.on.consent.screen');
+INSERT INTO public.client_scope_attributes VALUES ('3f25582f-18eb-4043-85b6-e35d3dc3ebcb', '${profileScopeConsentText}', 'consent.screen.text');
+INSERT INTO public.client_scope_attributes VALUES ('3f25582f-18eb-4043-85b6-e35d3dc3ebcb', 'true', 'include.in.token.scope');
+INSERT INTO public.client_scope_attributes VALUES ('23f79b31-a24e-4376-b70a-b3f54004122a', 'true', 'display.on.consent.screen');
+INSERT INTO public.client_scope_attributes VALUES ('23f79b31-a24e-4376-b70a-b3f54004122a', '${emailScopeConsentText}', 'consent.screen.text');
+INSERT INTO public.client_scope_attributes VALUES ('23f79b31-a24e-4376-b70a-b3f54004122a', 'true', 'include.in.token.scope');
+INSERT INTO public.client_scope_attributes VALUES ('a03445b7-d0d9-438f-ac78-aed73cc6720c', 'true', 'display.on.consent.screen');
+INSERT INTO public.client_scope_attributes VALUES ('a03445b7-d0d9-438f-ac78-aed73cc6720c', '${addressScopeConsentText}', 'consent.screen.text');
+INSERT INTO public.client_scope_attributes VALUES ('a03445b7-d0d9-438f-ac78-aed73cc6720c', 'true', 'include.in.token.scope');
+INSERT INTO public.client_scope_attributes VALUES ('588e4ed0-ad19-45f7-89f6-74ace21372e8', 'true', 'display.on.consent.screen');
+INSERT INTO public.client_scope_attributes VALUES ('588e4ed0-ad19-45f7-89f6-74ace21372e8', '${phoneScopeConsentText}', 'consent.screen.text');
+INSERT INTO public.client_scope_attributes VALUES ('588e4ed0-ad19-45f7-89f6-74ace21372e8', 'true', 'include.in.token.scope');
+INSERT INTO public.client_scope_attributes VALUES ('3794702d-a4a4-465c-a39f-d4d13e74f446', 'true', 'display.on.consent.screen');
+INSERT INTO public.client_scope_attributes VALUES ('3794702d-a4a4-465c-a39f-d4d13e74f446', '${rolesScopeConsentText}', 'consent.screen.text');
+INSERT INTO public.client_scope_attributes VALUES ('3794702d-a4a4-465c-a39f-d4d13e74f446', 'false', 'include.in.token.scope');
+INSERT INTO public.client_scope_attributes VALUES ('28086f97-41df-44ab-aa26-f2f377823664', 'false', 'display.on.consent.screen');
+INSERT INTO public.client_scope_attributes VALUES ('28086f97-41df-44ab-aa26-f2f377823664', '', 'consent.screen.text');
+INSERT INTO public.client_scope_attributes VALUES ('28086f97-41df-44ab-aa26-f2f377823664', 'false', 'include.in.token.scope');
+INSERT INTO public.client_scope_attributes VALUES ('3b6d04fe-1f5f-4414-b9df-76e6b032bb78', 'false', 'display.on.consent.screen');
+INSERT INTO public.client_scope_attributes VALUES ('3b6d04fe-1f5f-4414-b9df-76e6b032bb78', 'true', 'include.in.token.scope');
+INSERT INTO public.client_scope_attributes VALUES ('24add800-76ab-4a04-9d30-bdc31fc532a0', 'false', 'display.on.consent.screen');
+INSERT INTO public.client_scope_attributes VALUES ('24add800-76ab-4a04-9d30-bdc31fc532a0', 'false', 'include.in.token.scope');
 INSERT INTO public.client_scope_attributes VALUES ('12fc35b7-afa6-4605-8ec5-9001a0f17249', 'false', 'include.in.token.scope');
 INSERT INTO public.client_scope_attributes VALUES ('12fc35b7-afa6-4605-8ec5-9001a0f17249', 'false', 'display.on.consent.screen');
 INSERT INTO public.client_scope_attributes VALUES ('12fc35b7-afa6-4605-8ec5-9001a0f17249', '', 'consent.screen.text');
@@ -1799,60 +2487,60 @@ INSERT INTO public.client_scope_attributes VALUES ('6f55dc1e-f7c5-4024-b51f-a588
 -- Data for Name: client_scope_client; Type: TABLE DATA; Schema: public; Owner: admin
 --
 
-INSERT INTO public.client_scope_client VALUES ('afd73214-e3a5-4289-ae35-0732685112b0', '582567ed-3b58-4b1e-bf91-3540c389b1c1', true);
-INSERT INTO public.client_scope_client VALUES ('afd73214-e3a5-4289-ae35-0732685112b0', '2e7104a4-61bc-49eb-9275-b00a23e94785', true);
-INSERT INTO public.client_scope_client VALUES ('afd73214-e3a5-4289-ae35-0732685112b0', '105b96cb-1aea-4e1f-88eb-4fa290fe1987', true);
-INSERT INTO public.client_scope_client VALUES ('afd73214-e3a5-4289-ae35-0732685112b0', '0a720260-d8b4-4f87-92bf-0189e5c50f6e', true);
-INSERT INTO public.client_scope_client VALUES ('afd73214-e3a5-4289-ae35-0732685112b0', '399fe0b7-d548-4fb1-a429-6780db1c0762', true);
-INSERT INTO public.client_scope_client VALUES ('afd73214-e3a5-4289-ae35-0732685112b0', 'd4b83deb-5e20-4c07-859e-bf61986ca0b3', false);
-INSERT INTO public.client_scope_client VALUES ('afd73214-e3a5-4289-ae35-0732685112b0', 'b46b5dd5-cfb8-40d3-814d-6b1962f165df', false);
-INSERT INTO public.client_scope_client VALUES ('afd73214-e3a5-4289-ae35-0732685112b0', '94ee8b1b-a58f-437a-a3b8-ca7920f6ffcb', false);
-INSERT INTO public.client_scope_client VALUES ('afd73214-e3a5-4289-ae35-0732685112b0', 'a2afbdf1-3bf7-4d41-8622-36160bd08504', false);
-INSERT INTO public.client_scope_client VALUES ('4a2dc3f0-8d1e-4947-a648-f2f935a8cd20', '582567ed-3b58-4b1e-bf91-3540c389b1c1', true);
-INSERT INTO public.client_scope_client VALUES ('4a2dc3f0-8d1e-4947-a648-f2f935a8cd20', '2e7104a4-61bc-49eb-9275-b00a23e94785', true);
-INSERT INTO public.client_scope_client VALUES ('4a2dc3f0-8d1e-4947-a648-f2f935a8cd20', '105b96cb-1aea-4e1f-88eb-4fa290fe1987', true);
-INSERT INTO public.client_scope_client VALUES ('4a2dc3f0-8d1e-4947-a648-f2f935a8cd20', '0a720260-d8b4-4f87-92bf-0189e5c50f6e', true);
-INSERT INTO public.client_scope_client VALUES ('4a2dc3f0-8d1e-4947-a648-f2f935a8cd20', '399fe0b7-d548-4fb1-a429-6780db1c0762', true);
-INSERT INTO public.client_scope_client VALUES ('4a2dc3f0-8d1e-4947-a648-f2f935a8cd20', 'd4b83deb-5e20-4c07-859e-bf61986ca0b3', false);
-INSERT INTO public.client_scope_client VALUES ('4a2dc3f0-8d1e-4947-a648-f2f935a8cd20', 'b46b5dd5-cfb8-40d3-814d-6b1962f165df', false);
-INSERT INTO public.client_scope_client VALUES ('4a2dc3f0-8d1e-4947-a648-f2f935a8cd20', '94ee8b1b-a58f-437a-a3b8-ca7920f6ffcb', false);
-INSERT INTO public.client_scope_client VALUES ('4a2dc3f0-8d1e-4947-a648-f2f935a8cd20', 'a2afbdf1-3bf7-4d41-8622-36160bd08504', false);
-INSERT INTO public.client_scope_client VALUES ('430a97dc-5aa9-4b96-a3e9-e1141eed1aae', '582567ed-3b58-4b1e-bf91-3540c389b1c1', true);
-INSERT INTO public.client_scope_client VALUES ('430a97dc-5aa9-4b96-a3e9-e1141eed1aae', '2e7104a4-61bc-49eb-9275-b00a23e94785', true);
-INSERT INTO public.client_scope_client VALUES ('430a97dc-5aa9-4b96-a3e9-e1141eed1aae', '105b96cb-1aea-4e1f-88eb-4fa290fe1987', true);
-INSERT INTO public.client_scope_client VALUES ('430a97dc-5aa9-4b96-a3e9-e1141eed1aae', '0a720260-d8b4-4f87-92bf-0189e5c50f6e', true);
-INSERT INTO public.client_scope_client VALUES ('430a97dc-5aa9-4b96-a3e9-e1141eed1aae', '399fe0b7-d548-4fb1-a429-6780db1c0762', true);
-INSERT INTO public.client_scope_client VALUES ('430a97dc-5aa9-4b96-a3e9-e1141eed1aae', 'd4b83deb-5e20-4c07-859e-bf61986ca0b3', false);
-INSERT INTO public.client_scope_client VALUES ('430a97dc-5aa9-4b96-a3e9-e1141eed1aae', 'b46b5dd5-cfb8-40d3-814d-6b1962f165df', false);
-INSERT INTO public.client_scope_client VALUES ('430a97dc-5aa9-4b96-a3e9-e1141eed1aae', '94ee8b1b-a58f-437a-a3b8-ca7920f6ffcb', false);
-INSERT INTO public.client_scope_client VALUES ('430a97dc-5aa9-4b96-a3e9-e1141eed1aae', 'a2afbdf1-3bf7-4d41-8622-36160bd08504', false);
-INSERT INTO public.client_scope_client VALUES ('fca6f700-c50c-4d30-927b-341e1106aa38', '582567ed-3b58-4b1e-bf91-3540c389b1c1', true);
-INSERT INTO public.client_scope_client VALUES ('fca6f700-c50c-4d30-927b-341e1106aa38', '2e7104a4-61bc-49eb-9275-b00a23e94785', true);
-INSERT INTO public.client_scope_client VALUES ('fca6f700-c50c-4d30-927b-341e1106aa38', '105b96cb-1aea-4e1f-88eb-4fa290fe1987', true);
-INSERT INTO public.client_scope_client VALUES ('fca6f700-c50c-4d30-927b-341e1106aa38', '0a720260-d8b4-4f87-92bf-0189e5c50f6e', true);
-INSERT INTO public.client_scope_client VALUES ('fca6f700-c50c-4d30-927b-341e1106aa38', '399fe0b7-d548-4fb1-a429-6780db1c0762', true);
-INSERT INTO public.client_scope_client VALUES ('fca6f700-c50c-4d30-927b-341e1106aa38', 'd4b83deb-5e20-4c07-859e-bf61986ca0b3', false);
-INSERT INTO public.client_scope_client VALUES ('fca6f700-c50c-4d30-927b-341e1106aa38', 'b46b5dd5-cfb8-40d3-814d-6b1962f165df', false);
-INSERT INTO public.client_scope_client VALUES ('fca6f700-c50c-4d30-927b-341e1106aa38', '94ee8b1b-a58f-437a-a3b8-ca7920f6ffcb', false);
-INSERT INTO public.client_scope_client VALUES ('fca6f700-c50c-4d30-927b-341e1106aa38', 'a2afbdf1-3bf7-4d41-8622-36160bd08504', false);
-INSERT INTO public.client_scope_client VALUES ('109f3c90-f5d8-49f4-ac95-17874d87788a', '582567ed-3b58-4b1e-bf91-3540c389b1c1', true);
-INSERT INTO public.client_scope_client VALUES ('109f3c90-f5d8-49f4-ac95-17874d87788a', '2e7104a4-61bc-49eb-9275-b00a23e94785', true);
-INSERT INTO public.client_scope_client VALUES ('109f3c90-f5d8-49f4-ac95-17874d87788a', '105b96cb-1aea-4e1f-88eb-4fa290fe1987', true);
-INSERT INTO public.client_scope_client VALUES ('109f3c90-f5d8-49f4-ac95-17874d87788a', '0a720260-d8b4-4f87-92bf-0189e5c50f6e', true);
-INSERT INTO public.client_scope_client VALUES ('109f3c90-f5d8-49f4-ac95-17874d87788a', '399fe0b7-d548-4fb1-a429-6780db1c0762', true);
-INSERT INTO public.client_scope_client VALUES ('109f3c90-f5d8-49f4-ac95-17874d87788a', 'd4b83deb-5e20-4c07-859e-bf61986ca0b3', false);
-INSERT INTO public.client_scope_client VALUES ('109f3c90-f5d8-49f4-ac95-17874d87788a', 'b46b5dd5-cfb8-40d3-814d-6b1962f165df', false);
-INSERT INTO public.client_scope_client VALUES ('109f3c90-f5d8-49f4-ac95-17874d87788a', '94ee8b1b-a58f-437a-a3b8-ca7920f6ffcb', false);
-INSERT INTO public.client_scope_client VALUES ('109f3c90-f5d8-49f4-ac95-17874d87788a', 'a2afbdf1-3bf7-4d41-8622-36160bd08504', false);
-INSERT INTO public.client_scope_client VALUES ('3289e176-4211-420c-8a77-40debd6547e8', '582567ed-3b58-4b1e-bf91-3540c389b1c1', true);
-INSERT INTO public.client_scope_client VALUES ('3289e176-4211-420c-8a77-40debd6547e8', '2e7104a4-61bc-49eb-9275-b00a23e94785', true);
-INSERT INTO public.client_scope_client VALUES ('3289e176-4211-420c-8a77-40debd6547e8', '105b96cb-1aea-4e1f-88eb-4fa290fe1987', true);
-INSERT INTO public.client_scope_client VALUES ('3289e176-4211-420c-8a77-40debd6547e8', '0a720260-d8b4-4f87-92bf-0189e5c50f6e', true);
-INSERT INTO public.client_scope_client VALUES ('3289e176-4211-420c-8a77-40debd6547e8', '399fe0b7-d548-4fb1-a429-6780db1c0762', true);
-INSERT INTO public.client_scope_client VALUES ('3289e176-4211-420c-8a77-40debd6547e8', 'd4b83deb-5e20-4c07-859e-bf61986ca0b3', false);
-INSERT INTO public.client_scope_client VALUES ('3289e176-4211-420c-8a77-40debd6547e8', 'b46b5dd5-cfb8-40d3-814d-6b1962f165df', false);
-INSERT INTO public.client_scope_client VALUES ('3289e176-4211-420c-8a77-40debd6547e8', '94ee8b1b-a58f-437a-a3b8-ca7920f6ffcb', false);
-INSERT INTO public.client_scope_client VALUES ('3289e176-4211-420c-8a77-40debd6547e8', 'a2afbdf1-3bf7-4d41-8622-36160bd08504', false);
+INSERT INTO public.client_scope_client VALUES ('cb62ec47-aa85-4d1e-9187-3f8218923968', '3f25582f-18eb-4043-85b6-e35d3dc3ebcb', true);
+INSERT INTO public.client_scope_client VALUES ('cb62ec47-aa85-4d1e-9187-3f8218923968', '3794702d-a4a4-465c-a39f-d4d13e74f446', true);
+INSERT INTO public.client_scope_client VALUES ('cb62ec47-aa85-4d1e-9187-3f8218923968', '24add800-76ab-4a04-9d30-bdc31fc532a0', true);
+INSERT INTO public.client_scope_client VALUES ('cb62ec47-aa85-4d1e-9187-3f8218923968', '28086f97-41df-44ab-aa26-f2f377823664', true);
+INSERT INTO public.client_scope_client VALUES ('cb62ec47-aa85-4d1e-9187-3f8218923968', '23f79b31-a24e-4376-b70a-b3f54004122a', true);
+INSERT INTO public.client_scope_client VALUES ('cb62ec47-aa85-4d1e-9187-3f8218923968', 'a03445b7-d0d9-438f-ac78-aed73cc6720c', false);
+INSERT INTO public.client_scope_client VALUES ('cb62ec47-aa85-4d1e-9187-3f8218923968', '56c0fbee-c694-4365-b572-85ef06172931', false);
+INSERT INTO public.client_scope_client VALUES ('cb62ec47-aa85-4d1e-9187-3f8218923968', '588e4ed0-ad19-45f7-89f6-74ace21372e8', false);
+INSERT INTO public.client_scope_client VALUES ('cb62ec47-aa85-4d1e-9187-3f8218923968', '3b6d04fe-1f5f-4414-b9df-76e6b032bb78', false);
+INSERT INTO public.client_scope_client VALUES ('effe1a3e-a1ce-4c4f-80ce-cebeca28c9fe', '3f25582f-18eb-4043-85b6-e35d3dc3ebcb', true);
+INSERT INTO public.client_scope_client VALUES ('effe1a3e-a1ce-4c4f-80ce-cebeca28c9fe', '3794702d-a4a4-465c-a39f-d4d13e74f446', true);
+INSERT INTO public.client_scope_client VALUES ('effe1a3e-a1ce-4c4f-80ce-cebeca28c9fe', '24add800-76ab-4a04-9d30-bdc31fc532a0', true);
+INSERT INTO public.client_scope_client VALUES ('effe1a3e-a1ce-4c4f-80ce-cebeca28c9fe', '28086f97-41df-44ab-aa26-f2f377823664', true);
+INSERT INTO public.client_scope_client VALUES ('effe1a3e-a1ce-4c4f-80ce-cebeca28c9fe', '23f79b31-a24e-4376-b70a-b3f54004122a', true);
+INSERT INTO public.client_scope_client VALUES ('effe1a3e-a1ce-4c4f-80ce-cebeca28c9fe', 'a03445b7-d0d9-438f-ac78-aed73cc6720c', false);
+INSERT INTO public.client_scope_client VALUES ('effe1a3e-a1ce-4c4f-80ce-cebeca28c9fe', '56c0fbee-c694-4365-b572-85ef06172931', false);
+INSERT INTO public.client_scope_client VALUES ('effe1a3e-a1ce-4c4f-80ce-cebeca28c9fe', '588e4ed0-ad19-45f7-89f6-74ace21372e8', false);
+INSERT INTO public.client_scope_client VALUES ('effe1a3e-a1ce-4c4f-80ce-cebeca28c9fe', '3b6d04fe-1f5f-4414-b9df-76e6b032bb78', false);
+INSERT INTO public.client_scope_client VALUES ('c2ee8c08-60c9-4aa0-bfad-70b01bda16e2', '3f25582f-18eb-4043-85b6-e35d3dc3ebcb', true);
+INSERT INTO public.client_scope_client VALUES ('c2ee8c08-60c9-4aa0-bfad-70b01bda16e2', '3794702d-a4a4-465c-a39f-d4d13e74f446', true);
+INSERT INTO public.client_scope_client VALUES ('c2ee8c08-60c9-4aa0-bfad-70b01bda16e2', '24add800-76ab-4a04-9d30-bdc31fc532a0', true);
+INSERT INTO public.client_scope_client VALUES ('c2ee8c08-60c9-4aa0-bfad-70b01bda16e2', '28086f97-41df-44ab-aa26-f2f377823664', true);
+INSERT INTO public.client_scope_client VALUES ('c2ee8c08-60c9-4aa0-bfad-70b01bda16e2', '23f79b31-a24e-4376-b70a-b3f54004122a', true);
+INSERT INTO public.client_scope_client VALUES ('c2ee8c08-60c9-4aa0-bfad-70b01bda16e2', 'a03445b7-d0d9-438f-ac78-aed73cc6720c', false);
+INSERT INTO public.client_scope_client VALUES ('c2ee8c08-60c9-4aa0-bfad-70b01bda16e2', '56c0fbee-c694-4365-b572-85ef06172931', false);
+INSERT INTO public.client_scope_client VALUES ('c2ee8c08-60c9-4aa0-bfad-70b01bda16e2', '588e4ed0-ad19-45f7-89f6-74ace21372e8', false);
+INSERT INTO public.client_scope_client VALUES ('c2ee8c08-60c9-4aa0-bfad-70b01bda16e2', '3b6d04fe-1f5f-4414-b9df-76e6b032bb78', false);
+INSERT INTO public.client_scope_client VALUES ('a73d5d17-836e-426e-8c1e-cee828e18977', '3f25582f-18eb-4043-85b6-e35d3dc3ebcb', true);
+INSERT INTO public.client_scope_client VALUES ('a73d5d17-836e-426e-8c1e-cee828e18977', '3794702d-a4a4-465c-a39f-d4d13e74f446', true);
+INSERT INTO public.client_scope_client VALUES ('a73d5d17-836e-426e-8c1e-cee828e18977', '24add800-76ab-4a04-9d30-bdc31fc532a0', true);
+INSERT INTO public.client_scope_client VALUES ('a73d5d17-836e-426e-8c1e-cee828e18977', '28086f97-41df-44ab-aa26-f2f377823664', true);
+INSERT INTO public.client_scope_client VALUES ('a73d5d17-836e-426e-8c1e-cee828e18977', '23f79b31-a24e-4376-b70a-b3f54004122a', true);
+INSERT INTO public.client_scope_client VALUES ('a73d5d17-836e-426e-8c1e-cee828e18977', 'a03445b7-d0d9-438f-ac78-aed73cc6720c', false);
+INSERT INTO public.client_scope_client VALUES ('a73d5d17-836e-426e-8c1e-cee828e18977', '56c0fbee-c694-4365-b572-85ef06172931', false);
+INSERT INTO public.client_scope_client VALUES ('a73d5d17-836e-426e-8c1e-cee828e18977', '588e4ed0-ad19-45f7-89f6-74ace21372e8', false);
+INSERT INTO public.client_scope_client VALUES ('a73d5d17-836e-426e-8c1e-cee828e18977', '3b6d04fe-1f5f-4414-b9df-76e6b032bb78', false);
+INSERT INTO public.client_scope_client VALUES ('15d3b017-9733-4647-9d40-09228e5022ce', '3f25582f-18eb-4043-85b6-e35d3dc3ebcb', true);
+INSERT INTO public.client_scope_client VALUES ('15d3b017-9733-4647-9d40-09228e5022ce', '3794702d-a4a4-465c-a39f-d4d13e74f446', true);
+INSERT INTO public.client_scope_client VALUES ('15d3b017-9733-4647-9d40-09228e5022ce', '24add800-76ab-4a04-9d30-bdc31fc532a0', true);
+INSERT INTO public.client_scope_client VALUES ('15d3b017-9733-4647-9d40-09228e5022ce', '28086f97-41df-44ab-aa26-f2f377823664', true);
+INSERT INTO public.client_scope_client VALUES ('15d3b017-9733-4647-9d40-09228e5022ce', '23f79b31-a24e-4376-b70a-b3f54004122a', true);
+INSERT INTO public.client_scope_client VALUES ('15d3b017-9733-4647-9d40-09228e5022ce', 'a03445b7-d0d9-438f-ac78-aed73cc6720c', false);
+INSERT INTO public.client_scope_client VALUES ('15d3b017-9733-4647-9d40-09228e5022ce', '56c0fbee-c694-4365-b572-85ef06172931', false);
+INSERT INTO public.client_scope_client VALUES ('15d3b017-9733-4647-9d40-09228e5022ce', '588e4ed0-ad19-45f7-89f6-74ace21372e8', false);
+INSERT INTO public.client_scope_client VALUES ('15d3b017-9733-4647-9d40-09228e5022ce', '3b6d04fe-1f5f-4414-b9df-76e6b032bb78', false);
+INSERT INTO public.client_scope_client VALUES ('5d42a7c4-7ab0-4d78-9aec-481ac699856e', '3f25582f-18eb-4043-85b6-e35d3dc3ebcb', true);
+INSERT INTO public.client_scope_client VALUES ('5d42a7c4-7ab0-4d78-9aec-481ac699856e', '3794702d-a4a4-465c-a39f-d4d13e74f446', true);
+INSERT INTO public.client_scope_client VALUES ('5d42a7c4-7ab0-4d78-9aec-481ac699856e', '24add800-76ab-4a04-9d30-bdc31fc532a0', true);
+INSERT INTO public.client_scope_client VALUES ('5d42a7c4-7ab0-4d78-9aec-481ac699856e', '28086f97-41df-44ab-aa26-f2f377823664', true);
+INSERT INTO public.client_scope_client VALUES ('5d42a7c4-7ab0-4d78-9aec-481ac699856e', '23f79b31-a24e-4376-b70a-b3f54004122a', true);
+INSERT INTO public.client_scope_client VALUES ('5d42a7c4-7ab0-4d78-9aec-481ac699856e', 'a03445b7-d0d9-438f-ac78-aed73cc6720c', false);
+INSERT INTO public.client_scope_client VALUES ('5d42a7c4-7ab0-4d78-9aec-481ac699856e', '56c0fbee-c694-4365-b572-85ef06172931', false);
+INSERT INTO public.client_scope_client VALUES ('5d42a7c4-7ab0-4d78-9aec-481ac699856e', '588e4ed0-ad19-45f7-89f6-74ace21372e8', false);
+INSERT INTO public.client_scope_client VALUES ('5d42a7c4-7ab0-4d78-9aec-481ac699856e', '3b6d04fe-1f5f-4414-b9df-76e6b032bb78', false);
 INSERT INTO public.client_scope_client VALUES ('ba615863-d949-4598-8196-54c21b254108', '12fc35b7-afa6-4605-8ec5-9001a0f17249', true);
 INSERT INTO public.client_scope_client VALUES ('ba615863-d949-4598-8196-54c21b254108', '10b81998-d0dd-43fa-8a0b-ddf2e775091d', true);
 INSERT INTO public.client_scope_client VALUES ('ba615863-d949-4598-8196-54c21b254108', '3562dbfe-5f4f-4e89-b933-9d2ff9ec974a', true);
@@ -1922,7 +2610,7 @@ INSERT INTO public.client_scope_client VALUES ('a7d51e28-21a4-49e0-9430-d5d90575
 -- Data for Name: client_scope_role_mapping; Type: TABLE DATA; Schema: public; Owner: admin
 --
 
-INSERT INTO public.client_scope_role_mapping VALUES ('d4b83deb-5e20-4c07-859e-bf61986ca0b3', '6794f26e-1c71-40f8-9b18-478c68d317b1');
+INSERT INTO public.client_scope_role_mapping VALUES ('56c0fbee-c694-4365-b572-85ef06172931', 'b4f9d5f9-b59b-4453-b09d-7f26b8003a53');
 INSERT INTO public.client_scope_role_mapping VALUES ('be0864bb-8303-4994-911b-ac1a89d71091', '3ee02316-c4b1-4356-9228-e93bec6d8d45');
 
 
@@ -1966,18 +2654,18 @@ INSERT INTO public.client_scope_role_mapping VALUES ('be0864bb-8303-4994-911b-ac
 -- Data for Name: component; Type: TABLE DATA; Schema: public; Owner: admin
 --
 
-INSERT INTO public.component VALUES ('804dae5a-81c0-4082-af74-d4e99bff5656', 'Trusted Hosts', '22037ef2-30b3-470d-85d6-637d3c8b987f', 'trusted-hosts', 'org.keycloak.services.clientregistration.policy.ClientRegistrationPolicy', '22037ef2-30b3-470d-85d6-637d3c8b987f', 'anonymous');
-INSERT INTO public.component VALUES ('43570547-7f17-4cf6-9da1-0c67a5d7d838', 'Consent Required', '22037ef2-30b3-470d-85d6-637d3c8b987f', 'consent-required', 'org.keycloak.services.clientregistration.policy.ClientRegistrationPolicy', '22037ef2-30b3-470d-85d6-637d3c8b987f', 'anonymous');
-INSERT INTO public.component VALUES ('2732b7e6-0999-4a35-8279-26d483780535', 'Full Scope Disabled', '22037ef2-30b3-470d-85d6-637d3c8b987f', 'scope', 'org.keycloak.services.clientregistration.policy.ClientRegistrationPolicy', '22037ef2-30b3-470d-85d6-637d3c8b987f', 'anonymous');
-INSERT INTO public.component VALUES ('e71e6d1e-07aa-4d50-8818-2ddcaa4c9679', 'Max Clients Limit', '22037ef2-30b3-470d-85d6-637d3c8b987f', 'max-clients', 'org.keycloak.services.clientregistration.policy.ClientRegistrationPolicy', '22037ef2-30b3-470d-85d6-637d3c8b987f', 'anonymous');
-INSERT INTO public.component VALUES ('2aedf753-dcbb-4705-917a-e6440077bbf5', 'Allowed Protocol Mapper Types', '22037ef2-30b3-470d-85d6-637d3c8b987f', 'allowed-protocol-mappers', 'org.keycloak.services.clientregistration.policy.ClientRegistrationPolicy', '22037ef2-30b3-470d-85d6-637d3c8b987f', 'anonymous');
-INSERT INTO public.component VALUES ('caebd116-4eda-43bb-aae7-66ef4e6e37cd', 'Allowed Client Scopes', '22037ef2-30b3-470d-85d6-637d3c8b987f', 'allowed-client-templates', 'org.keycloak.services.clientregistration.policy.ClientRegistrationPolicy', '22037ef2-30b3-470d-85d6-637d3c8b987f', 'anonymous');
-INSERT INTO public.component VALUES ('fe81dcdb-d245-4dc2-ab01-533d1410394a', 'Allowed Protocol Mapper Types', '22037ef2-30b3-470d-85d6-637d3c8b987f', 'allowed-protocol-mappers', 'org.keycloak.services.clientregistration.policy.ClientRegistrationPolicy', '22037ef2-30b3-470d-85d6-637d3c8b987f', 'authenticated');
-INSERT INTO public.component VALUES ('80364555-4f90-42a0-bae3-cc0c8c0f9940', 'Allowed Client Scopes', '22037ef2-30b3-470d-85d6-637d3c8b987f', 'allowed-client-templates', 'org.keycloak.services.clientregistration.policy.ClientRegistrationPolicy', '22037ef2-30b3-470d-85d6-637d3c8b987f', 'authenticated');
-INSERT INTO public.component VALUES ('87b928a5-8d16-4877-9563-78c8999fcb11', 'rsa-generated', '22037ef2-30b3-470d-85d6-637d3c8b987f', 'rsa-generated', 'org.keycloak.keys.KeyProvider', '22037ef2-30b3-470d-85d6-637d3c8b987f', NULL);
-INSERT INTO public.component VALUES ('c0c100d7-14a5-4ee6-8d1b-bf67756950ff', 'rsa-enc-generated', '22037ef2-30b3-470d-85d6-637d3c8b987f', 'rsa-enc-generated', 'org.keycloak.keys.KeyProvider', '22037ef2-30b3-470d-85d6-637d3c8b987f', NULL);
-INSERT INTO public.component VALUES ('40e9a121-4139-4416-ad38-51be92051e29', 'hmac-generated', '22037ef2-30b3-470d-85d6-637d3c8b987f', 'hmac-generated', 'org.keycloak.keys.KeyProvider', '22037ef2-30b3-470d-85d6-637d3c8b987f', NULL);
-INSERT INTO public.component VALUES ('fbc9ea9e-82e3-4ef9-85c8-e799bba71513', 'aes-generated', '22037ef2-30b3-470d-85d6-637d3c8b987f', 'aes-generated', 'org.keycloak.keys.KeyProvider', '22037ef2-30b3-470d-85d6-637d3c8b987f', NULL);
+INSERT INTO public.component VALUES ('d82a9fa7-50b4-4120-a599-fbdfaf7cc1b9', 'Trusted Hosts', '546da6ad-8f65-4ce7-ba91-1346136c584b', 'trusted-hosts', 'org.keycloak.services.clientregistration.policy.ClientRegistrationPolicy', '546da6ad-8f65-4ce7-ba91-1346136c584b', 'anonymous');
+INSERT INTO public.component VALUES ('0c9574c4-a09b-402a-96ce-8aa9d5bba743', 'Consent Required', '546da6ad-8f65-4ce7-ba91-1346136c584b', 'consent-required', 'org.keycloak.services.clientregistration.policy.ClientRegistrationPolicy', '546da6ad-8f65-4ce7-ba91-1346136c584b', 'anonymous');
+INSERT INTO public.component VALUES ('26d1fc72-3b7e-44ff-9e6d-e97c369df15a', 'Full Scope Disabled', '546da6ad-8f65-4ce7-ba91-1346136c584b', 'scope', 'org.keycloak.services.clientregistration.policy.ClientRegistrationPolicy', '546da6ad-8f65-4ce7-ba91-1346136c584b', 'anonymous');
+INSERT INTO public.component VALUES ('2e9405ad-7590-49bd-af7e-b4200d698337', 'Max Clients Limit', '546da6ad-8f65-4ce7-ba91-1346136c584b', 'max-clients', 'org.keycloak.services.clientregistration.policy.ClientRegistrationPolicy', '546da6ad-8f65-4ce7-ba91-1346136c584b', 'anonymous');
+INSERT INTO public.component VALUES ('06fa2ebd-e1c0-4c1a-a1d5-0c57c8aec034', 'Allowed Protocol Mapper Types', '546da6ad-8f65-4ce7-ba91-1346136c584b', 'allowed-protocol-mappers', 'org.keycloak.services.clientregistration.policy.ClientRegistrationPolicy', '546da6ad-8f65-4ce7-ba91-1346136c584b', 'anonymous');
+INSERT INTO public.component VALUES ('ae05b2bb-25f9-42a2-b004-be17fbf98246', 'Allowed Client Scopes', '546da6ad-8f65-4ce7-ba91-1346136c584b', 'allowed-client-templates', 'org.keycloak.services.clientregistration.policy.ClientRegistrationPolicy', '546da6ad-8f65-4ce7-ba91-1346136c584b', 'anonymous');
+INSERT INTO public.component VALUES ('7dca7697-7792-4828-8c0f-c7fffdc02892', 'Allowed Protocol Mapper Types', '546da6ad-8f65-4ce7-ba91-1346136c584b', 'allowed-protocol-mappers', 'org.keycloak.services.clientregistration.policy.ClientRegistrationPolicy', '546da6ad-8f65-4ce7-ba91-1346136c584b', 'authenticated');
+INSERT INTO public.component VALUES ('7ce6a42c-4754-4777-8757-efe01caba328', 'Allowed Client Scopes', '546da6ad-8f65-4ce7-ba91-1346136c584b', 'allowed-client-templates', 'org.keycloak.services.clientregistration.policy.ClientRegistrationPolicy', '546da6ad-8f65-4ce7-ba91-1346136c584b', 'authenticated');
+INSERT INTO public.component VALUES ('afc9e206-9253-4e58-bf87-7a3f352a8de7', 'rsa-generated', '546da6ad-8f65-4ce7-ba91-1346136c584b', 'rsa-generated', 'org.keycloak.keys.KeyProvider', '546da6ad-8f65-4ce7-ba91-1346136c584b', NULL);
+INSERT INTO public.component VALUES ('fda9c1ea-c3e6-4534-bf88-bf9c8990b62b', 'rsa-enc-generated', '546da6ad-8f65-4ce7-ba91-1346136c584b', 'rsa-enc-generated', 'org.keycloak.keys.KeyProvider', '546da6ad-8f65-4ce7-ba91-1346136c584b', NULL);
+INSERT INTO public.component VALUES ('c255f096-9069-4fb7-8577-780adec7781a', 'hmac-generated', '546da6ad-8f65-4ce7-ba91-1346136c584b', 'hmac-generated', 'org.keycloak.keys.KeyProvider', '546da6ad-8f65-4ce7-ba91-1346136c584b', NULL);
+INSERT INTO public.component VALUES ('ac6399ee-17df-4eae-b500-fdfd673df4ac', 'aes-generated', '546da6ad-8f65-4ce7-ba91-1346136c584b', 'aes-generated', 'org.keycloak.keys.KeyProvider', '546da6ad-8f65-4ce7-ba91-1346136c584b', NULL);
 INSERT INTO public.component VALUES ('543ef0e8-1b64-436a-829f-f8d57819eb45', 'Max Clients Limit', '662f6baf-45d0-437d-b002-c3f9ccdcb69d', 'max-clients', 'org.keycloak.services.clientregistration.policy.ClientRegistrationPolicy', '662f6baf-45d0-437d-b002-c3f9ccdcb69d', 'anonymous');
 INSERT INTO public.component VALUES ('3029e4e4-bfbe-490c-af54-65174b5711d6', 'Allowed Protocol Mapper Types', '662f6baf-45d0-437d-b002-c3f9ccdcb69d', 'allowed-protocol-mappers', 'org.keycloak.services.clientregistration.policy.ClientRegistrationPolicy', '662f6baf-45d0-437d-b002-c3f9ccdcb69d', 'authenticated');
 INSERT INTO public.component VALUES ('34015fb7-1b62-40f7-b663-fa89661ba939', 'Allowed Client Scopes', '662f6baf-45d0-437d-b002-c3f9ccdcb69d', 'allowed-client-templates', 'org.keycloak.services.clientregistration.policy.ClientRegistrationPolicy', '662f6baf-45d0-437d-b002-c3f9ccdcb69d', 'authenticated');
@@ -1996,132 +2684,132 @@ INSERT INTO public.component VALUES ('1e3a64aa-1eab-42a3-844b-b1aa6799d624', 'rs
 -- Data for Name: component_config; Type: TABLE DATA; Schema: public; Owner: admin
 --
 
-INSERT INTO public.component_config VALUES ('0eff51f5-dd8d-4c4c-893d-a7cbffcea0d4', '2aedf753-dcbb-4705-917a-e6440077bbf5', 'allowed-protocol-mapper-types', 'saml-user-property-mapper');
-INSERT INTO public.component_config VALUES ('c71207ab-ab2a-4bde-95a7-f0406804ee4a', '2aedf753-dcbb-4705-917a-e6440077bbf5', 'allowed-protocol-mapper-types', 'saml-role-list-mapper');
-INSERT INTO public.component_config VALUES ('3f0f3aaa-3377-4634-a4f5-91dc305a68b0', '2aedf753-dcbb-4705-917a-e6440077bbf5', 'allowed-protocol-mapper-types', 'oidc-usermodel-attribute-mapper');
-INSERT INTO public.component_config VALUES ('3430aba6-94c8-4067-8f90-f305079f1f08', '2aedf753-dcbb-4705-917a-e6440077bbf5', 'allowed-protocol-mapper-types', 'oidc-address-mapper');
-INSERT INTO public.component_config VALUES ('80aeb213-8d38-4461-a6ed-05b8297d3e02', '2aedf753-dcbb-4705-917a-e6440077bbf5', 'allowed-protocol-mapper-types', 'oidc-usermodel-property-mapper');
-INSERT INTO public.component_config VALUES ('d76f9873-3af3-4c89-b5ad-6ce5df653fb2', '2aedf753-dcbb-4705-917a-e6440077bbf5', 'allowed-protocol-mapper-types', 'oidc-full-name-mapper');
-INSERT INTO public.component_config VALUES ('0283923f-4c21-4177-a038-a43bc5dbcf64', '2aedf753-dcbb-4705-917a-e6440077bbf5', 'allowed-protocol-mapper-types', 'saml-user-attribute-mapper');
-INSERT INTO public.component_config VALUES ('785cbd29-cf84-474a-85d7-0d4905c68462', '2aedf753-dcbb-4705-917a-e6440077bbf5', 'allowed-protocol-mapper-types', 'oidc-sha256-pairwise-sub-mapper');
-INSERT INTO public.component_config VALUES ('671db608-f429-4594-a7e4-3ec94e9fa5f2', 'e71e6d1e-07aa-4d50-8818-2ddcaa4c9679', 'max-clients', '200');
-INSERT INTO public.component_config VALUES ('40938482-ef78-4d5a-9a03-2fc4c5b0748c', '804dae5a-81c0-4082-af74-d4e99bff5656', 'host-sending-registration-request-must-match', 'true');
-INSERT INTO public.component_config VALUES ('aaf1c8dd-3460-4b91-8059-723060c63b4a', '804dae5a-81c0-4082-af74-d4e99bff5656', 'client-uris-must-match', 'true');
-INSERT INTO public.component_config VALUES ('4f4bd398-34ce-4557-a81d-f49697d0c05e', 'caebd116-4eda-43bb-aae7-66ef4e6e37cd', 'allow-default-scopes', 'true');
-INSERT INTO public.component_config VALUES ('0024b3cb-0ed5-4f93-bc76-d8658622dcad', '80364555-4f90-42a0-bae3-cc0c8c0f9940', 'allow-default-scopes', 'true');
-INSERT INTO public.component_config VALUES ('45248f30-da99-4621-b7a3-d2b03594ff18', 'fe81dcdb-d245-4dc2-ab01-533d1410394a', 'allowed-protocol-mapper-types', 'oidc-sha256-pairwise-sub-mapper');
-INSERT INTO public.component_config VALUES ('12be58eb-ef34-4d93-86d9-427c8cf3ab08', 'fe81dcdb-d245-4dc2-ab01-533d1410394a', 'allowed-protocol-mapper-types', 'oidc-usermodel-attribute-mapper');
-INSERT INTO public.component_config VALUES ('e8e89b24-0d37-4a50-a182-2b0f00318702', 'fe81dcdb-d245-4dc2-ab01-533d1410394a', 'allowed-protocol-mapper-types', 'oidc-address-mapper');
-INSERT INTO public.component_config VALUES ('c4bcadda-9cd2-4768-872a-4a651bdff680', 'fe81dcdb-d245-4dc2-ab01-533d1410394a', 'allowed-protocol-mapper-types', 'oidc-usermodel-property-mapper');
-INSERT INTO public.component_config VALUES ('e61c026f-33ed-4964-9ce5-a088ae0e04ee', 'fe81dcdb-d245-4dc2-ab01-533d1410394a', 'allowed-protocol-mapper-types', 'saml-role-list-mapper');
-INSERT INTO public.component_config VALUES ('30d456c3-4db0-4432-a034-877144b02f07', 'fe81dcdb-d245-4dc2-ab01-533d1410394a', 'allowed-protocol-mapper-types', 'saml-user-attribute-mapper');
-INSERT INTO public.component_config VALUES ('82855807-b9b4-4681-9ef2-a5e72773522f', 'fe81dcdb-d245-4dc2-ab01-533d1410394a', 'allowed-protocol-mapper-types', 'oidc-full-name-mapper');
-INSERT INTO public.component_config VALUES ('2ef78156-f426-47bc-a979-229d15a484c3', 'fe81dcdb-d245-4dc2-ab01-533d1410394a', 'allowed-protocol-mapper-types', 'saml-user-property-mapper');
-INSERT INTO public.component_config VALUES ('c4355a4d-bb37-481c-80d8-c851f44d24d4', 'fbc9ea9e-82e3-4ef9-85c8-e799bba71513', 'secret', 'J_LWc86wyyvyaPzKpRN9gg');
-INSERT INTO public.component_config VALUES ('0c728987-69ce-407d-86ea-c6ce09229090', 'fbc9ea9e-82e3-4ef9-85c8-e799bba71513', 'kid', 'df35751e-6da5-4f6d-99e1-396db8918e6d');
-INSERT INTO public.component_config VALUES ('8869bebf-0bf8-4236-b667-33a2659fad72', 'fbc9ea9e-82e3-4ef9-85c8-e799bba71513', 'priority', '100');
-INSERT INTO public.component_config VALUES ('752cf1d8-cbaf-4e7a-abac-4118a95eb255', 'c0c100d7-14a5-4ee6-8d1b-bf67756950ff', 'priority', '100');
-INSERT INTO public.component_config VALUES ('98f7fd11-b9d7-4da2-9486-fe02bfd81084', 'c0c100d7-14a5-4ee6-8d1b-bf67756950ff', 'privateKey', 'MIIEogIBAAKCAQEAwIcQ7xlNYlP2lNT8qVkJkdg86qgb3MPBF7+aL5BSPJ8jCaZ2s/OyXMmBwwAJWP+5a35JY1PHBDl8pVsPi+G+/eMRLX1sRgJ5caSYfVoX+e/hMzvJAswnGJH9RxusbuILi6JoClygVwV5ZLtZ5mv7B7oCdryZQRXmUqlQHNswhSHvNW4+9hbKKW0JW6nLSPqcnO+MVWQ2paTudkZUFpifjXYV38gdaWtIxnU6jed24rh/G7aL8AZbqXVcpqCC4NMBLrinLRwlOjpK1B1egpUcOfwCWI713/qStcf+MPdPOMyZuJwDwAS27GTBvUbQw7J+ORizDbpTxmUiCCkwheGPdQIDAQABAoIBADqsTtxXDS7EoNaNrCxd7p0sVbA7qDYY0C1RHoeVR4KjCtYDjZRc1cQSQwHu7mpZkKPyOiJTo0ilzldET5IVK5QLEa6X1Rnm4iTggPperQTl9m8bLrC0D8wcnaAAjoXCTLtytJtHzDOI/wxUTlr7GGcr6FlQM7JSnr0dTUVmBTzk6O4zjhZrM7aQSF1/6gsCXqAkk9ZYLMRweQud9npz++8fRC3M9zLrjnO36b5Wo01APYJusqu/gdUKXt2papXAMJUpoy+XjWzZmw4OMN9fELReG9vCGp8i/vT7jXJclwGGj+yml07ZY35wvR0wlylhZ1rJ+aIKB7y4xOcdqdbYkhcCgYEA+ChBfroMbPsB+EIPCaXgmqsE48waL+ksk9B2wwcnowaxEb1y9L11hT89152xGo19Ii1JM3qpuzgpES+Ft7EQ1B0n9j2IpoKUqSaqa5DHVdzxl5jE2lh6L687+BpQXblyj3+M9GmW2QFKr6dyme8NhIVmcnQuzyyI/5xRQQLn7KMCgYEAxpy7fZ2CJj98Ja52/qMdk1kToVCGsnV4YUKsO8+2bWdLGPL2mMucIBfywut9lh9kEynpO6OCZ9iCZIyGlJGKZvyoJju/jIeUnGhNGxuXDjG7egx4rb/qsesXbDoRFnmOqc/5LKIQPhdYZUkO8knsw47NjgzTGdIQqngQcvZv/QcCgYBeBPJ7jwWyLI+cfXqxDxW/w9fAbs3lJRTsk+jLD2TnEVv4+qwZKcbiywklLeuxwbWNQ1cel/TCqA53ImgpJn7XvowrcTjazVKBm9KpmlrLn0AxTYIXr7nrYxr3bxDP0bkjwRGocHDkmuavEmQLClU2xkwARSCPAbKOFa17UhyIvQKBgGHYCM3DcMCi+egeYOTlOsbCVVddMl5sXJednvgARiDziB2MZEu10v5EjgXUuZPhdw2x0gLddHrwQJyEVjCO2p4NzlC3kpAKov3CrGm0V+BYQ8HGrxT5vQdVh757hLuLuuqRWHHSjSnpmlSbf0+Bd7CHg2B9lOndgPRaHdBk85q1AoGARjzhJH/DXeI3G1+9k1Q/wNwB+WnBsojODLzMPs9lUncRuGoKIBJq9To1JzOc9f9OfRHmx565v5tGWOhcZ41ItaNALNMLAJ2vAw8xKpdFfNRzbEyukMS+jR0NkCCIN9ZPTShLnYMyizBuzMeFYPOGrYophQYbmdKvpU6/4YTGoOk=');
-INSERT INTO public.component_config VALUES ('c6c2409c-39fc-42d2-b017-d1d0649806c9', 'c0c100d7-14a5-4ee6-8d1b-bf67756950ff', 'certificate', 'MIICmzCCAYMCBgGLmzwyYjANBgkqhkiG9w0BAQsFADARMQ8wDQYDVQQDDAZtYXN0ZXIwHhcNMjMxMTA0MTY0NjM1WhcNMzMxMTA0MTY0ODE1WjARMQ8wDQYDVQQDDAZtYXN0ZXIwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQDAhxDvGU1iU/aU1PypWQmR2DzqqBvcw8EXv5ovkFI8nyMJpnaz87JcyYHDAAlY/7lrfkljU8cEOXylWw+L4b794xEtfWxGAnlxpJh9Whf57+EzO8kCzCcYkf1HG6xu4guLomgKXKBXBXlku1nma/sHugJ2vJlBFeZSqVAc2zCFIe81bj72FsopbQlbqctI+pyc74xVZDalpO52RlQWmJ+NdhXfyB1pa0jGdTqN53biuH8btovwBlupdVymoILg0wEuuKctHCU6OkrUHV6ClRw5/AJYjvXf+pK1x/4w9084zJm4nAPABLbsZMG9RtDDsn45GLMNulPGZSIIKTCF4Y91AgMBAAEwDQYJKoZIhvcNAQELBQADggEBADUeLrmFbFCTRk/1qV8R3LD65OwPGmKS8kyV+KX/NLRmY4ju2tm8h5pI2QFR/quRoEQcwpesbkyap+hjMzIrNdYaYmP4wntrlKaybRsKKNAxvvzZ14eiy68fB3ftEYy0ScR/a5VdVZGoHUqjGvwEJ6h+hWpXDpivFBB6hvAoyO7HTFgcNwLZX+FAlzw0vHoMdpiqNriM2WMdhyzhe8+vcPFeO4fWrZO0q6NjYTeoa/O50qsIBYNfiZd+bZjS8T039nuz0e069lwLkezLs7lz77HaZ+UDfrTyldrVr1/b/HHED7apW4R3Bcvb6fNlvNAJzNPmQ7dLxKBJotleQL1p6iw=');
-INSERT INTO public.component_config VALUES ('8d1df3a0-ddb2-456c-b606-8260a1e49a84', 'c0c100d7-14a5-4ee6-8d1b-bf67756950ff', 'algorithm', 'RSA-OAEP');
-INSERT INTO public.component_config VALUES ('c17435fa-aa17-47aa-a87b-aaa3ad713403', 'c0c100d7-14a5-4ee6-8d1b-bf67756950ff', 'keyUse', 'ENC');
-INSERT INTO public.component_config VALUES ('02d223c8-99ec-448d-bcff-338e147b7024', '40e9a121-4139-4416-ad38-51be92051e29', 'algorithm', 'HS256');
-INSERT INTO public.component_config VALUES ('f5ec1da9-959f-4d10-a87c-5be094cc2d7a', '40e9a121-4139-4416-ad38-51be92051e29', 'priority', '100');
-INSERT INTO public.component_config VALUES ('0882811f-6dec-4cf1-be2f-f0d59bf1ae0a', '40e9a121-4139-4416-ad38-51be92051e29', 'secret', 'kyCIaDwSzbMb60JgTBEDOV4xa0r-rro1nrhcIMimjrdWJqmmBiX7-jPdusdgylGUeSIzsy2YZvgkLnRARfTKew');
-INSERT INTO public.component_config VALUES ('1562fa4d-b692-4299-bb44-06927b472e60', '40e9a121-4139-4416-ad38-51be92051e29', 'kid', '4b6f4e20-3dac-4d2c-b540-4de6334084da');
-INSERT INTO public.component_config VALUES ('d37dd430-02ce-4f07-be15-af95516d6ab9', 'ed029d0b-6d80-4bdd-a21a-7c909d87d494', 'secret', 'JgmLzYrUuqlS6oq2l3pq_YQAwEvNbC3JbR2y1EOD6dUHpaULqiNh7RE2FZGOYIGDRyiHO6LNZEUhrWnBZ1zyfw');
-INSERT INTO public.component_config VALUES ('46a63b00-b3ea-4631-9b87-3dc5ed404937', 'ed029d0b-6d80-4bdd-a21a-7c909d87d494', 'priority', '100');
-INSERT INTO public.component_config VALUES ('bb0284d0-575c-444b-beae-750efaf896b7', 'ed029d0b-6d80-4bdd-a21a-7c909d87d494', 'algorithm', 'HS256');
-INSERT INTO public.component_config VALUES ('fa1846f0-0c7b-4700-aa74-b74628acc635', 'ed029d0b-6d80-4bdd-a21a-7c909d87d494', 'kid', 'e24dad49-b2b8-4b41-8a2a-095a9426bf84');
-INSERT INTO public.component_config VALUES ('d2243211-28e2-4b7c-bf49-993f5b9a8e7b', 'f0f2a0a4-b58a-43ed-8035-158c5120b350', 'allow-default-scopes', 'true');
-INSERT INTO public.component_config VALUES ('393badf6-eaf5-4669-a22a-818597040367', '1e3a64aa-1eab-42a3-844b-b1aa6799d624', 'algorithm', 'RSA-OAEP');
-INSERT INTO public.component_config VALUES ('0bd88ec8-3734-424f-a162-3febf3c2f8da', '87b928a5-8d16-4877-9563-78c8999fcb11', 'certificate', 'MIICmzCCAYMCBgGLmzwxnDANBgkqhkiG9w0BAQsFADARMQ8wDQYDVQQDDAZtYXN0ZXIwHhcNMjMxMTA0MTY0NjM1WhcNMzMxMTA0MTY0ODE1WjARMQ8wDQYDVQQDDAZtYXN0ZXIwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCwFD0/OIHET/UO3fmpHsg7UjWd1HXOo82/3QtNO5QAAJmlPy3RuaJddhTzGFGzif5lUZuB5q69diz6wdK+c8t9ZEBAbx8anRaa9qLMT4h7pUbu5kjFJ53++yWaf8WvIeq4/oNIg3Fl/ldPZc0ghsJUOml43oEl8nik3edkGvuJR6jN7L6HGW5W7Dn7kP5a3xPprOE9g6xcoY8ijo/o+KTk146IM9bZZ7jdIyqEaYXLbjJN3W+ZfrO2kpcmyUljIhTKu19GP/wDM0WEB+T+eaCpvpnXTn1UJ0tUOuzBzFz/5CLa4l97SO4Vuao0+CrAEGU3U/itMVyJ1KSyjliAGGyHAgMBAAEwDQYJKoZIhvcNAQELBQADggEBABFdNbjU9+k1clqZ/DtK4wnq1pqAz3LPtoO79M3Et3FEq7KRo/cSyCySfRj1JIwjtjsJoPHSxoS8sORAC3d+Iy2KXWEQ22euTEkKeWoJk4BuUp+fzrvZdKSzhBohUfkdJ+AGdnnWLKG+79t5WakTJFSlTeNMYPZbj39CKZO3RBJVh3tyeJ0YN87V20CbsvXHs1+7aBqJXw+fZTSX3HUXzg4MtMWRB131tlg4jOgk/pn5RPmomNkGbL3JXs51HADdiLOXEUnQ968ErSTeNc/6jFXm/L9gRhZmjnRtvymB2Br2LZLsdPxx2D4Zqsyrj7fDX1HAWr5F+waxWFWScPCuXWs=');
-INSERT INTO public.component_config VALUES ('ce30ab66-e37c-4978-bfb1-40ddcb3aa788', '87b928a5-8d16-4877-9563-78c8999fcb11', 'priority', '100');
-INSERT INTO public.component_config VALUES ('e5e805dc-d759-46a0-91bd-3ddf4a715a0c', '87b928a5-8d16-4877-9563-78c8999fcb11', 'keyUse', 'SIG');
-INSERT INTO public.component_config VALUES ('e3937c07-a1e2-4199-9aec-b63addf81593', '87b928a5-8d16-4877-9563-78c8999fcb11', 'privateKey', 'MIIEpAIBAAKCAQEAsBQ9PziBxE/1Dt35qR7IO1I1ndR1zqPNv90LTTuUAACZpT8t0bmiXXYU8xhRs4n+ZVGbgeauvXYs+sHSvnPLfWRAQG8fGp0WmvaizE+Ie6VG7uZIxSed/vslmn/FryHquP6DSINxZf5XT2XNIIbCVDppeN6BJfJ4pN3nZBr7iUeozey+hxluVuw5+5D+Wt8T6azhPYOsXKGPIo6P6Pik5NeOiDPW2We43SMqhGmFy24yTd1vmX6ztpKXJslJYyIUyrtfRj/8AzNFhAfk/nmgqb6Z1059VCdLVDrswcxc/+Qi2uJfe0juFbmqNPgqwBBlN1P4rTFcidSkso5YgBhshwIDAQABAoIBADDmRgYfMsaqr/NjiRjDIDd9Qr+kx9zN1++POzrFL3p6sDDYpWhnpeRPzUyftdznF1va+JVwU5nxTleLaXQT43Dc3Q0n7xrsgmEh2p9j/RLdmR/ym0YJlRLBe7V3A5b6E94xbJNAUcdSBbxamMeONTzABheXr4Uy2/dpWwANkEqUwpXsfh9FLu9dCBky+YqcZttL4OObyZ0E6BXyEhtxn9u3mL3gDf6dytOExAm8K97szlYvcy8D37lj0ixRMwIdrgld2/RbHOLOC2yQj7/q8u56sD3hrKzhxF77FfVhKqlS9ktu/UEo4vITalIIBRbrlgBCd00MDdKPRQUzLI2Lm10CgYEA3Gq9MlSdIDnlAVFEMyY9/SjCeMsQqJsw95oKjhqzLVV6Gvo/8jmd8qGf0KAxugpkxiGO1XBxpRm2XtJWgkVNdOBs0tJ+6JaesCISLKrF01O+I5pTP1UGtftWSt3Le08lVzeYzUgS+WeLi8gOH29voNhK6RzD3DZFpunN1GWZpD0CgYEAzIEhU6SaIqEMQ66uLFdPBFFhLMRiuUDNlba/NUys2DTlZT5Cmw8Xg/OEbSWu35P9SY7Rb0n/rWi39xeIQiLrbgf4+CYnVDmrzz8tCt0nthuSY4l9/NgcOf67yXGFrk8g76d1+vx8nNIKzwpNjJlqLDnzuPZgenk5jI6Uyir97BMCgYEAslzptxXDhHV0/Ejv4Fg852SZYjgoxde3m1Wa3v16KuA1jCkfn/rB9rqVYbSQKNUKUU6Mj+mK/Sg+bKLXAFnmYQLO7RcLPVnNFgisHlse9HCat6LFZMWARbkaTkEGzUTxmY9S5iNBv3Lr+HQuAYAim80LaXIuiD+ew4AFYK/K0Z0CgYBwQgYQSw/NKIh58r5rWrXmUeG82ES1Gmx/3WQSlvdea5Lsw4N+aIdpCFjOLVxUIIFuSnaO15kBELXDbmh+nXqM2NWDKjZ2ln3Icw5/oyy0W2g9OXEuRVchQsLEbouKRqd2xn8N+mFRGD+UrTwqjOBqTJmME7qcIEVF8dKdM4JVfwKBgQC4M7P+LYjsUJIjPeqbJqfMI0zL0U/CqqwZF1ZTtQAOPPj/N84R4TJNLCnqHp6jLXoin9B9qxYJyVth+eOl6hE6MkR7g1o+vtZeHFgIwKcUM3x6BYY4ft5iMiJjh+mDMG1EUsnooR8Nyqu7i/fDCRtEmSOyBbNPEkoPz+KkAVEn4g==');
-INSERT INTO public.component_config VALUES ('bb3b3c32-1b69-4a80-9c4d-e16c510b4e5c', '11c9bee2-bf75-471c-8de8-286980530d10', 'host-sending-registration-request-must-match', 'true');
-INSERT INTO public.component_config VALUES ('cd1387ff-cd52-466d-b343-a69d196c85b3', '11c9bee2-bf75-471c-8de8-286980530d10', 'client-uris-must-match', 'true');
-INSERT INTO public.component_config VALUES ('ed79ca33-062f-4bc2-8901-f55440bf53b2', '543ef0e8-1b64-436a-829f-f8d57819eb45', 'max-clients', '200');
-INSERT INTO public.component_config VALUES ('97cce6f3-2c61-4727-b970-5dbeed5f40ff', '28c2acd4-f5c7-4e0a-80b8-eac67ea5991c', 'kid', '56879d5b-bf74-40e3-b7d4-f55e152b1355');
-INSERT INTO public.component_config VALUES ('1020217a-6fd9-493b-b7e6-2a5859183f1f', '28c2acd4-f5c7-4e0a-80b8-eac67ea5991c', 'secret', 'iYPZ8Vk7_fONuyNMXraFoA');
-INSERT INTO public.component_config VALUES ('6b397098-277e-4585-84a5-5897458d4843', '28c2acd4-f5c7-4e0a-80b8-eac67ea5991c', 'priority', '100');
-INSERT INTO public.component_config VALUES ('8e6e6942-279d-44de-a3b9-42b6618f7bc7', '7b62deb1-030d-4800-b41c-bd5398080ed2', 'certificate', 'MIICozCCAYsCBgGLm3ievjANBgkqhkiG9w0BAQsFADAVMRMwEQYDVQQDDApib29rLXN0b3JlMB4XDTIzMTEwNDE3NTIzNVoXDTMzMTEwNDE3NTQxNVowFTETMBEGA1UEAwwKYm9vay1zdG9yZTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMrVqlHIxiMjITXOm3uwV4iuC6KORu/vFrvXnk2UPgIOCtZwfazaAGlNLle/6E5WC4GADGUU0ZeUnp5sQA2UCr4A3YyB/ZFM6eE9VApkLu2CrpPFEMs0St/aYRupSoN+3KbXPPivWVhKlMHOSGK6GIJhxuWsEJDVwdOEn6yH2jVOmTVFjfn+DJ+gNC9bX7Zbm4DtpYnv5lFJZJUuQIii6l4GO/bmWCc2S6Kjk3HXoFEPxBbvpScKdnPRcpmU5XZS/CL8YeCXg29xoUqq7eChieMzI0IdjVaK40tqMvr5e2jaAoppsDbhtGPaj2+3oFkUUrczelV9ekrqzmzBaYmovMUCAwEAATANBgkqhkiG9w0BAQsFAAOCAQEAM3u5zxKxvAX5nHhcsIs9GEv0tR54+s4XAouvfKqV3ruL4+TA1lzIue94T2Tch/UcAucMNV04qPdbrO32pj+bHdyAxo0mvA3qaezQO30HZXk5ovkcn7l9gW3axrRfKm2qcf3IpMv6GyG6+QLETaDANrwSWKgmFjA0UwOd+Nk2Nx9j24GJbaW9OMad73FzgX+/yCe8q19PPjFu/RMt5iPsvUoHVzHXhqZjqx00iBJMuGrAZ5l/Qn96NpRN0BRGLGh5IC1yPpHuCTEYeIBPdZwXApq3tKfVZIq/9PK1ZkDYrLjPQITdN/TaA9mzFqDa7R29brlPBFQk7nsov8f7JWNCGg==');
-INSERT INTO public.component_config VALUES ('1538fff7-03c6-4097-a530-743186727d78', '7b62deb1-030d-4800-b41c-bd5398080ed2', 'priority', '100');
-INSERT INTO public.component_config VALUES ('323c7dee-1b26-4a2d-b57c-2973ac5609c3', '7b62deb1-030d-4800-b41c-bd5398080ed2', 'privateKey', 'MIIEpAIBAAKCAQEAytWqUcjGIyMhNc6be7BXiK4Loo5G7+8Wu9eeTZQ+Ag4K1nB9rNoAaU0uV7/oTlYLgYAMZRTRl5SenmxADZQKvgDdjIH9kUzp4T1UCmQu7YKuk8UQyzRK39phG6lKg37cptc8+K9ZWEqUwc5IYroYgmHG5awQkNXB04SfrIfaNU6ZNUWN+f4Mn6A0L1tftlubgO2lie/mUUlklS5AiKLqXgY79uZYJzZLoqOTcdegUQ/EFu+lJwp2c9FymZTldlL8Ivxh4JeDb3GhSqrt4KGJ4zMjQh2NVorjS2oy+vl7aNoCimmwNuG0Y9qPb7egWRRStzN6VX16SurObMFpiai8xQIDAQABAoIBACtdEKOZc9qxOPli6VTBN4WOCAjBuCK1j7uq9joJtlQEIocD16prlOjuSjkSWxzcQmt2L7AwijqI2HxwEiWU/9LtJnBSnh5BPkMcNGpgTrQSWzZWTCfVTyiabGZYhAimx4+Xtn5IJqa8kx739fu9Y14Ef1w8s/Hy8RRCZ0ygYqNAf7vSsCEYZuT7JAn4r+HOxIu9HGrWLRwAEu5Ict5R3RvNQhbjiPKjZDk02sftGvqE5i1b9+rRhLUUSF4ijuoGVfEZekElaUkyCslqvqt2At91HjsE3xXbU4FKw3VYaMQopLhqFIu1/5hNsNMi5LaVK2Jd/qz6+FZzhrbc+03JMOECgYEA9tYP95+r7n0Yg8PnNSe46ufmukQeCXNkcsj0Myxu3SqnELh/6QChUTNDazHYx1SrTH+w+mG26FFqVaKZfMbDV8OiX8NKkYsC4GnGHtUf7KCjnNb0qNKB1JqhPc86s4dd03LargAtKf2X6vWsIFRsPzVJl81yO5YHpz/1XyqgBK0CgYEA0l1pORmKAo5wpgogk9Pj7i5m0pIg3n1dBnAYfCTF3hER2LWXUCQb7tu92lz5184dA29fwF8XFe85kp/rnx+wF7YrX4+hbHtnInUZ8Lcd4hRjmz7U4QfpGBt3b3o0ckA28A4GTZY8eVQX50etCjbLmKjJw1e4/+/Qn3K+zxpqg3kCgYEA8J040Wzfv8pH9GIqZuGC29IVUyuFkDbhCxejHKNKquOiGaWQYoSPvETZiov7wkth9F9hGKHaF9sNac7oCf8DevEkvm7zqK62riXN0E53IUZyVzgfJNaXYrUdStBQa6MgLjf+vbFEVXNz/MFg+d7x6ie6xnSpzzXv3fR17z/w3r0CgYEAoJo0JSW8WatJkVoV+QZB86t1ULnDYlkvViTqbIzei2VYzKwGc2a99KPK1BU7oWh4ehDjd0ihpVtYBvsUtg1JMTEg9/n98YZc/M+OGFqU8+9BBFr5xzt017TQgEk6FSe1SZxLb5yNWsu63BW6pBulYE0sjHhCgxMhoTnHNvIh83ECgYAY5rw2EsPed9q1VXZeGVT+QyEeAVyNSd52CVyHuX0K9pMMYUw5MAN3UMYLd9RenxB/GZbKrHkZ337BgYodymoULYXt+5ueoscpW29WOeKHrnxVSLwd1mW8foHo0/x2KxH3BjrC+9Jkxs5tCxIQrizcpmG84C4mg0N+TBdxU4T8FA==');
-INSERT INTO public.component_config VALUES ('7b89dab9-a492-4193-866d-fb6e7f1e21b5', '3029e4e4-bfbe-490c-af54-65174b5711d6', 'allowed-protocol-mapper-types', 'saml-user-attribute-mapper');
-INSERT INTO public.component_config VALUES ('7328f0e1-333e-4a09-81a4-2749164167ef', '3029e4e4-bfbe-490c-af54-65174b5711d6', 'allowed-protocol-mapper-types', 'oidc-usermodel-property-mapper');
-INSERT INTO public.component_config VALUES ('1fb7241e-981d-4803-a96f-1b9ac76cf974', '3029e4e4-bfbe-490c-af54-65174b5711d6', 'allowed-protocol-mapper-types', 'saml-role-list-mapper');
-INSERT INTO public.component_config VALUES ('89ccf213-d87e-40ee-b5c7-e66a3d68d0b4', '3029e4e4-bfbe-490c-af54-65174b5711d6', 'allowed-protocol-mapper-types', 'saml-user-property-mapper');
-INSERT INTO public.component_config VALUES ('ff7fcca7-fbf6-48a5-a6db-408f93b1c12c', '3029e4e4-bfbe-490c-af54-65174b5711d6', 'allowed-protocol-mapper-types', 'oidc-sha256-pairwise-sub-mapper');
-INSERT INTO public.component_config VALUES ('5422e8b2-bcf0-4ba1-aebb-e19800266d1e', '3029e4e4-bfbe-490c-af54-65174b5711d6', 'allowed-protocol-mapper-types', 'oidc-usermodel-attribute-mapper');
-INSERT INTO public.component_config VALUES ('32b1d9a1-c591-4ba6-8914-4c58461fc175', '3029e4e4-bfbe-490c-af54-65174b5711d6', 'allowed-protocol-mapper-types', 'oidc-full-name-mapper');
-INSERT INTO public.component_config VALUES ('dfa2476b-3e0b-429e-95b0-6e47c6304658', '3029e4e4-bfbe-490c-af54-65174b5711d6', 'allowed-protocol-mapper-types', 'oidc-address-mapper');
-INSERT INTO public.component_config VALUES ('d2897c0c-58ed-4838-aa8f-e839a4691cf6', '34015fb7-1b62-40f7-b663-fa89661ba939', 'allow-default-scopes', 'true');
-INSERT INTO public.component_config VALUES ('0faec5bb-d9fa-4b40-81c0-3d6804ba5d0a', '1e3a64aa-1eab-42a3-844b-b1aa6799d624', 'certificate', 'MIICozCCAYsCBgGLm3ifCjANBgkqhkiG9w0BAQsFADAVMRMwEQYDVQQDDApib29rLXN0b3JlMB4XDTIzMTEwNDE3NTIzNVoXDTMzMTEwNDE3NTQxNVowFTETMBEGA1UEAwwKYm9vay1zdG9yZTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAL2IFt4yDPM47fBkRmXGq2BoC911XKwbtizweZfS9vudy9GttuJUcymExLxqFt9fGyADthYJ7oxP8Ozdq1WWS95myrv/Yh5fAxWTrhRxMGmKc/8XP9xAOsMu4sDKTxd1sGzB+dhuW8Jn7LHuquhgKoPp9D2QrpnGC66dFzFrGVm5PYb5xcDKqu8UORwJG52kfJlKq2rlez+0r8EAqhdQ1J+KqjRRgFhuBdnh3l1AX7cROwGlh1BygOIkGbOmz+hh6Fb5wdDxZFwj21JQMdtXA7o0OPJsfFXhrb22T9K9xX+vJ5lNAGF2KcStAgXHw9zgLoH1VEQPmtAts3FQU2bHNV8CAwEAATANBgkqhkiG9w0BAQsFAAOCAQEApD404FOmT77eqHZ5eKXWHvvmEvwIHAhdhOQLU0zygf7p6FtcrY1VjLMjfLtju09H3mLkLYGqAZeeKXqe5xULCXlVsaQjNUji0xm5B1La3jFgH3gkWTBL08gJwsV19aBD+uL7VmtSI67lP+ooaMucCG+mBoGunh+sffiQKSBKA2DBzuz9baRdtMEcwgVdRaEFy3uo3MLVaQYjhe6e1XzRgJwwXGi9dzDkPqE/Ot/yZtkv3DG4mhvTGRbq9lLDSvonJWT62rZnpFZDtWAzdDL004nHGyOcn116IofhYuPfUaemDk/mOJJrHB9QYCR/LtyaJ57YL9laHEVwvamu35fw/w==');
-INSERT INTO public.component_config VALUES ('380141cb-7b3e-4259-82a4-ac99627b0c0e', '1e3a64aa-1eab-42a3-844b-b1aa6799d624', 'priority', '100');
-INSERT INTO public.component_config VALUES ('803e4f3c-e2ec-4586-9d1d-6dcd6073aafd', '1e3a64aa-1eab-42a3-844b-b1aa6799d624', 'privateKey', 'MIIEoQIBAAKCAQEAvYgW3jIM8zjt8GRGZcarYGgL3XVcrBu2LPB5l9L2+53L0a224lRzKYTEvGoW318bIAO2FgnujE/w7N2rVZZL3mbKu/9iHl8DFZOuFHEwaYpz/xc/3EA6wy7iwMpPF3WwbMH52G5bwmfsse6q6GAqg+n0PZCumcYLrp0XMWsZWbk9hvnFwMqq7xQ5HAkbnaR8mUqrauV7P7SvwQCqF1DUn4qqNFGAWG4F2eHeXUBftxE7AaWHUHKA4iQZs6bP6GHoVvnB0PFkXCPbUlAx21cDujQ48mx8VeGtvbZP0r3Ff68nmU0AYXYpxK0CBcfD3OAugfVURA+a0C2zcVBTZsc1XwIDAQABAoH/U76c0kIj2Sz1zjhZChWNQVC37WdaWhQzTR4vYMi5ChIvGmzsRItHHEKEDdA0/EKxEi9WilKxvCZbV9euDhlQ4sLrDIjVFtFuWjfc0MkLQoNW+LhW/z+w3qEKGhHAVuI9Q1rBFHRMUi2s+940L+86PF4F5fL99/QxcE6qSXCczMKhJPX2HHFB1mgHkiV69W9gSMY4g1hM+fqZS45XH1RNFk8l8wA8K4KEaTMv50BBj4O3Cw30b48MsQ6KYzeaJk3QEKNNP5l/vl6Mt7ATohPdbKTnqITPpCWx3qsQcnvPoHyMu4vHxpe1kU1HXnkZECUZk8HuF6WGeIb/AhxHzf05AoGBAPo7uJ4Ptbp9Xh1mCpjfwP/r82YdN2pH/3hMLOxprksTinB58Yk/MBfEHuQBQwPtu85+u1thXvvu+MTemINB5V5coic269K8dB0nE2u/k6yR5VOjR7+cg9kusMr9jpNI5z9nGzjLv3zjgMrk6vddhdR/xjUXgD+FpMgE7u0BLAMHAoGBAMHmQHsBYZN0piGudUxy34Iv1Ffj28BVK8aihg0YUQ/fZtdkNfDK9NLYVqVX85jL2tmJGCLQ7YODP97swhIyO4Oot+qXojZoMEEP+iCxTkTfmtZZadVYDqRiVEUdlaxZcqNeoccH2y5jdEnN8qKMCMUBuSi9k/cCsMYsrunEIuzpAoGAfE8gxrzNLajMEVS43PsDGN/xWYAYIF9GBU/qXUOex0Mc2gVqPSE71gKiyefqj9ARJWMF1j6H/iXYRYzDPSmGNZtVHqAFBPqDwFvCJRvV07viresGYKTzRvgP8beGlZp47qFc/5kQNo2aVLDmHR7Dti4HnCZhmqzckFULEIgtgg8CgYBEKSq1ktC4QyM7Z9Z4H1GOtD2S/9h6DfarhupUpB2q1L+UK/gCQ3Y4wDAFQ5uwNMkj+1tusb8sofDL7rJyLxJYv/CXGOK++XUtCe7Fm06GS4xkmV3oz2GmS6KQAUxiH7d60oNQMeTMs81nPGx004Epr+dk+O+Qv3Ng1shOCNK2MQKBgQCJfFajzVKXAUZisC+9U3K9MMRSpTg3qbP4ZbG/tR2XuPvX/NXRFIUwei44UXcHylKvAU3pUJxOuyR48INNLCwZCakTJ1gKw37Wxp4WECEixRSjmUsV35HMykzO/tllGXqeyqVvgrnlGwTHiWOEbJ8r4MHxokpL7GAK0A0cNjLxOA==');
-INSERT INTO public.component_config VALUES ('99101461-e48a-4707-9731-cfa4d77355ee', 'f42a7f45-5d7a-4136-94b0-7ee3e9f9afdc', 'allowed-protocol-mapper-types', 'saml-user-attribute-mapper');
-INSERT INTO public.component_config VALUES ('aaf8d17d-3ee9-45f9-b3a9-f36d07d72c4c', 'f42a7f45-5d7a-4136-94b0-7ee3e9f9afdc', 'allowed-protocol-mapper-types', 'oidc-sha256-pairwise-sub-mapper');
-INSERT INTO public.component_config VALUES ('3481f009-d9cd-4fd5-9fa6-db31402fe68a', 'f42a7f45-5d7a-4136-94b0-7ee3e9f9afdc', 'allowed-protocol-mapper-types', 'oidc-address-mapper');
-INSERT INTO public.component_config VALUES ('67ff608d-8811-4225-8f95-3f54595e2d08', 'f42a7f45-5d7a-4136-94b0-7ee3e9f9afdc', 'allowed-protocol-mapper-types', 'oidc-full-name-mapper');
-INSERT INTO public.component_config VALUES ('ba346ddd-9bdb-4393-b1c5-3f4ea5b31602', 'f42a7f45-5d7a-4136-94b0-7ee3e9f9afdc', 'allowed-protocol-mapper-types', 'saml-user-property-mapper');
-INSERT INTO public.component_config VALUES ('57ac7fe7-f547-4b1b-b779-7914bf3760c1', 'f42a7f45-5d7a-4136-94b0-7ee3e9f9afdc', 'allowed-protocol-mapper-types', 'saml-role-list-mapper');
-INSERT INTO public.component_config VALUES ('bfd079b9-0c35-439e-b526-5cf36c4e25c0', 'f42a7f45-5d7a-4136-94b0-7ee3e9f9afdc', 'allowed-protocol-mapper-types', 'oidc-usermodel-attribute-mapper');
-INSERT INTO public.component_config VALUES ('8b1415d0-b8f8-455f-90bb-67fda772c682', 'f42a7f45-5d7a-4136-94b0-7ee3e9f9afdc', 'allowed-protocol-mapper-types', 'oidc-usermodel-property-mapper');
+INSERT INTO public.component_config VALUES ('f4a09700-7573-47c9-ade7-f99cfc87ec71', 'ae05b2bb-25f9-42a2-b004-be17fbf98246', 'allow-default-scopes', 'true');
+INSERT INTO public.component_config VALUES ('5e19939d-3bc0-473e-81ad-1fdcdf93640d', '2e9405ad-7590-49bd-af7e-b4200d698337', 'max-clients', '200');
+INSERT INTO public.component_config VALUES ('a594e01f-e15e-4e94-8945-ccd2ec381a30', '7dca7697-7792-4828-8c0f-c7fffdc02892', 'allowed-protocol-mapper-types', 'oidc-full-name-mapper');
+INSERT INTO public.component_config VALUES ('e365a84b-3199-4791-8867-ff79ef412896', '7dca7697-7792-4828-8c0f-c7fffdc02892', 'allowed-protocol-mapper-types', 'saml-user-property-mapper');
+INSERT INTO public.component_config VALUES ('0e1ef949-e8f9-41f0-9469-c5dcd2627659', '7dca7697-7792-4828-8c0f-c7fffdc02892', 'allowed-protocol-mapper-types', 'oidc-address-mapper');
+INSERT INTO public.component_config VALUES ('c73e0ce1-9aa2-4303-a861-88a5fa9d449f', '7dca7697-7792-4828-8c0f-c7fffdc02892', 'allowed-protocol-mapper-types', 'saml-role-list-mapper');
+INSERT INTO public.component_config VALUES ('8f4a5126-fa11-4bef-a625-65afd1474e40', '7dca7697-7792-4828-8c0f-c7fffdc02892', 'allowed-protocol-mapper-types', 'saml-user-attribute-mapper');
+INSERT INTO public.component_config VALUES ('a2c61485-96a3-48bd-86f2-9a991923dd25', '7dca7697-7792-4828-8c0f-c7fffdc02892', 'allowed-protocol-mapper-types', 'oidc-sha256-pairwise-sub-mapper');
+INSERT INTO public.component_config VALUES ('d201fca0-2a28-48e5-9160-d9443551efc3', '7dca7697-7792-4828-8c0f-c7fffdc02892', 'allowed-protocol-mapper-types', 'oidc-usermodel-attribute-mapper');
+INSERT INTO public.component_config VALUES ('af30a007-ee97-4fff-bad2-1f158800f868', '7dca7697-7792-4828-8c0f-c7fffdc02892', 'allowed-protocol-mapper-types', 'oidc-usermodel-property-mapper');
+INSERT INTO public.component_config VALUES ('c1e5c241-f0bd-4fd7-8b44-faea29141a98', '06fa2ebd-e1c0-4c1a-a1d5-0c57c8aec034', 'allowed-protocol-mapper-types', 'oidc-full-name-mapper');
+INSERT INTO public.component_config VALUES ('7e256959-8abf-47a9-8d65-3f97cca6645e', '06fa2ebd-e1c0-4c1a-a1d5-0c57c8aec034', 'allowed-protocol-mapper-types', 'oidc-usermodel-attribute-mapper');
+INSERT INTO public.component_config VALUES ('9063a687-6c56-43c6-9bc6-3c69860b9ad9', '06fa2ebd-e1c0-4c1a-a1d5-0c57c8aec034', 'allowed-protocol-mapper-types', 'oidc-address-mapper');
+INSERT INTO public.component_config VALUES ('4f2100fd-80b7-4e70-a137-5f0e8825e903', '06fa2ebd-e1c0-4c1a-a1d5-0c57c8aec034', 'allowed-protocol-mapper-types', 'saml-user-attribute-mapper');
+INSERT INTO public.component_config VALUES ('cf7bb2a8-54a2-41da-8f7d-8c0173c72175', '06fa2ebd-e1c0-4c1a-a1d5-0c57c8aec034', 'allowed-protocol-mapper-types', 'saml-role-list-mapper');
+INSERT INTO public.component_config VALUES ('a723127e-981e-4d5c-b09c-c42d64b8ce81', '06fa2ebd-e1c0-4c1a-a1d5-0c57c8aec034', 'allowed-protocol-mapper-types', 'saml-user-property-mapper');
+INSERT INTO public.component_config VALUES ('6392c41f-6222-4934-b5e3-0c8103a53050', '06fa2ebd-e1c0-4c1a-a1d5-0c57c8aec034', 'allowed-protocol-mapper-types', 'oidc-sha256-pairwise-sub-mapper');
+INSERT INTO public.component_config VALUES ('b61f57f4-150f-47db-8265-ee3bd83cdec7', '06fa2ebd-e1c0-4c1a-a1d5-0c57c8aec034', 'allowed-protocol-mapper-types', 'oidc-usermodel-property-mapper');
+INSERT INTO public.component_config VALUES ('bc902934-dfa1-4fd2-b3cc-1a1e593a441f', '7ce6a42c-4754-4777-8757-efe01caba328', 'allow-default-scopes', 'true');
+INSERT INTO public.component_config VALUES ('0605b9c3-4ae2-49f7-bd72-a0e1d97b0f52', 'd82a9fa7-50b4-4120-a599-fbdfaf7cc1b9', 'client-uris-must-match', 'true');
+INSERT INTO public.component_config VALUES ('50ab50ba-688b-4c69-bcff-1b77edeef6fd', 'd82a9fa7-50b4-4120-a599-fbdfaf7cc1b9', 'host-sending-registration-request-must-match', 'true');
+INSERT INTO public.component_config VALUES ('dc700eed-e287-4825-9947-47bb088b0d73', 'afc9e206-9253-4e58-bf87-7a3f352a8de7', 'certificate', 'MIICmzCCAYMCBgGLnDBcfjANBgkqhkiG9w0BAQsFADARMQ8wDQYDVQQDDAZtYXN0ZXIwHhcNMjMxMTA0MjExMzE3WhcNMzMxMTA0MjExNDU3WjARMQ8wDQYDVQQDDAZtYXN0ZXIwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQDB+g5wiH7lRyUCtrOdtRkoQ8GDcSZoHKY3MjyRs7LTVohBsrQF1110xraqc8l/L2uH326ANUF+4dug+VBFK4Dq7WeCpoXH+PH9Qn1lsv0808qT3BVRF93jBGtnR7tff3Ebyr54CKWh2iC4UABune94/4PtzTD3dlPiPo6rqQrq9JlFshTV7FeF+94rXHaa1yXGYgzWke6oG6l1mq8jfqHisJL3BVJ0i7gvGGduiBmYfHrDk1D3H8YzwDoVT/mgf56a4ZhrW4MtT4+ScmgT231xSKcw36hgJ4JAsnge5Gjb/lbBJWthNzxWUJXtIdonjIC2m9JJvJ+T4L6ItG4p8empAgMBAAEwDQYJKoZIhvcNAQELBQADggEBAFHA3Pw7Sb2fvY7LndJiJ9dmrVst2e5V3R48NA+nvnKsiKzz5xa/Ac3zF03qCNAEDhEZS8Xpw4zweOpAW+0+oeRVdBp8EvcqqNCeU7HxmVd9VslqXGIYW4Jghza0+jHoKSLxdxZQ+4gedIqI/2/t5i3MXZ2SVvUHy+hPrd0W54e68Ro8VCnySKMcF71Rxj5GFxAzgzAdgarZPnrWeaTs4XZKh2D2IIF88KLBu2uIP7YP4kptw/WmnrUsgrE1SgipX98OgKl4EmpSBqPl2vFYmPp/tD7sbGqDqCyqXMCiFAEAI6/LCPftcAP8csxxqGZlkRoF4A5H0zVL0f9fYceIT68=');
+INSERT INTO public.component_config VALUES ('fac97060-ad9a-4be2-bee2-e102ee7f5ec0', 'afc9e206-9253-4e58-bf87-7a3f352a8de7', 'privateKey', 'MIIEpAIBAAKCAQEAwfoOcIh+5UclAraznbUZKEPBg3EmaBymNzI8kbOy01aIQbK0BddddMa2qnPJfy9rh99ugDVBfuHboPlQRSuA6u1ngqaFx/jx/UJ9ZbL9PNPKk9wVURfd4wRrZ0e7X39xG8q+eAilodoguFAAbp3veP+D7c0w93ZT4j6Oq6kK6vSZRbIU1exXhfveK1x2mtclxmIM1pHuqBupdZqvI36h4rCS9wVSdIu4LxhnbogZmHx6w5NQ9x/GM8A6FU/5oH+emuGYa1uDLU+PknJoE9t9cUinMN+oYCeCQLJ4HuRo2/5WwSVrYTc8VlCV7SHaJ4yAtpvSSbyfk+C+iLRuKfHpqQIDAQABAoIBAEVEUGSx8TJZeediq3gdA6tDqrYPsSnLVTVvnH5g/3IFO+nN8QgG9EnvbaonZ6QhoFHoINLqcYVoDKAKdzYEB2ictvJKGYqjpHIODK5EwLY4YOX02K3ZCnR3Dw1V6Zx76z2D5AkD+XV26Wk3tDfL8QgxogBIXfx4BhNLyHGXDx1/9G7sOSoFD7AD9nIle68iQceQIIdIZFj/AGPDqIK2cM7tgeft9NXUL3M8AtncyaO8ge9J1aIkK7Cm9RHwp0gqbN2GtzkR/EUUVvmeIsBP793eZUt4I6RmxNfVnLkfS2Uqt4iWnZsUnoxVKgTgNckw4pzta4GvwLhl9lPDYRLItHMCgYEA6Pa3DjYaxecev6UI7g915yEeFon4XDR2rK4YaJl2a9DyFQD16VkAyKxjsTJNLPc8RMEIp+f5LJAaKl02LyFMSvnE5Q6zMhStrq5S0z/JyDdf5TzWIeTzQAmwPMs8v5MN5GhdxGiaN8Cr7eK+qH3e34gF2sptEX82e089b3LJ/38CgYEA1ShrO1NkDP1i0lVXnCmKxSXl8iNOV9d/UfmPTQcFird9COzsEx+4n++Icj1kxuVByi+45RqHjIUVX89nYmc/TfamFLGtuO8Z6Vu9efJFCu4Q9OibTuTvn+rQRzWdwXzl9Z3wqngv32MR4ku5P9XagOiTacrUrwWZnzVEeDJeqtcCgYEA4nSA+SWK3PmPoEdy6MbKm4RL1SkE7cxp1+3b+EHFJYUU7WnjoZNM+cTpm6QD9UPXqBXkriMGylTBupClTScXHIKy7N5fPr1vH7CA/qyxHxkE9Lcwh/4gnw1L7ay6PpdaF7+D9pqf3rZB6ppRL0Q71BpLZqUDZNC+Sxt54s44oU0CgYAcCiYY9r5JiydtvbY5n6lWh8a41HYgzgM8mFSGcG8FMV/sRaZEWb7ioxLS3Eqec1f1LdPnp1a/YF5QbSsPYb+NFO4B+OF+W02QSfYhzYHRj0GBxftwJGN1KOFfDKmE41Youi8Hban2e8TFfOqQgCQvIukJWJojr9vmeo5YNWAInwKBgQCWLgEKPBk92p57+mG6Y2m8DecTeTnOXq6rCAl/V3lVCKxzifd3LR7yd8KjRQaq9PfzXzd8uVq59HSa0DXg/ktrs477rZ0cRGYVMYP9MXq8uvo92hLGtH/+6r8qQL8/0Ij+pJlsVOf6Usm7y80gT5b6KDEkOZ5jrzcFbZQuk/naQA==');
+INSERT INTO public.component_config VALUES ('81e68a58-1d81-4182-bb0d-0007e2f733f6', 'afc9e206-9253-4e58-bf87-7a3f352a8de7', 'priority', '100');
+INSERT INTO public.component_config VALUES ('eba5c949-ef63-4c32-aa45-dd4dded74345', 'afc9e206-9253-4e58-bf87-7a3f352a8de7', 'keyUse', 'SIG');
+INSERT INTO public.component_config VALUES ('e5ce6e8f-364d-4e73-a6ad-4d066bc50166', 'c255f096-9069-4fb7-8577-780adec7781a', 'priority', '100');
+INSERT INTO public.component_config VALUES ('c513e95c-6b6a-4756-8600-0b0b91150580', 'c255f096-9069-4fb7-8577-780adec7781a', 'algorithm', 'HS256');
+INSERT INTO public.component_config VALUES ('269b8d59-370c-4bb8-af87-7f3819558b72', 'c255f096-9069-4fb7-8577-780adec7781a', 'kid', '6ae9dd6d-8b3b-49f9-ad55-d5626558ae19');
+INSERT INTO public.component_config VALUES ('1a17315f-63f7-41f6-a868-fe5105a9f5c1', 'c255f096-9069-4fb7-8577-780adec7781a', 'secret', 's7IXgyMVQiVqN3JRQ-WL_PBYONzwtU4MiKMYc2FpCXu2PM0HuHSWK8MQsH7PdrMqRgIsAb5phwc0HgPNaK7rPw');
+INSERT INTO public.component_config VALUES ('af275135-f05f-42d9-9cc3-8c6bca06152d', 'ac6399ee-17df-4eae-b500-fdfd673df4ac', 'secret', 'cMKy9FVQSlOikpD-L0f5Sg');
+INSERT INTO public.component_config VALUES ('d18543e3-1137-4178-937d-a4babedaf0bc', 'ac6399ee-17df-4eae-b500-fdfd673df4ac', 'kid', 'ccefa1a1-53d4-4408-9eb3-67150c388562');
+INSERT INTO public.component_config VALUES ('9681d82e-5b09-4ba1-a473-53ac4fd65de1', 'ac6399ee-17df-4eae-b500-fdfd673df4ac', 'priority', '100');
+INSERT INTO public.component_config VALUES ('3bcef24b-eeaa-49b9-9afd-9cdc37aef876', 'fda9c1ea-c3e6-4534-bf88-bf9c8990b62b', 'algorithm', 'RSA-OAEP');
+INSERT INTO public.component_config VALUES ('334e124a-9b66-4548-bb78-603213f4b82b', 'fda9c1ea-c3e6-4534-bf88-bf9c8990b62b', 'priority', '100');
+INSERT INTO public.component_config VALUES ('703999f8-a307-46f6-9407-693ca967d3b1', 'fda9c1ea-c3e6-4534-bf88-bf9c8990b62b', 'keyUse', 'ENC');
+INSERT INTO public.component_config VALUES ('899cc192-3d5d-44e6-bd49-0d394126d2fa', 'ed029d0b-6d80-4bdd-a21a-7c909d87d494', 'priority', '100');
+INSERT INTO public.component_config VALUES ('b74becc2-acca-4233-9cea-ba674aa8762f', 'ed029d0b-6d80-4bdd-a21a-7c909d87d494', 'algorithm', 'HS256');
+INSERT INTO public.component_config VALUES ('db652d98-3f60-4597-a12f-1c2e0f8eca5e', 'f0f2a0a4-b58a-43ed-8035-158c5120b350', 'allow-default-scopes', 'true');
+INSERT INTO public.component_config VALUES ('1a607c80-8851-4c97-ab33-3332afcdbf3e', 'fda9c1ea-c3e6-4534-bf88-bf9c8990b62b', 'certificate', 'MIICmzCCAYMCBgGLnDBeYDANBgkqhkiG9w0BAQsFADARMQ8wDQYDVQQDDAZtYXN0ZXIwHhcNMjMxMTA0MjExMzE3WhcNMzMxMTA0MjExNDU3WjARMQ8wDQYDVQQDDAZtYXN0ZXIwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCKomm8gH+bUDtQDxct4H1OuwNBlY/TFMiFWAqFnOL0v3T6TvX124AxDch/hwSXTKIWMTVXSg2USLVNm3wgzvUMab1MdFVOgSqQrXLFm1wC4Up+71DWsC1mSfeG2Es40yLTvAG4ldSf+fuNQEG/wuLZcHfdOxoVyaD2C8+8Tg8q4oyo+I1VkUgD35UPSSLq4ltoaa+B2y3d0/jDaawXNis327/2Bc/qPdP1cZKCOzhbRxp6RwvOudQMqedzhu7jm22gg+unTbT1Hu32xA4wafoIa8NtH/w6ifw1JE9IPAj3nNd3qlWjEmMTess5NiCswgUIOiJj/e+iQtBa3qcZY3tlAgMBAAEwDQYJKoZIhvcNAQELBQADggEBABK2TaDjZVGvZ+hvybvwy5hwBb1hgAY9V2sieCLtRuDi0UuEmVybVucvpQY7QafD5Zqy/+AelgjlOqYTOqiJeZmI/6cZuzIeDuqLpPfxl7y6140IIDnaAJ7ztFqULANC/hOdFs2lu+XjKdxPqmqdtgnAEMw988C14t3pDrgKM4ry17DJ7LJW6dx79dYnObTPQN6Xs6ocFHA9pjQqAguIHL7ePTlNytiyDWZgQj1RIVbHtwqxuZtzXISivd3LDUpSFromwY02CyMHv5hJFUe+wNUGLWK4Z9qrhnHU2io4HUsglM0dJYBc0WT4HSiRk4SVdi61zYt+4zgE22jwnrq9Xxg=');
+INSERT INTO public.component_config VALUES ('e45c2330-8c15-4bd7-9541-db78d5ae7e02', 'fda9c1ea-c3e6-4534-bf88-bf9c8990b62b', 'privateKey', 'MIIEpAIBAAKCAQEAiqJpvIB/m1A7UA8XLeB9TrsDQZWP0xTIhVgKhZzi9L90+k719duAMQ3If4cEl0yiFjE1V0oNlEi1TZt8IM71DGm9THRVToEqkK1yxZtcAuFKfu9Q1rAtZkn3hthLONMi07wBuJXUn/n7jUBBv8Li2XB33TsaFcmg9gvPvE4PKuKMqPiNVZFIA9+VD0ki6uJbaGmvgdst3dP4w2msFzYrN9u/9gXP6j3T9XGSgjs4W0caekcLzrnUDKnnc4bu45ttoIPrp0209R7t9sQOMGn6CGvDbR/8Oon8NSRPSDwI95zXd6pVoxJjE3rLOTYgrMIFCDoiY/3vokLQWt6nGWN7ZQIDAQABAoIBAAPu+sgN71D1VFF/tB0pnvSSatO8DiIjl1LtPhMvceMW4ZdOkT0CFt+NcBBqQM+YLYsqp0RMRhlcfMRwcnOt25cYEvZt4JPDJ3WGbli8AT7VrJrwaF9HDWq3E45gabX5i6XtUjEuEyPc4G3QEm2B9pTL06LTz/gpSedhS2og3t5NF5aRY1ex+c3HqnjggcXQiipDLIsPi+U9YDsfYBIjm3dHCsY73L4N+OqMgU9r2UKP/zZrKqEflB7+A2/lrdELeDVEKHqgZ+BQ2TtT4ba4UcMDlE65Px82iehoo2ctR0hmgE5OWS9rSXvull5XsBsejrXs4XdRg+w6GopehrmNqLsCgYEAvvyc2M1coFTTT9NnWVgZ/F020z0d1fVGXZAR726fbzkyMRz9LrIA0Hop176KaDIpTZy1EanUN+hfAzj9aWsDthitkrliMNRo3wyKRT8N4XsDeDLWdYmVacgxzwAoOABLt+XYWdjWVQMnf4u7xxASMKhy8Jb0vMFDG1uIbUCbDzcCgYEAudOZDNY4t2l1jesj/JruXxIsWQkL9bWTzjVBaFU0SOrWKAnAJicjNEh9gneJWGYRyPQYnPgxo8XU2Rbu4w6L16T5JPzxKQcSxf5hA/1mxJiDBtUFvoXF9BxVlOONYrxJHCeEROzufYwmphGOqeapqGP26aI5AaDFgQe5v9vlgEMCgYEArMLv0sH5vuLcf4IZI92pK/raBD1txsRnkW0ofDDSMhdICttRPzMvv2YygYFPzC9L43QU6tR4LtaZU93yhbCTG9647FebtdX+w32hekAuez/+hHVgP9Rj/ttkCv72YqoJ1GEq0yNtxlrjGOI6yzgDbFaEGpRC8JfV72JeR43AdgMCgYEAok8zIKZAddt0ZVhcX3iH+pxqBf7D5oMKLhQQJGw/te0Az4nsvqZytmkWz41Pdtn4cNjcYsbavNzAVDoWwFZlSR78yxTwI9Dc0fmljZGZYOCBmccZNFeuFtFk4x560SH6jc/qVTXJ/fkbjPRK8xXZXI6sDVe3iTd/K3uu/+i3JfcCgYAD/I1zj6PL4wAla5e3dOJR2Yrlmra/gCfklOPiKMEiMmAR3h+P+I3OQJ1aw+OgNAe8HwwrCMzbBjka9Luam1EcQewExRN0OGO+euswd1WZc2jlVd8p8Iu2oGXR8yGPzIzuj5uzxtNZCgIYeuBe/HD9TGbb/lqjlJ7lUD9MC/n3Uw==');
+INSERT INTO public.component_config VALUES ('745a9e65-e3a6-484d-adf4-f48c42838a2c', '11c9bee2-bf75-471c-8de8-286980530d10', 'client-uris-must-match', 'true');
+INSERT INTO public.component_config VALUES ('be5434e2-2123-4ac1-9f31-62e09765b30f', '11c9bee2-bf75-471c-8de8-286980530d10', 'host-sending-registration-request-must-match', 'true');
+INSERT INTO public.component_config VALUES ('8e2b103f-7ae5-405c-8aa6-e90d87130568', '543ef0e8-1b64-436a-829f-f8d57819eb45', 'max-clients', '200');
+INSERT INTO public.component_config VALUES ('4b17ad6c-9d2a-4331-abe1-df5f978e1092', '28c2acd4-f5c7-4e0a-80b8-eac67ea5991c', 'priority', '100');
+INSERT INTO public.component_config VALUES ('09ee6f0e-17a9-4a99-acf3-bcfb0bcb8e4c', '28c2acd4-f5c7-4e0a-80b8-eac67ea5991c', 'kid', '27939b55-bf2f-423a-84e0-6d5dcee3e844');
+INSERT INTO public.component_config VALUES ('88940582-8afc-4ff2-9fb8-c12cd8a3a1a5', '28c2acd4-f5c7-4e0a-80b8-eac67ea5991c', 'secret', 'bmskxKbjyZ202xmgiRy9mw');
+INSERT INTO public.component_config VALUES ('97708705-4fa2-4736-9018-8c79951677e5', '7b62deb1-030d-4800-b41c-bd5398080ed2', 'privateKey', 'MIIEpAIBAAKCAQEAtQzoqUraZB+6FaYncaTSCZq5GCVBldoedwfGTgJVpiRSHCMz6mZiNg8xiPk4P9c46OYxTfde02BTBShLNnuu2+Cnfg5XSmhbUPzPoPRCxoCPP0ZRJOfascDmlyO4rRlL4d3HjlVmnKDp+79f3dfe3Op/wTvPeojph20BMfftGA0zpI16/dZCvF8P9xOdFK+66W1GG3A37UFPWNfZYG9XS2sI69h9pASFczHbjSZegKJCe7zx/CanJNOXb736K2q8Y17yETnos6d9jbQ7xges++rvFlk45zHIdcnXjna2OJ/7RBSbPYimgWQelbuORfcdFjUDi+gpOImaewAXKAe/QQIDAQABAoIBAAXoeQ6uNkR6axGCCas6Fk8RLR1aOOLNmn0mpCxfQ+F/Ma1AolTxuJ58PjDytgjSSoWCHoWFbyMdc3QZgaPSYy1CbmDNEcDoOSOiTlm5otS0tQf68NKwHLk8euHffOssJkdle/m7dHTjxOLt1rBn9xo1LkxVWfLNFTbRwi5Z4XMti9kbwhV6r0XYXlv6oViZAvh9mKGCME9cfw+ZbV7JkQGglxlm4AVzz6qtV33lHEI0d9LgoQurSQDH7DMnZoA8/hdOCf/NohKEMB0NUE6wYU63em1oAXm4BoDQkqMjSpVuoZCRjIwDyanx4HtwdhtrLRcliOoBSrB+38pQArhdD+ECgYEA/+hBfAjAmp9NQp4ezohPYqgNA+x4JwVCaDTzFEhshtiiu93YeP7GDpI84KBSNiGeO56O425sIbTRayJ9YbWvFzkWVJqUHYH1xUA9Y1xwBAC2pPVXC0or5GMKe1+Xdqaeya7UHC0ekYei4HxMFoYip+PA5FuUDVjpfOM3gYZ4whECgYEAtR21HfoYTgxiSv597sQde34h3RySQBfa8QEXZJo17Bdv+lc/GI1DekbWldZjHBQslndgyk1ZPewHnzFN+9d8fggT8HOYJcLz4p5sEu6XDAn35abrW+WIddxc//TibIHN12hhLSoj8cj0vRTZPB8jtxHox7nXvniCM1ObReEG+jECgYAtmJdaX0DaC/o7HWtFx1nFrUWsZky+Pxym7pBFE+ZqXF0adhuk61gkrn+0Ujxzsqe73bN96GXR16LcoOeQKkwJKj3FU0mCvG4q+Bg4BPdcbzgbyi75Lv0FE3SBqPWWyXdPXhwi7RMeQPmPX/Y6qSmxmk37IioN+sKXYvC33lrT0QKBgQCmzx2o5lbMS4ucFphV+DpPKvR1eYMZlN8JaT/qYD2ZnFx97S0np7OmQugQSMwvaEVIr9pteJ/g8Cp07Cwu72Cxky8KHuzampuU9OQE68oiRGwVD49lrBnqs3LUKu7/kO3Mn04hEtbYMYV3QGRzgxqZ2dzTVs7llogUTcSMr5yFgQKBgQDzd2vQeHoRyM24VdnRbanPD457pChBrkGvOe/CabMnae7C7wiD1CVyB+OwVLCjb03uSNFZQJmcgaOWQYkf+49QvcpaxXI0X7PninA37Q87NsBUoEIormyUyr/eS1+kKh+yhTQfz+F2QIpKlYgAB3xPfMH2MNbdGdD8g6k+nxEr4A==');
+INSERT INTO public.component_config VALUES ('3f9a2389-82d4-4a36-a1f6-0fc24b4ceb0d', '7b62deb1-030d-4800-b41c-bd5398080ed2', 'priority', '100');
+INSERT INTO public.component_config VALUES ('169da592-c220-4d37-a678-4e55c7808e72', '7b62deb1-030d-4800-b41c-bd5398080ed2', 'certificate', 'MIICozCCAYsCBgGLnDi6rzANBgkqhkiG9w0BAQsFADAVMRMwEQYDVQQDDApib29rLXN0b3JlMB4XDTIzMTEwNDIxMjIyNVoXDTMzMTEwNDIxMjQwNVowFTETMBEGA1UEAwwKYm9vay1zdG9yZTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBALUM6KlK2mQfuhWmJ3Gk0gmauRglQZXaHncHxk4CVaYkUhwjM+pmYjYPMYj5OD/XOOjmMU33XtNgUwUoSzZ7rtvgp34OV0poW1D8z6D0QsaAjz9GUSTn2rHA5pcjuK0ZS+Hdx45VZpyg6fu/X93X3tzqf8E7z3qI6YdtATH37RgNM6SNev3WQrxfD/cTnRSvuultRhtwN+1BT1jX2WBvV0trCOvYfaQEhXMx240mXoCiQnu88fwmpyTTl2+9+itqvGNe8hE56LOnfY20O8YHrPvq7xZZOOcxyHXJ1452tjif+0QUmz2IpoFkHpW7jkX3HRY1A4voKTiJmnsAFygHv0ECAwEAATANBgkqhkiG9w0BAQsFAAOCAQEAVByiv1H6E6Dxq3DyJLzg7N/5hwYAHOugxEw2gnIzCSBsh6nQeKcqXLigDS8MpkhVnnguFgkGRQzDvjvKXtx5YgHLIw4V7qJdCi9ulZEVpmKbzYt/Dh/Ejf27e5JuMNfm0/o7enbb5KTmT2RQGoFIZOTP1O8/2cz464e55HyVhOVJWGMqNxyhrVRJfmY7OUEAGQSRzoTEtpfe26NeOas9B50O9Cl7B7gDwEDy9riaq5BR5EXOlTYuyYN+yR+4fqJafH0v9STmxpAQG5QqRbayqXmW2tWjucsDuDCncv6J6jmI88mzwXygA6l12+i9ToTvq5J2o/eEOfQ4LevD9VH21Q==');
+INSERT INTO public.component_config VALUES ('7cf1db76-0066-480d-9541-fc7789ebbf4b', '3029e4e4-bfbe-490c-af54-65174b5711d6', 'allowed-protocol-mapper-types', 'saml-user-attribute-mapper');
+INSERT INTO public.component_config VALUES ('0c490980-d145-4d13-8ff9-d5daf762e73b', '3029e4e4-bfbe-490c-af54-65174b5711d6', 'allowed-protocol-mapper-types', 'saml-role-list-mapper');
+INSERT INTO public.component_config VALUES ('d175184c-54c2-4273-b12b-48d2be02c2d1', '3029e4e4-bfbe-490c-af54-65174b5711d6', 'allowed-protocol-mapper-types', 'saml-user-property-mapper');
+INSERT INTO public.component_config VALUES ('aa25410c-920e-43f8-baec-f712c4813c12', '3029e4e4-bfbe-490c-af54-65174b5711d6', 'allowed-protocol-mapper-types', 'oidc-usermodel-attribute-mapper');
+INSERT INTO public.component_config VALUES ('c3b51f34-ee87-43ac-8c9b-3b72290791e2', '3029e4e4-bfbe-490c-af54-65174b5711d6', 'allowed-protocol-mapper-types', 'oidc-usermodel-property-mapper');
+INSERT INTO public.component_config VALUES ('9f126046-6163-484b-bbbd-26363e04229b', '3029e4e4-bfbe-490c-af54-65174b5711d6', 'allowed-protocol-mapper-types', 'oidc-address-mapper');
+INSERT INTO public.component_config VALUES ('81817029-4b95-47db-98f3-1dcd00cd3bbf', '3029e4e4-bfbe-490c-af54-65174b5711d6', 'allowed-protocol-mapper-types', 'oidc-sha256-pairwise-sub-mapper');
+INSERT INTO public.component_config VALUES ('c11d3380-e91e-47d0-9142-4332df4e4dbd', '3029e4e4-bfbe-490c-af54-65174b5711d6', 'allowed-protocol-mapper-types', 'oidc-full-name-mapper');
+INSERT INTO public.component_config VALUES ('ce260ad9-1d0f-4075-b09f-d560bdd04fad', '34015fb7-1b62-40f7-b663-fa89661ba939', 'allow-default-scopes', 'true');
+INSERT INTO public.component_config VALUES ('537016e6-2d91-4ce9-9eb3-7194b571f511', 'ed029d0b-6d80-4bdd-a21a-7c909d87d494', 'secret', '5KmtbnhM5ohR2BIsyX-GE7OUUKEz3K0XLMeKYsBQPDe98pDPOR5QYbfzDw98KD2ypsfDwk_e6eW9-xAhI1RJtg');
+INSERT INTO public.component_config VALUES ('0ade4590-4639-4d70-8aee-78b49fa54691', 'ed029d0b-6d80-4bdd-a21a-7c909d87d494', 'kid', 'cc18bff0-c834-4866-974d-0f67d01d8311');
+INSERT INTO public.component_config VALUES ('86d44aee-19b8-474c-99b2-ce23467b0838', '1e3a64aa-1eab-42a3-844b-b1aa6799d624', 'certificate', 'MIICozCCAYsCBgGLnDi7bzANBgkqhkiG9w0BAQsFADAVMRMwEQYDVQQDDApib29rLXN0b3JlMB4XDTIzMTEwNDIxMjIyNVoXDTMzMTEwNDIxMjQwNVowFTETMBEGA1UEAwwKYm9vay1zdG9yZTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBANU65gUotrCPvl1f3w8Ymf98aaWTWYZsDzTQGQB01EyiakemFiDV/LunD2bI6FGkogKruYq14t013h8kQFnK6SGbsZ5dSQk2m6dDU7k4qSRFQlbuS8gSM0LEfR0CaAd6Iw50pGSdxNch+lE3Gn1kGEBjsttJ92A3Hjg/QFTgrcfY8AC+AjEQSg9oUeY6g+JJbvtrm33pKxMGm2WCusWyLxA4pTUWHobJa9uAih03tKwcYcS4wdRw8vWV0+51L+MgXUPgtTRhglDZ4F/t7KJh/UKAoUghNftIMZGGtOyq7FtQIr1W5rSZGFTDJIlbK1CGyUvsKvqC67UgIiTJBrsgvg8CAwEAATANBgkqhkiG9w0BAQsFAAOCAQEAkCxGuqRyC7kleLMTVSraxoEnIaIL7aY1IdckRGR8UID7sLZ7fLi3iZX8Cs2CG3QmER5WaI3zEJThcFkY8CPVNqD6ZYXOCR81Gay3NuXePjuNF0Ugx7IYMwRpZH9AA6BMKX3q9sPOvKohrUz0A98IOdDgTHokPJzKJo9cUjsaC5xX+jeAbMzEdnKDK5txRCqaCZDcgNlMzG5rPSspHhSFf50MEN7KIIzVYAE4BajJlPCNuPhtyyKGZ6YB2fnehY/kCgPMD8O0OoUf0+tDCsVlbaLnpuUiuzrxktnMb54aO9Yfbg4E0/pkT6KHvALr8MJp4Z1dviZD0lNuvvTn0OfXeg==');
+INSERT INTO public.component_config VALUES ('743bd792-48ff-47bf-9b0f-5df6544f7b64', '1e3a64aa-1eab-42a3-844b-b1aa6799d624', 'priority', '100');
+INSERT INTO public.component_config VALUES ('48b4c432-4fcf-480d-a06d-860b79f02ac8', '1e3a64aa-1eab-42a3-844b-b1aa6799d624', 'privateKey', 'MIIEpAIBAAKCAQEA1TrmBSi2sI++XV/fDxiZ/3xppZNZhmwPNNAZAHTUTKJqR6YWINX8u6cPZsjoUaSiAqu5irXi3TXeHyRAWcrpIZuxnl1JCTabp0NTuTipJEVCVu5LyBIzQsR9HQJoB3ojDnSkZJ3E1yH6UTcafWQYQGOy20n3YDceOD9AVOCtx9jwAL4CMRBKD2hR5jqD4klu+2ubfekrEwabZYK6xbIvEDilNRYehslr24CKHTe0rBxhxLjB1HDy9ZXT7nUv4yBdQ+C1NGGCUNngX+3somH9QoChSCE1+0gxkYa07KrsW1AivVbmtJkYVMMkiVsrUIbJS+wq+oLrtSAiJMkGuyC+DwIDAQABAoIBABqNTIes7l7lxLs6N9EDQRNENKBLzR9E2nnlmzoS0j2UEJmecBf4/ZEyeDkA4JO2D/82z2fF8XDsBx5SnyQZ9SuHCI2jU80ZZzWOAowd0aDKHRItIfOmdzVOZBQA24ppe5m5DaAtLeM/gGes7cKv0aicTEaBRel4bkNry5YmKjhTLCFM4LN+0kgz9rUH+2FXdBdUo+MzOPf8zf7iyP23UHLoZGPxZUpwartl4QWrbo46wNuYhEqehsiFfjr+EmspY4AIYmLAHz8qrbrbYKIm4964G7bE5acWIMDxMFdLV4BCtwkcAiRY7JMIXz3JzzC976YG1jyAN8Zl9ph8UYFB72ECgYEA+LSnEzuhNQNqDnzK3XXTsWpe+Ip1ufj5uMNkKPm0in5H2dzQSBbuCPPzV4R12LHhiGOO2uUDBGof7Sk7jpU+vly4hMQsLzf649+4vb3WXHCglvNsU8c6Di71c2boHBb+9iEfLAPTD+HRk3LCL2QMYZPhJW9s7sp8WDqHDJla+W8CgYEA23viwXYi61B8Vux7GkliPcemoduqD51r+2NfNbz8ljjbTVw4undE8a1rsUUTZEBUpyVyE3cLeMMHJOHVvhAFlKHINkd8RDa7VUUMCY/zt1rzDWH+RPhhxh8sE2D0K07VsKOL2UZh4jNevpBFwFy5Ye60YGIxMTSjSXmSPw2f9WECgYEA9e2FTKJpTUe8BullnMnXdBdQJAqeUTCelxI3J8GLwmsO16LfHnn2FUpNdVwZQBbdgoWYDGHqsuHSAi0EpIB2E70SBM8LNgHwCIcAYjenEa+ZTMsWcl2Nzdqngd7fZG9k3LNx5I8/lPPizh/rXvtatt6JAwCEwjfd70yooE/AwucCgYEAloH8vCeTyIPX0A+4Vw1Nhgn71XB5zN1pp+i76HDhUO5KTGFaMVwKdiQy/kvdAVkv87K06G4w+q3an0sSNJRuDz9luPsKVwilK9L+byw8t1Zx55J0N72P5rmHkv5gUbZsyQVNqEAgbWpGpSzv9/pd0a9MF/AdxZ1P/9mTFRP1xeECgYByLz4lG0bap2Ngr8S7xP7YoCOoyVzeTa4krlqyl+jRWsQfMbNTH1NurZXuBGOmSlhz8WqWM7CYUMCR5P2fLphWgbPsl0Q5DnROUUaKel1xonG6Cn7HWLDBqFKRGa+RGYm5aSbpWJjJPMcJ1J+Oq5q6ctbUvjCWujoy8e+Q90+/SA==');
+INSERT INTO public.component_config VALUES ('c85a3b3c-6756-4d90-b311-10b12cbeadc6', '1e3a64aa-1eab-42a3-844b-b1aa6799d624', 'algorithm', 'RSA-OAEP');
+INSERT INTO public.component_config VALUES ('3f087420-7be1-4e7a-9c55-50c63a862db9', 'f42a7f45-5d7a-4136-94b0-7ee3e9f9afdc', 'allowed-protocol-mapper-types', 'saml-role-list-mapper');
+INSERT INTO public.component_config VALUES ('a5edb197-b053-4700-8ed2-1d36f7d8c049', 'f42a7f45-5d7a-4136-94b0-7ee3e9f9afdc', 'allowed-protocol-mapper-types', 'saml-user-property-mapper');
+INSERT INTO public.component_config VALUES ('03447924-80fa-49a7-9247-745d3b4feaad', 'f42a7f45-5d7a-4136-94b0-7ee3e9f9afdc', 'allowed-protocol-mapper-types', 'saml-user-attribute-mapper');
+INSERT INTO public.component_config VALUES ('ab330155-ae44-4de5-bca4-f532a775b4da', 'f42a7f45-5d7a-4136-94b0-7ee3e9f9afdc', 'allowed-protocol-mapper-types', 'oidc-full-name-mapper');
+INSERT INTO public.component_config VALUES ('10a3d4ed-18ef-48b7-9f54-92905cf60ea4', 'f42a7f45-5d7a-4136-94b0-7ee3e9f9afdc', 'allowed-protocol-mapper-types', 'oidc-usermodel-attribute-mapper');
+INSERT INTO public.component_config VALUES ('e1f94aee-5c73-402f-a7c3-abfef5641930', 'f42a7f45-5d7a-4136-94b0-7ee3e9f9afdc', 'allowed-protocol-mapper-types', 'oidc-usermodel-property-mapper');
+INSERT INTO public.component_config VALUES ('387ed6a5-e33a-40f4-b30d-b7bf5cb3cd7a', 'f42a7f45-5d7a-4136-94b0-7ee3e9f9afdc', 'allowed-protocol-mapper-types', 'oidc-sha256-pairwise-sub-mapper');
+INSERT INTO public.component_config VALUES ('4724733a-8066-485c-9ae6-e8577625478a', 'f42a7f45-5d7a-4136-94b0-7ee3e9f9afdc', 'allowed-protocol-mapper-types', 'oidc-address-mapper');
 
 
 --
 -- Data for Name: composite_role; Type: TABLE DATA; Schema: public; Owner: admin
 --
 
-INSERT INTO public.composite_role VALUES ('cf889cc4-c918-4a43-a4f6-eea1cb248f6c', '4438a6c4-891a-44af-86b0-53dc1c123202');
-INSERT INTO public.composite_role VALUES ('cf889cc4-c918-4a43-a4f6-eea1cb248f6c', '934e267a-92c7-4c8a-a588-7f106351d1da');
-INSERT INTO public.composite_role VALUES ('cf889cc4-c918-4a43-a4f6-eea1cb248f6c', '74579ac2-00ca-4a28-a5e6-6a6a4b1a45f1');
-INSERT INTO public.composite_role VALUES ('cf889cc4-c918-4a43-a4f6-eea1cb248f6c', '4141d215-5e0b-4573-970a-f487506112c6');
-INSERT INTO public.composite_role VALUES ('cf889cc4-c918-4a43-a4f6-eea1cb248f6c', '4c3319ab-b450-4664-bd75-b871fc041600');
-INSERT INTO public.composite_role VALUES ('cf889cc4-c918-4a43-a4f6-eea1cb248f6c', 'c32cae05-8ccc-40d2-b5cc-2ee6173bb61a');
-INSERT INTO public.composite_role VALUES ('cf889cc4-c918-4a43-a4f6-eea1cb248f6c', '2bd52e70-24c1-45da-bbf5-da6617a22a92');
-INSERT INTO public.composite_role VALUES ('cf889cc4-c918-4a43-a4f6-eea1cb248f6c', 'ad3a971d-98d6-476c-bb87-9f1653c57ec2');
-INSERT INTO public.composite_role VALUES ('cf889cc4-c918-4a43-a4f6-eea1cb248f6c', '8013d27b-9adc-4010-a239-d097c10f2aa9');
-INSERT INTO public.composite_role VALUES ('cf889cc4-c918-4a43-a4f6-eea1cb248f6c', '9afa2539-1885-4f8b-acdf-723477403615');
-INSERT INTO public.composite_role VALUES ('cf889cc4-c918-4a43-a4f6-eea1cb248f6c', '506a9841-92b6-49d2-9212-8130919b2941');
-INSERT INTO public.composite_role VALUES ('cf889cc4-c918-4a43-a4f6-eea1cb248f6c', '2fc4f1dd-1938-4194-b5ee-84006a5b2a93');
-INSERT INTO public.composite_role VALUES ('cf889cc4-c918-4a43-a4f6-eea1cb248f6c', '7c4438ff-948c-411e-80e3-aed319474e95');
-INSERT INTO public.composite_role VALUES ('cf889cc4-c918-4a43-a4f6-eea1cb248f6c', '1353c3ee-d8ef-428f-ad33-4bac7a8bf4b8');
-INSERT INTO public.composite_role VALUES ('cf889cc4-c918-4a43-a4f6-eea1cb248f6c', 'aad26624-9a3c-4825-9e66-27acdef35aad');
-INSERT INTO public.composite_role VALUES ('cf889cc4-c918-4a43-a4f6-eea1cb248f6c', '2d99ba7d-5e75-4093-b5ed-1d770b957dd8');
-INSERT INTO public.composite_role VALUES ('cf889cc4-c918-4a43-a4f6-eea1cb248f6c', 'ed3ec168-037c-402e-8a7b-8d1a57be8210');
-INSERT INTO public.composite_role VALUES ('cf889cc4-c918-4a43-a4f6-eea1cb248f6c', 'e6acef16-0296-4c32-a386-87aa8aa51da2');
-INSERT INTO public.composite_role VALUES ('4141d215-5e0b-4573-970a-f487506112c6', 'aad26624-9a3c-4825-9e66-27acdef35aad');
-INSERT INTO public.composite_role VALUES ('4141d215-5e0b-4573-970a-f487506112c6', 'e6acef16-0296-4c32-a386-87aa8aa51da2');
-INSERT INTO public.composite_role VALUES ('4c3319ab-b450-4664-bd75-b871fc041600', '2d99ba7d-5e75-4093-b5ed-1d770b957dd8');
-INSERT INTO public.composite_role VALUES ('9a58b231-4246-48c3-a17a-78ff6a190d66', 'a5573fc0-d8ea-43b6-9e90-a019b3bf6a8a');
-INSERT INTO public.composite_role VALUES ('9a58b231-4246-48c3-a17a-78ff6a190d66', 'a23fa89b-e7d6-431f-ba88-a2f91b11a09c');
-INSERT INTO public.composite_role VALUES ('a23fa89b-e7d6-431f-ba88-a2f91b11a09c', 'e49305ef-cd61-4a98-9990-4c150be498fc');
-INSERT INTO public.composite_role VALUES ('80ff1fd1-261d-406e-bfc1-a6c67823f29a', '4fdf48f8-81c7-4e92-ba21-a31c85027b19');
-INSERT INTO public.composite_role VALUES ('cf889cc4-c918-4a43-a4f6-eea1cb248f6c', 'fab7c2ee-42d6-4277-99e5-d1c810ed2b33');
-INSERT INTO public.composite_role VALUES ('9a58b231-4246-48c3-a17a-78ff6a190d66', '6794f26e-1c71-40f8-9b18-478c68d317b1');
-INSERT INTO public.composite_role VALUES ('9a58b231-4246-48c3-a17a-78ff6a190d66', 'e59a2816-4f2a-4ae1-815d-7a60f6a07dab');
-INSERT INTO public.composite_role VALUES ('cf889cc4-c918-4a43-a4f6-eea1cb248f6c', '070cd1c5-7b8f-4032-8ba7-35b905452829');
-INSERT INTO public.composite_role VALUES ('cf889cc4-c918-4a43-a4f6-eea1cb248f6c', 'fe311841-151d-4c2f-ac0e-17382c8350d2');
-INSERT INTO public.composite_role VALUES ('cf889cc4-c918-4a43-a4f6-eea1cb248f6c', '96cab5c8-b0c7-4f3b-b91b-10b9bf7441ba');
-INSERT INTO public.composite_role VALUES ('cf889cc4-c918-4a43-a4f6-eea1cb248f6c', '82fe19c4-1c3f-4a76-8438-1d3a5fca1567');
-INSERT INTO public.composite_role VALUES ('cf889cc4-c918-4a43-a4f6-eea1cb248f6c', 'f2ce2915-586a-4675-b95f-e828271ff787');
-INSERT INTO public.composite_role VALUES ('cf889cc4-c918-4a43-a4f6-eea1cb248f6c', 'a5f12f4e-4818-41b6-80c9-0a966c680bf9');
-INSERT INTO public.composite_role VALUES ('cf889cc4-c918-4a43-a4f6-eea1cb248f6c', '79bc9c93-0a08-4ecf-b85e-1e6982247021');
-INSERT INTO public.composite_role VALUES ('cf889cc4-c918-4a43-a4f6-eea1cb248f6c', '34ef8271-8fc2-454d-809c-98fcb0624199');
-INSERT INTO public.composite_role VALUES ('cf889cc4-c918-4a43-a4f6-eea1cb248f6c', 'ac06a77a-edba-4137-8928-bc0c23ae37b9');
-INSERT INTO public.composite_role VALUES ('cf889cc4-c918-4a43-a4f6-eea1cb248f6c', '48f2cca3-6345-4d7d-a3bd-a28ee780c4df');
-INSERT INTO public.composite_role VALUES ('cf889cc4-c918-4a43-a4f6-eea1cb248f6c', '3f29b93a-5c9e-44a6-8895-28190ddebabd');
-INSERT INTO public.composite_role VALUES ('cf889cc4-c918-4a43-a4f6-eea1cb248f6c', '189666e9-38c9-46e3-a26e-7f03a6246a22');
-INSERT INTO public.composite_role VALUES ('cf889cc4-c918-4a43-a4f6-eea1cb248f6c', 'ff16c40f-d986-440d-970e-3716ea2b67b3');
-INSERT INTO public.composite_role VALUES ('cf889cc4-c918-4a43-a4f6-eea1cb248f6c', 'f6910dc0-be78-4a5a-9035-d579731dd7aa');
-INSERT INTO public.composite_role VALUES ('cf889cc4-c918-4a43-a4f6-eea1cb248f6c', 'ba2cac72-872f-4e55-b92a-0a5da78854cf');
-INSERT INTO public.composite_role VALUES ('cf889cc4-c918-4a43-a4f6-eea1cb248f6c', 'b2abba9b-7f22-4104-b8a1-f00b76b5fab6');
-INSERT INTO public.composite_role VALUES ('cf889cc4-c918-4a43-a4f6-eea1cb248f6c', 'de06cc42-d894-4996-a174-b320704c47f4');
-INSERT INTO public.composite_role VALUES ('82fe19c4-1c3f-4a76-8438-1d3a5fca1567', 'ba2cac72-872f-4e55-b92a-0a5da78854cf');
-INSERT INTO public.composite_role VALUES ('96cab5c8-b0c7-4f3b-b91b-10b9bf7441ba', 'f6910dc0-be78-4a5a-9035-d579731dd7aa');
-INSERT INTO public.composite_role VALUES ('96cab5c8-b0c7-4f3b-b91b-10b9bf7441ba', 'de06cc42-d894-4996-a174-b320704c47f4');
+INSERT INTO public.composite_role VALUES ('04fc7638-765a-44b3-8d78-8a7be531c2ae', 'e7471fa1-1493-4675-b4d4-6c03e61ae366');
+INSERT INTO public.composite_role VALUES ('04fc7638-765a-44b3-8d78-8a7be531c2ae', '5c881acd-cb04-46fe-8042-28407e2b5365');
+INSERT INTO public.composite_role VALUES ('04fc7638-765a-44b3-8d78-8a7be531c2ae', '27acfca3-f982-4852-b4ac-4b7b73dc1267');
+INSERT INTO public.composite_role VALUES ('04fc7638-765a-44b3-8d78-8a7be531c2ae', '55e9a720-73a1-4431-ae20-6b7f4950dc3e');
+INSERT INTO public.composite_role VALUES ('04fc7638-765a-44b3-8d78-8a7be531c2ae', 'e4f5339e-4f22-45bf-b635-914bbb8e9e5f');
+INSERT INTO public.composite_role VALUES ('04fc7638-765a-44b3-8d78-8a7be531c2ae', 'f9cdb87a-4712-4934-96ef-9b1a797af93e');
+INSERT INTO public.composite_role VALUES ('04fc7638-765a-44b3-8d78-8a7be531c2ae', '804dca97-7f86-4e09-84c2-a7288bc88a9a');
+INSERT INTO public.composite_role VALUES ('04fc7638-765a-44b3-8d78-8a7be531c2ae', '70b928bd-2a8b-4d19-8eec-e13a2337c72d');
+INSERT INTO public.composite_role VALUES ('04fc7638-765a-44b3-8d78-8a7be531c2ae', '3fe8df04-5155-46a4-8ea9-5d15b29aa3b0');
+INSERT INTO public.composite_role VALUES ('04fc7638-765a-44b3-8d78-8a7be531c2ae', '87881619-6bee-4be6-8521-7fdc261f4ec5');
+INSERT INTO public.composite_role VALUES ('04fc7638-765a-44b3-8d78-8a7be531c2ae', '1260f0cd-6bf2-4736-9600-31e8ff273341');
+INSERT INTO public.composite_role VALUES ('04fc7638-765a-44b3-8d78-8a7be531c2ae', '38f672dd-b24d-409b-8cf3-7e34c2398c19');
+INSERT INTO public.composite_role VALUES ('04fc7638-765a-44b3-8d78-8a7be531c2ae', '14b8312e-4382-42c0-994c-804742d22fdc');
+INSERT INTO public.composite_role VALUES ('04fc7638-765a-44b3-8d78-8a7be531c2ae', '7bf0fe1f-3ea2-4b81-838f-7916ba1129a6');
+INSERT INTO public.composite_role VALUES ('04fc7638-765a-44b3-8d78-8a7be531c2ae', '019f4159-66cc-4107-9f42-430f03dddf7d');
+INSERT INTO public.composite_role VALUES ('04fc7638-765a-44b3-8d78-8a7be531c2ae', '48737183-9d4c-4c1f-8cf0-7995e3bce826');
+INSERT INTO public.composite_role VALUES ('04fc7638-765a-44b3-8d78-8a7be531c2ae', 'd5f4aa1b-ef47-432a-993f-02f41ebc09bc');
+INSERT INTO public.composite_role VALUES ('04fc7638-765a-44b3-8d78-8a7be531c2ae', '984504f2-23a4-40be-b1f0-0f4adcd4c1ce');
+INSERT INTO public.composite_role VALUES ('55e9a720-73a1-4431-ae20-6b7f4950dc3e', '984504f2-23a4-40be-b1f0-0f4adcd4c1ce');
+INSERT INTO public.composite_role VALUES ('55e9a720-73a1-4431-ae20-6b7f4950dc3e', '019f4159-66cc-4107-9f42-430f03dddf7d');
+INSERT INTO public.composite_role VALUES ('e4f5339e-4f22-45bf-b635-914bbb8e9e5f', '48737183-9d4c-4c1f-8cf0-7995e3bce826');
+INSERT INTO public.composite_role VALUES ('ed7bfe44-f63b-42ef-894f-e49a118089d6', 'f544e943-7407-4de0-8067-bd9900093d90');
+INSERT INTO public.composite_role VALUES ('ed7bfe44-f63b-42ef-894f-e49a118089d6', '77f21941-b7c0-460a-afa4-ae801a05fe47');
+INSERT INTO public.composite_role VALUES ('77f21941-b7c0-460a-afa4-ae801a05fe47', 'f9c0d923-fd73-44f2-b978-e5abf4ac83a5');
+INSERT INTO public.composite_role VALUES ('154dd43a-8d39-4582-9b54-d591bbfe4d22', '2e300919-d025-491f-a658-fb84f1a1fe4f');
+INSERT INTO public.composite_role VALUES ('04fc7638-765a-44b3-8d78-8a7be531c2ae', 'e220814d-7387-4e98-874f-6c4fd6566de0');
+INSERT INTO public.composite_role VALUES ('ed7bfe44-f63b-42ef-894f-e49a118089d6', 'b4f9d5f9-b59b-4453-b09d-7f26b8003a53');
+INSERT INTO public.composite_role VALUES ('ed7bfe44-f63b-42ef-894f-e49a118089d6', '2e275ccc-5d53-42e3-a125-61dc186cffe6');
+INSERT INTO public.composite_role VALUES ('04fc7638-765a-44b3-8d78-8a7be531c2ae', 'd2ebfafb-641f-4dd6-972c-7bbdb71b71e4');
+INSERT INTO public.composite_role VALUES ('04fc7638-765a-44b3-8d78-8a7be531c2ae', 'c93eacb1-bf51-4372-b250-e514649bcbd1');
+INSERT INTO public.composite_role VALUES ('04fc7638-765a-44b3-8d78-8a7be531c2ae', '51f0857f-2a96-4984-8f09-c064f653368a');
+INSERT INTO public.composite_role VALUES ('04fc7638-765a-44b3-8d78-8a7be531c2ae', 'de4415f6-fda7-4241-aa87-dd2cc2a5e683');
+INSERT INTO public.composite_role VALUES ('04fc7638-765a-44b3-8d78-8a7be531c2ae', '418f5a42-0a71-4209-812b-eb2dd0fe0f7d');
+INSERT INTO public.composite_role VALUES ('04fc7638-765a-44b3-8d78-8a7be531c2ae', 'b901ff2b-408c-47e0-8b7f-f29106146a0f');
+INSERT INTO public.composite_role VALUES ('04fc7638-765a-44b3-8d78-8a7be531c2ae', '08ab57b3-ac92-4b74-aa30-d82909469454');
+INSERT INTO public.composite_role VALUES ('04fc7638-765a-44b3-8d78-8a7be531c2ae', '0fafc8bc-e8b1-42bf-b089-634bbee5055f');
+INSERT INTO public.composite_role VALUES ('04fc7638-765a-44b3-8d78-8a7be531c2ae', '5cc4a296-42d3-4377-9a94-dfddb13e441c');
+INSERT INTO public.composite_role VALUES ('04fc7638-765a-44b3-8d78-8a7be531c2ae', '6337858a-9ab1-4f3e-8cfe-14256e8090f3');
+INSERT INTO public.composite_role VALUES ('04fc7638-765a-44b3-8d78-8a7be531c2ae', 'fbc8294d-c65f-400c-9bd7-ef42f0f43f9f');
+INSERT INTO public.composite_role VALUES ('04fc7638-765a-44b3-8d78-8a7be531c2ae', '6680516d-c60b-41c5-95e1-6eb0d586bb00');
+INSERT INTO public.composite_role VALUES ('04fc7638-765a-44b3-8d78-8a7be531c2ae', '8f06512f-a50f-4314-8257-da64532ab1f5');
+INSERT INTO public.composite_role VALUES ('04fc7638-765a-44b3-8d78-8a7be531c2ae', '565e62fd-ce4d-4670-b6d3-9d798d646e41');
+INSERT INTO public.composite_role VALUES ('04fc7638-765a-44b3-8d78-8a7be531c2ae', 'e11cbc99-7792-41e7-b115-df473bbb7c35');
+INSERT INTO public.composite_role VALUES ('04fc7638-765a-44b3-8d78-8a7be531c2ae', '12453ae0-1687-4908-82cd-81067fdf95d2');
+INSERT INTO public.composite_role VALUES ('04fc7638-765a-44b3-8d78-8a7be531c2ae', '4e4ed502-f778-4a9d-ae43-701798885cbd');
+INSERT INTO public.composite_role VALUES ('51f0857f-2a96-4984-8f09-c064f653368a', '4e4ed502-f778-4a9d-ae43-701798885cbd');
+INSERT INTO public.composite_role VALUES ('51f0857f-2a96-4984-8f09-c064f653368a', '565e62fd-ce4d-4670-b6d3-9d798d646e41');
+INSERT INTO public.composite_role VALUES ('de4415f6-fda7-4241-aa87-dd2cc2a5e683', 'e11cbc99-7792-41e7-b115-df473bbb7c35');
 INSERT INTO public.composite_role VALUES ('1d014aad-d78d-4d6e-a18e-007b4247c731', '518de179-f981-474e-a930-30ff40d71485');
 INSERT INTO public.composite_role VALUES ('48da3971-f37a-4003-bcae-67a25accaf33', '1b1241dc-4149-4f47-9716-0bf9164f28bc');
 INSERT INTO public.composite_role VALUES ('48da3971-f37a-4003-bcae-67a25accaf33', '3c0778e1-20ac-41dd-a795-2f3ed41bd16d');
@@ -2150,136 +2838,136 @@ INSERT INTO public.composite_role VALUES ('c46a9467-cb5a-4888-b8c1-fd6623005642'
 INSERT INTO public.composite_role VALUES ('c46a9467-cb5a-4888-b8c1-fd6623005642', '1d014aad-d78d-4d6e-a18e-007b4247c731');
 INSERT INTO public.composite_role VALUES ('c46a9467-cb5a-4888-b8c1-fd6623005642', 'dcf96f4f-79fc-4394-ac8e-4a516c653ba4');
 INSERT INTO public.composite_role VALUES ('c46a9467-cb5a-4888-b8c1-fd6623005642', '7748dc9a-b619-4185-93cc-ef0fcf41ccc8');
-INSERT INTO public.composite_role VALUES ('cf889cc4-c918-4a43-a4f6-eea1cb248f6c', 'fc60c2a5-f923-42c6-adc4-79bb96e255df');
+INSERT INTO public.composite_role VALUES ('04fc7638-765a-44b3-8d78-8a7be531c2ae', 'a62e8a4d-c450-48a9-b2ab-1376bef00a04');
 
 
 --
 -- Data for Name: credential; Type: TABLE DATA; Schema: public; Owner: admin
 --
 
-INSERT INTO public.credential VALUES ('95c0b516-bef6-425e-a1b0-003b20903c55', NULL, 'password', '45858445-1bbb-4611-b3f2-a3386db59829', 1699116495996, NULL, '{"value":"q388yB5a5GGVkLzumJucG7sk1ZnlF8egcmQzalgd5JA=","salt":"boWECNxbEbWc4n+wqJBxLA==","additionalParameters":{}}', '{"hashIterations":27500,"algorithm":"pbkdf2-sha256","additionalParameters":{}}', 10);
-INSERT INTO public.credential VALUES ('e0b77141-6979-4393-876a-fcc32013a254', NULL, 'password', 'e5110ac9-e1a4-467d-82ba-55a8e7991688', 1699125036904, NULL, '{"value":"mWzCIi9GU78WydtT7D000hO1hfLE8SKp/iQx4fTyBLk=","salt":"z2akoIq23nc+RNz81JFvIA==","additionalParameters":{}}', '{"hashIterations":27500,"algorithm":"pbkdf2-sha256","additionalParameters":{}}', 10);
-INSERT INTO public.credential VALUES ('9de05f23-208f-4321-b38a-ef2a0caec7cd', NULL, 'password', '8a398506-63bd-403b-9ce7-3b2dc1678001', 1699125045236, NULL, '{"value":"3OqznqBHsqUhvvyxul7jFMTFOVN8bmeeITOugpcg/Q4=","salt":"RO59mP7eOHQ5cdVEqbig7g==","additionalParameters":{}}', '{"hashIterations":27500,"algorithm":"pbkdf2-sha256","additionalParameters":{}}', 10);
+INSERT INTO public.credential VALUES ('75887596-636e-42fc-9a12-6f97330090d7', NULL, 'password', '07fd4473-eadd-4c02-ad9a-80f3fc54afb9', 1699132498037, NULL, '{"value":"FZ7jswL+m1s9/DZgR3kpeCytB6CbYYnRXoQpOy+UmNc=","salt":"oCnOaTd116IaS69KQWVsvA==","additionalParameters":{}}', '{"hashIterations":27500,"algorithm":"pbkdf2-sha256","additionalParameters":{}}', 10);
+INSERT INTO public.credential VALUES ('1a790cbf-5a20-46ca-a491-95c6d015bb3a', NULL, 'password', 'b387010c-2582-48ce-aab7-f28371cd9fee', 1699133057182, NULL, '{"value":"83c/5+U9AgsrTZbuQGWDLdAEy6a1SoqkOW8c6eOWY1w=","salt":"m93BaUC5DunjfxmDusgegw==","additionalParameters":{}}', '{"hashIterations":27500,"algorithm":"pbkdf2-sha256","additionalParameters":{}}', 10);
+INSERT INTO public.credential VALUES ('64a50b47-0eb5-4876-a64b-1d99ee48f39b', NULL, 'password', '24756198-f4c1-4899-8a0d-1bcadd115f33', 1699133075884, NULL, '{"value":"zH+zBtLbQnWPyCyXO00xLv0lH6rfVd9j8rHDVJHrSgI=","salt":"NKtK88OW4Vxgghce/KHMFA==","additionalParameters":{}}', '{"hashIterations":27500,"algorithm":"pbkdf2-sha256","additionalParameters":{}}', 10);
 
 
 --
 -- Data for Name: databasechangelog; Type: TABLE DATA; Schema: public; Owner: admin
 --
 
-INSERT INTO public.databasechangelog VALUES ('1.0.0.Final-KEYCLOAK-5461', 'sthorger@redhat.com', 'META-INF/jpa-changelog-1.0.0.Final.xml', '2023-11-04 16:48:11.541861', 1, 'EXECUTED', '8:bda77d94bf90182a1e30c24f1c155ec7', 'createTable tableName=APPLICATION_DEFAULT_ROLES; createTable tableName=CLIENT; createTable tableName=CLIENT_SESSION; createTable tableName=CLIENT_SESSION_ROLE; createTable tableName=COMPOSITE_ROLE; createTable tableName=CREDENTIAL; createTable tab...', '', NULL, '4.20.0', NULL, NULL, '9116490955');
-INSERT INTO public.databasechangelog VALUES ('1.0.0.Final-KEYCLOAK-5461', 'sthorger@redhat.com', 'META-INF/db2-jpa-changelog-1.0.0.Final.xml', '2023-11-04 16:48:11.548558', 2, 'MARK_RAN', '8:1ecb330f30986693d1cba9ab579fa219', 'createTable tableName=APPLICATION_DEFAULT_ROLES; createTable tableName=CLIENT; createTable tableName=CLIENT_SESSION; createTable tableName=CLIENT_SESSION_ROLE; createTable tableName=COMPOSITE_ROLE; createTable tableName=CREDENTIAL; createTable tab...', '', NULL, '4.20.0', NULL, NULL, '9116490955');
-INSERT INTO public.databasechangelog VALUES ('1.1.0.Beta1', 'sthorger@redhat.com', 'META-INF/jpa-changelog-1.1.0.Beta1.xml', '2023-11-04 16:48:11.603606', 3, 'EXECUTED', '8:cb7ace19bc6d959f305605d255d4c843', 'delete tableName=CLIENT_SESSION_ROLE; delete tableName=CLIENT_SESSION; delete tableName=USER_SESSION; createTable tableName=CLIENT_ATTRIBUTES; createTable tableName=CLIENT_SESSION_NOTE; createTable tableName=APP_NODE_REGISTRATIONS; addColumn table...', '', NULL, '4.20.0', NULL, NULL, '9116490955');
-INSERT INTO public.databasechangelog VALUES ('1.1.0.Final', 'sthorger@redhat.com', 'META-INF/jpa-changelog-1.1.0.Final.xml', '2023-11-04 16:48:11.610552', 4, 'EXECUTED', '8:80230013e961310e6872e871be424a63', 'renameColumn newColumnName=EVENT_TIME, oldColumnName=TIME, tableName=EVENT_ENTITY', '', NULL, '4.20.0', NULL, NULL, '9116490955');
-INSERT INTO public.databasechangelog VALUES ('1.2.0.Beta1', 'psilva@redhat.com', 'META-INF/jpa-changelog-1.2.0.Beta1.xml', '2023-11-04 16:48:11.737165', 5, 'EXECUTED', '8:67f4c20929126adc0c8e9bf48279d244', 'delete tableName=CLIENT_SESSION_ROLE; delete tableName=CLIENT_SESSION_NOTE; delete tableName=CLIENT_SESSION; delete tableName=USER_SESSION; createTable tableName=PROTOCOL_MAPPER; createTable tableName=PROTOCOL_MAPPER_CONFIG; createTable tableName=...', '', NULL, '4.20.0', NULL, NULL, '9116490955');
-INSERT INTO public.databasechangelog VALUES ('1.2.0.Beta1', 'psilva@redhat.com', 'META-INF/db2-jpa-changelog-1.2.0.Beta1.xml', '2023-11-04 16:48:11.740686', 6, 'MARK_RAN', '8:7311018b0b8179ce14628ab412bb6783', 'delete tableName=CLIENT_SESSION_ROLE; delete tableName=CLIENT_SESSION_NOTE; delete tableName=CLIENT_SESSION; delete tableName=USER_SESSION; createTable tableName=PROTOCOL_MAPPER; createTable tableName=PROTOCOL_MAPPER_CONFIG; createTable tableName=...', '', NULL, '4.20.0', NULL, NULL, '9116490955');
-INSERT INTO public.databasechangelog VALUES ('1.2.0.RC1', 'bburke@redhat.com', 'META-INF/jpa-changelog-1.2.0.CR1.xml', '2023-11-04 16:48:11.845855', 7, 'EXECUTED', '8:037ba1216c3640f8785ee6b8e7c8e3c1', 'delete tableName=CLIENT_SESSION_ROLE; delete tableName=CLIENT_SESSION_NOTE; delete tableName=CLIENT_SESSION; delete tableName=USER_SESSION_NOTE; delete tableName=USER_SESSION; createTable tableName=MIGRATION_MODEL; createTable tableName=IDENTITY_P...', '', NULL, '4.20.0', NULL, NULL, '9116490955');
-INSERT INTO public.databasechangelog VALUES ('1.2.0.RC1', 'bburke@redhat.com', 'META-INF/db2-jpa-changelog-1.2.0.CR1.xml', '2023-11-04 16:48:11.849565', 8, 'MARK_RAN', '8:7fe6ffe4af4df289b3157de32c624263', 'delete tableName=CLIENT_SESSION_ROLE; delete tableName=CLIENT_SESSION_NOTE; delete tableName=CLIENT_SESSION; delete tableName=USER_SESSION_NOTE; delete tableName=USER_SESSION; createTable tableName=MIGRATION_MODEL; createTable tableName=IDENTITY_P...', '', NULL, '4.20.0', NULL, NULL, '9116490955');
-INSERT INTO public.databasechangelog VALUES ('1.2.0.Final', 'keycloak', 'META-INF/jpa-changelog-1.2.0.Final.xml', '2023-11-04 16:48:11.85636', 9, 'EXECUTED', '8:9c136bc3187083a98745c7d03bc8a303', 'update tableName=CLIENT; update tableName=CLIENT; update tableName=CLIENT', '', NULL, '4.20.0', NULL, NULL, '9116490955');
-INSERT INTO public.databasechangelog VALUES ('1.3.0', 'bburke@redhat.com', 'META-INF/jpa-changelog-1.3.0.xml', '2023-11-04 16:48:11.979866', 10, 'EXECUTED', '8:b5f09474dca81fb56a97cf5b6553d331', 'delete tableName=CLIENT_SESSION_ROLE; delete tableName=CLIENT_SESSION_PROT_MAPPER; delete tableName=CLIENT_SESSION_NOTE; delete tableName=CLIENT_SESSION; delete tableName=USER_SESSION_NOTE; delete tableName=USER_SESSION; createTable tableName=ADMI...', '', NULL, '4.20.0', NULL, NULL, '9116490955');
-INSERT INTO public.databasechangelog VALUES ('1.4.0', 'bburke@redhat.com', 'META-INF/jpa-changelog-1.4.0.xml', '2023-11-04 16:48:12.039615', 11, 'EXECUTED', '8:ca924f31bd2a3b219fdcfe78c82dacf4', 'delete tableName=CLIENT_SESSION_AUTH_STATUS; delete tableName=CLIENT_SESSION_ROLE; delete tableName=CLIENT_SESSION_PROT_MAPPER; delete tableName=CLIENT_SESSION_NOTE; delete tableName=CLIENT_SESSION; delete tableName=USER_SESSION_NOTE; delete table...', '', NULL, '4.20.0', NULL, NULL, '9116490955');
-INSERT INTO public.databasechangelog VALUES ('1.4.0', 'bburke@redhat.com', 'META-INF/db2-jpa-changelog-1.4.0.xml', '2023-11-04 16:48:12.042626', 12, 'MARK_RAN', '8:8acad7483e106416bcfa6f3b824a16cd', 'delete tableName=CLIENT_SESSION_AUTH_STATUS; delete tableName=CLIENT_SESSION_ROLE; delete tableName=CLIENT_SESSION_PROT_MAPPER; delete tableName=CLIENT_SESSION_NOTE; delete tableName=CLIENT_SESSION; delete tableName=USER_SESSION_NOTE; delete table...', '', NULL, '4.20.0', NULL, NULL, '9116490955');
-INSERT INTO public.databasechangelog VALUES ('1.5.0', 'bburke@redhat.com', 'META-INF/jpa-changelog-1.5.0.xml', '2023-11-04 16:48:12.061045', 13, 'EXECUTED', '8:9b1266d17f4f87c78226f5055408fd5e', 'delete tableName=CLIENT_SESSION_AUTH_STATUS; delete tableName=CLIENT_SESSION_ROLE; delete tableName=CLIENT_SESSION_PROT_MAPPER; delete tableName=CLIENT_SESSION_NOTE; delete tableName=CLIENT_SESSION; delete tableName=USER_SESSION_NOTE; delete table...', '', NULL, '4.20.0', NULL, NULL, '9116490955');
-INSERT INTO public.databasechangelog VALUES ('1.6.1_from15', 'mposolda@redhat.com', 'META-INF/jpa-changelog-1.6.1.xml', '2023-11-04 16:48:12.094292', 14, 'EXECUTED', '8:d80ec4ab6dbfe573550ff72396c7e910', 'addColumn tableName=REALM; addColumn tableName=KEYCLOAK_ROLE; addColumn tableName=CLIENT; createTable tableName=OFFLINE_USER_SESSION; createTable tableName=OFFLINE_CLIENT_SESSION; addPrimaryKey constraintName=CONSTRAINT_OFFL_US_SES_PK2, tableName=...', '', NULL, '4.20.0', NULL, NULL, '9116490955');
-INSERT INTO public.databasechangelog VALUES ('1.6.1_from16-pre', 'mposolda@redhat.com', 'META-INF/jpa-changelog-1.6.1.xml', '2023-11-04 16:48:12.09803', 15, 'MARK_RAN', '8:d86eb172171e7c20b9c849b584d147b2', 'delete tableName=OFFLINE_CLIENT_SESSION; delete tableName=OFFLINE_USER_SESSION', '', NULL, '4.20.0', NULL, NULL, '9116490955');
-INSERT INTO public.databasechangelog VALUES ('1.6.1_from16', 'mposolda@redhat.com', 'META-INF/jpa-changelog-1.6.1.xml', '2023-11-04 16:48:12.101349', 16, 'MARK_RAN', '8:5735f46f0fa60689deb0ecdc2a0dea22', 'dropPrimaryKey constraintName=CONSTRAINT_OFFLINE_US_SES_PK, tableName=OFFLINE_USER_SESSION; dropPrimaryKey constraintName=CONSTRAINT_OFFLINE_CL_SES_PK, tableName=OFFLINE_CLIENT_SESSION; addColumn tableName=OFFLINE_USER_SESSION; update tableName=OF...', '', NULL, '4.20.0', NULL, NULL, '9116490955');
-INSERT INTO public.databasechangelog VALUES ('1.6.1', 'mposolda@redhat.com', 'META-INF/jpa-changelog-1.6.1.xml', '2023-11-04 16:48:12.104963', 17, 'EXECUTED', '8:d41d8cd98f00b204e9800998ecf8427e', 'empty', '', NULL, '4.20.0', NULL, NULL, '9116490955');
-INSERT INTO public.databasechangelog VALUES ('1.7.0', 'bburke@redhat.com', 'META-INF/jpa-changelog-1.7.0.xml', '2023-11-04 16:48:12.154518', 18, 'EXECUTED', '8:5c1a8fd2014ac7fc43b90a700f117b23', 'createTable tableName=KEYCLOAK_GROUP; createTable tableName=GROUP_ROLE_MAPPING; createTable tableName=GROUP_ATTRIBUTE; createTable tableName=USER_GROUP_MEMBERSHIP; createTable tableName=REALM_DEFAULT_GROUPS; addColumn tableName=IDENTITY_PROVIDER; ...', '', NULL, '4.20.0', NULL, NULL, '9116490955');
-INSERT INTO public.databasechangelog VALUES ('1.8.0', 'mposolda@redhat.com', 'META-INF/jpa-changelog-1.8.0.xml', '2023-11-04 16:48:12.204137', 19, 'EXECUTED', '8:1f6c2c2dfc362aff4ed75b3f0ef6b331', 'addColumn tableName=IDENTITY_PROVIDER; createTable tableName=CLIENT_TEMPLATE; createTable tableName=CLIENT_TEMPLATE_ATTRIBUTES; createTable tableName=TEMPLATE_SCOPE_MAPPING; dropNotNullConstraint columnName=CLIENT_ID, tableName=PROTOCOL_MAPPER; ad...', '', NULL, '4.20.0', NULL, NULL, '9116490955');
-INSERT INTO public.databasechangelog VALUES ('1.8.0-2', 'keycloak', 'META-INF/jpa-changelog-1.8.0.xml', '2023-11-04 16:48:12.214525', 20, 'EXECUTED', '8:dee9246280915712591f83a127665107', 'dropDefaultValue columnName=ALGORITHM, tableName=CREDENTIAL; update tableName=CREDENTIAL', '', NULL, '4.20.0', NULL, NULL, '9116490955');
-INSERT INTO public.databasechangelog VALUES ('1.8.0', 'mposolda@redhat.com', 'META-INF/db2-jpa-changelog-1.8.0.xml', '2023-11-04 16:48:12.218612', 21, 'MARK_RAN', '8:9eb2ee1fa8ad1c5e426421a6f8fdfa6a', 'addColumn tableName=IDENTITY_PROVIDER; createTable tableName=CLIENT_TEMPLATE; createTable tableName=CLIENT_TEMPLATE_ATTRIBUTES; createTable tableName=TEMPLATE_SCOPE_MAPPING; dropNotNullConstraint columnName=CLIENT_ID, tableName=PROTOCOL_MAPPER; ad...', '', NULL, '4.20.0', NULL, NULL, '9116490955');
-INSERT INTO public.databasechangelog VALUES ('1.8.0-2', 'keycloak', 'META-INF/db2-jpa-changelog-1.8.0.xml', '2023-11-04 16:48:12.222495', 22, 'MARK_RAN', '8:dee9246280915712591f83a127665107', 'dropDefaultValue columnName=ALGORITHM, tableName=CREDENTIAL; update tableName=CREDENTIAL', '', NULL, '4.20.0', NULL, NULL, '9116490955');
-INSERT INTO public.databasechangelog VALUES ('1.9.0', 'mposolda@redhat.com', 'META-INF/jpa-changelog-1.9.0.xml', '2023-11-04 16:48:12.25223', 23, 'EXECUTED', '8:d9fa18ffa355320395b86270680dd4fe', 'update tableName=REALM; update tableName=REALM; update tableName=REALM; update tableName=REALM; update tableName=CREDENTIAL; update tableName=CREDENTIAL; update tableName=CREDENTIAL; update tableName=REALM; update tableName=REALM; customChange; dr...', '', NULL, '4.20.0', NULL, NULL, '9116490955');
-INSERT INTO public.databasechangelog VALUES ('1.9.1', 'keycloak', 'META-INF/jpa-changelog-1.9.1.xml', '2023-11-04 16:48:12.25962', 24, 'EXECUTED', '8:90cff506fedb06141ffc1c71c4a1214c', 'modifyDataType columnName=PRIVATE_KEY, tableName=REALM; modifyDataType columnName=PUBLIC_KEY, tableName=REALM; modifyDataType columnName=CERTIFICATE, tableName=REALM', '', NULL, '4.20.0', NULL, NULL, '9116490955');
-INSERT INTO public.databasechangelog VALUES ('1.9.1', 'keycloak', 'META-INF/db2-jpa-changelog-1.9.1.xml', '2023-11-04 16:48:12.262471', 25, 'MARK_RAN', '8:11a788aed4961d6d29c427c063af828c', 'modifyDataType columnName=PRIVATE_KEY, tableName=REALM; modifyDataType columnName=CERTIFICATE, tableName=REALM', '', NULL, '4.20.0', NULL, NULL, '9116490955');
-INSERT INTO public.databasechangelog VALUES ('1.9.2', 'keycloak', 'META-INF/jpa-changelog-1.9.2.xml', '2023-11-04 16:48:12.326589', 26, 'EXECUTED', '8:a4218e51e1faf380518cce2af5d39b43', 'createIndex indexName=IDX_USER_EMAIL, tableName=USER_ENTITY; createIndex indexName=IDX_USER_ROLE_MAPPING, tableName=USER_ROLE_MAPPING; createIndex indexName=IDX_USER_GROUP_MAPPING, tableName=USER_GROUP_MEMBERSHIP; createIndex indexName=IDX_USER_CO...', '', NULL, '4.20.0', NULL, NULL, '9116490955');
-INSERT INTO public.databasechangelog VALUES ('authz-2.0.0', 'psilva@redhat.com', 'META-INF/jpa-changelog-authz-2.0.0.xml', '2023-11-04 16:48:12.441239', 27, 'EXECUTED', '8:d9e9a1bfaa644da9952456050f07bbdc', 'createTable tableName=RESOURCE_SERVER; addPrimaryKey constraintName=CONSTRAINT_FARS, tableName=RESOURCE_SERVER; addUniqueConstraint constraintName=UK_AU8TT6T700S9V50BU18WS5HA6, tableName=RESOURCE_SERVER; createTable tableName=RESOURCE_SERVER_RESOU...', '', NULL, '4.20.0', NULL, NULL, '9116490955');
-INSERT INTO public.databasechangelog VALUES ('authz-2.5.1', 'psilva@redhat.com', 'META-INF/jpa-changelog-authz-2.5.1.xml', '2023-11-04 16:48:12.445694', 28, 'EXECUTED', '8:d1bf991a6163c0acbfe664b615314505', 'update tableName=RESOURCE_SERVER_POLICY', '', NULL, '4.20.0', NULL, NULL, '9116490955');
-INSERT INTO public.databasechangelog VALUES ('2.1.0-KEYCLOAK-5461', 'bburke@redhat.com', 'META-INF/jpa-changelog-2.1.0.xml', '2023-11-04 16:48:12.561228', 29, 'EXECUTED', '8:88a743a1e87ec5e30bf603da68058a8c', 'createTable tableName=BROKER_LINK; createTable tableName=FED_USER_ATTRIBUTE; createTable tableName=FED_USER_CONSENT; createTable tableName=FED_USER_CONSENT_ROLE; createTable tableName=FED_USER_CONSENT_PROT_MAPPER; createTable tableName=FED_USER_CR...', '', NULL, '4.20.0', NULL, NULL, '9116490955');
-INSERT INTO public.databasechangelog VALUES ('2.2.0', 'bburke@redhat.com', 'META-INF/jpa-changelog-2.2.0.xml', '2023-11-04 16:48:12.581752', 30, 'EXECUTED', '8:c5517863c875d325dea463d00ec26d7a', 'addColumn tableName=ADMIN_EVENT_ENTITY; createTable tableName=CREDENTIAL_ATTRIBUTE; createTable tableName=FED_CREDENTIAL_ATTRIBUTE; modifyDataType columnName=VALUE, tableName=CREDENTIAL; addForeignKeyConstraint baseTableName=FED_CREDENTIAL_ATTRIBU...', '', NULL, '4.20.0', NULL, NULL, '9116490955');
-INSERT INTO public.databasechangelog VALUES ('2.3.0', 'bburke@redhat.com', 'META-INF/jpa-changelog-2.3.0.xml', '2023-11-04 16:48:12.606763', 31, 'EXECUTED', '8:ada8b4833b74a498f376d7136bc7d327', 'createTable tableName=FEDERATED_USER; addPrimaryKey constraintName=CONSTR_FEDERATED_USER, tableName=FEDERATED_USER; dropDefaultValue columnName=TOTP, tableName=USER_ENTITY; dropColumn columnName=TOTP, tableName=USER_ENTITY; addColumn tableName=IDE...', '', NULL, '4.20.0', NULL, NULL, '9116490955');
-INSERT INTO public.databasechangelog VALUES ('2.4.0', 'bburke@redhat.com', 'META-INF/jpa-changelog-2.4.0.xml', '2023-11-04 16:48:12.613014', 32, 'EXECUTED', '8:b9b73c8ea7299457f99fcbb825c263ba', 'customChange', '', NULL, '4.20.0', NULL, NULL, '9116490955');
-INSERT INTO public.databasechangelog VALUES ('2.5.0', 'bburke@redhat.com', 'META-INF/jpa-changelog-2.5.0.xml', '2023-11-04 16:48:12.627914', 33, 'EXECUTED', '8:07724333e625ccfcfc5adc63d57314f3', 'customChange; modifyDataType columnName=USER_ID, tableName=OFFLINE_USER_SESSION', '', NULL, '4.20.0', NULL, NULL, '9116490955');
-INSERT INTO public.databasechangelog VALUES ('2.5.0-unicode-oracle', 'hmlnarik@redhat.com', 'META-INF/jpa-changelog-2.5.0.xml', '2023-11-04 16:48:12.631434', 34, 'MARK_RAN', '8:8b6fd445958882efe55deb26fc541a7b', 'modifyDataType columnName=DESCRIPTION, tableName=AUTHENTICATION_FLOW; modifyDataType columnName=DESCRIPTION, tableName=CLIENT_TEMPLATE; modifyDataType columnName=DESCRIPTION, tableName=RESOURCE_SERVER_POLICY; modifyDataType columnName=DESCRIPTION,...', '', NULL, '4.20.0', NULL, NULL, '9116490955');
-INSERT INTO public.databasechangelog VALUES ('2.5.0-unicode-other-dbs', 'hmlnarik@redhat.com', 'META-INF/jpa-changelog-2.5.0.xml', '2023-11-04 16:48:12.665851', 35, 'EXECUTED', '8:29b29cfebfd12600897680147277a9d7', 'modifyDataType columnName=DESCRIPTION, tableName=AUTHENTICATION_FLOW; modifyDataType columnName=DESCRIPTION, tableName=CLIENT_TEMPLATE; modifyDataType columnName=DESCRIPTION, tableName=RESOURCE_SERVER_POLICY; modifyDataType columnName=DESCRIPTION,...', '', NULL, '4.20.0', NULL, NULL, '9116490955');
-INSERT INTO public.databasechangelog VALUES ('2.5.0-duplicate-email-support', 'slawomir@dabek.name', 'META-INF/jpa-changelog-2.5.0.xml', '2023-11-04 16:48:12.672145', 36, 'EXECUTED', '8:73ad77ca8fd0410c7f9f15a471fa52bc', 'addColumn tableName=REALM', '', NULL, '4.20.0', NULL, NULL, '9116490955');
-INSERT INTO public.databasechangelog VALUES ('2.5.0-unique-group-names', 'hmlnarik@redhat.com', 'META-INF/jpa-changelog-2.5.0.xml', '2023-11-04 16:48:12.68285', 37, 'EXECUTED', '8:64f27a6fdcad57f6f9153210f2ec1bdb', 'addUniqueConstraint constraintName=SIBLING_NAMES, tableName=KEYCLOAK_GROUP', '', NULL, '4.20.0', NULL, NULL, '9116490955');
-INSERT INTO public.databasechangelog VALUES ('2.5.1', 'bburke@redhat.com', 'META-INF/jpa-changelog-2.5.1.xml', '2023-11-04 16:48:12.688878', 38, 'EXECUTED', '8:27180251182e6c31846c2ddab4bc5781', 'addColumn tableName=FED_USER_CONSENT', '', NULL, '4.20.0', NULL, NULL, '9116490955');
-INSERT INTO public.databasechangelog VALUES ('3.0.0', 'bburke@redhat.com', 'META-INF/jpa-changelog-3.0.0.xml', '2023-11-04 16:48:12.694963', 39, 'EXECUTED', '8:d56f201bfcfa7a1413eb3e9bc02978f9', 'addColumn tableName=IDENTITY_PROVIDER', '', NULL, '4.20.0', NULL, NULL, '9116490955');
-INSERT INTO public.databasechangelog VALUES ('3.2.0-fix', 'keycloak', 'META-INF/jpa-changelog-3.2.0.xml', '2023-11-04 16:48:12.699262', 40, 'MARK_RAN', '8:91f5522bf6afdc2077dfab57fbd3455c', 'addNotNullConstraint columnName=REALM_ID, tableName=CLIENT_INITIAL_ACCESS', '', NULL, '4.20.0', NULL, NULL, '9116490955');
-INSERT INTO public.databasechangelog VALUES ('3.2.0-fix-with-keycloak-5416', 'keycloak', 'META-INF/jpa-changelog-3.2.0.xml', '2023-11-04 16:48:12.702755', 41, 'MARK_RAN', '8:0f01b554f256c22caeb7d8aee3a1cdc8', 'dropIndex indexName=IDX_CLIENT_INIT_ACC_REALM, tableName=CLIENT_INITIAL_ACCESS; addNotNullConstraint columnName=REALM_ID, tableName=CLIENT_INITIAL_ACCESS; createIndex indexName=IDX_CLIENT_INIT_ACC_REALM, tableName=CLIENT_INITIAL_ACCESS', '', NULL, '4.20.0', NULL, NULL, '9116490955');
-INSERT INTO public.databasechangelog VALUES ('3.2.0-fix-offline-sessions', 'hmlnarik', 'META-INF/jpa-changelog-3.2.0.xml', '2023-11-04 16:48:12.708838', 42, 'EXECUTED', '8:ab91cf9cee415867ade0e2df9651a947', 'customChange', '', NULL, '4.20.0', NULL, NULL, '9116490955');
-INSERT INTO public.databasechangelog VALUES ('3.2.0-fixed', 'keycloak', 'META-INF/jpa-changelog-3.2.0.xml', '2023-11-04 16:48:13.016256', 43, 'EXECUTED', '8:ceac9b1889e97d602caf373eadb0d4b7', 'addColumn tableName=REALM; dropPrimaryKey constraintName=CONSTRAINT_OFFL_CL_SES_PK2, tableName=OFFLINE_CLIENT_SESSION; dropColumn columnName=CLIENT_SESSION_ID, tableName=OFFLINE_CLIENT_SESSION; addPrimaryKey constraintName=CONSTRAINT_OFFL_CL_SES_P...', '', NULL, '4.20.0', NULL, NULL, '9116490955');
-INSERT INTO public.databasechangelog VALUES ('3.3.0', 'keycloak', 'META-INF/jpa-changelog-3.3.0.xml', '2023-11-04 16:48:13.024239', 44, 'EXECUTED', '8:84b986e628fe8f7fd8fd3c275c5259f2', 'addColumn tableName=USER_ENTITY', '', NULL, '4.20.0', NULL, NULL, '9116490955');
-INSERT INTO public.databasechangelog VALUES ('authz-3.4.0.CR1-resource-server-pk-change-part1', 'glavoie@gmail.com', 'META-INF/jpa-changelog-authz-3.4.0.CR1.xml', '2023-11-04 16:48:13.032875', 45, 'EXECUTED', '8:a164ae073c56ffdbc98a615493609a52', 'addColumn tableName=RESOURCE_SERVER_POLICY; addColumn tableName=RESOURCE_SERVER_RESOURCE; addColumn tableName=RESOURCE_SERVER_SCOPE', '', NULL, '4.20.0', NULL, NULL, '9116490955');
-INSERT INTO public.databasechangelog VALUES ('authz-3.4.0.CR1-resource-server-pk-change-part2-KEYCLOAK-6095', 'hmlnarik@redhat.com', 'META-INF/jpa-changelog-authz-3.4.0.CR1.xml', '2023-11-04 16:48:13.04019', 46, 'EXECUTED', '8:70a2b4f1f4bd4dbf487114bdb1810e64', 'customChange', '', NULL, '4.20.0', NULL, NULL, '9116490955');
-INSERT INTO public.databasechangelog VALUES ('authz-3.4.0.CR1-resource-server-pk-change-part3-fixed', 'glavoie@gmail.com', 'META-INF/jpa-changelog-authz-3.4.0.CR1.xml', '2023-11-04 16:48:13.043647', 47, 'MARK_RAN', '8:7be68b71d2f5b94b8df2e824f2860fa2', 'dropIndex indexName=IDX_RES_SERV_POL_RES_SERV, tableName=RESOURCE_SERVER_POLICY; dropIndex indexName=IDX_RES_SRV_RES_RES_SRV, tableName=RESOURCE_SERVER_RESOURCE; dropIndex indexName=IDX_RES_SRV_SCOPE_RES_SRV, tableName=RESOURCE_SERVER_SCOPE', '', NULL, '4.20.0', NULL, NULL, '9116490955');
-INSERT INTO public.databasechangelog VALUES ('authz-3.4.0.CR1-resource-server-pk-change-part3-fixed-nodropindex', 'glavoie@gmail.com', 'META-INF/jpa-changelog-authz-3.4.0.CR1.xml', '2023-11-04 16:48:13.090411', 48, 'EXECUTED', '8:bab7c631093c3861d6cf6144cd944982', 'addNotNullConstraint columnName=RESOURCE_SERVER_CLIENT_ID, tableName=RESOURCE_SERVER_POLICY; addNotNullConstraint columnName=RESOURCE_SERVER_CLIENT_ID, tableName=RESOURCE_SERVER_RESOURCE; addNotNullConstraint columnName=RESOURCE_SERVER_CLIENT_ID, ...', '', NULL, '4.20.0', NULL, NULL, '9116490955');
-INSERT INTO public.databasechangelog VALUES ('authn-3.4.0.CR1-refresh-token-max-reuse', 'glavoie@gmail.com', 'META-INF/jpa-changelog-authz-3.4.0.CR1.xml', '2023-11-04 16:48:13.096413', 49, 'EXECUTED', '8:fa809ac11877d74d76fe40869916daad', 'addColumn tableName=REALM', '', NULL, '4.20.0', NULL, NULL, '9116490955');
-INSERT INTO public.databasechangelog VALUES ('3.4.0', 'keycloak', 'META-INF/jpa-changelog-3.4.0.xml', '2023-11-04 16:48:13.184524', 50, 'EXECUTED', '8:fac23540a40208f5f5e326f6ceb4d291', 'addPrimaryKey constraintName=CONSTRAINT_REALM_DEFAULT_ROLES, tableName=REALM_DEFAULT_ROLES; addPrimaryKey constraintName=CONSTRAINT_COMPOSITE_ROLE, tableName=COMPOSITE_ROLE; addPrimaryKey constraintName=CONSTR_REALM_DEFAULT_GROUPS, tableName=REALM...', '', NULL, '4.20.0', NULL, NULL, '9116490955');
-INSERT INTO public.databasechangelog VALUES ('3.4.0-KEYCLOAK-5230', 'hmlnarik@redhat.com', 'META-INF/jpa-changelog-3.4.0.xml', '2023-11-04 16:48:13.263789', 51, 'EXECUTED', '8:2612d1b8a97e2b5588c346e817307593', 'createIndex indexName=IDX_FU_ATTRIBUTE, tableName=FED_USER_ATTRIBUTE; createIndex indexName=IDX_FU_CONSENT, tableName=FED_USER_CONSENT; createIndex indexName=IDX_FU_CONSENT_RU, tableName=FED_USER_CONSENT; createIndex indexName=IDX_FU_CREDENTIAL, t...', '', NULL, '4.20.0', NULL, NULL, '9116490955');
-INSERT INTO public.databasechangelog VALUES ('3.4.1', 'psilva@redhat.com', 'META-INF/jpa-changelog-3.4.1.xml', '2023-11-04 16:48:13.271074', 52, 'EXECUTED', '8:9842f155c5db2206c88bcb5d1046e941', 'modifyDataType columnName=VALUE, tableName=CLIENT_ATTRIBUTES', '', NULL, '4.20.0', NULL, NULL, '9116490955');
-INSERT INTO public.databasechangelog VALUES ('3.4.2', 'keycloak', 'META-INF/jpa-changelog-3.4.2.xml', '2023-11-04 16:48:13.276526', 53, 'EXECUTED', '8:2e12e06e45498406db72d5b3da5bbc76', 'update tableName=REALM', '', NULL, '4.20.0', NULL, NULL, '9116490955');
-INSERT INTO public.databasechangelog VALUES ('3.4.2-KEYCLOAK-5172', 'mkanis@redhat.com', 'META-INF/jpa-changelog-3.4.2.xml', '2023-11-04 16:48:13.282318', 54, 'EXECUTED', '8:33560e7c7989250c40da3abdabdc75a4', 'update tableName=CLIENT', '', NULL, '4.20.0', NULL, NULL, '9116490955');
-INSERT INTO public.databasechangelog VALUES ('4.0.0-KEYCLOAK-6335', 'bburke@redhat.com', 'META-INF/jpa-changelog-4.0.0.xml', '2023-11-04 16:48:13.297408', 55, 'EXECUTED', '8:87a8d8542046817a9107c7eb9cbad1cd', 'createTable tableName=CLIENT_AUTH_FLOW_BINDINGS; addPrimaryKey constraintName=C_CLI_FLOW_BIND, tableName=CLIENT_AUTH_FLOW_BINDINGS', '', NULL, '4.20.0', NULL, NULL, '9116490955');
-INSERT INTO public.databasechangelog VALUES ('4.0.0-CLEANUP-UNUSED-TABLE', 'bburke@redhat.com', 'META-INF/jpa-changelog-4.0.0.xml', '2023-11-04 16:48:13.307888', 56, 'EXECUTED', '8:3ea08490a70215ed0088c273d776311e', 'dropTable tableName=CLIENT_IDENTITY_PROV_MAPPING', '', NULL, '4.20.0', NULL, NULL, '9116490955');
-INSERT INTO public.databasechangelog VALUES ('4.0.0-KEYCLOAK-6228', 'bburke@redhat.com', 'META-INF/jpa-changelog-4.0.0.xml', '2023-11-04 16:48:13.355748', 57, 'EXECUTED', '8:2d56697c8723d4592ab608ce14b6ed68', 'dropUniqueConstraint constraintName=UK_JKUWUVD56ONTGSUHOGM8UEWRT, tableName=USER_CONSENT; dropNotNullConstraint columnName=CLIENT_ID, tableName=USER_CONSENT; addColumn tableName=USER_CONSENT; addUniqueConstraint constraintName=UK_JKUWUVD56ONTGSUHO...', '', NULL, '4.20.0', NULL, NULL, '9116490955');
-INSERT INTO public.databasechangelog VALUES ('4.0.0-KEYCLOAK-5579-fixed', 'mposolda@redhat.com', 'META-INF/jpa-changelog-4.0.0.xml', '2023-11-04 16:48:13.501043', 58, 'EXECUTED', '8:3e423e249f6068ea2bbe48bf907f9d86', 'dropForeignKeyConstraint baseTableName=CLIENT_TEMPLATE_ATTRIBUTES, constraintName=FK_CL_TEMPL_ATTR_TEMPL; renameTable newTableName=CLIENT_SCOPE_ATTRIBUTES, oldTableName=CLIENT_TEMPLATE_ATTRIBUTES; renameColumn newColumnName=SCOPE_ID, oldColumnName...', '', NULL, '4.20.0', NULL, NULL, '9116490955');
-INSERT INTO public.databasechangelog VALUES ('authz-4.0.0.CR1', 'psilva@redhat.com', 'META-INF/jpa-changelog-authz-4.0.0.CR1.xml', '2023-11-04 16:48:13.540345', 59, 'EXECUTED', '8:15cabee5e5df0ff099510a0fc03e4103', 'createTable tableName=RESOURCE_SERVER_PERM_TICKET; addPrimaryKey constraintName=CONSTRAINT_FAPMT, tableName=RESOURCE_SERVER_PERM_TICKET; addForeignKeyConstraint baseTableName=RESOURCE_SERVER_PERM_TICKET, constraintName=FK_FRSRHO213XCX4WNKOG82SSPMT...', '', NULL, '4.20.0', NULL, NULL, '9116490955');
-INSERT INTO public.databasechangelog VALUES ('authz-4.0.0.Beta3', 'psilva@redhat.com', 'META-INF/jpa-changelog-authz-4.0.0.Beta3.xml', '2023-11-04 16:48:13.549471', 60, 'EXECUTED', '8:4b80200af916ac54d2ffbfc47918ab0e', 'addColumn tableName=RESOURCE_SERVER_POLICY; addColumn tableName=RESOURCE_SERVER_PERM_TICKET; addForeignKeyConstraint baseTableName=RESOURCE_SERVER_PERM_TICKET, constraintName=FK_FRSRPO2128CX4WNKOG82SSRFY, referencedTableName=RESOURCE_SERVER_POLICY', '', NULL, '4.20.0', NULL, NULL, '9116490955');
-INSERT INTO public.databasechangelog VALUES ('authz-4.2.0.Final', 'mhajas@redhat.com', 'META-INF/jpa-changelog-authz-4.2.0.Final.xml', '2023-11-04 16:48:13.564621', 61, 'EXECUTED', '8:66564cd5e168045d52252c5027485bbb', 'createTable tableName=RESOURCE_URIS; addForeignKeyConstraint baseTableName=RESOURCE_URIS, constraintName=FK_RESOURCE_SERVER_URIS, referencedTableName=RESOURCE_SERVER_RESOURCE; customChange; dropColumn columnName=URI, tableName=RESOURCE_SERVER_RESO...', '', NULL, '4.20.0', NULL, NULL, '9116490955');
-INSERT INTO public.databasechangelog VALUES ('authz-4.2.0.Final-KEYCLOAK-9944', 'hmlnarik@redhat.com', 'META-INF/jpa-changelog-authz-4.2.0.Final.xml', '2023-11-04 16:48:13.575727', 62, 'EXECUTED', '8:1c7064fafb030222be2bd16ccf690f6f', 'addPrimaryKey constraintName=CONSTRAINT_RESOUR_URIS_PK, tableName=RESOURCE_URIS', '', NULL, '4.20.0', NULL, NULL, '9116490955');
-INSERT INTO public.databasechangelog VALUES ('4.2.0-KEYCLOAK-6313', 'wadahiro@gmail.com', 'META-INF/jpa-changelog-4.2.0.xml', '2023-11-04 16:48:13.582581', 63, 'EXECUTED', '8:2de18a0dce10cdda5c7e65c9b719b6e5', 'addColumn tableName=REQUIRED_ACTION_PROVIDER', '', NULL, '4.20.0', NULL, NULL, '9116490955');
-INSERT INTO public.databasechangelog VALUES ('4.3.0-KEYCLOAK-7984', 'wadahiro@gmail.com', 'META-INF/jpa-changelog-4.3.0.xml', '2023-11-04 16:48:13.58731', 64, 'EXECUTED', '8:03e413dd182dcbd5c57e41c34d0ef682', 'update tableName=REQUIRED_ACTION_PROVIDER', '', NULL, '4.20.0', NULL, NULL, '9116490955');
-INSERT INTO public.databasechangelog VALUES ('4.6.0-KEYCLOAK-7950', 'psilva@redhat.com', 'META-INF/jpa-changelog-4.6.0.xml', '2023-11-04 16:48:13.591419', 65, 'EXECUTED', '8:d27b42bb2571c18fbe3fe4e4fb7582a7', 'update tableName=RESOURCE_SERVER_RESOURCE', '', NULL, '4.20.0', NULL, NULL, '9116490955');
-INSERT INTO public.databasechangelog VALUES ('4.6.0-KEYCLOAK-8377', 'keycloak', 'META-INF/jpa-changelog-4.6.0.xml', '2023-11-04 16:48:13.619322', 66, 'EXECUTED', '8:698baf84d9fd0027e9192717c2154fb8', 'createTable tableName=ROLE_ATTRIBUTE; addPrimaryKey constraintName=CONSTRAINT_ROLE_ATTRIBUTE_PK, tableName=ROLE_ATTRIBUTE; addForeignKeyConstraint baseTableName=ROLE_ATTRIBUTE, constraintName=FK_ROLE_ATTRIBUTE_ID, referencedTableName=KEYCLOAK_ROLE...', '', NULL, '4.20.0', NULL, NULL, '9116490955');
-INSERT INTO public.databasechangelog VALUES ('4.6.0-KEYCLOAK-8555', 'gideonray@gmail.com', 'META-INF/jpa-changelog-4.6.0.xml', '2023-11-04 16:48:13.637346', 67, 'EXECUTED', '8:ced8822edf0f75ef26eb51582f9a821a', 'createIndex indexName=IDX_COMPONENT_PROVIDER_TYPE, tableName=COMPONENT', '', NULL, '4.20.0', NULL, NULL, '9116490955');
-INSERT INTO public.databasechangelog VALUES ('4.7.0-KEYCLOAK-1267', 'sguilhen@redhat.com', 'META-INF/jpa-changelog-4.7.0.xml', '2023-11-04 16:48:13.646002', 68, 'EXECUTED', '8:f0abba004cf429e8afc43056df06487d', 'addColumn tableName=REALM', '', NULL, '4.20.0', NULL, NULL, '9116490955');
-INSERT INTO public.databasechangelog VALUES ('4.7.0-KEYCLOAK-7275', 'keycloak', 'META-INF/jpa-changelog-4.7.0.xml', '2023-11-04 16:48:13.661954', 69, 'EXECUTED', '8:6662f8b0b611caa359fcf13bf63b4e24', 'renameColumn newColumnName=CREATED_ON, oldColumnName=LAST_SESSION_REFRESH, tableName=OFFLINE_USER_SESSION; addNotNullConstraint columnName=CREATED_ON, tableName=OFFLINE_USER_SESSION; addColumn tableName=OFFLINE_USER_SESSION; customChange; createIn...', '', NULL, '4.20.0', NULL, NULL, '9116490955');
-INSERT INTO public.databasechangelog VALUES ('4.8.0-KEYCLOAK-8835', 'sguilhen@redhat.com', 'META-INF/jpa-changelog-4.8.0.xml', '2023-11-04 16:48:13.669014', 70, 'EXECUTED', '8:9e6b8009560f684250bdbdf97670d39e', 'addNotNullConstraint columnName=SSO_MAX_LIFESPAN_REMEMBER_ME, tableName=REALM; addNotNullConstraint columnName=SSO_IDLE_TIMEOUT_REMEMBER_ME, tableName=REALM', '', NULL, '4.20.0', NULL, NULL, '9116490955');
-INSERT INTO public.databasechangelog VALUES ('authz-7.0.0-KEYCLOAK-10443', 'psilva@redhat.com', 'META-INF/jpa-changelog-authz-7.0.0.xml', '2023-11-04 16:48:13.675087', 71, 'EXECUTED', '8:4223f561f3b8dc655846562b57bb502e', 'addColumn tableName=RESOURCE_SERVER', '', NULL, '4.20.0', NULL, NULL, '9116490955');
-INSERT INTO public.databasechangelog VALUES ('8.0.0-adding-credential-columns', 'keycloak', 'META-INF/jpa-changelog-8.0.0.xml', '2023-11-04 16:48:13.682049', 72, 'EXECUTED', '8:215a31c398b363ce383a2b301202f29e', 'addColumn tableName=CREDENTIAL; addColumn tableName=FED_USER_CREDENTIAL', '', NULL, '4.20.0', NULL, NULL, '9116490955');
-INSERT INTO public.databasechangelog VALUES ('8.0.0-updating-credential-data-not-oracle-fixed', 'keycloak', 'META-INF/jpa-changelog-8.0.0.xml', '2023-11-04 16:48:13.687612', 73, 'EXECUTED', '8:83f7a671792ca98b3cbd3a1a34862d3d', 'update tableName=CREDENTIAL; update tableName=CREDENTIAL; update tableName=CREDENTIAL; update tableName=FED_USER_CREDENTIAL; update tableName=FED_USER_CREDENTIAL; update tableName=FED_USER_CREDENTIAL', '', NULL, '4.20.0', NULL, NULL, '9116490955');
-INSERT INTO public.databasechangelog VALUES ('8.0.0-updating-credential-data-oracle-fixed', 'keycloak', 'META-INF/jpa-changelog-8.0.0.xml', '2023-11-04 16:48:13.69025', 74, 'MARK_RAN', '8:f58ad148698cf30707a6efbdf8061aa7', 'update tableName=CREDENTIAL; update tableName=CREDENTIAL; update tableName=CREDENTIAL; update tableName=FED_USER_CREDENTIAL; update tableName=FED_USER_CREDENTIAL; update tableName=FED_USER_CREDENTIAL', '', NULL, '4.20.0', NULL, NULL, '9116490955');
-INSERT INTO public.databasechangelog VALUES ('8.0.0-credential-cleanup-fixed', 'keycloak', 'META-INF/jpa-changelog-8.0.0.xml', '2023-11-04 16:48:13.705095', 75, 'EXECUTED', '8:79e4fd6c6442980e58d52ffc3ee7b19c', 'dropDefaultValue columnName=COUNTER, tableName=CREDENTIAL; dropDefaultValue columnName=DIGITS, tableName=CREDENTIAL; dropDefaultValue columnName=PERIOD, tableName=CREDENTIAL; dropDefaultValue columnName=ALGORITHM, tableName=CREDENTIAL; dropColumn ...', '', NULL, '4.20.0', NULL, NULL, '9116490955');
-INSERT INTO public.databasechangelog VALUES ('8.0.0-resource-tag-support', 'keycloak', 'META-INF/jpa-changelog-8.0.0.xml', '2023-11-04 16:48:13.715669', 76, 'EXECUTED', '8:87af6a1e6d241ca4b15801d1f86a297d', 'addColumn tableName=MIGRATION_MODEL; createIndex indexName=IDX_UPDATE_TIME, tableName=MIGRATION_MODEL', '', NULL, '4.20.0', NULL, NULL, '9116490955');
-INSERT INTO public.databasechangelog VALUES ('9.0.0-always-display-client', 'keycloak', 'META-INF/jpa-changelog-9.0.0.xml', '2023-11-04 16:48:13.723335', 77, 'EXECUTED', '8:b44f8d9b7b6ea455305a6d72a200ed15', 'addColumn tableName=CLIENT', '', NULL, '4.20.0', NULL, NULL, '9116490955');
-INSERT INTO public.databasechangelog VALUES ('9.0.0-drop-constraints-for-column-increase', 'keycloak', 'META-INF/jpa-changelog-9.0.0.xml', '2023-11-04 16:48:13.725979', 78, 'MARK_RAN', '8:2d8ed5aaaeffd0cb004c046b4a903ac5', 'dropUniqueConstraint constraintName=UK_FRSR6T700S9V50BU18WS5PMT, tableName=RESOURCE_SERVER_PERM_TICKET; dropUniqueConstraint constraintName=UK_FRSR6T700S9V50BU18WS5HA6, tableName=RESOURCE_SERVER_RESOURCE; dropPrimaryKey constraintName=CONSTRAINT_O...', '', NULL, '4.20.0', NULL, NULL, '9116490955');
-INSERT INTO public.databasechangelog VALUES ('9.0.0-increase-column-size-federated-fk', 'keycloak', 'META-INF/jpa-changelog-9.0.0.xml', '2023-11-04 16:48:13.745651', 79, 'EXECUTED', '8:e290c01fcbc275326c511633f6e2acde', 'modifyDataType columnName=CLIENT_ID, tableName=FED_USER_CONSENT; modifyDataType columnName=CLIENT_REALM_CONSTRAINT, tableName=KEYCLOAK_ROLE; modifyDataType columnName=OWNER, tableName=RESOURCE_SERVER_POLICY; modifyDataType columnName=CLIENT_ID, ta...', '', NULL, '4.20.0', NULL, NULL, '9116490955');
-INSERT INTO public.databasechangelog VALUES ('9.0.0-recreate-constraints-after-column-increase', 'keycloak', 'META-INF/jpa-changelog-9.0.0.xml', '2023-11-04 16:48:13.748452', 80, 'MARK_RAN', '8:c9db8784c33cea210872ac2d805439f8', 'addNotNullConstraint columnName=CLIENT_ID, tableName=OFFLINE_CLIENT_SESSION; addNotNullConstraint columnName=OWNER, tableName=RESOURCE_SERVER_PERM_TICKET; addNotNullConstraint columnName=REQUESTER, tableName=RESOURCE_SERVER_PERM_TICKET; addNotNull...', '', NULL, '4.20.0', NULL, NULL, '9116490955');
-INSERT INTO public.databasechangelog VALUES ('9.0.1-add-index-to-client.client_id', 'keycloak', 'META-INF/jpa-changelog-9.0.1.xml', '2023-11-04 16:48:13.758677', 81, 'EXECUTED', '8:95b676ce8fc546a1fcfb4c92fae4add5', 'createIndex indexName=IDX_CLIENT_ID, tableName=CLIENT', '', NULL, '4.20.0', NULL, NULL, '9116490955');
-INSERT INTO public.databasechangelog VALUES ('9.0.1-KEYCLOAK-12579-drop-constraints', 'keycloak', 'META-INF/jpa-changelog-9.0.1.xml', '2023-11-04 16:48:13.761279', 82, 'MARK_RAN', '8:38a6b2a41f5651018b1aca93a41401e5', 'dropUniqueConstraint constraintName=SIBLING_NAMES, tableName=KEYCLOAK_GROUP', '', NULL, '4.20.0', NULL, NULL, '9116490955');
-INSERT INTO public.databasechangelog VALUES ('9.0.1-KEYCLOAK-12579-add-not-null-constraint', 'keycloak', 'META-INF/jpa-changelog-9.0.1.xml', '2023-11-04 16:48:13.767132', 83, 'EXECUTED', '8:3fb99bcad86a0229783123ac52f7609c', 'addNotNullConstraint columnName=PARENT_GROUP, tableName=KEYCLOAK_GROUP', '', NULL, '4.20.0', NULL, NULL, '9116490955');
-INSERT INTO public.databasechangelog VALUES ('9.0.1-KEYCLOAK-12579-recreate-constraints', 'keycloak', 'META-INF/jpa-changelog-9.0.1.xml', '2023-11-04 16:48:13.769749', 84, 'MARK_RAN', '8:64f27a6fdcad57f6f9153210f2ec1bdb', 'addUniqueConstraint constraintName=SIBLING_NAMES, tableName=KEYCLOAK_GROUP', '', NULL, '4.20.0', NULL, NULL, '9116490955');
-INSERT INTO public.databasechangelog VALUES ('9.0.1-add-index-to-events', 'keycloak', 'META-INF/jpa-changelog-9.0.1.xml', '2023-11-04 16:48:13.780118', 85, 'EXECUTED', '8:ab4f863f39adafd4c862f7ec01890abc', 'createIndex indexName=IDX_EVENT_TIME, tableName=EVENT_ENTITY', '', NULL, '4.20.0', NULL, NULL, '9116490955');
-INSERT INTO public.databasechangelog VALUES ('map-remove-ri', 'keycloak', 'META-INF/jpa-changelog-11.0.0.xml', '2023-11-04 16:48:13.787412', 86, 'EXECUTED', '8:13c419a0eb336e91ee3a3bf8fda6e2a7', 'dropForeignKeyConstraint baseTableName=REALM, constraintName=FK_TRAF444KK6QRKMS7N56AIWQ5Y; dropForeignKeyConstraint baseTableName=KEYCLOAK_ROLE, constraintName=FK_KJHO5LE2C0RAL09FL8CM9WFW9', '', NULL, '4.20.0', NULL, NULL, '9116490955');
-INSERT INTO public.databasechangelog VALUES ('map-remove-ri', 'keycloak', 'META-INF/jpa-changelog-12.0.0.xml', '2023-11-04 16:48:13.796293', 87, 'EXECUTED', '8:e3fb1e698e0471487f51af1ed80fe3ac', 'dropForeignKeyConstraint baseTableName=REALM_DEFAULT_GROUPS, constraintName=FK_DEF_GROUPS_GROUP; dropForeignKeyConstraint baseTableName=REALM_DEFAULT_ROLES, constraintName=FK_H4WPD7W4HSOOLNI3H0SW7BTJE; dropForeignKeyConstraint baseTableName=CLIENT...', '', NULL, '4.20.0', NULL, NULL, '9116490955');
-INSERT INTO public.databasechangelog VALUES ('12.1.0-add-realm-localization-table', 'keycloak', 'META-INF/jpa-changelog-12.0.0.xml', '2023-11-04 16:48:13.814952', 88, 'EXECUTED', '8:babadb686aab7b56562817e60bf0abd0', 'createTable tableName=REALM_LOCALIZATIONS; addPrimaryKey tableName=REALM_LOCALIZATIONS', '', NULL, '4.20.0', NULL, NULL, '9116490955');
-INSERT INTO public.databasechangelog VALUES ('default-roles', 'keycloak', 'META-INF/jpa-changelog-13.0.0.xml', '2023-11-04 16:48:13.830803', 89, 'EXECUTED', '8:72d03345fda8e2f17093d08801947773', 'addColumn tableName=REALM; customChange', '', NULL, '4.20.0', NULL, NULL, '9116490955');
-INSERT INTO public.databasechangelog VALUES ('default-roles-cleanup', 'keycloak', 'META-INF/jpa-changelog-13.0.0.xml', '2023-11-04 16:48:13.841812', 90, 'EXECUTED', '8:61c9233951bd96ffecd9ba75f7d978a4', 'dropTable tableName=REALM_DEFAULT_ROLES; dropTable tableName=CLIENT_DEFAULT_ROLES', '', NULL, '4.20.0', NULL, NULL, '9116490955');
-INSERT INTO public.databasechangelog VALUES ('13.0.0-KEYCLOAK-16844', 'keycloak', 'META-INF/jpa-changelog-13.0.0.xml', '2023-11-04 16:48:13.856315', 91, 'EXECUTED', '8:ea82e6ad945cec250af6372767b25525', 'createIndex indexName=IDX_OFFLINE_USS_PRELOAD, tableName=OFFLINE_USER_SESSION', '', NULL, '4.20.0', NULL, NULL, '9116490955');
-INSERT INTO public.databasechangelog VALUES ('map-remove-ri-13.0.0', 'keycloak', 'META-INF/jpa-changelog-13.0.0.xml', '2023-11-04 16:48:13.865397', 92, 'EXECUTED', '8:d3f4a33f41d960ddacd7e2ef30d126b3', 'dropForeignKeyConstraint baseTableName=DEFAULT_CLIENT_SCOPE, constraintName=FK_R_DEF_CLI_SCOPE_SCOPE; dropForeignKeyConstraint baseTableName=CLIENT_SCOPE_CLIENT, constraintName=FK_C_CLI_SCOPE_SCOPE; dropForeignKeyConstraint baseTableName=CLIENT_SC...', '', NULL, '4.20.0', NULL, NULL, '9116490955');
-INSERT INTO public.databasechangelog VALUES ('13.0.0-KEYCLOAK-17992-drop-constraints', 'keycloak', 'META-INF/jpa-changelog-13.0.0.xml', '2023-11-04 16:48:13.868483', 93, 'MARK_RAN', '8:1284a27fbd049d65831cb6fc07c8a783', 'dropPrimaryKey constraintName=C_CLI_SCOPE_BIND, tableName=CLIENT_SCOPE_CLIENT; dropIndex indexName=IDX_CLSCOPE_CL, tableName=CLIENT_SCOPE_CLIENT; dropIndex indexName=IDX_CL_CLSCOPE, tableName=CLIENT_SCOPE_CLIENT', '', NULL, '4.20.0', NULL, NULL, '9116490955');
-INSERT INTO public.databasechangelog VALUES ('13.0.0-increase-column-size-federated', 'keycloak', 'META-INF/jpa-changelog-13.0.0.xml', '2023-11-04 16:48:13.882512', 94, 'EXECUTED', '8:9d11b619db2ae27c25853b8a37cd0dea', 'modifyDataType columnName=CLIENT_ID, tableName=CLIENT_SCOPE_CLIENT; modifyDataType columnName=SCOPE_ID, tableName=CLIENT_SCOPE_CLIENT', '', NULL, '4.20.0', NULL, NULL, '9116490955');
-INSERT INTO public.databasechangelog VALUES ('13.0.0-KEYCLOAK-17992-recreate-constraints', 'keycloak', 'META-INF/jpa-changelog-13.0.0.xml', '2023-11-04 16:48:13.886241', 95, 'MARK_RAN', '8:3002bb3997451bb9e8bac5c5cd8d6327', 'addNotNullConstraint columnName=CLIENT_ID, tableName=CLIENT_SCOPE_CLIENT; addNotNullConstraint columnName=SCOPE_ID, tableName=CLIENT_SCOPE_CLIENT; addPrimaryKey constraintName=C_CLI_SCOPE_BIND, tableName=CLIENT_SCOPE_CLIENT; createIndex indexName=...', '', NULL, '4.20.0', NULL, NULL, '9116490955');
-INSERT INTO public.databasechangelog VALUES ('json-string-accomodation-fixed', 'keycloak', 'META-INF/jpa-changelog-13.0.0.xml', '2023-11-04 16:48:13.896945', 96, 'EXECUTED', '8:dfbee0d6237a23ef4ccbb7a4e063c163', 'addColumn tableName=REALM_ATTRIBUTE; update tableName=REALM_ATTRIBUTE; dropColumn columnName=VALUE, tableName=REALM_ATTRIBUTE; renameColumn newColumnName=VALUE, oldColumnName=VALUE_NEW, tableName=REALM_ATTRIBUTE', '', NULL, '4.20.0', NULL, NULL, '9116490955');
-INSERT INTO public.databasechangelog VALUES ('14.0.0-KEYCLOAK-11019', 'keycloak', 'META-INF/jpa-changelog-14.0.0.xml', '2023-11-04 16:48:13.924284', 97, 'EXECUTED', '8:75f3e372df18d38c62734eebb986b960', 'createIndex indexName=IDX_OFFLINE_CSS_PRELOAD, tableName=OFFLINE_CLIENT_SESSION; createIndex indexName=IDX_OFFLINE_USS_BY_USER, tableName=OFFLINE_USER_SESSION; createIndex indexName=IDX_OFFLINE_USS_BY_USERSESS, tableName=OFFLINE_USER_SESSION', '', NULL, '4.20.0', NULL, NULL, '9116490955');
-INSERT INTO public.databasechangelog VALUES ('14.0.0-KEYCLOAK-18286', 'keycloak', 'META-INF/jpa-changelog-14.0.0.xml', '2023-11-04 16:48:13.928514', 98, 'MARK_RAN', '8:7fee73eddf84a6035691512c85637eef', 'createIndex indexName=IDX_CLIENT_ATT_BY_NAME_VALUE, tableName=CLIENT_ATTRIBUTES', '', NULL, '4.20.0', NULL, NULL, '9116490955');
-INSERT INTO public.databasechangelog VALUES ('14.0.0-KEYCLOAK-18286-revert', 'keycloak', 'META-INF/jpa-changelog-14.0.0.xml', '2023-11-04 16:48:13.940707', 99, 'MARK_RAN', '8:7a11134ab12820f999fbf3bb13c3adc8', 'dropIndex indexName=IDX_CLIENT_ATT_BY_NAME_VALUE, tableName=CLIENT_ATTRIBUTES', '', NULL, '4.20.0', NULL, NULL, '9116490955');
-INSERT INTO public.databasechangelog VALUES ('14.0.0-KEYCLOAK-18286-supported-dbs', 'keycloak', 'META-INF/jpa-changelog-14.0.0.xml', '2023-11-04 16:48:13.955475', 100, 'EXECUTED', '8:c0f6eaac1f3be773ffe54cb5b8482b70', 'createIndex indexName=IDX_CLIENT_ATT_BY_NAME_VALUE, tableName=CLIENT_ATTRIBUTES', '', NULL, '4.20.0', NULL, NULL, '9116490955');
-INSERT INTO public.databasechangelog VALUES ('14.0.0-KEYCLOAK-18286-unsupported-dbs', 'keycloak', 'META-INF/jpa-changelog-14.0.0.xml', '2023-11-04 16:48:13.959447', 101, 'MARK_RAN', '8:18186f0008b86e0f0f49b0c4d0e842ac', 'createIndex indexName=IDX_CLIENT_ATT_BY_NAME_VALUE, tableName=CLIENT_ATTRIBUTES', '', NULL, '4.20.0', NULL, NULL, '9116490955');
-INSERT INTO public.databasechangelog VALUES ('KEYCLOAK-17267-add-index-to-user-attributes', 'keycloak', 'META-INF/jpa-changelog-14.0.0.xml', '2023-11-04 16:48:13.973534', 102, 'EXECUTED', '8:09c2780bcb23b310a7019d217dc7b433', 'createIndex indexName=IDX_USER_ATTRIBUTE_NAME, tableName=USER_ATTRIBUTE', '', NULL, '4.20.0', NULL, NULL, '9116490955');
-INSERT INTO public.databasechangelog VALUES ('KEYCLOAK-18146-add-saml-art-binding-identifier', 'keycloak', 'META-INF/jpa-changelog-14.0.0.xml', '2023-11-04 16:48:13.986736', 103, 'EXECUTED', '8:276a44955eab693c970a42880197fff2', 'customChange', '', NULL, '4.20.0', NULL, NULL, '9116490955');
-INSERT INTO public.databasechangelog VALUES ('15.0.0-KEYCLOAK-18467', 'keycloak', 'META-INF/jpa-changelog-15.0.0.xml', '2023-11-04 16:48:13.998087', 104, 'EXECUTED', '8:ba8ee3b694d043f2bfc1a1079d0760d7', 'addColumn tableName=REALM_LOCALIZATIONS; update tableName=REALM_LOCALIZATIONS; dropColumn columnName=TEXTS, tableName=REALM_LOCALIZATIONS; renameColumn newColumnName=TEXTS, oldColumnName=TEXTS_NEW, tableName=REALM_LOCALIZATIONS; addNotNullConstrai...', '', NULL, '4.20.0', NULL, NULL, '9116490955');
-INSERT INTO public.databasechangelog VALUES ('17.0.0-9562', 'keycloak', 'META-INF/jpa-changelog-17.0.0.xml', '2023-11-04 16:48:14.01156', 105, 'EXECUTED', '8:5e06b1d75f5d17685485e610c2851b17', 'createIndex indexName=IDX_USER_SERVICE_ACCOUNT, tableName=USER_ENTITY', '', NULL, '4.20.0', NULL, NULL, '9116490955');
-INSERT INTO public.databasechangelog VALUES ('18.0.0-10625-IDX_ADMIN_EVENT_TIME', 'keycloak', 'META-INF/jpa-changelog-18.0.0.xml', '2023-11-04 16:48:14.025825', 106, 'EXECUTED', '8:4b80546c1dc550ac552ee7b24a4ab7c0', 'createIndex indexName=IDX_ADMIN_EVENT_TIME, tableName=ADMIN_EVENT_ENTITY', '', NULL, '4.20.0', NULL, NULL, '9116490955');
-INSERT INTO public.databasechangelog VALUES ('19.0.0-10135', 'keycloak', 'META-INF/jpa-changelog-19.0.0.xml', '2023-11-04 16:48:14.037477', 107, 'EXECUTED', '8:af510cd1bb2ab6339c45372f3e491696', 'customChange', '', NULL, '4.20.0', NULL, NULL, '9116490955');
-INSERT INTO public.databasechangelog VALUES ('20.0.0-12964-supported-dbs', 'keycloak', 'META-INF/jpa-changelog-20.0.0.xml', '2023-11-04 16:48:14.052379', 108, 'EXECUTED', '8:05c99fc610845ef66ee812b7921af0ef', 'createIndex indexName=IDX_GROUP_ATT_BY_NAME_VALUE, tableName=GROUP_ATTRIBUTE', '', NULL, '4.20.0', NULL, NULL, '9116490955');
-INSERT INTO public.databasechangelog VALUES ('20.0.0-12964-unsupported-dbs', 'keycloak', 'META-INF/jpa-changelog-20.0.0.xml', '2023-11-04 16:48:14.056654', 109, 'MARK_RAN', '8:314e803baf2f1ec315b3464e398b8247', 'createIndex indexName=IDX_GROUP_ATT_BY_NAME_VALUE, tableName=GROUP_ATTRIBUTE', '', NULL, '4.20.0', NULL, NULL, '9116490955');
-INSERT INTO public.databasechangelog VALUES ('client-attributes-string-accomodation-fixed', 'keycloak', 'META-INF/jpa-changelog-20.0.0.xml', '2023-11-04 16:48:14.068375', 110, 'EXECUTED', '8:56e4677e7e12556f70b604c573840100', 'addColumn tableName=CLIENT_ATTRIBUTES; update tableName=CLIENT_ATTRIBUTES; dropColumn columnName=VALUE, tableName=CLIENT_ATTRIBUTES; renameColumn newColumnName=VALUE, oldColumnName=VALUE_NEW, tableName=CLIENT_ATTRIBUTES', '', NULL, '4.20.0', NULL, NULL, '9116490955');
-INSERT INTO public.databasechangelog VALUES ('21.0.2-17277', 'keycloak', 'META-INF/jpa-changelog-21.0.2.xml', '2023-11-04 16:48:14.078997', 111, 'EXECUTED', '8:8806cb33d2a546ce770384bf98cf6eac', 'customChange', '', NULL, '4.20.0', NULL, NULL, '9116490955');
-INSERT INTO public.databasechangelog VALUES ('21.1.0-19404', 'keycloak', 'META-INF/jpa-changelog-21.1.0.xml', '2023-11-04 16:48:14.133181', 112, 'EXECUTED', '8:fdb2924649d30555ab3a1744faba4928', 'modifyDataType columnName=DECISION_STRATEGY, tableName=RESOURCE_SERVER_POLICY; modifyDataType columnName=LOGIC, tableName=RESOURCE_SERVER_POLICY; modifyDataType columnName=POLICY_ENFORCE_MODE, tableName=RESOURCE_SERVER', '', NULL, '4.20.0', NULL, NULL, '9116490955');
-INSERT INTO public.databasechangelog VALUES ('21.1.0-19404-2', 'keycloak', 'META-INF/jpa-changelog-21.1.0.xml', '2023-11-04 16:48:14.13678', 113, 'MARK_RAN', '8:1c96cc2b10903bd07a03670098d67fd6', 'addColumn tableName=RESOURCE_SERVER_POLICY; update tableName=RESOURCE_SERVER_POLICY; dropColumn columnName=DECISION_STRATEGY, tableName=RESOURCE_SERVER_POLICY; renameColumn newColumnName=DECISION_STRATEGY, oldColumnName=DECISION_STRATEGY_NEW, tabl...', '', NULL, '4.20.0', NULL, NULL, '9116490955');
-INSERT INTO public.databasechangelog VALUES ('22.0.0-17484', 'keycloak', 'META-INF/jpa-changelog-22.0.0.xml', '2023-11-04 16:48:14.142479', 114, 'EXECUTED', '8:4c3d4e8b142a66fcdf21b89a4dd33301', 'customChange', '', NULL, '4.20.0', NULL, NULL, '9116490955');
+INSERT INTO public.databasechangelog VALUES ('1.0.0.Final-KEYCLOAK-5461', 'sthorger@redhat.com', 'META-INF/jpa-changelog-1.0.0.Final.xml', '2023-11-04 21:14:52.994727', 1, 'EXECUTED', '8:bda77d94bf90182a1e30c24f1c155ec7', 'createTable tableName=APPLICATION_DEFAULT_ROLES; createTable tableName=CLIENT; createTable tableName=CLIENT_SESSION; createTable tableName=CLIENT_SESSION_ROLE; createTable tableName=COMPOSITE_ROLE; createTable tableName=CREDENTIAL; createTable tab...', '', NULL, '4.20.0', NULL, NULL, '9132492396');
+INSERT INTO public.databasechangelog VALUES ('1.0.0.Final-KEYCLOAK-5461', 'sthorger@redhat.com', 'META-INF/db2-jpa-changelog-1.0.0.Final.xml', '2023-11-04 21:14:53.000877', 2, 'MARK_RAN', '8:1ecb330f30986693d1cba9ab579fa219', 'createTable tableName=APPLICATION_DEFAULT_ROLES; createTable tableName=CLIENT; createTable tableName=CLIENT_SESSION; createTable tableName=CLIENT_SESSION_ROLE; createTable tableName=COMPOSITE_ROLE; createTable tableName=CREDENTIAL; createTable tab...', '', NULL, '4.20.0', NULL, NULL, '9132492396');
+INSERT INTO public.databasechangelog VALUES ('1.1.0.Beta1', 'sthorger@redhat.com', 'META-INF/jpa-changelog-1.1.0.Beta1.xml', '2023-11-04 21:14:53.070544', 3, 'EXECUTED', '8:cb7ace19bc6d959f305605d255d4c843', 'delete tableName=CLIENT_SESSION_ROLE; delete tableName=CLIENT_SESSION; delete tableName=USER_SESSION; createTable tableName=CLIENT_ATTRIBUTES; createTable tableName=CLIENT_SESSION_NOTE; createTable tableName=APP_NODE_REGISTRATIONS; addColumn table...', '', NULL, '4.20.0', NULL, NULL, '9132492396');
+INSERT INTO public.databasechangelog VALUES ('1.1.0.Final', 'sthorger@redhat.com', 'META-INF/jpa-changelog-1.1.0.Final.xml', '2023-11-04 21:14:53.08155', 4, 'EXECUTED', '8:80230013e961310e6872e871be424a63', 'renameColumn newColumnName=EVENT_TIME, oldColumnName=TIME, tableName=EVENT_ENTITY', '', NULL, '4.20.0', NULL, NULL, '9132492396');
+INSERT INTO public.databasechangelog VALUES ('1.2.0.Beta1', 'psilva@redhat.com', 'META-INF/jpa-changelog-1.2.0.Beta1.xml', '2023-11-04 21:14:53.254918', 5, 'EXECUTED', '8:67f4c20929126adc0c8e9bf48279d244', 'delete tableName=CLIENT_SESSION_ROLE; delete tableName=CLIENT_SESSION_NOTE; delete tableName=CLIENT_SESSION; delete tableName=USER_SESSION; createTable tableName=PROTOCOL_MAPPER; createTable tableName=PROTOCOL_MAPPER_CONFIG; createTable tableName=...', '', NULL, '4.20.0', NULL, NULL, '9132492396');
+INSERT INTO public.databasechangelog VALUES ('1.2.0.Beta1', 'psilva@redhat.com', 'META-INF/db2-jpa-changelog-1.2.0.Beta1.xml', '2023-11-04 21:14:53.259707', 6, 'MARK_RAN', '8:7311018b0b8179ce14628ab412bb6783', 'delete tableName=CLIENT_SESSION_ROLE; delete tableName=CLIENT_SESSION_NOTE; delete tableName=CLIENT_SESSION; delete tableName=USER_SESSION; createTable tableName=PROTOCOL_MAPPER; createTable tableName=PROTOCOL_MAPPER_CONFIG; createTable tableName=...', '', NULL, '4.20.0', NULL, NULL, '9132492396');
+INSERT INTO public.databasechangelog VALUES ('1.2.0.RC1', 'bburke@redhat.com', 'META-INF/jpa-changelog-1.2.0.CR1.xml', '2023-11-04 21:14:53.411073', 7, 'EXECUTED', '8:037ba1216c3640f8785ee6b8e7c8e3c1', 'delete tableName=CLIENT_SESSION_ROLE; delete tableName=CLIENT_SESSION_NOTE; delete tableName=CLIENT_SESSION; delete tableName=USER_SESSION_NOTE; delete tableName=USER_SESSION; createTable tableName=MIGRATION_MODEL; createTable tableName=IDENTITY_P...', '', NULL, '4.20.0', NULL, NULL, '9132492396');
+INSERT INTO public.databasechangelog VALUES ('1.2.0.RC1', 'bburke@redhat.com', 'META-INF/db2-jpa-changelog-1.2.0.CR1.xml', '2023-11-04 21:14:53.415794', 8, 'MARK_RAN', '8:7fe6ffe4af4df289b3157de32c624263', 'delete tableName=CLIENT_SESSION_ROLE; delete tableName=CLIENT_SESSION_NOTE; delete tableName=CLIENT_SESSION; delete tableName=USER_SESSION_NOTE; delete tableName=USER_SESSION; createTable tableName=MIGRATION_MODEL; createTable tableName=IDENTITY_P...', '', NULL, '4.20.0', NULL, NULL, '9132492396');
+INSERT INTO public.databasechangelog VALUES ('1.2.0.Final', 'keycloak', 'META-INF/jpa-changelog-1.2.0.Final.xml', '2023-11-04 21:14:53.425986', 9, 'EXECUTED', '8:9c136bc3187083a98745c7d03bc8a303', 'update tableName=CLIENT; update tableName=CLIENT; update tableName=CLIENT', '', NULL, '4.20.0', NULL, NULL, '9132492396');
+INSERT INTO public.databasechangelog VALUES ('1.3.0', 'bburke@redhat.com', 'META-INF/jpa-changelog-1.3.0.xml', '2023-11-04 21:14:53.607428', 10, 'EXECUTED', '8:b5f09474dca81fb56a97cf5b6553d331', 'delete tableName=CLIENT_SESSION_ROLE; delete tableName=CLIENT_SESSION_PROT_MAPPER; delete tableName=CLIENT_SESSION_NOTE; delete tableName=CLIENT_SESSION; delete tableName=USER_SESSION_NOTE; delete tableName=USER_SESSION; createTable tableName=ADMI...', '', NULL, '4.20.0', NULL, NULL, '9132492396');
+INSERT INTO public.databasechangelog VALUES ('1.4.0', 'bburke@redhat.com', 'META-INF/jpa-changelog-1.4.0.xml', '2023-11-04 21:14:53.704772', 11, 'EXECUTED', '8:ca924f31bd2a3b219fdcfe78c82dacf4', 'delete tableName=CLIENT_SESSION_AUTH_STATUS; delete tableName=CLIENT_SESSION_ROLE; delete tableName=CLIENT_SESSION_PROT_MAPPER; delete tableName=CLIENT_SESSION_NOTE; delete tableName=CLIENT_SESSION; delete tableName=USER_SESSION_NOTE; delete table...', '', NULL, '4.20.0', NULL, NULL, '9132492396');
+INSERT INTO public.databasechangelog VALUES ('1.4.0', 'bburke@redhat.com', 'META-INF/db2-jpa-changelog-1.4.0.xml', '2023-11-04 21:14:53.71027', 12, 'MARK_RAN', '8:8acad7483e106416bcfa6f3b824a16cd', 'delete tableName=CLIENT_SESSION_AUTH_STATUS; delete tableName=CLIENT_SESSION_ROLE; delete tableName=CLIENT_SESSION_PROT_MAPPER; delete tableName=CLIENT_SESSION_NOTE; delete tableName=CLIENT_SESSION; delete tableName=USER_SESSION_NOTE; delete table...', '', NULL, '4.20.0', NULL, NULL, '9132492396');
+INSERT INTO public.databasechangelog VALUES ('1.5.0', 'bburke@redhat.com', 'META-INF/jpa-changelog-1.5.0.xml', '2023-11-04 21:14:53.731695', 13, 'EXECUTED', '8:9b1266d17f4f87c78226f5055408fd5e', 'delete tableName=CLIENT_SESSION_AUTH_STATUS; delete tableName=CLIENT_SESSION_ROLE; delete tableName=CLIENT_SESSION_PROT_MAPPER; delete tableName=CLIENT_SESSION_NOTE; delete tableName=CLIENT_SESSION; delete tableName=USER_SESSION_NOTE; delete table...', '', NULL, '4.20.0', NULL, NULL, '9132492396');
+INSERT INTO public.databasechangelog VALUES ('1.6.1_from15', 'mposolda@redhat.com', 'META-INF/jpa-changelog-1.6.1.xml', '2023-11-04 21:14:53.773294', 14, 'EXECUTED', '8:d80ec4ab6dbfe573550ff72396c7e910', 'addColumn tableName=REALM; addColumn tableName=KEYCLOAK_ROLE; addColumn tableName=CLIENT; createTable tableName=OFFLINE_USER_SESSION; createTable tableName=OFFLINE_CLIENT_SESSION; addPrimaryKey constraintName=CONSTRAINT_OFFL_US_SES_PK2, tableName=...', '', NULL, '4.20.0', NULL, NULL, '9132492396');
+INSERT INTO public.databasechangelog VALUES ('1.6.1_from16-pre', 'mposolda@redhat.com', 'META-INF/jpa-changelog-1.6.1.xml', '2023-11-04 21:14:53.776378', 15, 'MARK_RAN', '8:d86eb172171e7c20b9c849b584d147b2', 'delete tableName=OFFLINE_CLIENT_SESSION; delete tableName=OFFLINE_USER_SESSION', '', NULL, '4.20.0', NULL, NULL, '9132492396');
+INSERT INTO public.databasechangelog VALUES ('1.6.1_from16', 'mposolda@redhat.com', 'META-INF/jpa-changelog-1.6.1.xml', '2023-11-04 21:14:53.779763', 16, 'MARK_RAN', '8:5735f46f0fa60689deb0ecdc2a0dea22', 'dropPrimaryKey constraintName=CONSTRAINT_OFFLINE_US_SES_PK, tableName=OFFLINE_USER_SESSION; dropPrimaryKey constraintName=CONSTRAINT_OFFLINE_CL_SES_PK, tableName=OFFLINE_CLIENT_SESSION; addColumn tableName=OFFLINE_USER_SESSION; update tableName=OF...', '', NULL, '4.20.0', NULL, NULL, '9132492396');
+INSERT INTO public.databasechangelog VALUES ('1.6.1', 'mposolda@redhat.com', 'META-INF/jpa-changelog-1.6.1.xml', '2023-11-04 21:14:53.783643', 17, 'EXECUTED', '8:d41d8cd98f00b204e9800998ecf8427e', 'empty', '', NULL, '4.20.0', NULL, NULL, '9132492396');
+INSERT INTO public.databasechangelog VALUES ('1.7.0', 'bburke@redhat.com', 'META-INF/jpa-changelog-1.7.0.xml', '2023-11-04 21:14:53.843801', 18, 'EXECUTED', '8:5c1a8fd2014ac7fc43b90a700f117b23', 'createTable tableName=KEYCLOAK_GROUP; createTable tableName=GROUP_ROLE_MAPPING; createTable tableName=GROUP_ATTRIBUTE; createTable tableName=USER_GROUP_MEMBERSHIP; createTable tableName=REALM_DEFAULT_GROUPS; addColumn tableName=IDENTITY_PROVIDER; ...', '', NULL, '4.20.0', NULL, NULL, '9132492396');
+INSERT INTO public.databasechangelog VALUES ('1.8.0', 'mposolda@redhat.com', 'META-INF/jpa-changelog-1.8.0.xml', '2023-11-04 21:14:53.912966', 19, 'EXECUTED', '8:1f6c2c2dfc362aff4ed75b3f0ef6b331', 'addColumn tableName=IDENTITY_PROVIDER; createTable tableName=CLIENT_TEMPLATE; createTable tableName=CLIENT_TEMPLATE_ATTRIBUTES; createTable tableName=TEMPLATE_SCOPE_MAPPING; dropNotNullConstraint columnName=CLIENT_ID, tableName=PROTOCOL_MAPPER; ad...', '', NULL, '4.20.0', NULL, NULL, '9132492396');
+INSERT INTO public.databasechangelog VALUES ('1.8.0-2', 'keycloak', 'META-INF/jpa-changelog-1.8.0.xml', '2023-11-04 21:14:53.925522', 20, 'EXECUTED', '8:dee9246280915712591f83a127665107', 'dropDefaultValue columnName=ALGORITHM, tableName=CREDENTIAL; update tableName=CREDENTIAL', '', NULL, '4.20.0', NULL, NULL, '9132492396');
+INSERT INTO public.databasechangelog VALUES ('1.8.0', 'mposolda@redhat.com', 'META-INF/db2-jpa-changelog-1.8.0.xml', '2023-11-04 21:14:53.930164', 21, 'MARK_RAN', '8:9eb2ee1fa8ad1c5e426421a6f8fdfa6a', 'addColumn tableName=IDENTITY_PROVIDER; createTable tableName=CLIENT_TEMPLATE; createTable tableName=CLIENT_TEMPLATE_ATTRIBUTES; createTable tableName=TEMPLATE_SCOPE_MAPPING; dropNotNullConstraint columnName=CLIENT_ID, tableName=PROTOCOL_MAPPER; ad...', '', NULL, '4.20.0', NULL, NULL, '9132492396');
+INSERT INTO public.databasechangelog VALUES ('1.8.0-2', 'keycloak', 'META-INF/db2-jpa-changelog-1.8.0.xml', '2023-11-04 21:14:53.936824', 22, 'MARK_RAN', '8:dee9246280915712591f83a127665107', 'dropDefaultValue columnName=ALGORITHM, tableName=CREDENTIAL; update tableName=CREDENTIAL', '', NULL, '4.20.0', NULL, NULL, '9132492396');
+INSERT INTO public.databasechangelog VALUES ('1.9.0', 'mposolda@redhat.com', 'META-INF/jpa-changelog-1.9.0.xml', '2023-11-04 21:14:53.966723', 23, 'EXECUTED', '8:d9fa18ffa355320395b86270680dd4fe', 'update tableName=REALM; update tableName=REALM; update tableName=REALM; update tableName=REALM; update tableName=CREDENTIAL; update tableName=CREDENTIAL; update tableName=CREDENTIAL; update tableName=REALM; update tableName=REALM; customChange; dr...', '', NULL, '4.20.0', NULL, NULL, '9132492396');
+INSERT INTO public.databasechangelog VALUES ('1.9.1', 'keycloak', 'META-INF/jpa-changelog-1.9.1.xml', '2023-11-04 21:14:53.977635', 24, 'EXECUTED', '8:90cff506fedb06141ffc1c71c4a1214c', 'modifyDataType columnName=PRIVATE_KEY, tableName=REALM; modifyDataType columnName=PUBLIC_KEY, tableName=REALM; modifyDataType columnName=CERTIFICATE, tableName=REALM', '', NULL, '4.20.0', NULL, NULL, '9132492396');
+INSERT INTO public.databasechangelog VALUES ('1.9.1', 'keycloak', 'META-INF/db2-jpa-changelog-1.9.1.xml', '2023-11-04 21:14:53.981091', 25, 'MARK_RAN', '8:11a788aed4961d6d29c427c063af828c', 'modifyDataType columnName=PRIVATE_KEY, tableName=REALM; modifyDataType columnName=CERTIFICATE, tableName=REALM', '', NULL, '4.20.0', NULL, NULL, '9132492396');
+INSERT INTO public.databasechangelog VALUES ('1.9.2', 'keycloak', 'META-INF/jpa-changelog-1.9.2.xml', '2023-11-04 21:14:54.067975', 26, 'EXECUTED', '8:a4218e51e1faf380518cce2af5d39b43', 'createIndex indexName=IDX_USER_EMAIL, tableName=USER_ENTITY; createIndex indexName=IDX_USER_ROLE_MAPPING, tableName=USER_ROLE_MAPPING; createIndex indexName=IDX_USER_GROUP_MAPPING, tableName=USER_GROUP_MEMBERSHIP; createIndex indexName=IDX_USER_CO...', '', NULL, '4.20.0', NULL, NULL, '9132492396');
+INSERT INTO public.databasechangelog VALUES ('authz-2.0.0', 'psilva@redhat.com', 'META-INF/jpa-changelog-authz-2.0.0.xml', '2023-11-04 21:14:54.20244', 27, 'EXECUTED', '8:d9e9a1bfaa644da9952456050f07bbdc', 'createTable tableName=RESOURCE_SERVER; addPrimaryKey constraintName=CONSTRAINT_FARS, tableName=RESOURCE_SERVER; addUniqueConstraint constraintName=UK_AU8TT6T700S9V50BU18WS5HA6, tableName=RESOURCE_SERVER; createTable tableName=RESOURCE_SERVER_RESOU...', '', NULL, '4.20.0', NULL, NULL, '9132492396');
+INSERT INTO public.databasechangelog VALUES ('authz-2.5.1', 'psilva@redhat.com', 'META-INF/jpa-changelog-authz-2.5.1.xml', '2023-11-04 21:14:54.207185', 28, 'EXECUTED', '8:d1bf991a6163c0acbfe664b615314505', 'update tableName=RESOURCE_SERVER_POLICY', '', NULL, '4.20.0', NULL, NULL, '9132492396');
+INSERT INTO public.databasechangelog VALUES ('2.1.0-KEYCLOAK-5461', 'bburke@redhat.com', 'META-INF/jpa-changelog-2.1.0.xml', '2023-11-04 21:14:54.333075', 29, 'EXECUTED', '8:88a743a1e87ec5e30bf603da68058a8c', 'createTable tableName=BROKER_LINK; createTable tableName=FED_USER_ATTRIBUTE; createTable tableName=FED_USER_CONSENT; createTable tableName=FED_USER_CONSENT_ROLE; createTable tableName=FED_USER_CONSENT_PROT_MAPPER; createTable tableName=FED_USER_CR...', '', NULL, '4.20.0', NULL, NULL, '9132492396');
+INSERT INTO public.databasechangelog VALUES ('2.2.0', 'bburke@redhat.com', 'META-INF/jpa-changelog-2.2.0.xml', '2023-11-04 21:14:54.359114', 30, 'EXECUTED', '8:c5517863c875d325dea463d00ec26d7a', 'addColumn tableName=ADMIN_EVENT_ENTITY; createTable tableName=CREDENTIAL_ATTRIBUTE; createTable tableName=FED_CREDENTIAL_ATTRIBUTE; modifyDataType columnName=VALUE, tableName=CREDENTIAL; addForeignKeyConstraint baseTableName=FED_CREDENTIAL_ATTRIBU...', '', NULL, '4.20.0', NULL, NULL, '9132492396');
+INSERT INTO public.databasechangelog VALUES ('2.3.0', 'bburke@redhat.com', 'META-INF/jpa-changelog-2.3.0.xml', '2023-11-04 21:14:54.380225', 31, 'EXECUTED', '8:ada8b4833b74a498f376d7136bc7d327', 'createTable tableName=FEDERATED_USER; addPrimaryKey constraintName=CONSTR_FEDERATED_USER, tableName=FEDERATED_USER; dropDefaultValue columnName=TOTP, tableName=USER_ENTITY; dropColumn columnName=TOTP, tableName=USER_ENTITY; addColumn tableName=IDE...', '', NULL, '4.20.0', NULL, NULL, '9132492396');
+INSERT INTO public.databasechangelog VALUES ('2.4.0', 'bburke@redhat.com', 'META-INF/jpa-changelog-2.4.0.xml', '2023-11-04 21:14:54.388349', 32, 'EXECUTED', '8:b9b73c8ea7299457f99fcbb825c263ba', 'customChange', '', NULL, '4.20.0', NULL, NULL, '9132492396');
+INSERT INTO public.databasechangelog VALUES ('2.5.0', 'bburke@redhat.com', 'META-INF/jpa-changelog-2.5.0.xml', '2023-11-04 21:14:54.397147', 33, 'EXECUTED', '8:07724333e625ccfcfc5adc63d57314f3', 'customChange; modifyDataType columnName=USER_ID, tableName=OFFLINE_USER_SESSION', '', NULL, '4.20.0', NULL, NULL, '9132492396');
+INSERT INTO public.databasechangelog VALUES ('2.5.0-unicode-oracle', 'hmlnarik@redhat.com', 'META-INF/jpa-changelog-2.5.0.xml', '2023-11-04 21:14:54.39995', 34, 'MARK_RAN', '8:8b6fd445958882efe55deb26fc541a7b', 'modifyDataType columnName=DESCRIPTION, tableName=AUTHENTICATION_FLOW; modifyDataType columnName=DESCRIPTION, tableName=CLIENT_TEMPLATE; modifyDataType columnName=DESCRIPTION, tableName=RESOURCE_SERVER_POLICY; modifyDataType columnName=DESCRIPTION,...', '', NULL, '4.20.0', NULL, NULL, '9132492396');
+INSERT INTO public.databasechangelog VALUES ('2.5.0-unicode-other-dbs', 'hmlnarik@redhat.com', 'META-INF/jpa-changelog-2.5.0.xml', '2023-11-04 21:14:54.441587', 35, 'EXECUTED', '8:29b29cfebfd12600897680147277a9d7', 'modifyDataType columnName=DESCRIPTION, tableName=AUTHENTICATION_FLOW; modifyDataType columnName=DESCRIPTION, tableName=CLIENT_TEMPLATE; modifyDataType columnName=DESCRIPTION, tableName=RESOURCE_SERVER_POLICY; modifyDataType columnName=DESCRIPTION,...', '', NULL, '4.20.0', NULL, NULL, '9132492396');
+INSERT INTO public.databasechangelog VALUES ('2.5.0-duplicate-email-support', 'slawomir@dabek.name', 'META-INF/jpa-changelog-2.5.0.xml', '2023-11-04 21:14:54.448283', 36, 'EXECUTED', '8:73ad77ca8fd0410c7f9f15a471fa52bc', 'addColumn tableName=REALM', '', NULL, '4.20.0', NULL, NULL, '9132492396');
+INSERT INTO public.databasechangelog VALUES ('2.5.0-unique-group-names', 'hmlnarik@redhat.com', 'META-INF/jpa-changelog-2.5.0.xml', '2023-11-04 21:14:54.462293', 37, 'EXECUTED', '8:64f27a6fdcad57f6f9153210f2ec1bdb', 'addUniqueConstraint constraintName=SIBLING_NAMES, tableName=KEYCLOAK_GROUP', '', NULL, '4.20.0', NULL, NULL, '9132492396');
+INSERT INTO public.databasechangelog VALUES ('2.5.1', 'bburke@redhat.com', 'META-INF/jpa-changelog-2.5.1.xml', '2023-11-04 21:14:54.47315', 38, 'EXECUTED', '8:27180251182e6c31846c2ddab4bc5781', 'addColumn tableName=FED_USER_CONSENT', '', NULL, '4.20.0', NULL, NULL, '9132492396');
+INSERT INTO public.databasechangelog VALUES ('3.0.0', 'bburke@redhat.com', 'META-INF/jpa-changelog-3.0.0.xml', '2023-11-04 21:14:54.482361', 39, 'EXECUTED', '8:d56f201bfcfa7a1413eb3e9bc02978f9', 'addColumn tableName=IDENTITY_PROVIDER', '', NULL, '4.20.0', NULL, NULL, '9132492396');
+INSERT INTO public.databasechangelog VALUES ('3.2.0-fix', 'keycloak', 'META-INF/jpa-changelog-3.2.0.xml', '2023-11-04 21:14:54.485773', 40, 'MARK_RAN', '8:91f5522bf6afdc2077dfab57fbd3455c', 'addNotNullConstraint columnName=REALM_ID, tableName=CLIENT_INITIAL_ACCESS', '', NULL, '4.20.0', NULL, NULL, '9132492396');
+INSERT INTO public.databasechangelog VALUES ('3.2.0-fix-with-keycloak-5416', 'keycloak', 'META-INF/jpa-changelog-3.2.0.xml', '2023-11-04 21:14:54.489447', 41, 'MARK_RAN', '8:0f01b554f256c22caeb7d8aee3a1cdc8', 'dropIndex indexName=IDX_CLIENT_INIT_ACC_REALM, tableName=CLIENT_INITIAL_ACCESS; addNotNullConstraint columnName=REALM_ID, tableName=CLIENT_INITIAL_ACCESS; createIndex indexName=IDX_CLIENT_INIT_ACC_REALM, tableName=CLIENT_INITIAL_ACCESS', '', NULL, '4.20.0', NULL, NULL, '9132492396');
+INSERT INTO public.databasechangelog VALUES ('3.2.0-fix-offline-sessions', 'hmlnarik', 'META-INF/jpa-changelog-3.2.0.xml', '2023-11-04 21:14:54.497149', 42, 'EXECUTED', '8:ab91cf9cee415867ade0e2df9651a947', 'customChange', '', NULL, '4.20.0', NULL, NULL, '9132492396');
+INSERT INTO public.databasechangelog VALUES ('3.2.0-fixed', 'keycloak', 'META-INF/jpa-changelog-3.2.0.xml', '2023-11-04 21:14:54.834974', 43, 'EXECUTED', '8:ceac9b1889e97d602caf373eadb0d4b7', 'addColumn tableName=REALM; dropPrimaryKey constraintName=CONSTRAINT_OFFL_CL_SES_PK2, tableName=OFFLINE_CLIENT_SESSION; dropColumn columnName=CLIENT_SESSION_ID, tableName=OFFLINE_CLIENT_SESSION; addPrimaryKey constraintName=CONSTRAINT_OFFL_CL_SES_P...', '', NULL, '4.20.0', NULL, NULL, '9132492396');
+INSERT INTO public.databasechangelog VALUES ('3.3.0', 'keycloak', 'META-INF/jpa-changelog-3.3.0.xml', '2023-11-04 21:14:54.844053', 44, 'EXECUTED', '8:84b986e628fe8f7fd8fd3c275c5259f2', 'addColumn tableName=USER_ENTITY', '', NULL, '4.20.0', NULL, NULL, '9132492396');
+INSERT INTO public.databasechangelog VALUES ('authz-3.4.0.CR1-resource-server-pk-change-part1', 'glavoie@gmail.com', 'META-INF/jpa-changelog-authz-3.4.0.CR1.xml', '2023-11-04 21:14:54.855222', 45, 'EXECUTED', '8:a164ae073c56ffdbc98a615493609a52', 'addColumn tableName=RESOURCE_SERVER_POLICY; addColumn tableName=RESOURCE_SERVER_RESOURCE; addColumn tableName=RESOURCE_SERVER_SCOPE', '', NULL, '4.20.0', NULL, NULL, '9132492396');
+INSERT INTO public.databasechangelog VALUES ('authz-3.4.0.CR1-resource-server-pk-change-part2-KEYCLOAK-6095', 'hmlnarik@redhat.com', 'META-INF/jpa-changelog-authz-3.4.0.CR1.xml', '2023-11-04 21:14:54.868177', 46, 'EXECUTED', '8:70a2b4f1f4bd4dbf487114bdb1810e64', 'customChange', '', NULL, '4.20.0', NULL, NULL, '9132492396');
+INSERT INTO public.databasechangelog VALUES ('authz-3.4.0.CR1-resource-server-pk-change-part3-fixed', 'glavoie@gmail.com', 'META-INF/jpa-changelog-authz-3.4.0.CR1.xml', '2023-11-04 21:14:54.872003', 47, 'MARK_RAN', '8:7be68b71d2f5b94b8df2e824f2860fa2', 'dropIndex indexName=IDX_RES_SERV_POL_RES_SERV, tableName=RESOURCE_SERVER_POLICY; dropIndex indexName=IDX_RES_SRV_RES_RES_SRV, tableName=RESOURCE_SERVER_RESOURCE; dropIndex indexName=IDX_RES_SRV_SCOPE_RES_SRV, tableName=RESOURCE_SERVER_SCOPE', '', NULL, '4.20.0', NULL, NULL, '9132492396');
+INSERT INTO public.databasechangelog VALUES ('authz-3.4.0.CR1-resource-server-pk-change-part3-fixed-nodropindex', 'glavoie@gmail.com', 'META-INF/jpa-changelog-authz-3.4.0.CR1.xml', '2023-11-04 21:14:54.954144', 48, 'EXECUTED', '8:bab7c631093c3861d6cf6144cd944982', 'addNotNullConstraint columnName=RESOURCE_SERVER_CLIENT_ID, tableName=RESOURCE_SERVER_POLICY; addNotNullConstraint columnName=RESOURCE_SERVER_CLIENT_ID, tableName=RESOURCE_SERVER_RESOURCE; addNotNullConstraint columnName=RESOURCE_SERVER_CLIENT_ID, ...', '', NULL, '4.20.0', NULL, NULL, '9132492396');
+INSERT INTO public.databasechangelog VALUES ('authn-3.4.0.CR1-refresh-token-max-reuse', 'glavoie@gmail.com', 'META-INF/jpa-changelog-authz-3.4.0.CR1.xml', '2023-11-04 21:14:54.966923', 49, 'EXECUTED', '8:fa809ac11877d74d76fe40869916daad', 'addColumn tableName=REALM', '', NULL, '4.20.0', NULL, NULL, '9132492396');
+INSERT INTO public.databasechangelog VALUES ('3.4.0', 'keycloak', 'META-INF/jpa-changelog-3.4.0.xml', '2023-11-04 21:14:55.073611', 50, 'EXECUTED', '8:fac23540a40208f5f5e326f6ceb4d291', 'addPrimaryKey constraintName=CONSTRAINT_REALM_DEFAULT_ROLES, tableName=REALM_DEFAULT_ROLES; addPrimaryKey constraintName=CONSTRAINT_COMPOSITE_ROLE, tableName=COMPOSITE_ROLE; addPrimaryKey constraintName=CONSTR_REALM_DEFAULT_GROUPS, tableName=REALM...', '', NULL, '4.20.0', NULL, NULL, '9132492396');
+INSERT INTO public.databasechangelog VALUES ('3.4.0-KEYCLOAK-5230', 'hmlnarik@redhat.com', 'META-INF/jpa-changelog-3.4.0.xml', '2023-11-04 21:14:55.158467', 51, 'EXECUTED', '8:2612d1b8a97e2b5588c346e817307593', 'createIndex indexName=IDX_FU_ATTRIBUTE, tableName=FED_USER_ATTRIBUTE; createIndex indexName=IDX_FU_CONSENT, tableName=FED_USER_CONSENT; createIndex indexName=IDX_FU_CONSENT_RU, tableName=FED_USER_CONSENT; createIndex indexName=IDX_FU_CREDENTIAL, t...', '', NULL, '4.20.0', NULL, NULL, '9132492396');
+INSERT INTO public.databasechangelog VALUES ('3.4.1', 'psilva@redhat.com', 'META-INF/jpa-changelog-3.4.1.xml', '2023-11-04 21:14:55.166989', 52, 'EXECUTED', '8:9842f155c5db2206c88bcb5d1046e941', 'modifyDataType columnName=VALUE, tableName=CLIENT_ATTRIBUTES', '', NULL, '4.20.0', NULL, NULL, '9132492396');
+INSERT INTO public.databasechangelog VALUES ('3.4.2', 'keycloak', 'META-INF/jpa-changelog-3.4.2.xml', '2023-11-04 21:14:55.172944', 53, 'EXECUTED', '8:2e12e06e45498406db72d5b3da5bbc76', 'update tableName=REALM', '', NULL, '4.20.0', NULL, NULL, '9132492396');
+INSERT INTO public.databasechangelog VALUES ('3.4.2-KEYCLOAK-5172', 'mkanis@redhat.com', 'META-INF/jpa-changelog-3.4.2.xml', '2023-11-04 21:14:55.179189', 54, 'EXECUTED', '8:33560e7c7989250c40da3abdabdc75a4', 'update tableName=CLIENT', '', NULL, '4.20.0', NULL, NULL, '9132492396');
+INSERT INTO public.databasechangelog VALUES ('4.0.0-KEYCLOAK-6335', 'bburke@redhat.com', 'META-INF/jpa-changelog-4.0.0.xml', '2023-11-04 21:14:55.190976', 55, 'EXECUTED', '8:87a8d8542046817a9107c7eb9cbad1cd', 'createTable tableName=CLIENT_AUTH_FLOW_BINDINGS; addPrimaryKey constraintName=C_CLI_FLOW_BIND, tableName=CLIENT_AUTH_FLOW_BINDINGS', '', NULL, '4.20.0', NULL, NULL, '9132492396');
+INSERT INTO public.databasechangelog VALUES ('4.0.0-CLEANUP-UNUSED-TABLE', 'bburke@redhat.com', 'META-INF/jpa-changelog-4.0.0.xml', '2023-11-04 21:14:55.19801', 56, 'EXECUTED', '8:3ea08490a70215ed0088c273d776311e', 'dropTable tableName=CLIENT_IDENTITY_PROV_MAPPING', '', NULL, '4.20.0', NULL, NULL, '9132492396');
+INSERT INTO public.databasechangelog VALUES ('4.0.0-KEYCLOAK-6228', 'bburke@redhat.com', 'META-INF/jpa-changelog-4.0.0.xml', '2023-11-04 21:14:55.231888', 57, 'EXECUTED', '8:2d56697c8723d4592ab608ce14b6ed68', 'dropUniqueConstraint constraintName=UK_JKUWUVD56ONTGSUHOGM8UEWRT, tableName=USER_CONSENT; dropNotNullConstraint columnName=CLIENT_ID, tableName=USER_CONSENT; addColumn tableName=USER_CONSENT; addUniqueConstraint constraintName=UK_JKUWUVD56ONTGSUHO...', '', NULL, '4.20.0', NULL, NULL, '9132492396');
+INSERT INTO public.databasechangelog VALUES ('4.0.0-KEYCLOAK-5579-fixed', 'mposolda@redhat.com', 'META-INF/jpa-changelog-4.0.0.xml', '2023-11-04 21:14:55.353172', 58, 'EXECUTED', '8:3e423e249f6068ea2bbe48bf907f9d86', 'dropForeignKeyConstraint baseTableName=CLIENT_TEMPLATE_ATTRIBUTES, constraintName=FK_CL_TEMPL_ATTR_TEMPL; renameTable newTableName=CLIENT_SCOPE_ATTRIBUTES, oldTableName=CLIENT_TEMPLATE_ATTRIBUTES; renameColumn newColumnName=SCOPE_ID, oldColumnName...', '', NULL, '4.20.0', NULL, NULL, '9132492396');
+INSERT INTO public.databasechangelog VALUES ('authz-4.0.0.CR1', 'psilva@redhat.com', 'META-INF/jpa-changelog-authz-4.0.0.CR1.xml', '2023-11-04 21:14:55.387761', 59, 'EXECUTED', '8:15cabee5e5df0ff099510a0fc03e4103', 'createTable tableName=RESOURCE_SERVER_PERM_TICKET; addPrimaryKey constraintName=CONSTRAINT_FAPMT, tableName=RESOURCE_SERVER_PERM_TICKET; addForeignKeyConstraint baseTableName=RESOURCE_SERVER_PERM_TICKET, constraintName=FK_FRSRHO213XCX4WNKOG82SSPMT...', '', NULL, '4.20.0', NULL, NULL, '9132492396');
+INSERT INTO public.databasechangelog VALUES ('authz-4.0.0.Beta3', 'psilva@redhat.com', 'META-INF/jpa-changelog-authz-4.0.0.Beta3.xml', '2023-11-04 21:14:55.395288', 60, 'EXECUTED', '8:4b80200af916ac54d2ffbfc47918ab0e', 'addColumn tableName=RESOURCE_SERVER_POLICY; addColumn tableName=RESOURCE_SERVER_PERM_TICKET; addForeignKeyConstraint baseTableName=RESOURCE_SERVER_PERM_TICKET, constraintName=FK_FRSRPO2128CX4WNKOG82SSRFY, referencedTableName=RESOURCE_SERVER_POLICY', '', NULL, '4.20.0', NULL, NULL, '9132492396');
+INSERT INTO public.databasechangelog VALUES ('authz-4.2.0.Final', 'mhajas@redhat.com', 'META-INF/jpa-changelog-authz-4.2.0.Final.xml', '2023-11-04 21:14:55.406919', 61, 'EXECUTED', '8:66564cd5e168045d52252c5027485bbb', 'createTable tableName=RESOURCE_URIS; addForeignKeyConstraint baseTableName=RESOURCE_URIS, constraintName=FK_RESOURCE_SERVER_URIS, referencedTableName=RESOURCE_SERVER_RESOURCE; customChange; dropColumn columnName=URI, tableName=RESOURCE_SERVER_RESO...', '', NULL, '4.20.0', NULL, NULL, '9132492396');
+INSERT INTO public.databasechangelog VALUES ('authz-4.2.0.Final-KEYCLOAK-9944', 'hmlnarik@redhat.com', 'META-INF/jpa-changelog-authz-4.2.0.Final.xml', '2023-11-04 21:14:55.41745', 62, 'EXECUTED', '8:1c7064fafb030222be2bd16ccf690f6f', 'addPrimaryKey constraintName=CONSTRAINT_RESOUR_URIS_PK, tableName=RESOURCE_URIS', '', NULL, '4.20.0', NULL, NULL, '9132492396');
+INSERT INTO public.databasechangelog VALUES ('4.2.0-KEYCLOAK-6313', 'wadahiro@gmail.com', 'META-INF/jpa-changelog-4.2.0.xml', '2023-11-04 21:14:55.424424', 63, 'EXECUTED', '8:2de18a0dce10cdda5c7e65c9b719b6e5', 'addColumn tableName=REQUIRED_ACTION_PROVIDER', '', NULL, '4.20.0', NULL, NULL, '9132492396');
+INSERT INTO public.databasechangelog VALUES ('4.3.0-KEYCLOAK-7984', 'wadahiro@gmail.com', 'META-INF/jpa-changelog-4.3.0.xml', '2023-11-04 21:14:55.428762', 64, 'EXECUTED', '8:03e413dd182dcbd5c57e41c34d0ef682', 'update tableName=REQUIRED_ACTION_PROVIDER', '', NULL, '4.20.0', NULL, NULL, '9132492396');
+INSERT INTO public.databasechangelog VALUES ('4.6.0-KEYCLOAK-7950', 'psilva@redhat.com', 'META-INF/jpa-changelog-4.6.0.xml', '2023-11-04 21:14:55.43306', 65, 'EXECUTED', '8:d27b42bb2571c18fbe3fe4e4fb7582a7', 'update tableName=RESOURCE_SERVER_RESOURCE', '', NULL, '4.20.0', NULL, NULL, '9132492396');
+INSERT INTO public.databasechangelog VALUES ('4.6.0-KEYCLOAK-8377', 'keycloak', 'META-INF/jpa-changelog-4.6.0.xml', '2023-11-04 21:14:55.460064', 66, 'EXECUTED', '8:698baf84d9fd0027e9192717c2154fb8', 'createTable tableName=ROLE_ATTRIBUTE; addPrimaryKey constraintName=CONSTRAINT_ROLE_ATTRIBUTE_PK, tableName=ROLE_ATTRIBUTE; addForeignKeyConstraint baseTableName=ROLE_ATTRIBUTE, constraintName=FK_ROLE_ATTRIBUTE_ID, referencedTableName=KEYCLOAK_ROLE...', '', NULL, '4.20.0', NULL, NULL, '9132492396');
+INSERT INTO public.databasechangelog VALUES ('4.6.0-KEYCLOAK-8555', 'gideonray@gmail.com', 'META-INF/jpa-changelog-4.6.0.xml', '2023-11-04 21:14:55.472102', 67, 'EXECUTED', '8:ced8822edf0f75ef26eb51582f9a821a', 'createIndex indexName=IDX_COMPONENT_PROVIDER_TYPE, tableName=COMPONENT', '', NULL, '4.20.0', NULL, NULL, '9132492396');
+INSERT INTO public.databasechangelog VALUES ('4.7.0-KEYCLOAK-1267', 'sguilhen@redhat.com', 'META-INF/jpa-changelog-4.7.0.xml', '2023-11-04 21:14:55.479126', 68, 'EXECUTED', '8:f0abba004cf429e8afc43056df06487d', 'addColumn tableName=REALM', '', NULL, '4.20.0', NULL, NULL, '9132492396');
+INSERT INTO public.databasechangelog VALUES ('4.7.0-KEYCLOAK-7275', 'keycloak', 'META-INF/jpa-changelog-4.7.0.xml', '2023-11-04 21:14:55.500181', 69, 'EXECUTED', '8:6662f8b0b611caa359fcf13bf63b4e24', 'renameColumn newColumnName=CREATED_ON, oldColumnName=LAST_SESSION_REFRESH, tableName=OFFLINE_USER_SESSION; addNotNullConstraint columnName=CREATED_ON, tableName=OFFLINE_USER_SESSION; addColumn tableName=OFFLINE_USER_SESSION; customChange; createIn...', '', NULL, '4.20.0', NULL, NULL, '9132492396');
+INSERT INTO public.databasechangelog VALUES ('4.8.0-KEYCLOAK-8835', 'sguilhen@redhat.com', 'META-INF/jpa-changelog-4.8.0.xml', '2023-11-04 21:14:55.507962', 70, 'EXECUTED', '8:9e6b8009560f684250bdbdf97670d39e', 'addNotNullConstraint columnName=SSO_MAX_LIFESPAN_REMEMBER_ME, tableName=REALM; addNotNullConstraint columnName=SSO_IDLE_TIMEOUT_REMEMBER_ME, tableName=REALM', '', NULL, '4.20.0', NULL, NULL, '9132492396');
+INSERT INTO public.databasechangelog VALUES ('authz-7.0.0-KEYCLOAK-10443', 'psilva@redhat.com', 'META-INF/jpa-changelog-authz-7.0.0.xml', '2023-11-04 21:14:55.514791', 71, 'EXECUTED', '8:4223f561f3b8dc655846562b57bb502e', 'addColumn tableName=RESOURCE_SERVER', '', NULL, '4.20.0', NULL, NULL, '9132492396');
+INSERT INTO public.databasechangelog VALUES ('8.0.0-adding-credential-columns', 'keycloak', 'META-INF/jpa-changelog-8.0.0.xml', '2023-11-04 21:14:55.523894', 72, 'EXECUTED', '8:215a31c398b363ce383a2b301202f29e', 'addColumn tableName=CREDENTIAL; addColumn tableName=FED_USER_CREDENTIAL', '', NULL, '4.20.0', NULL, NULL, '9132492396');
+INSERT INTO public.databasechangelog VALUES ('8.0.0-updating-credential-data-not-oracle-fixed', 'keycloak', 'META-INF/jpa-changelog-8.0.0.xml', '2023-11-04 21:14:55.531027', 73, 'EXECUTED', '8:83f7a671792ca98b3cbd3a1a34862d3d', 'update tableName=CREDENTIAL; update tableName=CREDENTIAL; update tableName=CREDENTIAL; update tableName=FED_USER_CREDENTIAL; update tableName=FED_USER_CREDENTIAL; update tableName=FED_USER_CREDENTIAL', '', NULL, '4.20.0', NULL, NULL, '9132492396');
+INSERT INTO public.databasechangelog VALUES ('8.0.0-updating-credential-data-oracle-fixed', 'keycloak', 'META-INF/jpa-changelog-8.0.0.xml', '2023-11-04 21:14:55.534914', 74, 'MARK_RAN', '8:f58ad148698cf30707a6efbdf8061aa7', 'update tableName=CREDENTIAL; update tableName=CREDENTIAL; update tableName=CREDENTIAL; update tableName=FED_USER_CREDENTIAL; update tableName=FED_USER_CREDENTIAL; update tableName=FED_USER_CREDENTIAL', '', NULL, '4.20.0', NULL, NULL, '9132492396');
+INSERT INTO public.databasechangelog VALUES ('8.0.0-credential-cleanup-fixed', 'keycloak', 'META-INF/jpa-changelog-8.0.0.xml', '2023-11-04 21:14:55.551815', 75, 'EXECUTED', '8:79e4fd6c6442980e58d52ffc3ee7b19c', 'dropDefaultValue columnName=COUNTER, tableName=CREDENTIAL; dropDefaultValue columnName=DIGITS, tableName=CREDENTIAL; dropDefaultValue columnName=PERIOD, tableName=CREDENTIAL; dropDefaultValue columnName=ALGORITHM, tableName=CREDENTIAL; dropColumn ...', '', NULL, '4.20.0', NULL, NULL, '9132492396');
+INSERT INTO public.databasechangelog VALUES ('8.0.0-resource-tag-support', 'keycloak', 'META-INF/jpa-changelog-8.0.0.xml', '2023-11-04 21:14:55.564745', 76, 'EXECUTED', '8:87af6a1e6d241ca4b15801d1f86a297d', 'addColumn tableName=MIGRATION_MODEL; createIndex indexName=IDX_UPDATE_TIME, tableName=MIGRATION_MODEL', '', NULL, '4.20.0', NULL, NULL, '9132492396');
+INSERT INTO public.databasechangelog VALUES ('9.0.0-always-display-client', 'keycloak', 'META-INF/jpa-changelog-9.0.0.xml', '2023-11-04 21:14:55.597988', 77, 'EXECUTED', '8:b44f8d9b7b6ea455305a6d72a200ed15', 'addColumn tableName=CLIENT', '', NULL, '4.20.0', NULL, NULL, '9132492396');
+INSERT INTO public.databasechangelog VALUES ('9.0.0-drop-constraints-for-column-increase', 'keycloak', 'META-INF/jpa-changelog-9.0.0.xml', '2023-11-04 21:14:55.60146', 78, 'MARK_RAN', '8:2d8ed5aaaeffd0cb004c046b4a903ac5', 'dropUniqueConstraint constraintName=UK_FRSR6T700S9V50BU18WS5PMT, tableName=RESOURCE_SERVER_PERM_TICKET; dropUniqueConstraint constraintName=UK_FRSR6T700S9V50BU18WS5HA6, tableName=RESOURCE_SERVER_RESOURCE; dropPrimaryKey constraintName=CONSTRAINT_O...', '', NULL, '4.20.0', NULL, NULL, '9132492396');
+INSERT INTO public.databasechangelog VALUES ('9.0.0-increase-column-size-federated-fk', 'keycloak', 'META-INF/jpa-changelog-9.0.0.xml', '2023-11-04 21:14:55.626452', 79, 'EXECUTED', '8:e290c01fcbc275326c511633f6e2acde', 'modifyDataType columnName=CLIENT_ID, tableName=FED_USER_CONSENT; modifyDataType columnName=CLIENT_REALM_CONSTRAINT, tableName=KEYCLOAK_ROLE; modifyDataType columnName=OWNER, tableName=RESOURCE_SERVER_POLICY; modifyDataType columnName=CLIENT_ID, ta...', '', NULL, '4.20.0', NULL, NULL, '9132492396');
+INSERT INTO public.databasechangelog VALUES ('9.0.0-recreate-constraints-after-column-increase', 'keycloak', 'META-INF/jpa-changelog-9.0.0.xml', '2023-11-04 21:14:55.629872', 80, 'MARK_RAN', '8:c9db8784c33cea210872ac2d805439f8', 'addNotNullConstraint columnName=CLIENT_ID, tableName=OFFLINE_CLIENT_SESSION; addNotNullConstraint columnName=OWNER, tableName=RESOURCE_SERVER_PERM_TICKET; addNotNullConstraint columnName=REQUESTER, tableName=RESOURCE_SERVER_PERM_TICKET; addNotNull...', '', NULL, '4.20.0', NULL, NULL, '9132492396');
+INSERT INTO public.databasechangelog VALUES ('9.0.1-add-index-to-client.client_id', 'keycloak', 'META-INF/jpa-changelog-9.0.1.xml', '2023-11-04 21:14:55.642058', 81, 'EXECUTED', '8:95b676ce8fc546a1fcfb4c92fae4add5', 'createIndex indexName=IDX_CLIENT_ID, tableName=CLIENT', '', NULL, '4.20.0', NULL, NULL, '9132492396');
+INSERT INTO public.databasechangelog VALUES ('9.0.1-KEYCLOAK-12579-drop-constraints', 'keycloak', 'META-INF/jpa-changelog-9.0.1.xml', '2023-11-04 21:14:55.645421', 82, 'MARK_RAN', '8:38a6b2a41f5651018b1aca93a41401e5', 'dropUniqueConstraint constraintName=SIBLING_NAMES, tableName=KEYCLOAK_GROUP', '', NULL, '4.20.0', NULL, NULL, '9132492396');
+INSERT INTO public.databasechangelog VALUES ('9.0.1-KEYCLOAK-12579-add-not-null-constraint', 'keycloak', 'META-INF/jpa-changelog-9.0.1.xml', '2023-11-04 21:14:55.653269', 83, 'EXECUTED', '8:3fb99bcad86a0229783123ac52f7609c', 'addNotNullConstraint columnName=PARENT_GROUP, tableName=KEYCLOAK_GROUP', '', NULL, '4.20.0', NULL, NULL, '9132492396');
+INSERT INTO public.databasechangelog VALUES ('9.0.1-KEYCLOAK-12579-recreate-constraints', 'keycloak', 'META-INF/jpa-changelog-9.0.1.xml', '2023-11-04 21:14:55.656443', 84, 'MARK_RAN', '8:64f27a6fdcad57f6f9153210f2ec1bdb', 'addUniqueConstraint constraintName=SIBLING_NAMES, tableName=KEYCLOAK_GROUP', '', NULL, '4.20.0', NULL, NULL, '9132492396');
+INSERT INTO public.databasechangelog VALUES ('9.0.1-add-index-to-events', 'keycloak', 'META-INF/jpa-changelog-9.0.1.xml', '2023-11-04 21:14:55.667962', 85, 'EXECUTED', '8:ab4f863f39adafd4c862f7ec01890abc', 'createIndex indexName=IDX_EVENT_TIME, tableName=EVENT_ENTITY', '', NULL, '4.20.0', NULL, NULL, '9132492396');
+INSERT INTO public.databasechangelog VALUES ('map-remove-ri', 'keycloak', 'META-INF/jpa-changelog-11.0.0.xml', '2023-11-04 21:14:55.674896', 86, 'EXECUTED', '8:13c419a0eb336e91ee3a3bf8fda6e2a7', 'dropForeignKeyConstraint baseTableName=REALM, constraintName=FK_TRAF444KK6QRKMS7N56AIWQ5Y; dropForeignKeyConstraint baseTableName=KEYCLOAK_ROLE, constraintName=FK_KJHO5LE2C0RAL09FL8CM9WFW9', '', NULL, '4.20.0', NULL, NULL, '9132492396');
+INSERT INTO public.databasechangelog VALUES ('map-remove-ri', 'keycloak', 'META-INF/jpa-changelog-12.0.0.xml', '2023-11-04 21:14:55.683768', 87, 'EXECUTED', '8:e3fb1e698e0471487f51af1ed80fe3ac', 'dropForeignKeyConstraint baseTableName=REALM_DEFAULT_GROUPS, constraintName=FK_DEF_GROUPS_GROUP; dropForeignKeyConstraint baseTableName=REALM_DEFAULT_ROLES, constraintName=FK_H4WPD7W4HSOOLNI3H0SW7BTJE; dropForeignKeyConstraint baseTableName=CLIENT...', '', NULL, '4.20.0', NULL, NULL, '9132492396');
+INSERT INTO public.databasechangelog VALUES ('12.1.0-add-realm-localization-table', 'keycloak', 'META-INF/jpa-changelog-12.0.0.xml', '2023-11-04 21:14:55.700253', 88, 'EXECUTED', '8:babadb686aab7b56562817e60bf0abd0', 'createTable tableName=REALM_LOCALIZATIONS; addPrimaryKey tableName=REALM_LOCALIZATIONS', '', NULL, '4.20.0', NULL, NULL, '9132492396');
+INSERT INTO public.databasechangelog VALUES ('default-roles', 'keycloak', 'META-INF/jpa-changelog-13.0.0.xml', '2023-11-04 21:14:55.710445', 89, 'EXECUTED', '8:72d03345fda8e2f17093d08801947773', 'addColumn tableName=REALM; customChange', '', NULL, '4.20.0', NULL, NULL, '9132492396');
+INSERT INTO public.databasechangelog VALUES ('default-roles-cleanup', 'keycloak', 'META-INF/jpa-changelog-13.0.0.xml', '2023-11-04 21:14:55.718087', 90, 'EXECUTED', '8:61c9233951bd96ffecd9ba75f7d978a4', 'dropTable tableName=REALM_DEFAULT_ROLES; dropTable tableName=CLIENT_DEFAULT_ROLES', '', NULL, '4.20.0', NULL, NULL, '9132492396');
+INSERT INTO public.databasechangelog VALUES ('13.0.0-KEYCLOAK-16844', 'keycloak', 'META-INF/jpa-changelog-13.0.0.xml', '2023-11-04 21:14:55.729414', 91, 'EXECUTED', '8:ea82e6ad945cec250af6372767b25525', 'createIndex indexName=IDX_OFFLINE_USS_PRELOAD, tableName=OFFLINE_USER_SESSION', '', NULL, '4.20.0', NULL, NULL, '9132492396');
+INSERT INTO public.databasechangelog VALUES ('map-remove-ri-13.0.0', 'keycloak', 'META-INF/jpa-changelog-13.0.0.xml', '2023-11-04 21:14:55.73795', 92, 'EXECUTED', '8:d3f4a33f41d960ddacd7e2ef30d126b3', 'dropForeignKeyConstraint baseTableName=DEFAULT_CLIENT_SCOPE, constraintName=FK_R_DEF_CLI_SCOPE_SCOPE; dropForeignKeyConstraint baseTableName=CLIENT_SCOPE_CLIENT, constraintName=FK_C_CLI_SCOPE_SCOPE; dropForeignKeyConstraint baseTableName=CLIENT_SC...', '', NULL, '4.20.0', NULL, NULL, '9132492396');
+INSERT INTO public.databasechangelog VALUES ('13.0.0-KEYCLOAK-17992-drop-constraints', 'keycloak', 'META-INF/jpa-changelog-13.0.0.xml', '2023-11-04 21:14:55.740864', 93, 'MARK_RAN', '8:1284a27fbd049d65831cb6fc07c8a783', 'dropPrimaryKey constraintName=C_CLI_SCOPE_BIND, tableName=CLIENT_SCOPE_CLIENT; dropIndex indexName=IDX_CLSCOPE_CL, tableName=CLIENT_SCOPE_CLIENT; dropIndex indexName=IDX_CL_CLSCOPE, tableName=CLIENT_SCOPE_CLIENT', '', NULL, '4.20.0', NULL, NULL, '9132492396');
+INSERT INTO public.databasechangelog VALUES ('13.0.0-increase-column-size-federated', 'keycloak', 'META-INF/jpa-changelog-13.0.0.xml', '2023-11-04 21:14:55.75396', 94, 'EXECUTED', '8:9d11b619db2ae27c25853b8a37cd0dea', 'modifyDataType columnName=CLIENT_ID, tableName=CLIENT_SCOPE_CLIENT; modifyDataType columnName=SCOPE_ID, tableName=CLIENT_SCOPE_CLIENT', '', NULL, '4.20.0', NULL, NULL, '9132492396');
+INSERT INTO public.databasechangelog VALUES ('13.0.0-KEYCLOAK-17992-recreate-constraints', 'keycloak', 'META-INF/jpa-changelog-13.0.0.xml', '2023-11-04 21:14:55.75721', 95, 'MARK_RAN', '8:3002bb3997451bb9e8bac5c5cd8d6327', 'addNotNullConstraint columnName=CLIENT_ID, tableName=CLIENT_SCOPE_CLIENT; addNotNullConstraint columnName=SCOPE_ID, tableName=CLIENT_SCOPE_CLIENT; addPrimaryKey constraintName=C_CLI_SCOPE_BIND, tableName=CLIENT_SCOPE_CLIENT; createIndex indexName=...', '', NULL, '4.20.0', NULL, NULL, '9132492396');
+INSERT INTO public.databasechangelog VALUES ('json-string-accomodation-fixed', 'keycloak', 'META-INF/jpa-changelog-13.0.0.xml', '2023-11-04 21:14:55.765111', 96, 'EXECUTED', '8:dfbee0d6237a23ef4ccbb7a4e063c163', 'addColumn tableName=REALM_ATTRIBUTE; update tableName=REALM_ATTRIBUTE; dropColumn columnName=VALUE, tableName=REALM_ATTRIBUTE; renameColumn newColumnName=VALUE, oldColumnName=VALUE_NEW, tableName=REALM_ATTRIBUTE', '', NULL, '4.20.0', NULL, NULL, '9132492396');
+INSERT INTO public.databasechangelog VALUES ('14.0.0-KEYCLOAK-11019', 'keycloak', 'META-INF/jpa-changelog-14.0.0.xml', '2023-11-04 21:14:55.785823', 97, 'EXECUTED', '8:75f3e372df18d38c62734eebb986b960', 'createIndex indexName=IDX_OFFLINE_CSS_PRELOAD, tableName=OFFLINE_CLIENT_SESSION; createIndex indexName=IDX_OFFLINE_USS_BY_USER, tableName=OFFLINE_USER_SESSION; createIndex indexName=IDX_OFFLINE_USS_BY_USERSESS, tableName=OFFLINE_USER_SESSION', '', NULL, '4.20.0', NULL, NULL, '9132492396');
+INSERT INTO public.databasechangelog VALUES ('14.0.0-KEYCLOAK-18286', 'keycloak', 'META-INF/jpa-changelog-14.0.0.xml', '2023-11-04 21:14:55.790313', 98, 'MARK_RAN', '8:7fee73eddf84a6035691512c85637eef', 'createIndex indexName=IDX_CLIENT_ATT_BY_NAME_VALUE, tableName=CLIENT_ATTRIBUTES', '', NULL, '4.20.0', NULL, NULL, '9132492396');
+INSERT INTO public.databasechangelog VALUES ('14.0.0-KEYCLOAK-18286-revert', 'keycloak', 'META-INF/jpa-changelog-14.0.0.xml', '2023-11-04 21:14:55.799276', 99, 'MARK_RAN', '8:7a11134ab12820f999fbf3bb13c3adc8', 'dropIndex indexName=IDX_CLIENT_ATT_BY_NAME_VALUE, tableName=CLIENT_ATTRIBUTES', '', NULL, '4.20.0', NULL, NULL, '9132492396');
+INSERT INTO public.databasechangelog VALUES ('14.0.0-KEYCLOAK-18286-supported-dbs', 'keycloak', 'META-INF/jpa-changelog-14.0.0.xml', '2023-11-04 21:14:55.811457', 100, 'EXECUTED', '8:c0f6eaac1f3be773ffe54cb5b8482b70', 'createIndex indexName=IDX_CLIENT_ATT_BY_NAME_VALUE, tableName=CLIENT_ATTRIBUTES', '', NULL, '4.20.0', NULL, NULL, '9132492396');
+INSERT INTO public.databasechangelog VALUES ('14.0.0-KEYCLOAK-18286-unsupported-dbs', 'keycloak', 'META-INF/jpa-changelog-14.0.0.xml', '2023-11-04 21:14:55.81478', 101, 'MARK_RAN', '8:18186f0008b86e0f0f49b0c4d0e842ac', 'createIndex indexName=IDX_CLIENT_ATT_BY_NAME_VALUE, tableName=CLIENT_ATTRIBUTES', '', NULL, '4.20.0', NULL, NULL, '9132492396');
+INSERT INTO public.databasechangelog VALUES ('KEYCLOAK-17267-add-index-to-user-attributes', 'keycloak', 'META-INF/jpa-changelog-14.0.0.xml', '2023-11-04 21:14:55.827078', 102, 'EXECUTED', '8:09c2780bcb23b310a7019d217dc7b433', 'createIndex indexName=IDX_USER_ATTRIBUTE_NAME, tableName=USER_ATTRIBUTE', '', NULL, '4.20.0', NULL, NULL, '9132492396');
+INSERT INTO public.databasechangelog VALUES ('KEYCLOAK-18146-add-saml-art-binding-identifier', 'keycloak', 'META-INF/jpa-changelog-14.0.0.xml', '2023-11-04 21:14:55.834405', 103, 'EXECUTED', '8:276a44955eab693c970a42880197fff2', 'customChange', '', NULL, '4.20.0', NULL, NULL, '9132492396');
+INSERT INTO public.databasechangelog VALUES ('15.0.0-KEYCLOAK-18467', 'keycloak', 'META-INF/jpa-changelog-15.0.0.xml', '2023-11-04 21:14:55.841658', 104, 'EXECUTED', '8:ba8ee3b694d043f2bfc1a1079d0760d7', 'addColumn tableName=REALM_LOCALIZATIONS; update tableName=REALM_LOCALIZATIONS; dropColumn columnName=TEXTS, tableName=REALM_LOCALIZATIONS; renameColumn newColumnName=TEXTS, oldColumnName=TEXTS_NEW, tableName=REALM_LOCALIZATIONS; addNotNullConstrai...', '', NULL, '4.20.0', NULL, NULL, '9132492396');
+INSERT INTO public.databasechangelog VALUES ('17.0.0-9562', 'keycloak', 'META-INF/jpa-changelog-17.0.0.xml', '2023-11-04 21:14:55.852781', 105, 'EXECUTED', '8:5e06b1d75f5d17685485e610c2851b17', 'createIndex indexName=IDX_USER_SERVICE_ACCOUNT, tableName=USER_ENTITY', '', NULL, '4.20.0', NULL, NULL, '9132492396');
+INSERT INTO public.databasechangelog VALUES ('18.0.0-10625-IDX_ADMIN_EVENT_TIME', 'keycloak', 'META-INF/jpa-changelog-18.0.0.xml', '2023-11-04 21:14:55.863436', 106, 'EXECUTED', '8:4b80546c1dc550ac552ee7b24a4ab7c0', 'createIndex indexName=IDX_ADMIN_EVENT_TIME, tableName=ADMIN_EVENT_ENTITY', '', NULL, '4.20.0', NULL, NULL, '9132492396');
+INSERT INTO public.databasechangelog VALUES ('19.0.0-10135', 'keycloak', 'META-INF/jpa-changelog-19.0.0.xml', '2023-11-04 21:14:55.870244', 107, 'EXECUTED', '8:af510cd1bb2ab6339c45372f3e491696', 'customChange', '', NULL, '4.20.0', NULL, NULL, '9132492396');
+INSERT INTO public.databasechangelog VALUES ('20.0.0-12964-supported-dbs', 'keycloak', 'META-INF/jpa-changelog-20.0.0.xml', '2023-11-04 21:14:55.880698', 108, 'EXECUTED', '8:05c99fc610845ef66ee812b7921af0ef', 'createIndex indexName=IDX_GROUP_ATT_BY_NAME_VALUE, tableName=GROUP_ATTRIBUTE', '', NULL, '4.20.0', NULL, NULL, '9132492396');
+INSERT INTO public.databasechangelog VALUES ('20.0.0-12964-unsupported-dbs', 'keycloak', 'META-INF/jpa-changelog-20.0.0.xml', '2023-11-04 21:14:55.883581', 109, 'MARK_RAN', '8:314e803baf2f1ec315b3464e398b8247', 'createIndex indexName=IDX_GROUP_ATT_BY_NAME_VALUE, tableName=GROUP_ATTRIBUTE', '', NULL, '4.20.0', NULL, NULL, '9132492396');
+INSERT INTO public.databasechangelog VALUES ('client-attributes-string-accomodation-fixed', 'keycloak', 'META-INF/jpa-changelog-20.0.0.xml', '2023-11-04 21:14:55.891638', 110, 'EXECUTED', '8:56e4677e7e12556f70b604c573840100', 'addColumn tableName=CLIENT_ATTRIBUTES; update tableName=CLIENT_ATTRIBUTES; dropColumn columnName=VALUE, tableName=CLIENT_ATTRIBUTES; renameColumn newColumnName=VALUE, oldColumnName=VALUE_NEW, tableName=CLIENT_ATTRIBUTES', '', NULL, '4.20.0', NULL, NULL, '9132492396');
+INSERT INTO public.databasechangelog VALUES ('21.0.2-17277', 'keycloak', 'META-INF/jpa-changelog-21.0.2.xml', '2023-11-04 21:14:55.898961', 111, 'EXECUTED', '8:8806cb33d2a546ce770384bf98cf6eac', 'customChange', '', NULL, '4.20.0', NULL, NULL, '9132492396');
+INSERT INTO public.databasechangelog VALUES ('21.1.0-19404', 'keycloak', 'META-INF/jpa-changelog-21.1.0.xml', '2023-11-04 21:14:55.951329', 112, 'EXECUTED', '8:fdb2924649d30555ab3a1744faba4928', 'modifyDataType columnName=DECISION_STRATEGY, tableName=RESOURCE_SERVER_POLICY; modifyDataType columnName=LOGIC, tableName=RESOURCE_SERVER_POLICY; modifyDataType columnName=POLICY_ENFORCE_MODE, tableName=RESOURCE_SERVER', '', NULL, '4.20.0', NULL, NULL, '9132492396');
+INSERT INTO public.databasechangelog VALUES ('21.1.0-19404-2', 'keycloak', 'META-INF/jpa-changelog-21.1.0.xml', '2023-11-04 21:14:55.954509', 113, 'MARK_RAN', '8:1c96cc2b10903bd07a03670098d67fd6', 'addColumn tableName=RESOURCE_SERVER_POLICY; update tableName=RESOURCE_SERVER_POLICY; dropColumn columnName=DECISION_STRATEGY, tableName=RESOURCE_SERVER_POLICY; renameColumn newColumnName=DECISION_STRATEGY, oldColumnName=DECISION_STRATEGY_NEW, tabl...', '', NULL, '4.20.0', NULL, NULL, '9132492396');
+INSERT INTO public.databasechangelog VALUES ('22.0.0-17484', 'keycloak', 'META-INF/jpa-changelog-22.0.0.xml', '2023-11-04 21:14:55.961203', 114, 'EXECUTED', '8:4c3d4e8b142a66fcdf21b89a4dd33301', 'customChange', '', NULL, '4.20.0', NULL, NULL, '9132492396');
 
 
 --
@@ -2295,16 +2983,16 @@ INSERT INTO public.databasechangeloglock VALUES (1001, false, NULL, NULL);
 -- Data for Name: default_client_scope; Type: TABLE DATA; Schema: public; Owner: admin
 --
 
-INSERT INTO public.default_client_scope VALUES ('22037ef2-30b3-470d-85d6-637d3c8b987f', 'd4b83deb-5e20-4c07-859e-bf61986ca0b3', false);
-INSERT INTO public.default_client_scope VALUES ('22037ef2-30b3-470d-85d6-637d3c8b987f', '7be9df09-0869-4fa5-a827-aed8f1774836', true);
-INSERT INTO public.default_client_scope VALUES ('22037ef2-30b3-470d-85d6-637d3c8b987f', '2e7104a4-61bc-49eb-9275-b00a23e94785', true);
-INSERT INTO public.default_client_scope VALUES ('22037ef2-30b3-470d-85d6-637d3c8b987f', '0a720260-d8b4-4f87-92bf-0189e5c50f6e', true);
-INSERT INTO public.default_client_scope VALUES ('22037ef2-30b3-470d-85d6-637d3c8b987f', 'b46b5dd5-cfb8-40d3-814d-6b1962f165df', false);
-INSERT INTO public.default_client_scope VALUES ('22037ef2-30b3-470d-85d6-637d3c8b987f', 'a2afbdf1-3bf7-4d41-8622-36160bd08504', false);
-INSERT INTO public.default_client_scope VALUES ('22037ef2-30b3-470d-85d6-637d3c8b987f', '582567ed-3b58-4b1e-bf91-3540c389b1c1', true);
-INSERT INTO public.default_client_scope VALUES ('22037ef2-30b3-470d-85d6-637d3c8b987f', '105b96cb-1aea-4e1f-88eb-4fa290fe1987', true);
-INSERT INTO public.default_client_scope VALUES ('22037ef2-30b3-470d-85d6-637d3c8b987f', '94ee8b1b-a58f-437a-a3b8-ca7920f6ffcb', false);
-INSERT INTO public.default_client_scope VALUES ('22037ef2-30b3-470d-85d6-637d3c8b987f', '399fe0b7-d548-4fb1-a429-6780db1c0762', true);
+INSERT INTO public.default_client_scope VALUES ('546da6ad-8f65-4ce7-ba91-1346136c584b', '56c0fbee-c694-4365-b572-85ef06172931', false);
+INSERT INTO public.default_client_scope VALUES ('546da6ad-8f65-4ce7-ba91-1346136c584b', '3fc1c611-b6f3-4b9b-ae80-473d70f0e704', true);
+INSERT INTO public.default_client_scope VALUES ('546da6ad-8f65-4ce7-ba91-1346136c584b', '3f25582f-18eb-4043-85b6-e35d3dc3ebcb', true);
+INSERT INTO public.default_client_scope VALUES ('546da6ad-8f65-4ce7-ba91-1346136c584b', '23f79b31-a24e-4376-b70a-b3f54004122a', true);
+INSERT INTO public.default_client_scope VALUES ('546da6ad-8f65-4ce7-ba91-1346136c584b', 'a03445b7-d0d9-438f-ac78-aed73cc6720c', false);
+INSERT INTO public.default_client_scope VALUES ('546da6ad-8f65-4ce7-ba91-1346136c584b', '588e4ed0-ad19-45f7-89f6-74ace21372e8', false);
+INSERT INTO public.default_client_scope VALUES ('546da6ad-8f65-4ce7-ba91-1346136c584b', '3794702d-a4a4-465c-a39f-d4d13e74f446', true);
+INSERT INTO public.default_client_scope VALUES ('546da6ad-8f65-4ce7-ba91-1346136c584b', '28086f97-41df-44ab-aa26-f2f377823664', true);
+INSERT INTO public.default_client_scope VALUES ('546da6ad-8f65-4ce7-ba91-1346136c584b', '3b6d04fe-1f5f-4414-b9df-76e6b032bb78', false);
+INSERT INTO public.default_client_scope VALUES ('546da6ad-8f65-4ce7-ba91-1346136c584b', '24add800-76ab-4a04-9d30-bdc31fc532a0', true);
 INSERT INTO public.default_client_scope VALUES ('662f6baf-45d0-437d-b002-c3f9ccdcb69d', '5ac85481-bd42-4d44-87c3-21dd888a765a', true);
 INSERT INTO public.default_client_scope VALUES ('662f6baf-45d0-437d-b002-c3f9ccdcb69d', '3562dbfe-5f4f-4e89-b933-9d2ff9ec974a', true);
 INSERT INTO public.default_client_scope VALUES ('662f6baf-45d0-437d-b002-c3f9ccdcb69d', 'a74e7451-421b-4bad-9c82-162e697ff7d2', true);
@@ -2423,56 +3111,56 @@ INSERT INTO public.default_client_scope VALUES ('662f6baf-45d0-437d-b002-c3f9ccd
 -- Data for Name: keycloak_role; Type: TABLE DATA; Schema: public; Owner: admin
 --
 
-INSERT INTO public.keycloak_role VALUES ('9a58b231-4246-48c3-a17a-78ff6a190d66', '22037ef2-30b3-470d-85d6-637d3c8b987f', false, '${role_default-roles}', 'default-roles-master', '22037ef2-30b3-470d-85d6-637d3c8b987f', NULL, NULL);
-INSERT INTO public.keycloak_role VALUES ('4438a6c4-891a-44af-86b0-53dc1c123202', '22037ef2-30b3-470d-85d6-637d3c8b987f', false, '${role_create-realm}', 'create-realm', '22037ef2-30b3-470d-85d6-637d3c8b987f', NULL, NULL);
-INSERT INTO public.keycloak_role VALUES ('cf889cc4-c918-4a43-a4f6-eea1cb248f6c', '22037ef2-30b3-470d-85d6-637d3c8b987f', false, '${role_admin}', 'admin', '22037ef2-30b3-470d-85d6-637d3c8b987f', NULL, NULL);
-INSERT INTO public.keycloak_role VALUES ('934e267a-92c7-4c8a-a588-7f106351d1da', '109f3c90-f5d8-49f4-ac95-17874d87788a', true, '${role_create-client}', 'create-client', '22037ef2-30b3-470d-85d6-637d3c8b987f', '109f3c90-f5d8-49f4-ac95-17874d87788a', NULL);
-INSERT INTO public.keycloak_role VALUES ('74579ac2-00ca-4a28-a5e6-6a6a4b1a45f1', '109f3c90-f5d8-49f4-ac95-17874d87788a', true, '${role_view-realm}', 'view-realm', '22037ef2-30b3-470d-85d6-637d3c8b987f', '109f3c90-f5d8-49f4-ac95-17874d87788a', NULL);
-INSERT INTO public.keycloak_role VALUES ('4141d215-5e0b-4573-970a-f487506112c6', '109f3c90-f5d8-49f4-ac95-17874d87788a', true, '${role_view-users}', 'view-users', '22037ef2-30b3-470d-85d6-637d3c8b987f', '109f3c90-f5d8-49f4-ac95-17874d87788a', NULL);
-INSERT INTO public.keycloak_role VALUES ('4c3319ab-b450-4664-bd75-b871fc041600', '109f3c90-f5d8-49f4-ac95-17874d87788a', true, '${role_view-clients}', 'view-clients', '22037ef2-30b3-470d-85d6-637d3c8b987f', '109f3c90-f5d8-49f4-ac95-17874d87788a', NULL);
-INSERT INTO public.keycloak_role VALUES ('c32cae05-8ccc-40d2-b5cc-2ee6173bb61a', '109f3c90-f5d8-49f4-ac95-17874d87788a', true, '${role_view-events}', 'view-events', '22037ef2-30b3-470d-85d6-637d3c8b987f', '109f3c90-f5d8-49f4-ac95-17874d87788a', NULL);
-INSERT INTO public.keycloak_role VALUES ('2bd52e70-24c1-45da-bbf5-da6617a22a92', '109f3c90-f5d8-49f4-ac95-17874d87788a', true, '${role_view-identity-providers}', 'view-identity-providers', '22037ef2-30b3-470d-85d6-637d3c8b987f', '109f3c90-f5d8-49f4-ac95-17874d87788a', NULL);
-INSERT INTO public.keycloak_role VALUES ('ad3a971d-98d6-476c-bb87-9f1653c57ec2', '109f3c90-f5d8-49f4-ac95-17874d87788a', true, '${role_view-authorization}', 'view-authorization', '22037ef2-30b3-470d-85d6-637d3c8b987f', '109f3c90-f5d8-49f4-ac95-17874d87788a', NULL);
-INSERT INTO public.keycloak_role VALUES ('8013d27b-9adc-4010-a239-d097c10f2aa9', '109f3c90-f5d8-49f4-ac95-17874d87788a', true, '${role_manage-realm}', 'manage-realm', '22037ef2-30b3-470d-85d6-637d3c8b987f', '109f3c90-f5d8-49f4-ac95-17874d87788a', NULL);
-INSERT INTO public.keycloak_role VALUES ('9afa2539-1885-4f8b-acdf-723477403615', '109f3c90-f5d8-49f4-ac95-17874d87788a', true, '${role_manage-users}', 'manage-users', '22037ef2-30b3-470d-85d6-637d3c8b987f', '109f3c90-f5d8-49f4-ac95-17874d87788a', NULL);
-INSERT INTO public.keycloak_role VALUES ('506a9841-92b6-49d2-9212-8130919b2941', '109f3c90-f5d8-49f4-ac95-17874d87788a', true, '${role_manage-clients}', 'manage-clients', '22037ef2-30b3-470d-85d6-637d3c8b987f', '109f3c90-f5d8-49f4-ac95-17874d87788a', NULL);
-INSERT INTO public.keycloak_role VALUES ('2fc4f1dd-1938-4194-b5ee-84006a5b2a93', '109f3c90-f5d8-49f4-ac95-17874d87788a', true, '${role_manage-events}', 'manage-events', '22037ef2-30b3-470d-85d6-637d3c8b987f', '109f3c90-f5d8-49f4-ac95-17874d87788a', NULL);
-INSERT INTO public.keycloak_role VALUES ('7c4438ff-948c-411e-80e3-aed319474e95', '109f3c90-f5d8-49f4-ac95-17874d87788a', true, '${role_manage-identity-providers}', 'manage-identity-providers', '22037ef2-30b3-470d-85d6-637d3c8b987f', '109f3c90-f5d8-49f4-ac95-17874d87788a', NULL);
-INSERT INTO public.keycloak_role VALUES ('1353c3ee-d8ef-428f-ad33-4bac7a8bf4b8', '109f3c90-f5d8-49f4-ac95-17874d87788a', true, '${role_manage-authorization}', 'manage-authorization', '22037ef2-30b3-470d-85d6-637d3c8b987f', '109f3c90-f5d8-49f4-ac95-17874d87788a', NULL);
-INSERT INTO public.keycloak_role VALUES ('aad26624-9a3c-4825-9e66-27acdef35aad', '109f3c90-f5d8-49f4-ac95-17874d87788a', true, '${role_query-users}', 'query-users', '22037ef2-30b3-470d-85d6-637d3c8b987f', '109f3c90-f5d8-49f4-ac95-17874d87788a', NULL);
-INSERT INTO public.keycloak_role VALUES ('2d99ba7d-5e75-4093-b5ed-1d770b957dd8', '109f3c90-f5d8-49f4-ac95-17874d87788a', true, '${role_query-clients}', 'query-clients', '22037ef2-30b3-470d-85d6-637d3c8b987f', '109f3c90-f5d8-49f4-ac95-17874d87788a', NULL);
-INSERT INTO public.keycloak_role VALUES ('ed3ec168-037c-402e-8a7b-8d1a57be8210', '109f3c90-f5d8-49f4-ac95-17874d87788a', true, '${role_query-realms}', 'query-realms', '22037ef2-30b3-470d-85d6-637d3c8b987f', '109f3c90-f5d8-49f4-ac95-17874d87788a', NULL);
-INSERT INTO public.keycloak_role VALUES ('e6acef16-0296-4c32-a386-87aa8aa51da2', '109f3c90-f5d8-49f4-ac95-17874d87788a', true, '${role_query-groups}', 'query-groups', '22037ef2-30b3-470d-85d6-637d3c8b987f', '109f3c90-f5d8-49f4-ac95-17874d87788a', NULL);
-INSERT INTO public.keycloak_role VALUES ('a5573fc0-d8ea-43b6-9e90-a019b3bf6a8a', 'afd73214-e3a5-4289-ae35-0732685112b0', true, '${role_view-profile}', 'view-profile', '22037ef2-30b3-470d-85d6-637d3c8b987f', 'afd73214-e3a5-4289-ae35-0732685112b0', NULL);
-INSERT INTO public.keycloak_role VALUES ('a23fa89b-e7d6-431f-ba88-a2f91b11a09c', 'afd73214-e3a5-4289-ae35-0732685112b0', true, '${role_manage-account}', 'manage-account', '22037ef2-30b3-470d-85d6-637d3c8b987f', 'afd73214-e3a5-4289-ae35-0732685112b0', NULL);
-INSERT INTO public.keycloak_role VALUES ('e49305ef-cd61-4a98-9990-4c150be498fc', 'afd73214-e3a5-4289-ae35-0732685112b0', true, '${role_manage-account-links}', 'manage-account-links', '22037ef2-30b3-470d-85d6-637d3c8b987f', 'afd73214-e3a5-4289-ae35-0732685112b0', NULL);
-INSERT INTO public.keycloak_role VALUES ('24c2d26c-2e52-419f-90d8-7208bbcc8287', 'afd73214-e3a5-4289-ae35-0732685112b0', true, '${role_view-applications}', 'view-applications', '22037ef2-30b3-470d-85d6-637d3c8b987f', 'afd73214-e3a5-4289-ae35-0732685112b0', NULL);
-INSERT INTO public.keycloak_role VALUES ('4fdf48f8-81c7-4e92-ba21-a31c85027b19', 'afd73214-e3a5-4289-ae35-0732685112b0', true, '${role_view-consent}', 'view-consent', '22037ef2-30b3-470d-85d6-637d3c8b987f', 'afd73214-e3a5-4289-ae35-0732685112b0', NULL);
-INSERT INTO public.keycloak_role VALUES ('80ff1fd1-261d-406e-bfc1-a6c67823f29a', 'afd73214-e3a5-4289-ae35-0732685112b0', true, '${role_manage-consent}', 'manage-consent', '22037ef2-30b3-470d-85d6-637d3c8b987f', 'afd73214-e3a5-4289-ae35-0732685112b0', NULL);
-INSERT INTO public.keycloak_role VALUES ('b739f236-9ee2-461f-8ae8-db538e5a37e8', 'afd73214-e3a5-4289-ae35-0732685112b0', true, '${role_view-groups}', 'view-groups', '22037ef2-30b3-470d-85d6-637d3c8b987f', 'afd73214-e3a5-4289-ae35-0732685112b0', NULL);
-INSERT INTO public.keycloak_role VALUES ('3b593f6f-34d6-442c-b630-ff7842222b69', 'afd73214-e3a5-4289-ae35-0732685112b0', true, '${role_delete-account}', 'delete-account', '22037ef2-30b3-470d-85d6-637d3c8b987f', 'afd73214-e3a5-4289-ae35-0732685112b0', NULL);
-INSERT INTO public.keycloak_role VALUES ('5eee80b4-4a39-4180-9a14-499fbc31da0a', 'fca6f700-c50c-4d30-927b-341e1106aa38', true, '${role_read-token}', 'read-token', '22037ef2-30b3-470d-85d6-637d3c8b987f', 'fca6f700-c50c-4d30-927b-341e1106aa38', NULL);
-INSERT INTO public.keycloak_role VALUES ('fab7c2ee-42d6-4277-99e5-d1c810ed2b33', '109f3c90-f5d8-49f4-ac95-17874d87788a', true, '${role_impersonation}', 'impersonation', '22037ef2-30b3-470d-85d6-637d3c8b987f', '109f3c90-f5d8-49f4-ac95-17874d87788a', NULL);
-INSERT INTO public.keycloak_role VALUES ('6794f26e-1c71-40f8-9b18-478c68d317b1', '22037ef2-30b3-470d-85d6-637d3c8b987f', false, '${role_offline-access}', 'offline_access', '22037ef2-30b3-470d-85d6-637d3c8b987f', NULL, NULL);
-INSERT INTO public.keycloak_role VALUES ('e59a2816-4f2a-4ae1-815d-7a60f6a07dab', '22037ef2-30b3-470d-85d6-637d3c8b987f', false, '${role_uma_authorization}', 'uma_authorization', '22037ef2-30b3-470d-85d6-637d3c8b987f', NULL, NULL);
+INSERT INTO public.keycloak_role VALUES ('ed7bfe44-f63b-42ef-894f-e49a118089d6', '546da6ad-8f65-4ce7-ba91-1346136c584b', false, '${role_default-roles}', 'default-roles-master', '546da6ad-8f65-4ce7-ba91-1346136c584b', NULL, NULL);
+INSERT INTO public.keycloak_role VALUES ('04fc7638-765a-44b3-8d78-8a7be531c2ae', '546da6ad-8f65-4ce7-ba91-1346136c584b', false, '${role_admin}', 'admin', '546da6ad-8f65-4ce7-ba91-1346136c584b', NULL, NULL);
+INSERT INTO public.keycloak_role VALUES ('e7471fa1-1493-4675-b4d4-6c03e61ae366', '546da6ad-8f65-4ce7-ba91-1346136c584b', false, '${role_create-realm}', 'create-realm', '546da6ad-8f65-4ce7-ba91-1346136c584b', NULL, NULL);
+INSERT INTO public.keycloak_role VALUES ('5c881acd-cb04-46fe-8042-28407e2b5365', '15d3b017-9733-4647-9d40-09228e5022ce', true, '${role_create-client}', 'create-client', '546da6ad-8f65-4ce7-ba91-1346136c584b', '15d3b017-9733-4647-9d40-09228e5022ce', NULL);
+INSERT INTO public.keycloak_role VALUES ('27acfca3-f982-4852-b4ac-4b7b73dc1267', '15d3b017-9733-4647-9d40-09228e5022ce', true, '${role_view-realm}', 'view-realm', '546da6ad-8f65-4ce7-ba91-1346136c584b', '15d3b017-9733-4647-9d40-09228e5022ce', NULL);
+INSERT INTO public.keycloak_role VALUES ('55e9a720-73a1-4431-ae20-6b7f4950dc3e', '15d3b017-9733-4647-9d40-09228e5022ce', true, '${role_view-users}', 'view-users', '546da6ad-8f65-4ce7-ba91-1346136c584b', '15d3b017-9733-4647-9d40-09228e5022ce', NULL);
+INSERT INTO public.keycloak_role VALUES ('e4f5339e-4f22-45bf-b635-914bbb8e9e5f', '15d3b017-9733-4647-9d40-09228e5022ce', true, '${role_view-clients}', 'view-clients', '546da6ad-8f65-4ce7-ba91-1346136c584b', '15d3b017-9733-4647-9d40-09228e5022ce', NULL);
+INSERT INTO public.keycloak_role VALUES ('f9cdb87a-4712-4934-96ef-9b1a797af93e', '15d3b017-9733-4647-9d40-09228e5022ce', true, '${role_view-events}', 'view-events', '546da6ad-8f65-4ce7-ba91-1346136c584b', '15d3b017-9733-4647-9d40-09228e5022ce', NULL);
+INSERT INTO public.keycloak_role VALUES ('804dca97-7f86-4e09-84c2-a7288bc88a9a', '15d3b017-9733-4647-9d40-09228e5022ce', true, '${role_view-identity-providers}', 'view-identity-providers', '546da6ad-8f65-4ce7-ba91-1346136c584b', '15d3b017-9733-4647-9d40-09228e5022ce', NULL);
+INSERT INTO public.keycloak_role VALUES ('70b928bd-2a8b-4d19-8eec-e13a2337c72d', '15d3b017-9733-4647-9d40-09228e5022ce', true, '${role_view-authorization}', 'view-authorization', '546da6ad-8f65-4ce7-ba91-1346136c584b', '15d3b017-9733-4647-9d40-09228e5022ce', NULL);
+INSERT INTO public.keycloak_role VALUES ('3fe8df04-5155-46a4-8ea9-5d15b29aa3b0', '15d3b017-9733-4647-9d40-09228e5022ce', true, '${role_manage-realm}', 'manage-realm', '546da6ad-8f65-4ce7-ba91-1346136c584b', '15d3b017-9733-4647-9d40-09228e5022ce', NULL);
+INSERT INTO public.keycloak_role VALUES ('87881619-6bee-4be6-8521-7fdc261f4ec5', '15d3b017-9733-4647-9d40-09228e5022ce', true, '${role_manage-users}', 'manage-users', '546da6ad-8f65-4ce7-ba91-1346136c584b', '15d3b017-9733-4647-9d40-09228e5022ce', NULL);
+INSERT INTO public.keycloak_role VALUES ('1260f0cd-6bf2-4736-9600-31e8ff273341', '15d3b017-9733-4647-9d40-09228e5022ce', true, '${role_manage-clients}', 'manage-clients', '546da6ad-8f65-4ce7-ba91-1346136c584b', '15d3b017-9733-4647-9d40-09228e5022ce', NULL);
+INSERT INTO public.keycloak_role VALUES ('38f672dd-b24d-409b-8cf3-7e34c2398c19', '15d3b017-9733-4647-9d40-09228e5022ce', true, '${role_manage-events}', 'manage-events', '546da6ad-8f65-4ce7-ba91-1346136c584b', '15d3b017-9733-4647-9d40-09228e5022ce', NULL);
+INSERT INTO public.keycloak_role VALUES ('14b8312e-4382-42c0-994c-804742d22fdc', '15d3b017-9733-4647-9d40-09228e5022ce', true, '${role_manage-identity-providers}', 'manage-identity-providers', '546da6ad-8f65-4ce7-ba91-1346136c584b', '15d3b017-9733-4647-9d40-09228e5022ce', NULL);
+INSERT INTO public.keycloak_role VALUES ('7bf0fe1f-3ea2-4b81-838f-7916ba1129a6', '15d3b017-9733-4647-9d40-09228e5022ce', true, '${role_manage-authorization}', 'manage-authorization', '546da6ad-8f65-4ce7-ba91-1346136c584b', '15d3b017-9733-4647-9d40-09228e5022ce', NULL);
+INSERT INTO public.keycloak_role VALUES ('019f4159-66cc-4107-9f42-430f03dddf7d', '15d3b017-9733-4647-9d40-09228e5022ce', true, '${role_query-users}', 'query-users', '546da6ad-8f65-4ce7-ba91-1346136c584b', '15d3b017-9733-4647-9d40-09228e5022ce', NULL);
+INSERT INTO public.keycloak_role VALUES ('48737183-9d4c-4c1f-8cf0-7995e3bce826', '15d3b017-9733-4647-9d40-09228e5022ce', true, '${role_query-clients}', 'query-clients', '546da6ad-8f65-4ce7-ba91-1346136c584b', '15d3b017-9733-4647-9d40-09228e5022ce', NULL);
+INSERT INTO public.keycloak_role VALUES ('d5f4aa1b-ef47-432a-993f-02f41ebc09bc', '15d3b017-9733-4647-9d40-09228e5022ce', true, '${role_query-realms}', 'query-realms', '546da6ad-8f65-4ce7-ba91-1346136c584b', '15d3b017-9733-4647-9d40-09228e5022ce', NULL);
+INSERT INTO public.keycloak_role VALUES ('984504f2-23a4-40be-b1f0-0f4adcd4c1ce', '15d3b017-9733-4647-9d40-09228e5022ce', true, '${role_query-groups}', 'query-groups', '546da6ad-8f65-4ce7-ba91-1346136c584b', '15d3b017-9733-4647-9d40-09228e5022ce', NULL);
+INSERT INTO public.keycloak_role VALUES ('f544e943-7407-4de0-8067-bd9900093d90', 'cb62ec47-aa85-4d1e-9187-3f8218923968', true, '${role_view-profile}', 'view-profile', '546da6ad-8f65-4ce7-ba91-1346136c584b', 'cb62ec47-aa85-4d1e-9187-3f8218923968', NULL);
+INSERT INTO public.keycloak_role VALUES ('77f21941-b7c0-460a-afa4-ae801a05fe47', 'cb62ec47-aa85-4d1e-9187-3f8218923968', true, '${role_manage-account}', 'manage-account', '546da6ad-8f65-4ce7-ba91-1346136c584b', 'cb62ec47-aa85-4d1e-9187-3f8218923968', NULL);
+INSERT INTO public.keycloak_role VALUES ('f9c0d923-fd73-44f2-b978-e5abf4ac83a5', 'cb62ec47-aa85-4d1e-9187-3f8218923968', true, '${role_manage-account-links}', 'manage-account-links', '546da6ad-8f65-4ce7-ba91-1346136c584b', 'cb62ec47-aa85-4d1e-9187-3f8218923968', NULL);
+INSERT INTO public.keycloak_role VALUES ('db378c06-73a3-4187-a350-968716e81eac', 'cb62ec47-aa85-4d1e-9187-3f8218923968', true, '${role_view-applications}', 'view-applications', '546da6ad-8f65-4ce7-ba91-1346136c584b', 'cb62ec47-aa85-4d1e-9187-3f8218923968', NULL);
+INSERT INTO public.keycloak_role VALUES ('2e300919-d025-491f-a658-fb84f1a1fe4f', 'cb62ec47-aa85-4d1e-9187-3f8218923968', true, '${role_view-consent}', 'view-consent', '546da6ad-8f65-4ce7-ba91-1346136c584b', 'cb62ec47-aa85-4d1e-9187-3f8218923968', NULL);
+INSERT INTO public.keycloak_role VALUES ('154dd43a-8d39-4582-9b54-d591bbfe4d22', 'cb62ec47-aa85-4d1e-9187-3f8218923968', true, '${role_manage-consent}', 'manage-consent', '546da6ad-8f65-4ce7-ba91-1346136c584b', 'cb62ec47-aa85-4d1e-9187-3f8218923968', NULL);
+INSERT INTO public.keycloak_role VALUES ('22c25144-3a27-450f-9886-cb5d0cdcca0c', 'cb62ec47-aa85-4d1e-9187-3f8218923968', true, '${role_view-groups}', 'view-groups', '546da6ad-8f65-4ce7-ba91-1346136c584b', 'cb62ec47-aa85-4d1e-9187-3f8218923968', NULL);
+INSERT INTO public.keycloak_role VALUES ('ada2fbbb-84e6-42a0-84d5-b5c407ebc38b', 'cb62ec47-aa85-4d1e-9187-3f8218923968', true, '${role_delete-account}', 'delete-account', '546da6ad-8f65-4ce7-ba91-1346136c584b', 'cb62ec47-aa85-4d1e-9187-3f8218923968', NULL);
+INSERT INTO public.keycloak_role VALUES ('4999c838-7c9b-4695-bfa1-3ba0b03e24fa', 'a73d5d17-836e-426e-8c1e-cee828e18977', true, '${role_read-token}', 'read-token', '546da6ad-8f65-4ce7-ba91-1346136c584b', 'a73d5d17-836e-426e-8c1e-cee828e18977', NULL);
+INSERT INTO public.keycloak_role VALUES ('e220814d-7387-4e98-874f-6c4fd6566de0', '15d3b017-9733-4647-9d40-09228e5022ce', true, '${role_impersonation}', 'impersonation', '546da6ad-8f65-4ce7-ba91-1346136c584b', '15d3b017-9733-4647-9d40-09228e5022ce', NULL);
+INSERT INTO public.keycloak_role VALUES ('b4f9d5f9-b59b-4453-b09d-7f26b8003a53', '546da6ad-8f65-4ce7-ba91-1346136c584b', false, '${role_offline-access}', 'offline_access', '546da6ad-8f65-4ce7-ba91-1346136c584b', NULL, NULL);
+INSERT INTO public.keycloak_role VALUES ('2e275ccc-5d53-42e3-a125-61dc186cffe6', '546da6ad-8f65-4ce7-ba91-1346136c584b', false, '${role_uma_authorization}', 'uma_authorization', '546da6ad-8f65-4ce7-ba91-1346136c584b', NULL, NULL);
 INSERT INTO public.keycloak_role VALUES ('c46a9467-cb5a-4888-b8c1-fd6623005642', '662f6baf-45d0-437d-b002-c3f9ccdcb69d', false, '${role_default-roles}', 'default-roles-book-store', '662f6baf-45d0-437d-b002-c3f9ccdcb69d', NULL, NULL);
-INSERT INTO public.keycloak_role VALUES ('070cd1c5-7b8f-4032-8ba7-35b905452829', '5a3433aa-cbcb-47ec-85ca-0842bbd5889f', true, '${role_create-client}', 'create-client', '22037ef2-30b3-470d-85d6-637d3c8b987f', '5a3433aa-cbcb-47ec-85ca-0842bbd5889f', NULL);
-INSERT INTO public.keycloak_role VALUES ('fe311841-151d-4c2f-ac0e-17382c8350d2', '5a3433aa-cbcb-47ec-85ca-0842bbd5889f', true, '${role_view-realm}', 'view-realm', '22037ef2-30b3-470d-85d6-637d3c8b987f', '5a3433aa-cbcb-47ec-85ca-0842bbd5889f', NULL);
-INSERT INTO public.keycloak_role VALUES ('96cab5c8-b0c7-4f3b-b91b-10b9bf7441ba', '5a3433aa-cbcb-47ec-85ca-0842bbd5889f', true, '${role_view-users}', 'view-users', '22037ef2-30b3-470d-85d6-637d3c8b987f', '5a3433aa-cbcb-47ec-85ca-0842bbd5889f', NULL);
-INSERT INTO public.keycloak_role VALUES ('82fe19c4-1c3f-4a76-8438-1d3a5fca1567', '5a3433aa-cbcb-47ec-85ca-0842bbd5889f', true, '${role_view-clients}', 'view-clients', '22037ef2-30b3-470d-85d6-637d3c8b987f', '5a3433aa-cbcb-47ec-85ca-0842bbd5889f', NULL);
-INSERT INTO public.keycloak_role VALUES ('f2ce2915-586a-4675-b95f-e828271ff787', '5a3433aa-cbcb-47ec-85ca-0842bbd5889f', true, '${role_view-events}', 'view-events', '22037ef2-30b3-470d-85d6-637d3c8b987f', '5a3433aa-cbcb-47ec-85ca-0842bbd5889f', NULL);
-INSERT INTO public.keycloak_role VALUES ('a5f12f4e-4818-41b6-80c9-0a966c680bf9', '5a3433aa-cbcb-47ec-85ca-0842bbd5889f', true, '${role_view-identity-providers}', 'view-identity-providers', '22037ef2-30b3-470d-85d6-637d3c8b987f', '5a3433aa-cbcb-47ec-85ca-0842bbd5889f', NULL);
-INSERT INTO public.keycloak_role VALUES ('79bc9c93-0a08-4ecf-b85e-1e6982247021', '5a3433aa-cbcb-47ec-85ca-0842bbd5889f', true, '${role_view-authorization}', 'view-authorization', '22037ef2-30b3-470d-85d6-637d3c8b987f', '5a3433aa-cbcb-47ec-85ca-0842bbd5889f', NULL);
-INSERT INTO public.keycloak_role VALUES ('34ef8271-8fc2-454d-809c-98fcb0624199', '5a3433aa-cbcb-47ec-85ca-0842bbd5889f', true, '${role_manage-realm}', 'manage-realm', '22037ef2-30b3-470d-85d6-637d3c8b987f', '5a3433aa-cbcb-47ec-85ca-0842bbd5889f', NULL);
-INSERT INTO public.keycloak_role VALUES ('ac06a77a-edba-4137-8928-bc0c23ae37b9', '5a3433aa-cbcb-47ec-85ca-0842bbd5889f', true, '${role_manage-users}', 'manage-users', '22037ef2-30b3-470d-85d6-637d3c8b987f', '5a3433aa-cbcb-47ec-85ca-0842bbd5889f', NULL);
-INSERT INTO public.keycloak_role VALUES ('48f2cca3-6345-4d7d-a3bd-a28ee780c4df', '5a3433aa-cbcb-47ec-85ca-0842bbd5889f', true, '${role_manage-clients}', 'manage-clients', '22037ef2-30b3-470d-85d6-637d3c8b987f', '5a3433aa-cbcb-47ec-85ca-0842bbd5889f', NULL);
-INSERT INTO public.keycloak_role VALUES ('3f29b93a-5c9e-44a6-8895-28190ddebabd', '5a3433aa-cbcb-47ec-85ca-0842bbd5889f', true, '${role_manage-events}', 'manage-events', '22037ef2-30b3-470d-85d6-637d3c8b987f', '5a3433aa-cbcb-47ec-85ca-0842bbd5889f', NULL);
-INSERT INTO public.keycloak_role VALUES ('189666e9-38c9-46e3-a26e-7f03a6246a22', '5a3433aa-cbcb-47ec-85ca-0842bbd5889f', true, '${role_manage-identity-providers}', 'manage-identity-providers', '22037ef2-30b3-470d-85d6-637d3c8b987f', '5a3433aa-cbcb-47ec-85ca-0842bbd5889f', NULL);
-INSERT INTO public.keycloak_role VALUES ('ff16c40f-d986-440d-970e-3716ea2b67b3', '5a3433aa-cbcb-47ec-85ca-0842bbd5889f', true, '${role_manage-authorization}', 'manage-authorization', '22037ef2-30b3-470d-85d6-637d3c8b987f', '5a3433aa-cbcb-47ec-85ca-0842bbd5889f', NULL);
-INSERT INTO public.keycloak_role VALUES ('f6910dc0-be78-4a5a-9035-d579731dd7aa', '5a3433aa-cbcb-47ec-85ca-0842bbd5889f', true, '${role_query-users}', 'query-users', '22037ef2-30b3-470d-85d6-637d3c8b987f', '5a3433aa-cbcb-47ec-85ca-0842bbd5889f', NULL);
-INSERT INTO public.keycloak_role VALUES ('ba2cac72-872f-4e55-b92a-0a5da78854cf', '5a3433aa-cbcb-47ec-85ca-0842bbd5889f', true, '${role_query-clients}', 'query-clients', '22037ef2-30b3-470d-85d6-637d3c8b987f', '5a3433aa-cbcb-47ec-85ca-0842bbd5889f', NULL);
-INSERT INTO public.keycloak_role VALUES ('b2abba9b-7f22-4104-b8a1-f00b76b5fab6', '5a3433aa-cbcb-47ec-85ca-0842bbd5889f', true, '${role_query-realms}', 'query-realms', '22037ef2-30b3-470d-85d6-637d3c8b987f', '5a3433aa-cbcb-47ec-85ca-0842bbd5889f', NULL);
-INSERT INTO public.keycloak_role VALUES ('de06cc42-d894-4996-a174-b320704c47f4', '5a3433aa-cbcb-47ec-85ca-0842bbd5889f', true, '${role_query-groups}', 'query-groups', '22037ef2-30b3-470d-85d6-637d3c8b987f', '5a3433aa-cbcb-47ec-85ca-0842bbd5889f', NULL);
+INSERT INTO public.keycloak_role VALUES ('d2ebfafb-641f-4dd6-972c-7bbdb71b71e4', '5c7a7da9-bf8d-4b3d-b0a0-d4d7aada00ea', true, '${role_create-client}', 'create-client', '546da6ad-8f65-4ce7-ba91-1346136c584b', '5c7a7da9-bf8d-4b3d-b0a0-d4d7aada00ea', NULL);
+INSERT INTO public.keycloak_role VALUES ('c93eacb1-bf51-4372-b250-e514649bcbd1', '5c7a7da9-bf8d-4b3d-b0a0-d4d7aada00ea', true, '${role_view-realm}', 'view-realm', '546da6ad-8f65-4ce7-ba91-1346136c584b', '5c7a7da9-bf8d-4b3d-b0a0-d4d7aada00ea', NULL);
+INSERT INTO public.keycloak_role VALUES ('51f0857f-2a96-4984-8f09-c064f653368a', '5c7a7da9-bf8d-4b3d-b0a0-d4d7aada00ea', true, '${role_view-users}', 'view-users', '546da6ad-8f65-4ce7-ba91-1346136c584b', '5c7a7da9-bf8d-4b3d-b0a0-d4d7aada00ea', NULL);
+INSERT INTO public.keycloak_role VALUES ('de4415f6-fda7-4241-aa87-dd2cc2a5e683', '5c7a7da9-bf8d-4b3d-b0a0-d4d7aada00ea', true, '${role_view-clients}', 'view-clients', '546da6ad-8f65-4ce7-ba91-1346136c584b', '5c7a7da9-bf8d-4b3d-b0a0-d4d7aada00ea', NULL);
+INSERT INTO public.keycloak_role VALUES ('418f5a42-0a71-4209-812b-eb2dd0fe0f7d', '5c7a7da9-bf8d-4b3d-b0a0-d4d7aada00ea', true, '${role_view-events}', 'view-events', '546da6ad-8f65-4ce7-ba91-1346136c584b', '5c7a7da9-bf8d-4b3d-b0a0-d4d7aada00ea', NULL);
+INSERT INTO public.keycloak_role VALUES ('b901ff2b-408c-47e0-8b7f-f29106146a0f', '5c7a7da9-bf8d-4b3d-b0a0-d4d7aada00ea', true, '${role_view-identity-providers}', 'view-identity-providers', '546da6ad-8f65-4ce7-ba91-1346136c584b', '5c7a7da9-bf8d-4b3d-b0a0-d4d7aada00ea', NULL);
+INSERT INTO public.keycloak_role VALUES ('08ab57b3-ac92-4b74-aa30-d82909469454', '5c7a7da9-bf8d-4b3d-b0a0-d4d7aada00ea', true, '${role_view-authorization}', 'view-authorization', '546da6ad-8f65-4ce7-ba91-1346136c584b', '5c7a7da9-bf8d-4b3d-b0a0-d4d7aada00ea', NULL);
+INSERT INTO public.keycloak_role VALUES ('0fafc8bc-e8b1-42bf-b089-634bbee5055f', '5c7a7da9-bf8d-4b3d-b0a0-d4d7aada00ea', true, '${role_manage-realm}', 'manage-realm', '546da6ad-8f65-4ce7-ba91-1346136c584b', '5c7a7da9-bf8d-4b3d-b0a0-d4d7aada00ea', NULL);
+INSERT INTO public.keycloak_role VALUES ('5cc4a296-42d3-4377-9a94-dfddb13e441c', '5c7a7da9-bf8d-4b3d-b0a0-d4d7aada00ea', true, '${role_manage-users}', 'manage-users', '546da6ad-8f65-4ce7-ba91-1346136c584b', '5c7a7da9-bf8d-4b3d-b0a0-d4d7aada00ea', NULL);
+INSERT INTO public.keycloak_role VALUES ('6337858a-9ab1-4f3e-8cfe-14256e8090f3', '5c7a7da9-bf8d-4b3d-b0a0-d4d7aada00ea', true, '${role_manage-clients}', 'manage-clients', '546da6ad-8f65-4ce7-ba91-1346136c584b', '5c7a7da9-bf8d-4b3d-b0a0-d4d7aada00ea', NULL);
+INSERT INTO public.keycloak_role VALUES ('fbc8294d-c65f-400c-9bd7-ef42f0f43f9f', '5c7a7da9-bf8d-4b3d-b0a0-d4d7aada00ea', true, '${role_manage-events}', 'manage-events', '546da6ad-8f65-4ce7-ba91-1346136c584b', '5c7a7da9-bf8d-4b3d-b0a0-d4d7aada00ea', NULL);
+INSERT INTO public.keycloak_role VALUES ('6680516d-c60b-41c5-95e1-6eb0d586bb00', '5c7a7da9-bf8d-4b3d-b0a0-d4d7aada00ea', true, '${role_manage-identity-providers}', 'manage-identity-providers', '546da6ad-8f65-4ce7-ba91-1346136c584b', '5c7a7da9-bf8d-4b3d-b0a0-d4d7aada00ea', NULL);
+INSERT INTO public.keycloak_role VALUES ('8f06512f-a50f-4314-8257-da64532ab1f5', '5c7a7da9-bf8d-4b3d-b0a0-d4d7aada00ea', true, '${role_manage-authorization}', 'manage-authorization', '546da6ad-8f65-4ce7-ba91-1346136c584b', '5c7a7da9-bf8d-4b3d-b0a0-d4d7aada00ea', NULL);
+INSERT INTO public.keycloak_role VALUES ('565e62fd-ce4d-4670-b6d3-9d798d646e41', '5c7a7da9-bf8d-4b3d-b0a0-d4d7aada00ea', true, '${role_query-users}', 'query-users', '546da6ad-8f65-4ce7-ba91-1346136c584b', '5c7a7da9-bf8d-4b3d-b0a0-d4d7aada00ea', NULL);
+INSERT INTO public.keycloak_role VALUES ('e11cbc99-7792-41e7-b115-df473bbb7c35', '5c7a7da9-bf8d-4b3d-b0a0-d4d7aada00ea', true, '${role_query-clients}', 'query-clients', '546da6ad-8f65-4ce7-ba91-1346136c584b', '5c7a7da9-bf8d-4b3d-b0a0-d4d7aada00ea', NULL);
+INSERT INTO public.keycloak_role VALUES ('12453ae0-1687-4908-82cd-81067fdf95d2', '5c7a7da9-bf8d-4b3d-b0a0-d4d7aada00ea', true, '${role_query-realms}', 'query-realms', '546da6ad-8f65-4ce7-ba91-1346136c584b', '5c7a7da9-bf8d-4b3d-b0a0-d4d7aada00ea', NULL);
+INSERT INTO public.keycloak_role VALUES ('4e4ed502-f778-4a9d-ae43-701798885cbd', '5c7a7da9-bf8d-4b3d-b0a0-d4d7aada00ea', true, '${role_query-groups}', 'query-groups', '546da6ad-8f65-4ce7-ba91-1346136c584b', '5c7a7da9-bf8d-4b3d-b0a0-d4d7aada00ea', NULL);
 INSERT INTO public.keycloak_role VALUES ('3ee02316-c4b1-4356-9228-e93bec6d8d45', '662f6baf-45d0-437d-b002-c3f9ccdcb69d', false, '${role_offline-access}', 'offline_access', '662f6baf-45d0-437d-b002-c3f9ccdcb69d', NULL, NULL);
 INSERT INTO public.keycloak_role VALUES ('9a0fd2dd-9b5b-429c-ab86-3fbf81771d14', '662f6baf-45d0-437d-b002-c3f9ccdcb69d', false, '', 'ROLE_USER', '662f6baf-45d0-437d-b002-c3f9ccdcb69d', NULL, NULL);
 INSERT INTO public.keycloak_role VALUES ('47414939-f003-4b0f-8a12-7b2f17f98a37', '662f6baf-45d0-437d-b002-c3f9ccdcb69d', false, '', 'ROLE_ADMIN', '662f6baf-45d0-437d-b002-c3f9ccdcb69d', NULL, NULL);
@@ -2507,14 +3195,14 @@ INSERT INTO public.keycloak_role VALUES ('518de179-f981-474e-a930-30ff40d71485',
 INSERT INTO public.keycloak_role VALUES ('4e302eed-87cf-4d0d-ac6a-b61a8f572869', 'ba615863-d949-4598-8196-54c21b254108', true, '${role_manage-consent}', 'manage-consent', '662f6baf-45d0-437d-b002-c3f9ccdcb69d', 'ba615863-d949-4598-8196-54c21b254108', NULL);
 INSERT INTO public.keycloak_role VALUES ('7d51f745-ba15-4029-b447-413611d40980', 'ba615863-d949-4598-8196-54c21b254108', true, '${role_view-consent}', 'view-consent', '662f6baf-45d0-437d-b002-c3f9ccdcb69d', 'ba615863-d949-4598-8196-54c21b254108', NULL);
 INSERT INTO public.keycloak_role VALUES ('ef8bd832-9799-4245-8b66-bbce91f69bb2', 'ba615863-d949-4598-8196-54c21b254108', true, '${role_delete-account}', 'delete-account', '662f6baf-45d0-437d-b002-c3f9ccdcb69d', 'ba615863-d949-4598-8196-54c21b254108', NULL);
-INSERT INTO public.keycloak_role VALUES ('fc60c2a5-f923-42c6-adc4-79bb96e255df', '5a3433aa-cbcb-47ec-85ca-0842bbd5889f', true, '${role_impersonation}', 'impersonation', '22037ef2-30b3-470d-85d6-637d3c8b987f', '5a3433aa-cbcb-47ec-85ca-0842bbd5889f', NULL);
+INSERT INTO public.keycloak_role VALUES ('a62e8a4d-c450-48a9-b2ab-1376bef00a04', '5c7a7da9-bf8d-4b3d-b0a0-d4d7aada00ea', true, '${role_impersonation}', 'impersonation', '546da6ad-8f65-4ce7-ba91-1346136c584b', '5c7a7da9-bf8d-4b3d-b0a0-d4d7aada00ea', NULL);
 
 
 --
 -- Data for Name: migration_model; Type: TABLE DATA; Schema: public; Owner: admin
 --
 
-INSERT INTO public.migration_model VALUES ('8hsc0', '22.0.1', 1699116494);
+INSERT INTO public.migration_model VALUES ('4oulj', '22.0.1', 1699132496);
 
 
 --
@@ -2539,35 +3227,35 @@ INSERT INTO public.migration_model VALUES ('8hsc0', '22.0.1', 1699116494);
 -- Data for Name: protocol_mapper; Type: TABLE DATA; Schema: public; Owner: admin
 --
 
-INSERT INTO public.protocol_mapper VALUES ('23987810-a097-486a-8fc9-67be3a0b1107', 'audience resolve', 'openid-connect', 'oidc-audience-resolve-mapper', '4a2dc3f0-8d1e-4947-a648-f2f935a8cd20', NULL);
-INSERT INTO public.protocol_mapper VALUES ('e73cebd2-0e33-4a67-8988-7c5b6d768dfc', 'locale', 'openid-connect', 'oidc-usermodel-attribute-mapper', '3289e176-4211-420c-8a77-40debd6547e8', NULL);
-INSERT INTO public.protocol_mapper VALUES ('82c09aeb-ad1a-4fbe-a6ab-e89d2e85339f', 'role list', 'saml', 'saml-role-list-mapper', NULL, '7be9df09-0869-4fa5-a827-aed8f1774836');
-INSERT INTO public.protocol_mapper VALUES ('b5cf6e56-4ce1-4805-8828-5407166c7ffb', 'full name', 'openid-connect', 'oidc-full-name-mapper', NULL, '2e7104a4-61bc-49eb-9275-b00a23e94785');
-INSERT INTO public.protocol_mapper VALUES ('49eefb91-ed6f-44cb-a18c-e76e29e0a96b', 'family name', 'openid-connect', 'oidc-usermodel-attribute-mapper', NULL, '2e7104a4-61bc-49eb-9275-b00a23e94785');
-INSERT INTO public.protocol_mapper VALUES ('18c493e6-305d-47cb-a697-52b3d719dc74', 'given name', 'openid-connect', 'oidc-usermodel-attribute-mapper', NULL, '2e7104a4-61bc-49eb-9275-b00a23e94785');
-INSERT INTO public.protocol_mapper VALUES ('5af41557-d67f-46ec-93e0-80ca1d28bf00', 'middle name', 'openid-connect', 'oidc-usermodel-attribute-mapper', NULL, '2e7104a4-61bc-49eb-9275-b00a23e94785');
-INSERT INTO public.protocol_mapper VALUES ('b37763d8-5c88-406a-aa67-12fad63b0e32', 'nickname', 'openid-connect', 'oidc-usermodel-attribute-mapper', NULL, '2e7104a4-61bc-49eb-9275-b00a23e94785');
-INSERT INTO public.protocol_mapper VALUES ('48a9015e-0c19-47e7-af26-a0b9dcab50cd', 'username', 'openid-connect', 'oidc-usermodel-attribute-mapper', NULL, '2e7104a4-61bc-49eb-9275-b00a23e94785');
-INSERT INTO public.protocol_mapper VALUES ('dc756db1-9ea9-4b96-abb2-110c021e8356', 'profile', 'openid-connect', 'oidc-usermodel-attribute-mapper', NULL, '2e7104a4-61bc-49eb-9275-b00a23e94785');
-INSERT INTO public.protocol_mapper VALUES ('02dac232-345b-42dc-aa6f-6c5466f65594', 'picture', 'openid-connect', 'oidc-usermodel-attribute-mapper', NULL, '2e7104a4-61bc-49eb-9275-b00a23e94785');
-INSERT INTO public.protocol_mapper VALUES ('f9340fdc-c3da-4cf8-9ab6-fbe4805b6d3a', 'website', 'openid-connect', 'oidc-usermodel-attribute-mapper', NULL, '2e7104a4-61bc-49eb-9275-b00a23e94785');
-INSERT INTO public.protocol_mapper VALUES ('30f9962e-0621-4281-82bb-43fa9e88af8b', 'gender', 'openid-connect', 'oidc-usermodel-attribute-mapper', NULL, '2e7104a4-61bc-49eb-9275-b00a23e94785');
-INSERT INTO public.protocol_mapper VALUES ('f653353f-dc75-4b31-9d64-c8c65d5a106d', 'birthdate', 'openid-connect', 'oidc-usermodel-attribute-mapper', NULL, '2e7104a4-61bc-49eb-9275-b00a23e94785');
-INSERT INTO public.protocol_mapper VALUES ('f7ee21ad-c3c1-4a31-a320-e6374aa9848e', 'zoneinfo', 'openid-connect', 'oidc-usermodel-attribute-mapper', NULL, '2e7104a4-61bc-49eb-9275-b00a23e94785');
-INSERT INTO public.protocol_mapper VALUES ('bb2c8d22-e2a5-48c5-8dcc-f838a8896c60', 'locale', 'openid-connect', 'oidc-usermodel-attribute-mapper', NULL, '2e7104a4-61bc-49eb-9275-b00a23e94785');
-INSERT INTO public.protocol_mapper VALUES ('52714136-94fd-4d24-80ec-7509ed3b39a9', 'updated at', 'openid-connect', 'oidc-usermodel-attribute-mapper', NULL, '2e7104a4-61bc-49eb-9275-b00a23e94785');
-INSERT INTO public.protocol_mapper VALUES ('b88f2c0f-e38c-47d1-bb03-d83ee30ddef2', 'email', 'openid-connect', 'oidc-usermodel-attribute-mapper', NULL, '0a720260-d8b4-4f87-92bf-0189e5c50f6e');
-INSERT INTO public.protocol_mapper VALUES ('51f82e0b-b86f-45a9-9e19-6025d30773c7', 'email verified', 'openid-connect', 'oidc-usermodel-property-mapper', NULL, '0a720260-d8b4-4f87-92bf-0189e5c50f6e');
-INSERT INTO public.protocol_mapper VALUES ('16412bdd-5913-4ec8-a2cb-6eab0d5f9d52', 'address', 'openid-connect', 'oidc-address-mapper', NULL, 'b46b5dd5-cfb8-40d3-814d-6b1962f165df');
-INSERT INTO public.protocol_mapper VALUES ('36bc0d3f-52eb-452b-a174-56de62b13b23', 'phone number', 'openid-connect', 'oidc-usermodel-attribute-mapper', NULL, 'a2afbdf1-3bf7-4d41-8622-36160bd08504');
-INSERT INTO public.protocol_mapper VALUES ('e732a4bd-e06f-4b91-bb7f-47d8397e4a77', 'phone number verified', 'openid-connect', 'oidc-usermodel-attribute-mapper', NULL, 'a2afbdf1-3bf7-4d41-8622-36160bd08504');
-INSERT INTO public.protocol_mapper VALUES ('a1ff96b1-d8d2-429d-a0c4-f43971043cb9', 'realm roles', 'openid-connect', 'oidc-usermodel-realm-role-mapper', NULL, '582567ed-3b58-4b1e-bf91-3540c389b1c1');
-INSERT INTO public.protocol_mapper VALUES ('50a817ac-acfb-4b96-ba86-4c97d6297685', 'client roles', 'openid-connect', 'oidc-usermodel-client-role-mapper', NULL, '582567ed-3b58-4b1e-bf91-3540c389b1c1');
-INSERT INTO public.protocol_mapper VALUES ('463345c1-0493-4f8e-8af4-0f5b3082545c', 'audience resolve', 'openid-connect', 'oidc-audience-resolve-mapper', NULL, '582567ed-3b58-4b1e-bf91-3540c389b1c1');
-INSERT INTO public.protocol_mapper VALUES ('5bcf8da1-4cc2-4a5d-862f-0bb31bcddfdb', 'allowed web origins', 'openid-connect', 'oidc-allowed-origins-mapper', NULL, '105b96cb-1aea-4e1f-88eb-4fa290fe1987');
-INSERT INTO public.protocol_mapper VALUES ('0eb2d79f-e3c8-4bd9-8df6-c934a17a1629', 'upn', 'openid-connect', 'oidc-usermodel-attribute-mapper', NULL, '94ee8b1b-a58f-437a-a3b8-ca7920f6ffcb');
-INSERT INTO public.protocol_mapper VALUES ('9f37912f-2e7c-42fe-85c9-1547baa56121', 'groups', 'openid-connect', 'oidc-usermodel-realm-role-mapper', NULL, '94ee8b1b-a58f-437a-a3b8-ca7920f6ffcb');
-INSERT INTO public.protocol_mapper VALUES ('e572a668-96f7-4648-96c3-e61eeb786223', 'acr loa level', 'openid-connect', 'oidc-acr-mapper', NULL, '399fe0b7-d548-4fb1-a429-6780db1c0762');
+INSERT INTO public.protocol_mapper VALUES ('037a61ec-3bbe-4f34-8bec-96f3ce40415f', 'audience resolve', 'openid-connect', 'oidc-audience-resolve-mapper', 'effe1a3e-a1ce-4c4f-80ce-cebeca28c9fe', NULL);
+INSERT INTO public.protocol_mapper VALUES ('809e6027-4d59-4f28-ba16-1e60f8f60fb5', 'locale', 'openid-connect', 'oidc-usermodel-attribute-mapper', '5d42a7c4-7ab0-4d78-9aec-481ac699856e', NULL);
+INSERT INTO public.protocol_mapper VALUES ('730594df-cf1f-4dd0-bbd4-a8c8bfbde0c3', 'role list', 'saml', 'saml-role-list-mapper', NULL, '3fc1c611-b6f3-4b9b-ae80-473d70f0e704');
+INSERT INTO public.protocol_mapper VALUES ('944e6cb1-221d-4dd7-8592-63d9996b13d6', 'full name', 'openid-connect', 'oidc-full-name-mapper', NULL, '3f25582f-18eb-4043-85b6-e35d3dc3ebcb');
+INSERT INTO public.protocol_mapper VALUES ('139333b8-c64c-40f6-8971-9568b243bacd', 'family name', 'openid-connect', 'oidc-usermodel-attribute-mapper', NULL, '3f25582f-18eb-4043-85b6-e35d3dc3ebcb');
+INSERT INTO public.protocol_mapper VALUES ('2dc58c6c-1c96-4193-a08e-2c65147954e4', 'given name', 'openid-connect', 'oidc-usermodel-attribute-mapper', NULL, '3f25582f-18eb-4043-85b6-e35d3dc3ebcb');
+INSERT INTO public.protocol_mapper VALUES ('532fea33-01e7-4e11-b36d-2c6c87b7c2f0', 'middle name', 'openid-connect', 'oidc-usermodel-attribute-mapper', NULL, '3f25582f-18eb-4043-85b6-e35d3dc3ebcb');
+INSERT INTO public.protocol_mapper VALUES ('19d887c0-da12-48d9-80bf-86faa6c5ca7b', 'nickname', 'openid-connect', 'oidc-usermodel-attribute-mapper', NULL, '3f25582f-18eb-4043-85b6-e35d3dc3ebcb');
+INSERT INTO public.protocol_mapper VALUES ('c72eec94-821c-4690-b712-d3922346a152', 'username', 'openid-connect', 'oidc-usermodel-attribute-mapper', NULL, '3f25582f-18eb-4043-85b6-e35d3dc3ebcb');
+INSERT INTO public.protocol_mapper VALUES ('4184157e-aabb-4c0e-bd62-a7d58320a360', 'profile', 'openid-connect', 'oidc-usermodel-attribute-mapper', NULL, '3f25582f-18eb-4043-85b6-e35d3dc3ebcb');
+INSERT INTO public.protocol_mapper VALUES ('9fbc6e13-9961-44d1-aaad-943a563280ca', 'picture', 'openid-connect', 'oidc-usermodel-attribute-mapper', NULL, '3f25582f-18eb-4043-85b6-e35d3dc3ebcb');
+INSERT INTO public.protocol_mapper VALUES ('09931430-bc9e-4cde-a703-7008b41a1d8f', 'website', 'openid-connect', 'oidc-usermodel-attribute-mapper', NULL, '3f25582f-18eb-4043-85b6-e35d3dc3ebcb');
+INSERT INTO public.protocol_mapper VALUES ('6964e7bd-9c16-4429-b211-fb6e3530660a', 'gender', 'openid-connect', 'oidc-usermodel-attribute-mapper', NULL, '3f25582f-18eb-4043-85b6-e35d3dc3ebcb');
+INSERT INTO public.protocol_mapper VALUES ('f994ad7c-29cb-45a4-aad8-22dda11212f1', 'birthdate', 'openid-connect', 'oidc-usermodel-attribute-mapper', NULL, '3f25582f-18eb-4043-85b6-e35d3dc3ebcb');
+INSERT INTO public.protocol_mapper VALUES ('527ca52c-0d91-48e1-bcca-9a219cbba826', 'zoneinfo', 'openid-connect', 'oidc-usermodel-attribute-mapper', NULL, '3f25582f-18eb-4043-85b6-e35d3dc3ebcb');
+INSERT INTO public.protocol_mapper VALUES ('49fd5c71-3074-43a4-a98c-14ee66a479d4', 'locale', 'openid-connect', 'oidc-usermodel-attribute-mapper', NULL, '3f25582f-18eb-4043-85b6-e35d3dc3ebcb');
+INSERT INTO public.protocol_mapper VALUES ('7ca4bbc2-2aed-4f10-8ba6-5ef091f031bd', 'updated at', 'openid-connect', 'oidc-usermodel-attribute-mapper', NULL, '3f25582f-18eb-4043-85b6-e35d3dc3ebcb');
+INSERT INTO public.protocol_mapper VALUES ('3521606d-93ae-412a-b8ea-b47c13e268a5', 'email', 'openid-connect', 'oidc-usermodel-attribute-mapper', NULL, '23f79b31-a24e-4376-b70a-b3f54004122a');
+INSERT INTO public.protocol_mapper VALUES ('5582546e-58c4-4024-a655-4b2ce5447be5', 'email verified', 'openid-connect', 'oidc-usermodel-property-mapper', NULL, '23f79b31-a24e-4376-b70a-b3f54004122a');
+INSERT INTO public.protocol_mapper VALUES ('a06590af-c70a-46f6-b7b7-0db4ce63c9bf', 'address', 'openid-connect', 'oidc-address-mapper', NULL, 'a03445b7-d0d9-438f-ac78-aed73cc6720c');
+INSERT INTO public.protocol_mapper VALUES ('3e42b64f-129a-4056-a5ad-b0eb31ececbb', 'phone number', 'openid-connect', 'oidc-usermodel-attribute-mapper', NULL, '588e4ed0-ad19-45f7-89f6-74ace21372e8');
+INSERT INTO public.protocol_mapper VALUES ('3c9452c5-574b-4b30-a131-de2cb7aea0a9', 'phone number verified', 'openid-connect', 'oidc-usermodel-attribute-mapper', NULL, '588e4ed0-ad19-45f7-89f6-74ace21372e8');
+INSERT INTO public.protocol_mapper VALUES ('c3daecce-91bd-4a86-a2e8-0ab299352db9', 'realm roles', 'openid-connect', 'oidc-usermodel-realm-role-mapper', NULL, '3794702d-a4a4-465c-a39f-d4d13e74f446');
+INSERT INTO public.protocol_mapper VALUES ('4410df26-8a03-4029-982c-3d70316c3993', 'client roles', 'openid-connect', 'oidc-usermodel-client-role-mapper', NULL, '3794702d-a4a4-465c-a39f-d4d13e74f446');
+INSERT INTO public.protocol_mapper VALUES ('ca941124-0cbe-4e46-a19d-b96e9f0ae7c4', 'audience resolve', 'openid-connect', 'oidc-audience-resolve-mapper', NULL, '3794702d-a4a4-465c-a39f-d4d13e74f446');
+INSERT INTO public.protocol_mapper VALUES ('006aae27-4f3e-4bac-97c8-e220106f2450', 'allowed web origins', 'openid-connect', 'oidc-allowed-origins-mapper', NULL, '28086f97-41df-44ab-aa26-f2f377823664');
+INSERT INTO public.protocol_mapper VALUES ('a6041752-f8f2-4448-a751-05c5899b0fd0', 'upn', 'openid-connect', 'oidc-usermodel-attribute-mapper', NULL, '3b6d04fe-1f5f-4414-b9df-76e6b032bb78');
+INSERT INTO public.protocol_mapper VALUES ('a2518a92-92e7-427a-9051-906b81ac588b', 'groups', 'openid-connect', 'oidc-usermodel-realm-role-mapper', NULL, '3b6d04fe-1f5f-4414-b9df-76e6b032bb78');
+INSERT INTO public.protocol_mapper VALUES ('97dc6582-84a9-4c0f-a58b-5d9d42843226', 'acr loa level', 'openid-connect', 'oidc-acr-mapper', NULL, '24add800-76ab-4a04-9d30-bdc31fc532a0');
 INSERT INTO public.protocol_mapper VALUES ('5be8b70f-4b2e-4e44-a5a2-f64b14302c11', 'allowed web origins', 'openid-connect', 'oidc-allowed-origins-mapper', NULL, '12fc35b7-afa6-4605-8ec5-9001a0f17249');
 INSERT INTO public.protocol_mapper VALUES ('f14e2104-c8d3-4154-9b8f-adf6d0f34149', 'acr loa level', 'openid-connect', 'oidc-acr-mapper', NULL, '10b81998-d0dd-43fa-8a0b-ddf2e775091d');
 INSERT INTO public.protocol_mapper VALUES ('ca3a1fa5-535f-4491-b41a-505cfab96acb', 'middle name', 'openid-connect', 'oidc-usermodel-attribute-mapper', NULL, '3562dbfe-5f4f-4e89-b933-9d2ff9ec974a');
@@ -2603,153 +3291,153 @@ INSERT INTO public.protocol_mapper VALUES ('7f777d33-50e9-46dc-be50-9d3aec16fc5b
 -- Data for Name: protocol_mapper_config; Type: TABLE DATA; Schema: public; Owner: admin
 --
 
-INSERT INTO public.protocol_mapper_config VALUES ('e73cebd2-0e33-4a67-8988-7c5b6d768dfc', 'true', 'userinfo.token.claim');
-INSERT INTO public.protocol_mapper_config VALUES ('e73cebd2-0e33-4a67-8988-7c5b6d768dfc', 'locale', 'user.attribute');
-INSERT INTO public.protocol_mapper_config VALUES ('e73cebd2-0e33-4a67-8988-7c5b6d768dfc', 'true', 'id.token.claim');
-INSERT INTO public.protocol_mapper_config VALUES ('e73cebd2-0e33-4a67-8988-7c5b6d768dfc', 'true', 'access.token.claim');
-INSERT INTO public.protocol_mapper_config VALUES ('e73cebd2-0e33-4a67-8988-7c5b6d768dfc', 'locale', 'claim.name');
-INSERT INTO public.protocol_mapper_config VALUES ('e73cebd2-0e33-4a67-8988-7c5b6d768dfc', 'String', 'jsonType.label');
-INSERT INTO public.protocol_mapper_config VALUES ('82c09aeb-ad1a-4fbe-a6ab-e89d2e85339f', 'false', 'single');
-INSERT INTO public.protocol_mapper_config VALUES ('82c09aeb-ad1a-4fbe-a6ab-e89d2e85339f', 'Basic', 'attribute.nameformat');
-INSERT INTO public.protocol_mapper_config VALUES ('82c09aeb-ad1a-4fbe-a6ab-e89d2e85339f', 'Role', 'attribute.name');
-INSERT INTO public.protocol_mapper_config VALUES ('02dac232-345b-42dc-aa6f-6c5466f65594', 'true', 'userinfo.token.claim');
-INSERT INTO public.protocol_mapper_config VALUES ('02dac232-345b-42dc-aa6f-6c5466f65594', 'picture', 'user.attribute');
-INSERT INTO public.protocol_mapper_config VALUES ('02dac232-345b-42dc-aa6f-6c5466f65594', 'true', 'id.token.claim');
-INSERT INTO public.protocol_mapper_config VALUES ('02dac232-345b-42dc-aa6f-6c5466f65594', 'true', 'access.token.claim');
-INSERT INTO public.protocol_mapper_config VALUES ('02dac232-345b-42dc-aa6f-6c5466f65594', 'picture', 'claim.name');
-INSERT INTO public.protocol_mapper_config VALUES ('02dac232-345b-42dc-aa6f-6c5466f65594', 'String', 'jsonType.label');
-INSERT INTO public.protocol_mapper_config VALUES ('18c493e6-305d-47cb-a697-52b3d719dc74', 'true', 'userinfo.token.claim');
-INSERT INTO public.protocol_mapper_config VALUES ('18c493e6-305d-47cb-a697-52b3d719dc74', 'firstName', 'user.attribute');
-INSERT INTO public.protocol_mapper_config VALUES ('18c493e6-305d-47cb-a697-52b3d719dc74', 'true', 'id.token.claim');
-INSERT INTO public.protocol_mapper_config VALUES ('18c493e6-305d-47cb-a697-52b3d719dc74', 'true', 'access.token.claim');
-INSERT INTO public.protocol_mapper_config VALUES ('18c493e6-305d-47cb-a697-52b3d719dc74', 'given_name', 'claim.name');
-INSERT INTO public.protocol_mapper_config VALUES ('18c493e6-305d-47cb-a697-52b3d719dc74', 'String', 'jsonType.label');
-INSERT INTO public.protocol_mapper_config VALUES ('30f9962e-0621-4281-82bb-43fa9e88af8b', 'true', 'userinfo.token.claim');
-INSERT INTO public.protocol_mapper_config VALUES ('30f9962e-0621-4281-82bb-43fa9e88af8b', 'gender', 'user.attribute');
-INSERT INTO public.protocol_mapper_config VALUES ('30f9962e-0621-4281-82bb-43fa9e88af8b', 'true', 'id.token.claim');
-INSERT INTO public.protocol_mapper_config VALUES ('30f9962e-0621-4281-82bb-43fa9e88af8b', 'true', 'access.token.claim');
-INSERT INTO public.protocol_mapper_config VALUES ('30f9962e-0621-4281-82bb-43fa9e88af8b', 'gender', 'claim.name');
-INSERT INTO public.protocol_mapper_config VALUES ('30f9962e-0621-4281-82bb-43fa9e88af8b', 'String', 'jsonType.label');
-INSERT INTO public.protocol_mapper_config VALUES ('48a9015e-0c19-47e7-af26-a0b9dcab50cd', 'true', 'userinfo.token.claim');
-INSERT INTO public.protocol_mapper_config VALUES ('48a9015e-0c19-47e7-af26-a0b9dcab50cd', 'username', 'user.attribute');
-INSERT INTO public.protocol_mapper_config VALUES ('48a9015e-0c19-47e7-af26-a0b9dcab50cd', 'true', 'id.token.claim');
-INSERT INTO public.protocol_mapper_config VALUES ('48a9015e-0c19-47e7-af26-a0b9dcab50cd', 'true', 'access.token.claim');
-INSERT INTO public.protocol_mapper_config VALUES ('48a9015e-0c19-47e7-af26-a0b9dcab50cd', 'preferred_username', 'claim.name');
-INSERT INTO public.protocol_mapper_config VALUES ('48a9015e-0c19-47e7-af26-a0b9dcab50cd', 'String', 'jsonType.label');
-INSERT INTO public.protocol_mapper_config VALUES ('49eefb91-ed6f-44cb-a18c-e76e29e0a96b', 'true', 'userinfo.token.claim');
-INSERT INTO public.protocol_mapper_config VALUES ('49eefb91-ed6f-44cb-a18c-e76e29e0a96b', 'lastName', 'user.attribute');
-INSERT INTO public.protocol_mapper_config VALUES ('49eefb91-ed6f-44cb-a18c-e76e29e0a96b', 'true', 'id.token.claim');
-INSERT INTO public.protocol_mapper_config VALUES ('49eefb91-ed6f-44cb-a18c-e76e29e0a96b', 'true', 'access.token.claim');
-INSERT INTO public.protocol_mapper_config VALUES ('49eefb91-ed6f-44cb-a18c-e76e29e0a96b', 'family_name', 'claim.name');
-INSERT INTO public.protocol_mapper_config VALUES ('49eefb91-ed6f-44cb-a18c-e76e29e0a96b', 'String', 'jsonType.label');
-INSERT INTO public.protocol_mapper_config VALUES ('52714136-94fd-4d24-80ec-7509ed3b39a9', 'true', 'userinfo.token.claim');
-INSERT INTO public.protocol_mapper_config VALUES ('52714136-94fd-4d24-80ec-7509ed3b39a9', 'updatedAt', 'user.attribute');
-INSERT INTO public.protocol_mapper_config VALUES ('52714136-94fd-4d24-80ec-7509ed3b39a9', 'true', 'id.token.claim');
-INSERT INTO public.protocol_mapper_config VALUES ('52714136-94fd-4d24-80ec-7509ed3b39a9', 'true', 'access.token.claim');
-INSERT INTO public.protocol_mapper_config VALUES ('52714136-94fd-4d24-80ec-7509ed3b39a9', 'updated_at', 'claim.name');
-INSERT INTO public.protocol_mapper_config VALUES ('52714136-94fd-4d24-80ec-7509ed3b39a9', 'long', 'jsonType.label');
-INSERT INTO public.protocol_mapper_config VALUES ('5af41557-d67f-46ec-93e0-80ca1d28bf00', 'true', 'userinfo.token.claim');
-INSERT INTO public.protocol_mapper_config VALUES ('5af41557-d67f-46ec-93e0-80ca1d28bf00', 'middleName', 'user.attribute');
-INSERT INTO public.protocol_mapper_config VALUES ('5af41557-d67f-46ec-93e0-80ca1d28bf00', 'true', 'id.token.claim');
-INSERT INTO public.protocol_mapper_config VALUES ('5af41557-d67f-46ec-93e0-80ca1d28bf00', 'true', 'access.token.claim');
-INSERT INTO public.protocol_mapper_config VALUES ('5af41557-d67f-46ec-93e0-80ca1d28bf00', 'middle_name', 'claim.name');
-INSERT INTO public.protocol_mapper_config VALUES ('5af41557-d67f-46ec-93e0-80ca1d28bf00', 'String', 'jsonType.label');
-INSERT INTO public.protocol_mapper_config VALUES ('b37763d8-5c88-406a-aa67-12fad63b0e32', 'true', 'userinfo.token.claim');
-INSERT INTO public.protocol_mapper_config VALUES ('b37763d8-5c88-406a-aa67-12fad63b0e32', 'nickname', 'user.attribute');
-INSERT INTO public.protocol_mapper_config VALUES ('b37763d8-5c88-406a-aa67-12fad63b0e32', 'true', 'id.token.claim');
-INSERT INTO public.protocol_mapper_config VALUES ('b37763d8-5c88-406a-aa67-12fad63b0e32', 'true', 'access.token.claim');
-INSERT INTO public.protocol_mapper_config VALUES ('b37763d8-5c88-406a-aa67-12fad63b0e32', 'nickname', 'claim.name');
-INSERT INTO public.protocol_mapper_config VALUES ('b37763d8-5c88-406a-aa67-12fad63b0e32', 'String', 'jsonType.label');
-INSERT INTO public.protocol_mapper_config VALUES ('b5cf6e56-4ce1-4805-8828-5407166c7ffb', 'true', 'userinfo.token.claim');
-INSERT INTO public.protocol_mapper_config VALUES ('b5cf6e56-4ce1-4805-8828-5407166c7ffb', 'true', 'id.token.claim');
-INSERT INTO public.protocol_mapper_config VALUES ('b5cf6e56-4ce1-4805-8828-5407166c7ffb', 'true', 'access.token.claim');
-INSERT INTO public.protocol_mapper_config VALUES ('bb2c8d22-e2a5-48c5-8dcc-f838a8896c60', 'true', 'userinfo.token.claim');
-INSERT INTO public.protocol_mapper_config VALUES ('bb2c8d22-e2a5-48c5-8dcc-f838a8896c60', 'locale', 'user.attribute');
-INSERT INTO public.protocol_mapper_config VALUES ('bb2c8d22-e2a5-48c5-8dcc-f838a8896c60', 'true', 'id.token.claim');
-INSERT INTO public.protocol_mapper_config VALUES ('bb2c8d22-e2a5-48c5-8dcc-f838a8896c60', 'true', 'access.token.claim');
-INSERT INTO public.protocol_mapper_config VALUES ('bb2c8d22-e2a5-48c5-8dcc-f838a8896c60', 'locale', 'claim.name');
-INSERT INTO public.protocol_mapper_config VALUES ('bb2c8d22-e2a5-48c5-8dcc-f838a8896c60', 'String', 'jsonType.label');
-INSERT INTO public.protocol_mapper_config VALUES ('dc756db1-9ea9-4b96-abb2-110c021e8356', 'true', 'userinfo.token.claim');
-INSERT INTO public.protocol_mapper_config VALUES ('dc756db1-9ea9-4b96-abb2-110c021e8356', 'profile', 'user.attribute');
-INSERT INTO public.protocol_mapper_config VALUES ('dc756db1-9ea9-4b96-abb2-110c021e8356', 'true', 'id.token.claim');
-INSERT INTO public.protocol_mapper_config VALUES ('dc756db1-9ea9-4b96-abb2-110c021e8356', 'true', 'access.token.claim');
-INSERT INTO public.protocol_mapper_config VALUES ('dc756db1-9ea9-4b96-abb2-110c021e8356', 'profile', 'claim.name');
-INSERT INTO public.protocol_mapper_config VALUES ('dc756db1-9ea9-4b96-abb2-110c021e8356', 'String', 'jsonType.label');
-INSERT INTO public.protocol_mapper_config VALUES ('f653353f-dc75-4b31-9d64-c8c65d5a106d', 'true', 'userinfo.token.claim');
-INSERT INTO public.protocol_mapper_config VALUES ('f653353f-dc75-4b31-9d64-c8c65d5a106d', 'birthdate', 'user.attribute');
-INSERT INTO public.protocol_mapper_config VALUES ('f653353f-dc75-4b31-9d64-c8c65d5a106d', 'true', 'id.token.claim');
-INSERT INTO public.protocol_mapper_config VALUES ('f653353f-dc75-4b31-9d64-c8c65d5a106d', 'true', 'access.token.claim');
-INSERT INTO public.protocol_mapper_config VALUES ('f653353f-dc75-4b31-9d64-c8c65d5a106d', 'birthdate', 'claim.name');
-INSERT INTO public.protocol_mapper_config VALUES ('f653353f-dc75-4b31-9d64-c8c65d5a106d', 'String', 'jsonType.label');
-INSERT INTO public.protocol_mapper_config VALUES ('f7ee21ad-c3c1-4a31-a320-e6374aa9848e', 'true', 'userinfo.token.claim');
-INSERT INTO public.protocol_mapper_config VALUES ('f7ee21ad-c3c1-4a31-a320-e6374aa9848e', 'zoneinfo', 'user.attribute');
-INSERT INTO public.protocol_mapper_config VALUES ('f7ee21ad-c3c1-4a31-a320-e6374aa9848e', 'true', 'id.token.claim');
-INSERT INTO public.protocol_mapper_config VALUES ('f7ee21ad-c3c1-4a31-a320-e6374aa9848e', 'true', 'access.token.claim');
-INSERT INTO public.protocol_mapper_config VALUES ('f7ee21ad-c3c1-4a31-a320-e6374aa9848e', 'zoneinfo', 'claim.name');
-INSERT INTO public.protocol_mapper_config VALUES ('f7ee21ad-c3c1-4a31-a320-e6374aa9848e', 'String', 'jsonType.label');
-INSERT INTO public.protocol_mapper_config VALUES ('f9340fdc-c3da-4cf8-9ab6-fbe4805b6d3a', 'true', 'userinfo.token.claim');
-INSERT INTO public.protocol_mapper_config VALUES ('f9340fdc-c3da-4cf8-9ab6-fbe4805b6d3a', 'website', 'user.attribute');
-INSERT INTO public.protocol_mapper_config VALUES ('f9340fdc-c3da-4cf8-9ab6-fbe4805b6d3a', 'true', 'id.token.claim');
-INSERT INTO public.protocol_mapper_config VALUES ('f9340fdc-c3da-4cf8-9ab6-fbe4805b6d3a', 'true', 'access.token.claim');
-INSERT INTO public.protocol_mapper_config VALUES ('f9340fdc-c3da-4cf8-9ab6-fbe4805b6d3a', 'website', 'claim.name');
-INSERT INTO public.protocol_mapper_config VALUES ('f9340fdc-c3da-4cf8-9ab6-fbe4805b6d3a', 'String', 'jsonType.label');
-INSERT INTO public.protocol_mapper_config VALUES ('51f82e0b-b86f-45a9-9e19-6025d30773c7', 'true', 'userinfo.token.claim');
-INSERT INTO public.protocol_mapper_config VALUES ('51f82e0b-b86f-45a9-9e19-6025d30773c7', 'emailVerified', 'user.attribute');
-INSERT INTO public.protocol_mapper_config VALUES ('51f82e0b-b86f-45a9-9e19-6025d30773c7', 'true', 'id.token.claim');
-INSERT INTO public.protocol_mapper_config VALUES ('51f82e0b-b86f-45a9-9e19-6025d30773c7', 'true', 'access.token.claim');
-INSERT INTO public.protocol_mapper_config VALUES ('51f82e0b-b86f-45a9-9e19-6025d30773c7', 'email_verified', 'claim.name');
-INSERT INTO public.protocol_mapper_config VALUES ('51f82e0b-b86f-45a9-9e19-6025d30773c7', 'boolean', 'jsonType.label');
-INSERT INTO public.protocol_mapper_config VALUES ('b88f2c0f-e38c-47d1-bb03-d83ee30ddef2', 'true', 'userinfo.token.claim');
-INSERT INTO public.protocol_mapper_config VALUES ('b88f2c0f-e38c-47d1-bb03-d83ee30ddef2', 'email', 'user.attribute');
-INSERT INTO public.protocol_mapper_config VALUES ('b88f2c0f-e38c-47d1-bb03-d83ee30ddef2', 'true', 'id.token.claim');
-INSERT INTO public.protocol_mapper_config VALUES ('b88f2c0f-e38c-47d1-bb03-d83ee30ddef2', 'true', 'access.token.claim');
-INSERT INTO public.protocol_mapper_config VALUES ('b88f2c0f-e38c-47d1-bb03-d83ee30ddef2', 'email', 'claim.name');
-INSERT INTO public.protocol_mapper_config VALUES ('b88f2c0f-e38c-47d1-bb03-d83ee30ddef2', 'String', 'jsonType.label');
-INSERT INTO public.protocol_mapper_config VALUES ('16412bdd-5913-4ec8-a2cb-6eab0d5f9d52', 'formatted', 'user.attribute.formatted');
-INSERT INTO public.protocol_mapper_config VALUES ('16412bdd-5913-4ec8-a2cb-6eab0d5f9d52', 'country', 'user.attribute.country');
-INSERT INTO public.protocol_mapper_config VALUES ('16412bdd-5913-4ec8-a2cb-6eab0d5f9d52', 'postal_code', 'user.attribute.postal_code');
-INSERT INTO public.protocol_mapper_config VALUES ('16412bdd-5913-4ec8-a2cb-6eab0d5f9d52', 'true', 'userinfo.token.claim');
-INSERT INTO public.protocol_mapper_config VALUES ('16412bdd-5913-4ec8-a2cb-6eab0d5f9d52', 'street', 'user.attribute.street');
-INSERT INTO public.protocol_mapper_config VALUES ('16412bdd-5913-4ec8-a2cb-6eab0d5f9d52', 'true', 'id.token.claim');
-INSERT INTO public.protocol_mapper_config VALUES ('16412bdd-5913-4ec8-a2cb-6eab0d5f9d52', 'region', 'user.attribute.region');
-INSERT INTO public.protocol_mapper_config VALUES ('16412bdd-5913-4ec8-a2cb-6eab0d5f9d52', 'true', 'access.token.claim');
-INSERT INTO public.protocol_mapper_config VALUES ('16412bdd-5913-4ec8-a2cb-6eab0d5f9d52', 'locality', 'user.attribute.locality');
-INSERT INTO public.protocol_mapper_config VALUES ('36bc0d3f-52eb-452b-a174-56de62b13b23', 'true', 'userinfo.token.claim');
-INSERT INTO public.protocol_mapper_config VALUES ('36bc0d3f-52eb-452b-a174-56de62b13b23', 'phoneNumber', 'user.attribute');
-INSERT INTO public.protocol_mapper_config VALUES ('36bc0d3f-52eb-452b-a174-56de62b13b23', 'true', 'id.token.claim');
-INSERT INTO public.protocol_mapper_config VALUES ('36bc0d3f-52eb-452b-a174-56de62b13b23', 'true', 'access.token.claim');
-INSERT INTO public.protocol_mapper_config VALUES ('36bc0d3f-52eb-452b-a174-56de62b13b23', 'phone_number', 'claim.name');
-INSERT INTO public.protocol_mapper_config VALUES ('36bc0d3f-52eb-452b-a174-56de62b13b23', 'String', 'jsonType.label');
-INSERT INTO public.protocol_mapper_config VALUES ('e732a4bd-e06f-4b91-bb7f-47d8397e4a77', 'true', 'userinfo.token.claim');
-INSERT INTO public.protocol_mapper_config VALUES ('e732a4bd-e06f-4b91-bb7f-47d8397e4a77', 'phoneNumberVerified', 'user.attribute');
-INSERT INTO public.protocol_mapper_config VALUES ('e732a4bd-e06f-4b91-bb7f-47d8397e4a77', 'true', 'id.token.claim');
-INSERT INTO public.protocol_mapper_config VALUES ('e732a4bd-e06f-4b91-bb7f-47d8397e4a77', 'true', 'access.token.claim');
-INSERT INTO public.protocol_mapper_config VALUES ('e732a4bd-e06f-4b91-bb7f-47d8397e4a77', 'phone_number_verified', 'claim.name');
-INSERT INTO public.protocol_mapper_config VALUES ('e732a4bd-e06f-4b91-bb7f-47d8397e4a77', 'boolean', 'jsonType.label');
-INSERT INTO public.protocol_mapper_config VALUES ('50a817ac-acfb-4b96-ba86-4c97d6297685', 'true', 'multivalued');
-INSERT INTO public.protocol_mapper_config VALUES ('50a817ac-acfb-4b96-ba86-4c97d6297685', 'foo', 'user.attribute');
-INSERT INTO public.protocol_mapper_config VALUES ('50a817ac-acfb-4b96-ba86-4c97d6297685', 'true', 'access.token.claim');
-INSERT INTO public.protocol_mapper_config VALUES ('50a817ac-acfb-4b96-ba86-4c97d6297685', 'resource_access.${client_id}.roles', 'claim.name');
-INSERT INTO public.protocol_mapper_config VALUES ('50a817ac-acfb-4b96-ba86-4c97d6297685', 'String', 'jsonType.label');
-INSERT INTO public.protocol_mapper_config VALUES ('a1ff96b1-d8d2-429d-a0c4-f43971043cb9', 'true', 'multivalued');
-INSERT INTO public.protocol_mapper_config VALUES ('a1ff96b1-d8d2-429d-a0c4-f43971043cb9', 'foo', 'user.attribute');
-INSERT INTO public.protocol_mapper_config VALUES ('a1ff96b1-d8d2-429d-a0c4-f43971043cb9', 'true', 'access.token.claim');
-INSERT INTO public.protocol_mapper_config VALUES ('a1ff96b1-d8d2-429d-a0c4-f43971043cb9', 'realm_access.roles', 'claim.name');
-INSERT INTO public.protocol_mapper_config VALUES ('a1ff96b1-d8d2-429d-a0c4-f43971043cb9', 'String', 'jsonType.label');
-INSERT INTO public.protocol_mapper_config VALUES ('0eb2d79f-e3c8-4bd9-8df6-c934a17a1629', 'true', 'userinfo.token.claim');
-INSERT INTO public.protocol_mapper_config VALUES ('0eb2d79f-e3c8-4bd9-8df6-c934a17a1629', 'username', 'user.attribute');
-INSERT INTO public.protocol_mapper_config VALUES ('0eb2d79f-e3c8-4bd9-8df6-c934a17a1629', 'true', 'id.token.claim');
-INSERT INTO public.protocol_mapper_config VALUES ('0eb2d79f-e3c8-4bd9-8df6-c934a17a1629', 'true', 'access.token.claim');
-INSERT INTO public.protocol_mapper_config VALUES ('0eb2d79f-e3c8-4bd9-8df6-c934a17a1629', 'upn', 'claim.name');
-INSERT INTO public.protocol_mapper_config VALUES ('0eb2d79f-e3c8-4bd9-8df6-c934a17a1629', 'String', 'jsonType.label');
-INSERT INTO public.protocol_mapper_config VALUES ('9f37912f-2e7c-42fe-85c9-1547baa56121', 'true', 'multivalued');
-INSERT INTO public.protocol_mapper_config VALUES ('9f37912f-2e7c-42fe-85c9-1547baa56121', 'foo', 'user.attribute');
-INSERT INTO public.protocol_mapper_config VALUES ('9f37912f-2e7c-42fe-85c9-1547baa56121', 'true', 'id.token.claim');
-INSERT INTO public.protocol_mapper_config VALUES ('9f37912f-2e7c-42fe-85c9-1547baa56121', 'true', 'access.token.claim');
-INSERT INTO public.protocol_mapper_config VALUES ('9f37912f-2e7c-42fe-85c9-1547baa56121', 'groups', 'claim.name');
-INSERT INTO public.protocol_mapper_config VALUES ('9f37912f-2e7c-42fe-85c9-1547baa56121', 'String', 'jsonType.label');
-INSERT INTO public.protocol_mapper_config VALUES ('e572a668-96f7-4648-96c3-e61eeb786223', 'true', 'id.token.claim');
-INSERT INTO public.protocol_mapper_config VALUES ('e572a668-96f7-4648-96c3-e61eeb786223', 'true', 'access.token.claim');
+INSERT INTO public.protocol_mapper_config VALUES ('809e6027-4d59-4f28-ba16-1e60f8f60fb5', 'true', 'userinfo.token.claim');
+INSERT INTO public.protocol_mapper_config VALUES ('809e6027-4d59-4f28-ba16-1e60f8f60fb5', 'locale', 'user.attribute');
+INSERT INTO public.protocol_mapper_config VALUES ('809e6027-4d59-4f28-ba16-1e60f8f60fb5', 'true', 'id.token.claim');
+INSERT INTO public.protocol_mapper_config VALUES ('809e6027-4d59-4f28-ba16-1e60f8f60fb5', 'true', 'access.token.claim');
+INSERT INTO public.protocol_mapper_config VALUES ('809e6027-4d59-4f28-ba16-1e60f8f60fb5', 'locale', 'claim.name');
+INSERT INTO public.protocol_mapper_config VALUES ('809e6027-4d59-4f28-ba16-1e60f8f60fb5', 'String', 'jsonType.label');
+INSERT INTO public.protocol_mapper_config VALUES ('730594df-cf1f-4dd0-bbd4-a8c8bfbde0c3', 'false', 'single');
+INSERT INTO public.protocol_mapper_config VALUES ('730594df-cf1f-4dd0-bbd4-a8c8bfbde0c3', 'Basic', 'attribute.nameformat');
+INSERT INTO public.protocol_mapper_config VALUES ('730594df-cf1f-4dd0-bbd4-a8c8bfbde0c3', 'Role', 'attribute.name');
+INSERT INTO public.protocol_mapper_config VALUES ('09931430-bc9e-4cde-a703-7008b41a1d8f', 'true', 'userinfo.token.claim');
+INSERT INTO public.protocol_mapper_config VALUES ('09931430-bc9e-4cde-a703-7008b41a1d8f', 'website', 'user.attribute');
+INSERT INTO public.protocol_mapper_config VALUES ('09931430-bc9e-4cde-a703-7008b41a1d8f', 'true', 'id.token.claim');
+INSERT INTO public.protocol_mapper_config VALUES ('09931430-bc9e-4cde-a703-7008b41a1d8f', 'true', 'access.token.claim');
+INSERT INTO public.protocol_mapper_config VALUES ('09931430-bc9e-4cde-a703-7008b41a1d8f', 'website', 'claim.name');
+INSERT INTO public.protocol_mapper_config VALUES ('09931430-bc9e-4cde-a703-7008b41a1d8f', 'String', 'jsonType.label');
+INSERT INTO public.protocol_mapper_config VALUES ('139333b8-c64c-40f6-8971-9568b243bacd', 'true', 'userinfo.token.claim');
+INSERT INTO public.protocol_mapper_config VALUES ('139333b8-c64c-40f6-8971-9568b243bacd', 'lastName', 'user.attribute');
+INSERT INTO public.protocol_mapper_config VALUES ('139333b8-c64c-40f6-8971-9568b243bacd', 'true', 'id.token.claim');
+INSERT INTO public.protocol_mapper_config VALUES ('139333b8-c64c-40f6-8971-9568b243bacd', 'true', 'access.token.claim');
+INSERT INTO public.protocol_mapper_config VALUES ('139333b8-c64c-40f6-8971-9568b243bacd', 'family_name', 'claim.name');
+INSERT INTO public.protocol_mapper_config VALUES ('139333b8-c64c-40f6-8971-9568b243bacd', 'String', 'jsonType.label');
+INSERT INTO public.protocol_mapper_config VALUES ('19d887c0-da12-48d9-80bf-86faa6c5ca7b', 'true', 'userinfo.token.claim');
+INSERT INTO public.protocol_mapper_config VALUES ('19d887c0-da12-48d9-80bf-86faa6c5ca7b', 'nickname', 'user.attribute');
+INSERT INTO public.protocol_mapper_config VALUES ('19d887c0-da12-48d9-80bf-86faa6c5ca7b', 'true', 'id.token.claim');
+INSERT INTO public.protocol_mapper_config VALUES ('19d887c0-da12-48d9-80bf-86faa6c5ca7b', 'true', 'access.token.claim');
+INSERT INTO public.protocol_mapper_config VALUES ('19d887c0-da12-48d9-80bf-86faa6c5ca7b', 'nickname', 'claim.name');
+INSERT INTO public.protocol_mapper_config VALUES ('19d887c0-da12-48d9-80bf-86faa6c5ca7b', 'String', 'jsonType.label');
+INSERT INTO public.protocol_mapper_config VALUES ('2dc58c6c-1c96-4193-a08e-2c65147954e4', 'true', 'userinfo.token.claim');
+INSERT INTO public.protocol_mapper_config VALUES ('2dc58c6c-1c96-4193-a08e-2c65147954e4', 'firstName', 'user.attribute');
+INSERT INTO public.protocol_mapper_config VALUES ('2dc58c6c-1c96-4193-a08e-2c65147954e4', 'true', 'id.token.claim');
+INSERT INTO public.protocol_mapper_config VALUES ('2dc58c6c-1c96-4193-a08e-2c65147954e4', 'true', 'access.token.claim');
+INSERT INTO public.protocol_mapper_config VALUES ('2dc58c6c-1c96-4193-a08e-2c65147954e4', 'given_name', 'claim.name');
+INSERT INTO public.protocol_mapper_config VALUES ('2dc58c6c-1c96-4193-a08e-2c65147954e4', 'String', 'jsonType.label');
+INSERT INTO public.protocol_mapper_config VALUES ('4184157e-aabb-4c0e-bd62-a7d58320a360', 'true', 'userinfo.token.claim');
+INSERT INTO public.protocol_mapper_config VALUES ('4184157e-aabb-4c0e-bd62-a7d58320a360', 'profile', 'user.attribute');
+INSERT INTO public.protocol_mapper_config VALUES ('4184157e-aabb-4c0e-bd62-a7d58320a360', 'true', 'id.token.claim');
+INSERT INTO public.protocol_mapper_config VALUES ('4184157e-aabb-4c0e-bd62-a7d58320a360', 'true', 'access.token.claim');
+INSERT INTO public.protocol_mapper_config VALUES ('4184157e-aabb-4c0e-bd62-a7d58320a360', 'profile', 'claim.name');
+INSERT INTO public.protocol_mapper_config VALUES ('4184157e-aabb-4c0e-bd62-a7d58320a360', 'String', 'jsonType.label');
+INSERT INTO public.protocol_mapper_config VALUES ('49fd5c71-3074-43a4-a98c-14ee66a479d4', 'true', 'userinfo.token.claim');
+INSERT INTO public.protocol_mapper_config VALUES ('49fd5c71-3074-43a4-a98c-14ee66a479d4', 'locale', 'user.attribute');
+INSERT INTO public.protocol_mapper_config VALUES ('49fd5c71-3074-43a4-a98c-14ee66a479d4', 'true', 'id.token.claim');
+INSERT INTO public.protocol_mapper_config VALUES ('49fd5c71-3074-43a4-a98c-14ee66a479d4', 'true', 'access.token.claim');
+INSERT INTO public.protocol_mapper_config VALUES ('49fd5c71-3074-43a4-a98c-14ee66a479d4', 'locale', 'claim.name');
+INSERT INTO public.protocol_mapper_config VALUES ('49fd5c71-3074-43a4-a98c-14ee66a479d4', 'String', 'jsonType.label');
+INSERT INTO public.protocol_mapper_config VALUES ('527ca52c-0d91-48e1-bcca-9a219cbba826', 'true', 'userinfo.token.claim');
+INSERT INTO public.protocol_mapper_config VALUES ('527ca52c-0d91-48e1-bcca-9a219cbba826', 'zoneinfo', 'user.attribute');
+INSERT INTO public.protocol_mapper_config VALUES ('527ca52c-0d91-48e1-bcca-9a219cbba826', 'true', 'id.token.claim');
+INSERT INTO public.protocol_mapper_config VALUES ('527ca52c-0d91-48e1-bcca-9a219cbba826', 'true', 'access.token.claim');
+INSERT INTO public.protocol_mapper_config VALUES ('527ca52c-0d91-48e1-bcca-9a219cbba826', 'zoneinfo', 'claim.name');
+INSERT INTO public.protocol_mapper_config VALUES ('527ca52c-0d91-48e1-bcca-9a219cbba826', 'String', 'jsonType.label');
+INSERT INTO public.protocol_mapper_config VALUES ('532fea33-01e7-4e11-b36d-2c6c87b7c2f0', 'true', 'userinfo.token.claim');
+INSERT INTO public.protocol_mapper_config VALUES ('532fea33-01e7-4e11-b36d-2c6c87b7c2f0', 'middleName', 'user.attribute');
+INSERT INTO public.protocol_mapper_config VALUES ('532fea33-01e7-4e11-b36d-2c6c87b7c2f0', 'true', 'id.token.claim');
+INSERT INTO public.protocol_mapper_config VALUES ('532fea33-01e7-4e11-b36d-2c6c87b7c2f0', 'true', 'access.token.claim');
+INSERT INTO public.protocol_mapper_config VALUES ('532fea33-01e7-4e11-b36d-2c6c87b7c2f0', 'middle_name', 'claim.name');
+INSERT INTO public.protocol_mapper_config VALUES ('532fea33-01e7-4e11-b36d-2c6c87b7c2f0', 'String', 'jsonType.label');
+INSERT INTO public.protocol_mapper_config VALUES ('6964e7bd-9c16-4429-b211-fb6e3530660a', 'true', 'userinfo.token.claim');
+INSERT INTO public.protocol_mapper_config VALUES ('6964e7bd-9c16-4429-b211-fb6e3530660a', 'gender', 'user.attribute');
+INSERT INTO public.protocol_mapper_config VALUES ('6964e7bd-9c16-4429-b211-fb6e3530660a', 'true', 'id.token.claim');
+INSERT INTO public.protocol_mapper_config VALUES ('6964e7bd-9c16-4429-b211-fb6e3530660a', 'true', 'access.token.claim');
+INSERT INTO public.protocol_mapper_config VALUES ('6964e7bd-9c16-4429-b211-fb6e3530660a', 'gender', 'claim.name');
+INSERT INTO public.protocol_mapper_config VALUES ('6964e7bd-9c16-4429-b211-fb6e3530660a', 'String', 'jsonType.label');
+INSERT INTO public.protocol_mapper_config VALUES ('7ca4bbc2-2aed-4f10-8ba6-5ef091f031bd', 'true', 'userinfo.token.claim');
+INSERT INTO public.protocol_mapper_config VALUES ('7ca4bbc2-2aed-4f10-8ba6-5ef091f031bd', 'updatedAt', 'user.attribute');
+INSERT INTO public.protocol_mapper_config VALUES ('7ca4bbc2-2aed-4f10-8ba6-5ef091f031bd', 'true', 'id.token.claim');
+INSERT INTO public.protocol_mapper_config VALUES ('7ca4bbc2-2aed-4f10-8ba6-5ef091f031bd', 'true', 'access.token.claim');
+INSERT INTO public.protocol_mapper_config VALUES ('7ca4bbc2-2aed-4f10-8ba6-5ef091f031bd', 'updated_at', 'claim.name');
+INSERT INTO public.protocol_mapper_config VALUES ('7ca4bbc2-2aed-4f10-8ba6-5ef091f031bd', 'long', 'jsonType.label');
+INSERT INTO public.protocol_mapper_config VALUES ('944e6cb1-221d-4dd7-8592-63d9996b13d6', 'true', 'userinfo.token.claim');
+INSERT INTO public.protocol_mapper_config VALUES ('944e6cb1-221d-4dd7-8592-63d9996b13d6', 'true', 'id.token.claim');
+INSERT INTO public.protocol_mapper_config VALUES ('944e6cb1-221d-4dd7-8592-63d9996b13d6', 'true', 'access.token.claim');
+INSERT INTO public.protocol_mapper_config VALUES ('9fbc6e13-9961-44d1-aaad-943a563280ca', 'true', 'userinfo.token.claim');
+INSERT INTO public.protocol_mapper_config VALUES ('9fbc6e13-9961-44d1-aaad-943a563280ca', 'picture', 'user.attribute');
+INSERT INTO public.protocol_mapper_config VALUES ('9fbc6e13-9961-44d1-aaad-943a563280ca', 'true', 'id.token.claim');
+INSERT INTO public.protocol_mapper_config VALUES ('9fbc6e13-9961-44d1-aaad-943a563280ca', 'true', 'access.token.claim');
+INSERT INTO public.protocol_mapper_config VALUES ('9fbc6e13-9961-44d1-aaad-943a563280ca', 'picture', 'claim.name');
+INSERT INTO public.protocol_mapper_config VALUES ('9fbc6e13-9961-44d1-aaad-943a563280ca', 'String', 'jsonType.label');
+INSERT INTO public.protocol_mapper_config VALUES ('c72eec94-821c-4690-b712-d3922346a152', 'true', 'userinfo.token.claim');
+INSERT INTO public.protocol_mapper_config VALUES ('c72eec94-821c-4690-b712-d3922346a152', 'username', 'user.attribute');
+INSERT INTO public.protocol_mapper_config VALUES ('c72eec94-821c-4690-b712-d3922346a152', 'true', 'id.token.claim');
+INSERT INTO public.protocol_mapper_config VALUES ('c72eec94-821c-4690-b712-d3922346a152', 'true', 'access.token.claim');
+INSERT INTO public.protocol_mapper_config VALUES ('c72eec94-821c-4690-b712-d3922346a152', 'preferred_username', 'claim.name');
+INSERT INTO public.protocol_mapper_config VALUES ('c72eec94-821c-4690-b712-d3922346a152', 'String', 'jsonType.label');
+INSERT INTO public.protocol_mapper_config VALUES ('f994ad7c-29cb-45a4-aad8-22dda11212f1', 'true', 'userinfo.token.claim');
+INSERT INTO public.protocol_mapper_config VALUES ('f994ad7c-29cb-45a4-aad8-22dda11212f1', 'birthdate', 'user.attribute');
+INSERT INTO public.protocol_mapper_config VALUES ('f994ad7c-29cb-45a4-aad8-22dda11212f1', 'true', 'id.token.claim');
+INSERT INTO public.protocol_mapper_config VALUES ('f994ad7c-29cb-45a4-aad8-22dda11212f1', 'true', 'access.token.claim');
+INSERT INTO public.protocol_mapper_config VALUES ('f994ad7c-29cb-45a4-aad8-22dda11212f1', 'birthdate', 'claim.name');
+INSERT INTO public.protocol_mapper_config VALUES ('f994ad7c-29cb-45a4-aad8-22dda11212f1', 'String', 'jsonType.label');
+INSERT INTO public.protocol_mapper_config VALUES ('3521606d-93ae-412a-b8ea-b47c13e268a5', 'true', 'userinfo.token.claim');
+INSERT INTO public.protocol_mapper_config VALUES ('3521606d-93ae-412a-b8ea-b47c13e268a5', 'email', 'user.attribute');
+INSERT INTO public.protocol_mapper_config VALUES ('3521606d-93ae-412a-b8ea-b47c13e268a5', 'true', 'id.token.claim');
+INSERT INTO public.protocol_mapper_config VALUES ('3521606d-93ae-412a-b8ea-b47c13e268a5', 'true', 'access.token.claim');
+INSERT INTO public.protocol_mapper_config VALUES ('3521606d-93ae-412a-b8ea-b47c13e268a5', 'email', 'claim.name');
+INSERT INTO public.protocol_mapper_config VALUES ('3521606d-93ae-412a-b8ea-b47c13e268a5', 'String', 'jsonType.label');
+INSERT INTO public.protocol_mapper_config VALUES ('5582546e-58c4-4024-a655-4b2ce5447be5', 'true', 'userinfo.token.claim');
+INSERT INTO public.protocol_mapper_config VALUES ('5582546e-58c4-4024-a655-4b2ce5447be5', 'emailVerified', 'user.attribute');
+INSERT INTO public.protocol_mapper_config VALUES ('5582546e-58c4-4024-a655-4b2ce5447be5', 'true', 'id.token.claim');
+INSERT INTO public.protocol_mapper_config VALUES ('5582546e-58c4-4024-a655-4b2ce5447be5', 'true', 'access.token.claim');
+INSERT INTO public.protocol_mapper_config VALUES ('5582546e-58c4-4024-a655-4b2ce5447be5', 'email_verified', 'claim.name');
+INSERT INTO public.protocol_mapper_config VALUES ('5582546e-58c4-4024-a655-4b2ce5447be5', 'boolean', 'jsonType.label');
+INSERT INTO public.protocol_mapper_config VALUES ('a06590af-c70a-46f6-b7b7-0db4ce63c9bf', 'formatted', 'user.attribute.formatted');
+INSERT INTO public.protocol_mapper_config VALUES ('a06590af-c70a-46f6-b7b7-0db4ce63c9bf', 'country', 'user.attribute.country');
+INSERT INTO public.protocol_mapper_config VALUES ('a06590af-c70a-46f6-b7b7-0db4ce63c9bf', 'postal_code', 'user.attribute.postal_code');
+INSERT INTO public.protocol_mapper_config VALUES ('a06590af-c70a-46f6-b7b7-0db4ce63c9bf', 'true', 'userinfo.token.claim');
+INSERT INTO public.protocol_mapper_config VALUES ('a06590af-c70a-46f6-b7b7-0db4ce63c9bf', 'street', 'user.attribute.street');
+INSERT INTO public.protocol_mapper_config VALUES ('a06590af-c70a-46f6-b7b7-0db4ce63c9bf', 'true', 'id.token.claim');
+INSERT INTO public.protocol_mapper_config VALUES ('a06590af-c70a-46f6-b7b7-0db4ce63c9bf', 'region', 'user.attribute.region');
+INSERT INTO public.protocol_mapper_config VALUES ('a06590af-c70a-46f6-b7b7-0db4ce63c9bf', 'true', 'access.token.claim');
+INSERT INTO public.protocol_mapper_config VALUES ('a06590af-c70a-46f6-b7b7-0db4ce63c9bf', 'locality', 'user.attribute.locality');
+INSERT INTO public.protocol_mapper_config VALUES ('3c9452c5-574b-4b30-a131-de2cb7aea0a9', 'true', 'userinfo.token.claim');
+INSERT INTO public.protocol_mapper_config VALUES ('3c9452c5-574b-4b30-a131-de2cb7aea0a9', 'phoneNumberVerified', 'user.attribute');
+INSERT INTO public.protocol_mapper_config VALUES ('3c9452c5-574b-4b30-a131-de2cb7aea0a9', 'true', 'id.token.claim');
+INSERT INTO public.protocol_mapper_config VALUES ('3c9452c5-574b-4b30-a131-de2cb7aea0a9', 'true', 'access.token.claim');
+INSERT INTO public.protocol_mapper_config VALUES ('3c9452c5-574b-4b30-a131-de2cb7aea0a9', 'phone_number_verified', 'claim.name');
+INSERT INTO public.protocol_mapper_config VALUES ('3c9452c5-574b-4b30-a131-de2cb7aea0a9', 'boolean', 'jsonType.label');
+INSERT INTO public.protocol_mapper_config VALUES ('3e42b64f-129a-4056-a5ad-b0eb31ececbb', 'true', 'userinfo.token.claim');
+INSERT INTO public.protocol_mapper_config VALUES ('3e42b64f-129a-4056-a5ad-b0eb31ececbb', 'phoneNumber', 'user.attribute');
+INSERT INTO public.protocol_mapper_config VALUES ('3e42b64f-129a-4056-a5ad-b0eb31ececbb', 'true', 'id.token.claim');
+INSERT INTO public.protocol_mapper_config VALUES ('3e42b64f-129a-4056-a5ad-b0eb31ececbb', 'true', 'access.token.claim');
+INSERT INTO public.protocol_mapper_config VALUES ('3e42b64f-129a-4056-a5ad-b0eb31ececbb', 'phone_number', 'claim.name');
+INSERT INTO public.protocol_mapper_config VALUES ('3e42b64f-129a-4056-a5ad-b0eb31ececbb', 'String', 'jsonType.label');
+INSERT INTO public.protocol_mapper_config VALUES ('4410df26-8a03-4029-982c-3d70316c3993', 'true', 'multivalued');
+INSERT INTO public.protocol_mapper_config VALUES ('4410df26-8a03-4029-982c-3d70316c3993', 'foo', 'user.attribute');
+INSERT INTO public.protocol_mapper_config VALUES ('4410df26-8a03-4029-982c-3d70316c3993', 'true', 'access.token.claim');
+INSERT INTO public.protocol_mapper_config VALUES ('4410df26-8a03-4029-982c-3d70316c3993', 'resource_access.${client_id}.roles', 'claim.name');
+INSERT INTO public.protocol_mapper_config VALUES ('4410df26-8a03-4029-982c-3d70316c3993', 'String', 'jsonType.label');
+INSERT INTO public.protocol_mapper_config VALUES ('c3daecce-91bd-4a86-a2e8-0ab299352db9', 'true', 'multivalued');
+INSERT INTO public.protocol_mapper_config VALUES ('c3daecce-91bd-4a86-a2e8-0ab299352db9', 'foo', 'user.attribute');
+INSERT INTO public.protocol_mapper_config VALUES ('c3daecce-91bd-4a86-a2e8-0ab299352db9', 'true', 'access.token.claim');
+INSERT INTO public.protocol_mapper_config VALUES ('c3daecce-91bd-4a86-a2e8-0ab299352db9', 'realm_access.roles', 'claim.name');
+INSERT INTO public.protocol_mapper_config VALUES ('c3daecce-91bd-4a86-a2e8-0ab299352db9', 'String', 'jsonType.label');
+INSERT INTO public.protocol_mapper_config VALUES ('a2518a92-92e7-427a-9051-906b81ac588b', 'true', 'multivalued');
+INSERT INTO public.protocol_mapper_config VALUES ('a2518a92-92e7-427a-9051-906b81ac588b', 'foo', 'user.attribute');
+INSERT INTO public.protocol_mapper_config VALUES ('a2518a92-92e7-427a-9051-906b81ac588b', 'true', 'id.token.claim');
+INSERT INTO public.protocol_mapper_config VALUES ('a2518a92-92e7-427a-9051-906b81ac588b', 'true', 'access.token.claim');
+INSERT INTO public.protocol_mapper_config VALUES ('a2518a92-92e7-427a-9051-906b81ac588b', 'groups', 'claim.name');
+INSERT INTO public.protocol_mapper_config VALUES ('a2518a92-92e7-427a-9051-906b81ac588b', 'String', 'jsonType.label');
+INSERT INTO public.protocol_mapper_config VALUES ('a6041752-f8f2-4448-a751-05c5899b0fd0', 'true', 'userinfo.token.claim');
+INSERT INTO public.protocol_mapper_config VALUES ('a6041752-f8f2-4448-a751-05c5899b0fd0', 'username', 'user.attribute');
+INSERT INTO public.protocol_mapper_config VALUES ('a6041752-f8f2-4448-a751-05c5899b0fd0', 'true', 'id.token.claim');
+INSERT INTO public.protocol_mapper_config VALUES ('a6041752-f8f2-4448-a751-05c5899b0fd0', 'true', 'access.token.claim');
+INSERT INTO public.protocol_mapper_config VALUES ('a6041752-f8f2-4448-a751-05c5899b0fd0', 'upn', 'claim.name');
+INSERT INTO public.protocol_mapper_config VALUES ('a6041752-f8f2-4448-a751-05c5899b0fd0', 'String', 'jsonType.label');
+INSERT INTO public.protocol_mapper_config VALUES ('97dc6582-84a9-4c0f-a58b-5d9d42843226', 'true', 'id.token.claim');
+INSERT INTO public.protocol_mapper_config VALUES ('97dc6582-84a9-4c0f-a58b-5d9d42843226', 'true', 'access.token.claim');
 INSERT INTO public.protocol_mapper_config VALUES ('f14e2104-c8d3-4154-9b8f-adf6d0f34149', 'true', 'id.token.claim');
 INSERT INTO public.protocol_mapper_config VALUES ('f14e2104-c8d3-4154-9b8f-adf6d0f34149', 'true', 'access.token.claim');
 INSERT INTO public.protocol_mapper_config VALUES ('f14e2104-c8d3-4154-9b8f-adf6d0f34149', 'true', 'userinfo.token.claim');
@@ -2905,36 +3593,36 @@ INSERT INTO public.protocol_mapper_config VALUES ('7f777d33-50e9-46dc-be50-9d3ae
 -- Data for Name: realm; Type: TABLE DATA; Schema: public; Owner: admin
 --
 
-INSERT INTO public.realm VALUES ('662f6baf-45d0-437d-b002-c3f9ccdcb69d', 60, 300, 300, NULL, NULL, NULL, true, false, 0, NULL, 'book-store', 0, NULL, false, false, false, false, 'EXTERNAL', 1800, 36000, false, false, '5a3433aa-cbcb-47ec-85ca-0842bbd5889f', 1800, false, NULL, false, false, false, true, 0, 1, 30, 6, 'HmacSHA1', 'totp', '520fad15-8981-402d-a4a1-501d74ff1e5d', '2702976c-d524-4ac9-aecb-d15bdc2e106c', '5f092739-61f4-41c0-bba6-24beb17d3692', '066486dd-fef3-4290-a604-5a552c223679', '624a9489-d8ed-4b14-a78f-975f06c16818', 2592000, false, 900, true, false, '128ad414-638b-47ef-9596-d9296d7b785d', 0, false, 0, 0, 'c46a9467-cb5a-4888-b8c1-fd6623005642');
-INSERT INTO public.realm VALUES ('22037ef2-30b3-470d-85d6-637d3c8b987f', 60, 300, 60, NULL, NULL, NULL, true, false, 0, NULL, 'master', 0, NULL, false, false, false, false, 'EXTERNAL', 1800, 36000, false, false, '109f3c90-f5d8-49f4-ac95-17874d87788a', 1800, false, NULL, false, false, false, false, 0, 1, 30, 6, 'HmacSHA1', 'totp', '939b4814-33da-4863-8614-148695102913', '634c1c33-d32b-44f1-b594-8ad69f8a9874', '8b22fc3b-9675-4f23-85c9-51a2c27cd948', '524ab0a5-b0f6-472a-a792-4780f4189f3d', '33952e99-a84e-4c60-b590-4cb507237dd4', 2592000, false, 900, true, false, '1315e749-e301-4c8e-ba1d-ff0a753e7bca', 0, false, 0, 0, '9a58b231-4246-48c3-a17a-78ff6a190d66');
+INSERT INTO public.realm VALUES ('662f6baf-45d0-437d-b002-c3f9ccdcb69d', 60, 300, 300, NULL, NULL, NULL, true, false, 0, NULL, 'book-store', 0, NULL, false, false, false, false, 'EXTERNAL', 1800, 36000, false, false, '5c7a7da9-bf8d-4b3d-b0a0-d4d7aada00ea', 1800, false, NULL, false, false, false, true, 0, 1, 30, 6, 'HmacSHA1', 'totp', '520fad15-8981-402d-a4a1-501d74ff1e5d', '2702976c-d524-4ac9-aecb-d15bdc2e106c', '5f092739-61f4-41c0-bba6-24beb17d3692', '066486dd-fef3-4290-a604-5a552c223679', '624a9489-d8ed-4b14-a78f-975f06c16818', 2592000, false, 900, true, false, '128ad414-638b-47ef-9596-d9296d7b785d', 0, false, 0, 0, 'c46a9467-cb5a-4888-b8c1-fd6623005642');
+INSERT INTO public.realm VALUES ('546da6ad-8f65-4ce7-ba91-1346136c584b', 60, 300, 60, NULL, NULL, NULL, true, false, 0, NULL, 'master', 0, NULL, false, false, false, false, 'EXTERNAL', 1800, 36000, false, false, '15d3b017-9733-4647-9d40-09228e5022ce', 1800, false, NULL, false, false, false, false, 0, 1, 30, 6, 'HmacSHA1', 'totp', '1831a8a7-b095-47cb-af32-34358c910c23', '9c2febd6-149f-4fb8-8894-5c6c672bb61a', 'eb488667-0489-455d-a132-6495674e968d', 'd74d02e8-2af3-43b9-9f80-031307f593a8', '87347a35-0c82-4c71-933f-620d48e892cc', 2592000, false, 900, true, false, '8e153df5-1eb8-4a51-964c-d232169522e8', 0, false, 0, 0, 'ed7bfe44-f63b-42ef-894f-e49a118089d6');
 
 
 --
 -- Data for Name: realm_attribute; Type: TABLE DATA; Schema: public; Owner: admin
 --
 
-INSERT INTO public.realm_attribute VALUES ('_browser_header.contentSecurityPolicyReportOnly', '22037ef2-30b3-470d-85d6-637d3c8b987f', '');
-INSERT INTO public.realm_attribute VALUES ('_browser_header.xContentTypeOptions', '22037ef2-30b3-470d-85d6-637d3c8b987f', 'nosniff');
-INSERT INTO public.realm_attribute VALUES ('_browser_header.referrerPolicy', '22037ef2-30b3-470d-85d6-637d3c8b987f', 'no-referrer');
-INSERT INTO public.realm_attribute VALUES ('_browser_header.xRobotsTag', '22037ef2-30b3-470d-85d6-637d3c8b987f', 'none');
-INSERT INTO public.realm_attribute VALUES ('_browser_header.xFrameOptions', '22037ef2-30b3-470d-85d6-637d3c8b987f', 'SAMEORIGIN');
-INSERT INTO public.realm_attribute VALUES ('_browser_header.contentSecurityPolicy', '22037ef2-30b3-470d-85d6-637d3c8b987f', 'frame-src ''self''; frame-ancestors ''self''; object-src ''none'';');
-INSERT INTO public.realm_attribute VALUES ('_browser_header.xXSSProtection', '22037ef2-30b3-470d-85d6-637d3c8b987f', '1; mode=block');
-INSERT INTO public.realm_attribute VALUES ('_browser_header.strictTransportSecurity', '22037ef2-30b3-470d-85d6-637d3c8b987f', 'max-age=31536000; includeSubDomains');
-INSERT INTO public.realm_attribute VALUES ('bruteForceProtected', '22037ef2-30b3-470d-85d6-637d3c8b987f', 'false');
-INSERT INTO public.realm_attribute VALUES ('permanentLockout', '22037ef2-30b3-470d-85d6-637d3c8b987f', 'false');
-INSERT INTO public.realm_attribute VALUES ('maxFailureWaitSeconds', '22037ef2-30b3-470d-85d6-637d3c8b987f', '900');
-INSERT INTO public.realm_attribute VALUES ('minimumQuickLoginWaitSeconds', '22037ef2-30b3-470d-85d6-637d3c8b987f', '60');
-INSERT INTO public.realm_attribute VALUES ('waitIncrementSeconds', '22037ef2-30b3-470d-85d6-637d3c8b987f', '60');
-INSERT INTO public.realm_attribute VALUES ('quickLoginCheckMilliSeconds', '22037ef2-30b3-470d-85d6-637d3c8b987f', '1000');
-INSERT INTO public.realm_attribute VALUES ('maxDeltaTimeSeconds', '22037ef2-30b3-470d-85d6-637d3c8b987f', '43200');
-INSERT INTO public.realm_attribute VALUES ('failureFactor', '22037ef2-30b3-470d-85d6-637d3c8b987f', '30');
-INSERT INTO public.realm_attribute VALUES ('realmReusableOtpCode', '22037ef2-30b3-470d-85d6-637d3c8b987f', 'false');
-INSERT INTO public.realm_attribute VALUES ('displayName', '22037ef2-30b3-470d-85d6-637d3c8b987f', 'Keycloak');
-INSERT INTO public.realm_attribute VALUES ('displayNameHtml', '22037ef2-30b3-470d-85d6-637d3c8b987f', '<div class="kc-logo-text"><span>Keycloak</span></div>');
-INSERT INTO public.realm_attribute VALUES ('defaultSignatureAlgorithm', '22037ef2-30b3-470d-85d6-637d3c8b987f', 'RS256');
-INSERT INTO public.realm_attribute VALUES ('offlineSessionMaxLifespanEnabled', '22037ef2-30b3-470d-85d6-637d3c8b987f', 'false');
-INSERT INTO public.realm_attribute VALUES ('offlineSessionMaxLifespan', '22037ef2-30b3-470d-85d6-637d3c8b987f', '5184000');
+INSERT INTO public.realm_attribute VALUES ('_browser_header.contentSecurityPolicyReportOnly', '546da6ad-8f65-4ce7-ba91-1346136c584b', '');
+INSERT INTO public.realm_attribute VALUES ('_browser_header.xContentTypeOptions', '546da6ad-8f65-4ce7-ba91-1346136c584b', 'nosniff');
+INSERT INTO public.realm_attribute VALUES ('_browser_header.referrerPolicy', '546da6ad-8f65-4ce7-ba91-1346136c584b', 'no-referrer');
+INSERT INTO public.realm_attribute VALUES ('_browser_header.xRobotsTag', '546da6ad-8f65-4ce7-ba91-1346136c584b', 'none');
+INSERT INTO public.realm_attribute VALUES ('_browser_header.xFrameOptions', '546da6ad-8f65-4ce7-ba91-1346136c584b', 'SAMEORIGIN');
+INSERT INTO public.realm_attribute VALUES ('_browser_header.contentSecurityPolicy', '546da6ad-8f65-4ce7-ba91-1346136c584b', 'frame-src ''self''; frame-ancestors ''self''; object-src ''none'';');
+INSERT INTO public.realm_attribute VALUES ('_browser_header.xXSSProtection', '546da6ad-8f65-4ce7-ba91-1346136c584b', '1; mode=block');
+INSERT INTO public.realm_attribute VALUES ('_browser_header.strictTransportSecurity', '546da6ad-8f65-4ce7-ba91-1346136c584b', 'max-age=31536000; includeSubDomains');
+INSERT INTO public.realm_attribute VALUES ('bruteForceProtected', '546da6ad-8f65-4ce7-ba91-1346136c584b', 'false');
+INSERT INTO public.realm_attribute VALUES ('permanentLockout', '546da6ad-8f65-4ce7-ba91-1346136c584b', 'false');
+INSERT INTO public.realm_attribute VALUES ('maxFailureWaitSeconds', '546da6ad-8f65-4ce7-ba91-1346136c584b', '900');
+INSERT INTO public.realm_attribute VALUES ('minimumQuickLoginWaitSeconds', '546da6ad-8f65-4ce7-ba91-1346136c584b', '60');
+INSERT INTO public.realm_attribute VALUES ('waitIncrementSeconds', '546da6ad-8f65-4ce7-ba91-1346136c584b', '60');
+INSERT INTO public.realm_attribute VALUES ('quickLoginCheckMilliSeconds', '546da6ad-8f65-4ce7-ba91-1346136c584b', '1000');
+INSERT INTO public.realm_attribute VALUES ('maxDeltaTimeSeconds', '546da6ad-8f65-4ce7-ba91-1346136c584b', '43200');
+INSERT INTO public.realm_attribute VALUES ('failureFactor', '546da6ad-8f65-4ce7-ba91-1346136c584b', '30');
+INSERT INTO public.realm_attribute VALUES ('realmReusableOtpCode', '546da6ad-8f65-4ce7-ba91-1346136c584b', 'false');
+INSERT INTO public.realm_attribute VALUES ('displayName', '546da6ad-8f65-4ce7-ba91-1346136c584b', 'Keycloak');
+INSERT INTO public.realm_attribute VALUES ('displayNameHtml', '546da6ad-8f65-4ce7-ba91-1346136c584b', '<div class="kc-logo-text"><span>Keycloak</span></div>');
+INSERT INTO public.realm_attribute VALUES ('defaultSignatureAlgorithm', '546da6ad-8f65-4ce7-ba91-1346136c584b', 'RS256');
+INSERT INTO public.realm_attribute VALUES ('offlineSessionMaxLifespanEnabled', '546da6ad-8f65-4ce7-ba91-1346136c584b', 'false');
+INSERT INTO public.realm_attribute VALUES ('offlineSessionMaxLifespan', '546da6ad-8f65-4ce7-ba91-1346136c584b', '5184000');
 INSERT INTO public.realm_attribute VALUES ('_browser_header.contentSecurityPolicyReportOnly', '662f6baf-45d0-437d-b002-c3f9ccdcb69d', '');
 INSERT INTO public.realm_attribute VALUES ('_browser_header.xContentTypeOptions', '662f6baf-45d0-437d-b002-c3f9ccdcb69d', 'nosniff');
 INSERT INTO public.realm_attribute VALUES ('_browser_header.referrerPolicy', '662f6baf-45d0-437d-b002-c3f9ccdcb69d', 'no-referrer');
@@ -3010,7 +3698,7 @@ INSERT INTO public.realm_attribute VALUES ('client-policies.policies', '662f6baf
 -- Data for Name: realm_events_listeners; Type: TABLE DATA; Schema: public; Owner: admin
 --
 
-INSERT INTO public.realm_events_listeners VALUES ('22037ef2-30b3-470d-85d6-637d3c8b987f', 'jboss-logging');
+INSERT INTO public.realm_events_listeners VALUES ('546da6ad-8f65-4ce7-ba91-1346136c584b', 'jboss-logging');
 INSERT INTO public.realm_events_listeners VALUES ('662f6baf-45d0-437d-b002-c3f9ccdcb69d', 'jboss-logging');
 
 
@@ -3024,7 +3712,7 @@ INSERT INTO public.realm_events_listeners VALUES ('662f6baf-45d0-437d-b002-c3f9c
 -- Data for Name: realm_required_credential; Type: TABLE DATA; Schema: public; Owner: admin
 --
 
-INSERT INTO public.realm_required_credential VALUES ('password', 'password', true, true, '22037ef2-30b3-470d-85d6-637d3c8b987f');
+INSERT INTO public.realm_required_credential VALUES ('password', 'password', true, true, '546da6ad-8f65-4ce7-ba91-1346136c584b');
 INSERT INTO public.realm_required_credential VALUES ('password', 'password', true, true, '662f6baf-45d0-437d-b002-c3f9ccdcb69d');
 
 
@@ -3044,9 +3732,9 @@ INSERT INTO public.realm_required_credential VALUES ('password', 'password', tru
 -- Data for Name: redirect_uris; Type: TABLE DATA; Schema: public; Owner: admin
 --
 
-INSERT INTO public.redirect_uris VALUES ('afd73214-e3a5-4289-ae35-0732685112b0', '/realms/master/account/*');
-INSERT INTO public.redirect_uris VALUES ('4a2dc3f0-8d1e-4947-a648-f2f935a8cd20', '/realms/master/account/*');
-INSERT INTO public.redirect_uris VALUES ('3289e176-4211-420c-8a77-40debd6547e8', '/admin/master/console/*');
+INSERT INTO public.redirect_uris VALUES ('cb62ec47-aa85-4d1e-9187-3f8218923968', '/realms/master/account/*');
+INSERT INTO public.redirect_uris VALUES ('effe1a3e-a1ce-4c4f-80ce-cebeca28c9fe', '/realms/master/account/*');
+INSERT INTO public.redirect_uris VALUES ('5d42a7c4-7ab0-4d78-9aec-481ac699856e', '/admin/master/console/*');
 INSERT INTO public.redirect_uris VALUES ('ba615863-d949-4598-8196-54c21b254108', '/realms/book-store/account/*');
 INSERT INTO public.redirect_uris VALUES ('68386798-a2f4-4e98-8a57-5454fb60df2d', '/realms/book-store/account/*');
 INSERT INTO public.redirect_uris VALUES ('579e5e42-c2b8-4014-a671-36ce67cb0809', '/*');
@@ -3063,24 +3751,24 @@ INSERT INTO public.redirect_uris VALUES ('a7d51e28-21a4-49e0-9430-d5d9057589ed',
 -- Data for Name: required_action_provider; Type: TABLE DATA; Schema: public; Owner: admin
 --
 
-INSERT INTO public.required_action_provider VALUES ('f6e38af8-54f0-4520-a03b-ee241f95a41c', 'VERIFY_EMAIL', 'Verify Email', '22037ef2-30b3-470d-85d6-637d3c8b987f', true, false, 'VERIFY_EMAIL', 50);
-INSERT INTO public.required_action_provider VALUES ('281374e6-6037-44ed-a66b-59253b2a0b1b', 'UPDATE_PROFILE', 'Update Profile', '22037ef2-30b3-470d-85d6-637d3c8b987f', true, false, 'UPDATE_PROFILE', 40);
-INSERT INTO public.required_action_provider VALUES ('a90af697-5d8a-444e-b624-ec413ed34ef2', 'CONFIGURE_TOTP', 'Configure OTP', '22037ef2-30b3-470d-85d6-637d3c8b987f', true, false, 'CONFIGURE_TOTP', 10);
-INSERT INTO public.required_action_provider VALUES ('01e6cc55-147a-471e-92e1-779d02fceb93', 'UPDATE_PASSWORD', 'Update Password', '22037ef2-30b3-470d-85d6-637d3c8b987f', true, false, 'UPDATE_PASSWORD', 30);
-INSERT INTO public.required_action_provider VALUES ('247aebe5-70c1-4181-9c05-7d0610835b7a', 'TERMS_AND_CONDITIONS', 'Terms and Conditions', '22037ef2-30b3-470d-85d6-637d3c8b987f', false, false, 'TERMS_AND_CONDITIONS', 20);
-INSERT INTO public.required_action_provider VALUES ('ef9640f1-abd9-463f-929e-22f47595b2e7', 'delete_account', 'Delete Account', '22037ef2-30b3-470d-85d6-637d3c8b987f', false, false, 'delete_account', 60);
-INSERT INTO public.required_action_provider VALUES ('5051e4e8-59bb-43b1-b6c2-9622bf297689', 'update_user_locale', 'Update User Locale', '22037ef2-30b3-470d-85d6-637d3c8b987f', true, false, 'update_user_locale', 1000);
-INSERT INTO public.required_action_provider VALUES ('1333ab21-cdbd-4aee-90ba-1c4313065845', 'webauthn-register', 'Webauthn Register', '22037ef2-30b3-470d-85d6-637d3c8b987f', true, false, 'webauthn-register', 70);
-INSERT INTO public.required_action_provider VALUES ('24b49cb5-d08d-4248-9466-fd844eea74c8', 'webauthn-register-passwordless', 'Webauthn Register Passwordless', '22037ef2-30b3-470d-85d6-637d3c8b987f', true, false, 'webauthn-register-passwordless', 80);
-INSERT INTO public.required_action_provider VALUES ('4cbc487d-6f08-49bb-997e-8c95a8e6da08', 'CONFIGURE_TOTP', 'Configure OTP', '662f6baf-45d0-437d-b002-c3f9ccdcb69d', true, false, 'CONFIGURE_TOTP', 10);
-INSERT INTO public.required_action_provider VALUES ('06ae8390-5e63-451e-8e5a-cd79825edd10', 'TERMS_AND_CONDITIONS', 'Terms and Conditions', '662f6baf-45d0-437d-b002-c3f9ccdcb69d', false, false, 'TERMS_AND_CONDITIONS', 20);
-INSERT INTO public.required_action_provider VALUES ('930609a5-14d7-45b7-ba5d-ac4fe04333d4', 'UPDATE_PASSWORD', 'Update Password', '662f6baf-45d0-437d-b002-c3f9ccdcb69d', true, false, 'UPDATE_PASSWORD', 30);
-INSERT INTO public.required_action_provider VALUES ('7ce1f22b-2e07-4791-84e4-297521ed6c66', 'UPDATE_PROFILE', 'Update Profile', '662f6baf-45d0-437d-b002-c3f9ccdcb69d', true, false, 'UPDATE_PROFILE', 40);
-INSERT INTO public.required_action_provider VALUES ('5aa23214-2b8c-4812-a788-aa4124f0bc1b', 'VERIFY_EMAIL', 'Verify Email', '662f6baf-45d0-437d-b002-c3f9ccdcb69d', true, false, 'VERIFY_EMAIL', 50);
-INSERT INTO public.required_action_provider VALUES ('94fb8b24-aeab-49c3-8874-bb6bee36504b', 'delete_account', 'Delete Account', '662f6baf-45d0-437d-b002-c3f9ccdcb69d', false, false, 'delete_account', 60);
-INSERT INTO public.required_action_provider VALUES ('f5c90863-8031-49f6-b0fe-ab9fba0fccc4', 'webauthn-register', 'Webauthn Register', '662f6baf-45d0-437d-b002-c3f9ccdcb69d', true, false, 'webauthn-register', 70);
-INSERT INTO public.required_action_provider VALUES ('212097cd-dbbe-418c-b847-55e7897a6eca', 'webauthn-register-passwordless', 'Webauthn Register Passwordless', '662f6baf-45d0-437d-b002-c3f9ccdcb69d', true, false, 'webauthn-register-passwordless', 80);
-INSERT INTO public.required_action_provider VALUES ('10002273-6e86-4802-b527-e92af4577b08', 'update_user_locale', 'Update User Locale', '662f6baf-45d0-437d-b002-c3f9ccdcb69d', true, false, 'update_user_locale', 1000);
+INSERT INTO public.required_action_provider VALUES ('fbe7b766-cc9b-42fe-bc4f-47b3fd0cc165', 'VERIFY_EMAIL', 'Verify Email', '546da6ad-8f65-4ce7-ba91-1346136c584b', true, false, 'VERIFY_EMAIL', 50);
+INSERT INTO public.required_action_provider VALUES ('051f44a1-d64a-4552-aaa5-7c4a89ab8ece', 'UPDATE_PROFILE', 'Update Profile', '546da6ad-8f65-4ce7-ba91-1346136c584b', true, false, 'UPDATE_PROFILE', 40);
+INSERT INTO public.required_action_provider VALUES ('9c70f3f6-50ff-400a-9a95-c2aceb44b30b', 'CONFIGURE_TOTP', 'Configure OTP', '546da6ad-8f65-4ce7-ba91-1346136c584b', true, false, 'CONFIGURE_TOTP', 10);
+INSERT INTO public.required_action_provider VALUES ('f4b39413-0a16-40ea-a15b-d29c4f55cbcd', 'UPDATE_PASSWORD', 'Update Password', '546da6ad-8f65-4ce7-ba91-1346136c584b', true, false, 'UPDATE_PASSWORD', 30);
+INSERT INTO public.required_action_provider VALUES ('f89cd7ed-e93c-4d27-98be-6c3c8265f690', 'TERMS_AND_CONDITIONS', 'Terms and Conditions', '546da6ad-8f65-4ce7-ba91-1346136c584b', false, false, 'TERMS_AND_CONDITIONS', 20);
+INSERT INTO public.required_action_provider VALUES ('6eaf156f-9a78-4790-8fa5-aaa52639065e', 'delete_account', 'Delete Account', '546da6ad-8f65-4ce7-ba91-1346136c584b', false, false, 'delete_account', 60);
+INSERT INTO public.required_action_provider VALUES ('d55c635b-641a-42f8-bdb1-49f117816542', 'update_user_locale', 'Update User Locale', '546da6ad-8f65-4ce7-ba91-1346136c584b', true, false, 'update_user_locale', 1000);
+INSERT INTO public.required_action_provider VALUES ('653d1c24-d3a6-4b4b-89c5-8983105964c4', 'webauthn-register', 'Webauthn Register', '546da6ad-8f65-4ce7-ba91-1346136c584b', true, false, 'webauthn-register', 70);
+INSERT INTO public.required_action_provider VALUES ('0ad52dab-e5c2-4fcd-88f8-e9205161c060', 'webauthn-register-passwordless', 'Webauthn Register Passwordless', '546da6ad-8f65-4ce7-ba91-1346136c584b', true, false, 'webauthn-register-passwordless', 80);
+INSERT INTO public.required_action_provider VALUES ('991354a0-5eac-4c05-95c7-54ec40256254', 'CONFIGURE_TOTP', 'Configure OTP', '662f6baf-45d0-437d-b002-c3f9ccdcb69d', true, false, 'CONFIGURE_TOTP', 10);
+INSERT INTO public.required_action_provider VALUES ('d03fd41e-21c3-4fdf-bf6d-f4ec43d4803d', 'TERMS_AND_CONDITIONS', 'Terms and Conditions', '662f6baf-45d0-437d-b002-c3f9ccdcb69d', false, false, 'TERMS_AND_CONDITIONS', 20);
+INSERT INTO public.required_action_provider VALUES ('780df1a0-4ad0-4b09-9c97-ae07e982d15a', 'UPDATE_PASSWORD', 'Update Password', '662f6baf-45d0-437d-b002-c3f9ccdcb69d', true, false, 'UPDATE_PASSWORD', 30);
+INSERT INTO public.required_action_provider VALUES ('f8dfb286-a8ed-4ab9-afe2-7516e5dcdc5b', 'UPDATE_PROFILE', 'Update Profile', '662f6baf-45d0-437d-b002-c3f9ccdcb69d', true, false, 'UPDATE_PROFILE', 40);
+INSERT INTO public.required_action_provider VALUES ('bb4e1d67-7f4f-4630-ad9f-7be2c1c9f01e', 'VERIFY_EMAIL', 'Verify Email', '662f6baf-45d0-437d-b002-c3f9ccdcb69d', true, false, 'VERIFY_EMAIL', 50);
+INSERT INTO public.required_action_provider VALUES ('3b596529-e29d-4421-b794-ac797fcf99f5', 'delete_account', 'Delete Account', '662f6baf-45d0-437d-b002-c3f9ccdcb69d', false, false, 'delete_account', 60);
+INSERT INTO public.required_action_provider VALUES ('56983e40-c8bc-4e22-a31d-1fcdee855875', 'webauthn-register', 'Webauthn Register', '662f6baf-45d0-437d-b002-c3f9ccdcb69d', true, false, 'webauthn-register', 70);
+INSERT INTO public.required_action_provider VALUES ('8b832579-9fd4-4ce7-87cd-9e9d03972be5', 'webauthn-register-passwordless', 'Webauthn Register Passwordless', '662f6baf-45d0-437d-b002-c3f9ccdcb69d', true, false, 'webauthn-register-passwordless', 80);
+INSERT INTO public.required_action_provider VALUES ('5097b605-930f-44cb-b38f-8ee7016cf6a9', 'update_user_locale', 'Update User Locale', '662f6baf-45d0-437d-b002-c3f9ccdcb69d', true, false, 'update_user_locale', 1000);
 
 
 --
@@ -3147,8 +3835,8 @@ INSERT INTO public.required_action_provider VALUES ('10002273-6e86-4802-b527-e92
 -- Data for Name: scope_mapping; Type: TABLE DATA; Schema: public; Owner: admin
 --
 
-INSERT INTO public.scope_mapping VALUES ('4a2dc3f0-8d1e-4947-a648-f2f935a8cd20', 'b739f236-9ee2-461f-8ae8-db538e5a37e8');
-INSERT INTO public.scope_mapping VALUES ('4a2dc3f0-8d1e-4947-a648-f2f935a8cd20', 'a23fa89b-e7d6-431f-ba88-a2f91b11a09c');
+INSERT INTO public.scope_mapping VALUES ('effe1a3e-a1ce-4c4f-80ce-cebeca28c9fe', '22c25144-3a27-450f-9886-cb5d0cdcca0c');
+INSERT INTO public.scope_mapping VALUES ('effe1a3e-a1ce-4c4f-80ce-cebeca28c9fe', '77f21941-b7c0-460a-afa4-ae801a05fe47');
 INSERT INTO public.scope_mapping VALUES ('68386798-a2f4-4e98-8a57-5454fb60df2d', 'e9c15a9c-cf20-4253-90d7-171d41c4983e');
 INSERT INTO public.scope_mapping VALUES ('68386798-a2f4-4e98-8a57-5454fb60df2d', '1d014aad-d78d-4d6e-a18e-007b4247c731');
 
@@ -3181,9 +3869,9 @@ INSERT INTO public.scope_mapping VALUES ('68386798-a2f4-4e98-8a57-5454fb60df2d',
 -- Data for Name: user_entity; Type: TABLE DATA; Schema: public; Owner: admin
 --
 
-INSERT INTO public.user_entity VALUES ('45858445-1bbb-4611-b3f2-a3386db59829', NULL, 'd0219bef-c614-4dee-b582-74bf3905e265', false, true, NULL, NULL, NULL, '22037ef2-30b3-470d-85d6-637d3c8b987f', 'admin', 1699116495885, NULL, 0);
-INSERT INTO public.user_entity VALUES ('e5110ac9-e1a4-467d-82ba-55a8e7991688', 'admin@admin', 'admin@admin', false, true, NULL, NULL, NULL, '662f6baf-45d0-437d-b002-c3f9ccdcb69d', 'admin', 1699125036869, NULL, 0);
-INSERT INTO public.user_entity VALUES ('8a398506-63bd-403b-9ce7-3b2dc1678001', 'user@user', 'user@user', false, true, NULL, NULL, NULL, '662f6baf-45d0-437d-b002-c3f9ccdcb69d', 'user', 1699125045213, NULL, 0);
+INSERT INTO public.user_entity VALUES ('07fd4473-eadd-4c02-ad9a-80f3fc54afb9', NULL, '069a209f-a511-4f0e-b8f8-ab15d3509b5a', false, true, NULL, NULL, NULL, '546da6ad-8f65-4ce7-ba91-1346136c584b', 'admin', 1699132497923, NULL, 0);
+INSERT INTO public.user_entity VALUES ('b387010c-2582-48ce-aab7-f28371cd9fee', 'user@user', 'user@user', false, true, NULL, NULL, NULL, '662f6baf-45d0-437d-b002-c3f9ccdcb69d', 'user', 1699133057153, NULL, 0);
+INSERT INTO public.user_entity VALUES ('24756198-f4c1-4899-8a0d-1bcadd115f33', 'admin@admin', 'admin@admin', false, true, NULL, NULL, NULL, '662f6baf-45d0-437d-b002-c3f9ccdcb69d', 'admin', 1699133075857, NULL, 0);
 
 
 --
@@ -3226,28 +3914,28 @@ INSERT INTO public.user_entity VALUES ('8a398506-63bd-403b-9ce7-3b2dc1678001', '
 -- Data for Name: user_role_mapping; Type: TABLE DATA; Schema: public; Owner: admin
 --
 
-INSERT INTO public.user_role_mapping VALUES ('9a58b231-4246-48c3-a17a-78ff6a190d66', '45858445-1bbb-4611-b3f2-a3386db59829');
-INSERT INTO public.user_role_mapping VALUES ('cf889cc4-c918-4a43-a4f6-eea1cb248f6c', '45858445-1bbb-4611-b3f2-a3386db59829');
-INSERT INTO public.user_role_mapping VALUES ('070cd1c5-7b8f-4032-8ba7-35b905452829', '45858445-1bbb-4611-b3f2-a3386db59829');
-INSERT INTO public.user_role_mapping VALUES ('fe311841-151d-4c2f-ac0e-17382c8350d2', '45858445-1bbb-4611-b3f2-a3386db59829');
-INSERT INTO public.user_role_mapping VALUES ('96cab5c8-b0c7-4f3b-b91b-10b9bf7441ba', '45858445-1bbb-4611-b3f2-a3386db59829');
-INSERT INTO public.user_role_mapping VALUES ('82fe19c4-1c3f-4a76-8438-1d3a5fca1567', '45858445-1bbb-4611-b3f2-a3386db59829');
-INSERT INTO public.user_role_mapping VALUES ('f2ce2915-586a-4675-b95f-e828271ff787', '45858445-1bbb-4611-b3f2-a3386db59829');
-INSERT INTO public.user_role_mapping VALUES ('a5f12f4e-4818-41b6-80c9-0a966c680bf9', '45858445-1bbb-4611-b3f2-a3386db59829');
-INSERT INTO public.user_role_mapping VALUES ('79bc9c93-0a08-4ecf-b85e-1e6982247021', '45858445-1bbb-4611-b3f2-a3386db59829');
-INSERT INTO public.user_role_mapping VALUES ('34ef8271-8fc2-454d-809c-98fcb0624199', '45858445-1bbb-4611-b3f2-a3386db59829');
-INSERT INTO public.user_role_mapping VALUES ('ac06a77a-edba-4137-8928-bc0c23ae37b9', '45858445-1bbb-4611-b3f2-a3386db59829');
-INSERT INTO public.user_role_mapping VALUES ('48f2cca3-6345-4d7d-a3bd-a28ee780c4df', '45858445-1bbb-4611-b3f2-a3386db59829');
-INSERT INTO public.user_role_mapping VALUES ('3f29b93a-5c9e-44a6-8895-28190ddebabd', '45858445-1bbb-4611-b3f2-a3386db59829');
-INSERT INTO public.user_role_mapping VALUES ('189666e9-38c9-46e3-a26e-7f03a6246a22', '45858445-1bbb-4611-b3f2-a3386db59829');
-INSERT INTO public.user_role_mapping VALUES ('ff16c40f-d986-440d-970e-3716ea2b67b3', '45858445-1bbb-4611-b3f2-a3386db59829');
-INSERT INTO public.user_role_mapping VALUES ('f6910dc0-be78-4a5a-9035-d579731dd7aa', '45858445-1bbb-4611-b3f2-a3386db59829');
-INSERT INTO public.user_role_mapping VALUES ('ba2cac72-872f-4e55-b92a-0a5da78854cf', '45858445-1bbb-4611-b3f2-a3386db59829');
-INSERT INTO public.user_role_mapping VALUES ('b2abba9b-7f22-4104-b8a1-f00b76b5fab6', '45858445-1bbb-4611-b3f2-a3386db59829');
-INSERT INTO public.user_role_mapping VALUES ('de06cc42-d894-4996-a174-b320704c47f4', '45858445-1bbb-4611-b3f2-a3386db59829');
-INSERT INTO public.user_role_mapping VALUES ('c46a9467-cb5a-4888-b8c1-fd6623005642', 'e5110ac9-e1a4-467d-82ba-55a8e7991688');
-INSERT INTO public.user_role_mapping VALUES ('c46a9467-cb5a-4888-b8c1-fd6623005642', '8a398506-63bd-403b-9ce7-3b2dc1678001');
-INSERT INTO public.user_role_mapping VALUES ('aa5bd567-3466-41e3-bf8d-a6e1a13f9047', 'e5110ac9-e1a4-467d-82ba-55a8e7991688');
+INSERT INTO public.user_role_mapping VALUES ('ed7bfe44-f63b-42ef-894f-e49a118089d6', '07fd4473-eadd-4c02-ad9a-80f3fc54afb9');
+INSERT INTO public.user_role_mapping VALUES ('04fc7638-765a-44b3-8d78-8a7be531c2ae', '07fd4473-eadd-4c02-ad9a-80f3fc54afb9');
+INSERT INTO public.user_role_mapping VALUES ('d2ebfafb-641f-4dd6-972c-7bbdb71b71e4', '07fd4473-eadd-4c02-ad9a-80f3fc54afb9');
+INSERT INTO public.user_role_mapping VALUES ('c93eacb1-bf51-4372-b250-e514649bcbd1', '07fd4473-eadd-4c02-ad9a-80f3fc54afb9');
+INSERT INTO public.user_role_mapping VALUES ('51f0857f-2a96-4984-8f09-c064f653368a', '07fd4473-eadd-4c02-ad9a-80f3fc54afb9');
+INSERT INTO public.user_role_mapping VALUES ('de4415f6-fda7-4241-aa87-dd2cc2a5e683', '07fd4473-eadd-4c02-ad9a-80f3fc54afb9');
+INSERT INTO public.user_role_mapping VALUES ('418f5a42-0a71-4209-812b-eb2dd0fe0f7d', '07fd4473-eadd-4c02-ad9a-80f3fc54afb9');
+INSERT INTO public.user_role_mapping VALUES ('b901ff2b-408c-47e0-8b7f-f29106146a0f', '07fd4473-eadd-4c02-ad9a-80f3fc54afb9');
+INSERT INTO public.user_role_mapping VALUES ('08ab57b3-ac92-4b74-aa30-d82909469454', '07fd4473-eadd-4c02-ad9a-80f3fc54afb9');
+INSERT INTO public.user_role_mapping VALUES ('0fafc8bc-e8b1-42bf-b089-634bbee5055f', '07fd4473-eadd-4c02-ad9a-80f3fc54afb9');
+INSERT INTO public.user_role_mapping VALUES ('5cc4a296-42d3-4377-9a94-dfddb13e441c', '07fd4473-eadd-4c02-ad9a-80f3fc54afb9');
+INSERT INTO public.user_role_mapping VALUES ('6337858a-9ab1-4f3e-8cfe-14256e8090f3', '07fd4473-eadd-4c02-ad9a-80f3fc54afb9');
+INSERT INTO public.user_role_mapping VALUES ('fbc8294d-c65f-400c-9bd7-ef42f0f43f9f', '07fd4473-eadd-4c02-ad9a-80f3fc54afb9');
+INSERT INTO public.user_role_mapping VALUES ('6680516d-c60b-41c5-95e1-6eb0d586bb00', '07fd4473-eadd-4c02-ad9a-80f3fc54afb9');
+INSERT INTO public.user_role_mapping VALUES ('8f06512f-a50f-4314-8257-da64532ab1f5', '07fd4473-eadd-4c02-ad9a-80f3fc54afb9');
+INSERT INTO public.user_role_mapping VALUES ('565e62fd-ce4d-4670-b6d3-9d798d646e41', '07fd4473-eadd-4c02-ad9a-80f3fc54afb9');
+INSERT INTO public.user_role_mapping VALUES ('e11cbc99-7792-41e7-b115-df473bbb7c35', '07fd4473-eadd-4c02-ad9a-80f3fc54afb9');
+INSERT INTO public.user_role_mapping VALUES ('12453ae0-1687-4908-82cd-81067fdf95d2', '07fd4473-eadd-4c02-ad9a-80f3fc54afb9');
+INSERT INTO public.user_role_mapping VALUES ('4e4ed502-f778-4a9d-ae43-701798885cbd', '07fd4473-eadd-4c02-ad9a-80f3fc54afb9');
+INSERT INTO public.user_role_mapping VALUES ('c46a9467-cb5a-4888-b8c1-fd6623005642', 'b387010c-2582-48ce-aab7-f28371cd9fee');
+INSERT INTO public.user_role_mapping VALUES ('c46a9467-cb5a-4888-b8c1-fd6623005642', '24756198-f4c1-4899-8a0d-1bcadd115f33');
+INSERT INTO public.user_role_mapping VALUES ('aa5bd567-3466-41e3-bf8d-a6e1a13f9047', '24756198-f4c1-4899-8a0d-1bcadd115f33');
 
 
 --
@@ -3272,7 +3960,7 @@ INSERT INTO public.user_role_mapping VALUES ('aa5bd567-3466-41e3-bf8d-a6e1a13f90
 -- Data for Name: web_origins; Type: TABLE DATA; Schema: public; Owner: admin
 --
 
-INSERT INTO public.web_origins VALUES ('3289e176-4211-420c-8a77-40debd6547e8', '+');
+INSERT INTO public.web_origins VALUES ('5d42a7c4-7ab0-4d78-9aec-481ac699856e', '+');
 INSERT INTO public.web_origins VALUES ('579e5e42-c2b8-4014-a671-36ce67cb0809', '/*');
 INSERT INTO public.web_origins VALUES ('a7d51e28-21a4-49e0-9430-d5d9057589ed', '+');
 
@@ -5294,3 +5982,34 @@ ALTER TABLE ONLY public.identity_provider_config
 -- PostgreSQL database dump complete
 --
 
+--
+-- Database "postgres" dump
+--
+
+\connect postgres
+
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 15.4 (Debian 15.4-2.pgdg120+1)
+-- Dumped by pg_dump version 15.3
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- PostgreSQL database dump complete
+--
+
+--
+-- PostgreSQL database cluster dump complete
+--
