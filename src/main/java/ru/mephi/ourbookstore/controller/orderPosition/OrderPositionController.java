@@ -39,7 +39,7 @@ public class OrderPositionController {
     }
 
     @PostMapping("/carts")
-    @PreAuthorize("hasRole('ADMIN') or @appUserAuthService.checkPermission('CART',#orderPositionAddToCartDto.orderPositionId)")
+    @PreAuthorize("hasRole('ADMIN') or @appUserAuthService.checkPermission('CART',#orderPositionAddToCartDto.cartId)")
     public void addToCart(
             @RequestBody OrderPositionAddToCartDto orderPositionAddToCartDto
     ) {

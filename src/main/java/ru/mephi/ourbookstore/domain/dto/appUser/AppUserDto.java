@@ -16,4 +16,5 @@ public class AppUserDto {
     Long id;
     String nickname;
     String email;
+    Long cartId;
 }
