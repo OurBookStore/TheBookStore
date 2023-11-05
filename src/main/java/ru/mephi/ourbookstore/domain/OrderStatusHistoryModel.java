@@ -3,7 +3,9 @@ package ru.mephi.ourbookstore.domain;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.hibernate.annotations.Type;
 
+import java.sql.Time;
 import java.time.LocalDateTime;
 
 @Entity
@@ -25,5 +27,5 @@ public class OrderStatusHistoryModel {
     @Enumerated(EnumType.STRING)
     OrderStatus status;
     LocalDateTime actualFrom;
-    boolean isActual;
+    boolean actualFlag;
 }

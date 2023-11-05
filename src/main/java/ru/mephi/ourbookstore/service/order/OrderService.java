@@ -55,7 +55,6 @@ public class OrderService {
 
     @Transactional
     public Long create(Order order) {
-        Long orderId;
         validation(order);
         AppUser appUser = appUserService.getById(order.getAppUser().getId());
         if (appUser == null) {
@@ -64,12 +63,12 @@ public class OrderService {
 
         OrderModel newModel = orderModelMapper.objectToModel(order);
         newModel.setAppUser(appUserModelMapper.objectToModel(appUser));
-        orderId = orderRepository.save(newModel).getId();
+        newModel = orderRepository.save(newModel);
 
-        order.setId(orderId);
-        orderStatusHistoryService.logNewOrder(order);
+        order = orderModelMapper.modelToObject(newModel);
+        orderStatusHistoryService.writeNewOrderStatus(order);
 
-        return orderId;
+        return newModel.getId();
     }
 
     @Transactional
@@ -84,7 +83,9 @@ public class OrderService {
     @Transactional
     public Long updateOrderStatus(Long orderId, OrderStatus orderStatus) {
         Order order = getById(orderId);
-        return orderStatusHistoryService.logOrderStatus(order, orderStatus);
+        OrderModel orderModel = orderModelMapper.objectToModel(order);
+        orderStatusHistoryService.inactivateOldStatus(orderModel);
+        return orderStatusHistoryService.writeOrderStatus(order, orderStatus);
     }
 
     @Transactional
