@@ -65,9 +65,7 @@ public class KeyCloakClient {
 
         return webClient
                 .post()
-                .uri(uriBuilder -> uriBuilder
-                        .path("/realms/master/protocol/openid-connect/token")
-                        .build())
+                .uri("/realms/master/protocol/openid-connect/token")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                 .body(BodyInserters.fromFormData(parameters))
                 .retrieve()
@@ -102,9 +100,7 @@ public class KeyCloakClient {
 
         return webClient
                 .post()
-                .uri(uriBuilder -> uriBuilder
-                        .path("/realms/{realm_name}/protocol/openid-connect/token")
-                        .build(realm))
+                .uri("/realms/{realm_name}/protocol/openid-connect/token",realm)
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                 .body(BodyInserters.fromFormData(parameters))
                 .retrieve()
@@ -141,9 +137,7 @@ public class KeyCloakClient {
 
         return webClient
                 .post()
-                .uri(uriBuilder -> uriBuilder
-                        .path("/realms/{realm_name}/protocol/openid-connect/token")
-                        .build(realm))
+                .uri("/realms/{realm_name}/protocol/openid-connect/token",realm)
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                 .body(BodyInserters.fromFormData(parameters))
                 .retrieve()
@@ -199,9 +193,7 @@ public class KeyCloakClient {
         try {
             path = Objects.requireNonNull(Objects.requireNonNull(webClient
                             .post()
-                            .uri(uriBuilder -> uriBuilder
-                                    .path("/admin/realms/{realm_name}/users")
-                                    .build(realm))
+                            .uri("/admin/realms/{realm_name}/users",realm)
                             .headers(h -> h.setBearerAuth(accessTokenResponse.getToken()))
                             .contentType(MediaType.APPLICATION_JSON)
                             .body(BodyInserters.fromValue(objectWriter.writeValueAsString(userRequest)))
@@ -266,9 +258,7 @@ public class KeyCloakClient {
         try {
             webClient
                     .put()
-                    .uri(uriBuilder -> uriBuilder
-                            .path("/admin/realms/{realm_name}/users/{user_id}")
-                            .build(realm, userId))
+                    .uri("/admin/realms/{realm_name}/users/{user_id}",realm,userId)
                     .headers(h -> h.setBearerAuth(accessTokenResponse.getToken()))
                     .contentType(MediaType.APPLICATION_JSON)
                     .body(BodyInserters.fromValue(objectWriter.writeValueAsString(userRequest)))
@@ -312,9 +302,7 @@ public class KeyCloakClient {
 
         webClient
                 .delete()
-                .uri(uriBuilder -> uriBuilder
-                        .path("/admin/realms/{realm_name}/users/{user_id}")
-                        .build(realm, userId))
+                .uri("/admin/realms/{realm_name}/users/{user_id}",realm,userId)
                 .headers(h -> h.setBearerAuth(accessTokenResponse.getToken()))
                 .retrieve()
                 .onStatus(HttpStatusCode::isError, clientResponse ->
