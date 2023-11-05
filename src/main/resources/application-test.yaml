@@ -4,15 +4,14 @@ server:
   error:
     include-message: always
 
-security:
-  enable: false
-
 spring:
   datasource:
     url: jdbc:h2:~/book_store;DB_CLOSE_DELAY=-1
     username: sa
     password:
     driver-class-name: org.h2.Driver
+  security:
+    enabled: false
   jpa:
     database: H2
     generate-ddl: true

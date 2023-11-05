@@ -16,6 +16,7 @@ import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import ru.mephi.ourbookstore.BookStoreTest;
 import ru.mephi.ourbookstore.controller.appUser.AppUserController;
 import ru.mephi.ourbookstore.domain.AppUserModel;
@@ -41,15 +42,11 @@ public class AppUserTests extends BookStoreTest {
 
     @Autowired
     AppUserController appUserController;
-    @Mock
+    @MockBean
     KeyCloakClient keyCloakClient;
-
     @Autowired
     AppUserRepository appUserRepository;
-    @Autowired
-    CartRepository cartRepository;
 
-    AppUserModelMapper appUserModelMapper;
     final AppUserModel APP_USER_CORRECT_1 = AppUserModel.builder()
             .id(1L)
             .nickname("1")
@@ -282,7 +279,10 @@ public class AppUserTests extends BookStoreTest {
                 .password("new password")
                 .build();
 
+        Mockito.doNothing().when(keyCloakClient).updateUser(Mockito.any(),Mockito.anyString());
+
         appUserController.update(appUserRqDto);
+
 
         AppUserModel appUserModel = appUserRepository.findById(appUserId).get();
         assertAppUsers(appUserRqDto, appUserModel);
