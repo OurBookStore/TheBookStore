@@ -66,7 +66,7 @@ public class OrderService {
         newModel = orderRepository.save(newModel);
 
         order = orderModelMapper.modelToObject(newModel);
-        orderStatusHistoryService.writeNewOrderStatus(order);
+        orderStatusHistoryService.writeOrderStatus(order, OrderStatus.CREATED);
 
         return newModel.getId();
     }

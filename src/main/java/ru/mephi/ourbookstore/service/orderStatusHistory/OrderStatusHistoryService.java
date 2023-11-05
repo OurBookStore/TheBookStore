@@ -40,16 +40,4 @@ public class OrderStatusHistoryService {
     public void inactivateOldStatus(OrderModel orderModel){
         repository.inactivateOldStatusesByOrder(orderModel);
     }
-
-    @Transactional
-    public Long writeNewOrderStatus(Order order) {
-        OrderStatusHistory newOrderStatusHistory = OrderStatusHistory.builder()
-                .status(OrderStatus.CREATED)
-                .order(order)
-                .actualFrom(LocalDateTime.now())
-                .actualFlag(true)
-                .build();
-        OrderStatusHistoryModel model = oshModelMapper.objectToModel(newOrderStatusHistory);
-        return repository.save(model).getId();
-    }
 }
