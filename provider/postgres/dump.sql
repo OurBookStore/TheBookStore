@@ -456,6 +456,14 @@ ALTER TABLE ONLY public.order_status_history_model ALTER COLUMN id SET DEFAULT n
 INSERT INTO public.app_user_model VALUES (1, 'user@user', 'b387010c-2582-48ce-aab7-f28371cd9fee', 'user', 'user', 1);
 INSERT INTO public.app_user_model VALUES (2, 'admin@admin', '24756198-f4c1-4899-8a0d-1bcadd115f33', 'admin', 'admin', 2);
 
+INSERT INTO public.book_model
+VALUES (1, 10, 'TheBOOK_1', 100);
+INSERT INTO public.book_model
+VALUES (2, 3, 'TheBOOK_2', 111);
+INSERT INTO public.book_model
+VALUES (3, 89, 'TheBOOK_3', 441);
+INSERT INTO public.book_model
+VALUES (4, 0, 'TheBOOK_4', 10000);
 
 --
 -- Data for Name: author_model; Type: TABLE DATA; Schema: public; Owner: admin
