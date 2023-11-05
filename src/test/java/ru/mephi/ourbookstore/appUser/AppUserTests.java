@@ -283,7 +283,6 @@ public class AppUserTests extends BookStoreTest {
 
         appUserController.update(appUserRqDto);
 
-
         AppUserModel appUserModel = appUserRepository.findById(appUserId).get();
         assertAppUsers(appUserRqDto, appUserModel);
     }

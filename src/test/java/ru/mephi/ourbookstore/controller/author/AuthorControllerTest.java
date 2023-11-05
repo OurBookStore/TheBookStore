@@ -1,29 +1,40 @@
 package ru.mephi.ourbookstore.controller.author;
 
-import org.junit.jupiter.api.BeforeEach;
+import java.time.LocalDate;
+import java.util.List;
+
+import io.restassured.RestAssured;
+import io.restassured.http.ContentType;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.springframework.boot.test.web.server.LocalServerPort;
+import ru.mephi.ourbookstore.BookStoreTest;
+import ru.mephi.ourbookstore.domain.AuthorModel;
 import ru.mephi.ourbookstore.domain.dto.author.AuthorCreateDto;
 import ru.mephi.ourbookstore.domain.dto.author.AuthorDto;
 import ru.mephi.ourbookstore.domain.dto.author.AuthorUpdateDto;
-import ru.mephi.ourbookstore.spec.author.AuthorSpec;
+import ru.mephi.ourbookstore.spec.BaseSpec;
 
-import java.util.List;
+import static io.restassured.RestAssured.given;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import static org.junit.jupiter.api.Assertions.*;
+public class AuthorControllerTest extends BookStoreTest {
 
-class AuthorControllerTest {
+    private static final String BASE_URL = "/app/authors";
+    private static final Long UNKNOWN_ID = 1L;
+    private static final AuthorModel AUTHOR_MODEL = AuthorModel.builder()
+            .fullName("Grigory Bashev")
+            .dateOfBirth(LocalDate.parse("2023-01-01"))
+            .country("Russia")
+            .build();
 
-    @Test
-    @BeforeEach
-    public void cleanDb() {
-        List<AuthorDto> authorDtoList = AuthorSpec.getAll();
-        for (AuthorDto authorDto : authorDtoList) {
-            AuthorSpec.deleteAuthor(Long.parseLong(authorDto.getId()));
-        }
-    }
+    @LocalServerPort
+    private int port;
 
     @ParameterizedTest
     @DisplayName("Create author successful")
@@ -31,12 +42,25 @@ class AuthorControllerTest {
             "Grigory Bashev, 2021-12-01, Russia",
     })
     public void createAuthorSuccessful(String fullName, String dateOfBirth, String country) {
-        AuthorCreateDto authorCreateDto = AuthorCreateDto.builder().country(country)
-                .dateOfBirth(dateOfBirth)
-                .fullName(fullName).build();
-        AuthorSpec.createAuthorSuccessful(authorCreateDto);
-        AuthorDto authorDto = AuthorSpec.getAll().get(0);
-        assertAuthors(authorDto, authorCreateDto);
+        List<AuthorModel> authorModels = List.of(
+                AuthorModel.builder()
+                        .fullName(fullName)
+                        .dateOfBirth(LocalDate.parse(dateOfBirth))
+                        .country(country)
+                        .build()
+        );
+        authorRepository.saveAll(authorModels);
+
+        List<AuthorDto> authors = RestAssured.given()
+                .port(port)
+                .contentType(ContentType.JSON)
+                .when()
+                .get(BASE_URL)
+                .then()
+                .spec(BaseSpec.getResponseSpec(200))
+                .extract().body().jsonPath().getList(".", AuthorDto.class);
+
+        assertAuthors(authorModels, authors);
     }
 
     @ParameterizedTest
@@ -48,12 +72,21 @@ class AuthorControllerTest {
             ",12th of September, Guatemala, Invalid date of birth ",
             ", 1999-12-12, Guatemala, Invalid Author Name",
     })
-    public void createAuthorUnsuccessful(String fullName, String dateOfBirth, String country, String error) {
-        AuthorCreateDto authorCreateDto = AuthorCreateDto.builder().country(country)
+    public void createAuthorUnsuccessful(String fullName, String dateOfBirth, String country) {
+        AuthorCreateDto authorCreateDto = AuthorCreateDto.builder()
+                .fullName(fullName)
                 .dateOfBirth(dateOfBirth)
-                .fullName(fullName).build();
-        String response = AuthorSpec.createAuthorInvalid(authorCreateDto);
-        assertTrue(response.contains(error));
+                .country(country)
+                .build();
+
+        RestAssured.given()
+                .port(port)
+                .contentType(ContentType.JSON)
+                .when()
+                .body(authorCreateDto)
+                .post(BASE_URL)
+                .then()
+                .spec(BaseSpec.getResponseSpec(400));
     }
 
     @ParameterizedTest
@@ -61,13 +94,27 @@ class AuthorControllerTest {
     @CsvSource({
             "Grigory Bashev, 2021-12-01, Russia, Author with this name already exists",
     })
-    public void createAuthorSameName(String fullName, String dateOfBirth, String country, String error) {
-        AuthorCreateDto authorCreateDto = AuthorCreateDto.builder().country(country)
+    public void createAuthorSameName(String fullName, String dateOfBirth, String country) {
+        AuthorModel authorModel = AuthorModel.builder()
+                .fullName(fullName)
+                .dateOfBirth(LocalDate.parse(dateOfBirth))
+                .country(country)
+                .build();
+        authorRepository.save(authorModel);
+        AuthorCreateDto authorCreateDto = AuthorCreateDto.builder()
+                .fullName(fullName)
                 .dateOfBirth(dateOfBirth)
-                .fullName(fullName).build();
-        AuthorSpec.createAuthorSuccessful(authorCreateDto);
-        String response = AuthorSpec.createAuthorInvalid(authorCreateDto);
-        assertTrue(response.contains(error));
+                .country(country)
+                .build();
+
+        RestAssured.given()
+                .port(port)
+                .contentType(ContentType.JSON)
+                .when()
+                .body(authorCreateDto)
+                .post(BASE_URL)
+                .then()
+                .spec(BaseSpec.getResponseSpec(400));
     }
 
     @ParameterizedTest
@@ -76,13 +123,23 @@ class AuthorControllerTest {
             "Grigory Bashev, 2021-12-01, Russia",
     })
     public void getExistingAuthor(String fullName, String dateOfBirth, String country) {
-        var authorCreateDto = AuthorCreateDto.builder()
+        AuthorModel authorModel = AuthorModel.builder()
+                .fullName(fullName)
                 .country(country)
-                .dateOfBirth(dateOfBirth)
-                .fullName(fullName).build();
-        Long id = AuthorSpec.createAuthorSuccessful(authorCreateDto);
-        AuthorDto authorDto = AuthorSpec.getAuthor(id);
-        assertAuthors(authorDto, authorCreateDto);
+                .dateOfBirth(LocalDate.parse(dateOfBirth))
+                .build();
+        Long authorId = authorRepository.save(authorModel).getId();
+
+        AuthorDto authorDto = RestAssured.given()
+                .port(port)
+                .contentType(ContentType.JSON)
+                .when()
+                .get(BASE_URL + "/{authorId}", authorId)
+                .then()
+                .spec(BaseSpec.getResponseSpec(200))
+                .extract().body().as(AuthorDto.class);
+
+        assertAuthors(authorModel, authorDto);
     }
 
     @ParameterizedTest
@@ -93,21 +150,26 @@ class AuthorControllerTest {
             "Grigory Bashev, 2023-01-01, France",
     })
     public void updateAuthorSuccessful(String newFullName, String newDateOfBirth, String newCountry) {
-        AuthorCreateDto authorCreateDto = AuthorCreateDto.builder()
-                .country("Russia")
-                .dateOfBirth("2023-01-01")
-                .fullName("Grigory Bashev").build();
-        long id = AuthorSpec.createAuthorSuccessful(authorCreateDto);
-
+        Long authorId = authorRepository.save(AUTHOR_MODEL).getId();
         AuthorUpdateDto authorUpdateDto = AuthorUpdateDto.builder()
-                .country(newCountry)
+                .id(Long.toString(authorId))
                 .fullName(newFullName)
+                .country(newCountry)
                 .dateOfBirth(newDateOfBirth)
-                .id(String.valueOf(id)).build();
-        AuthorSpec.updateAuthor(authorUpdateDto);
+                .build();
 
-        AuthorDto authorDto = AuthorSpec.getAuthor(id);
-        assertAuthors(authorDto, authorUpdateDto);
+        RestAssured.given()
+                .port(port)
+                .contentType(ContentType.JSON)
+                .when()
+                .body(authorUpdateDto)
+                .put(BASE_URL)
+                .then()
+                .spec(BaseSpec.getResponseSpec(200))
+                .extract().body().asPrettyString();
+
+        AuthorModel actual = authorRepository.findById(authorId).get();
+        assertAuthors(authorUpdateDto, actual);
     }
 
     @ParameterizedTest
@@ -124,51 +186,77 @@ class AuthorControllerTest {
             "Grigory Bashev, 2023-01-01, asldkjfa, Invalid country",
             "1234 2345, 2023-01-01, Russia, Invalid Author Name",
     })
-    public void updateAuthorUnsuccessful(String newFullName, String newDateOfBirth, String newCountry, String error) {
-        AuthorCreateDto authorCreateDto = AuthorCreateDto.builder()
-                .country("Russia")
-                .dateOfBirth("2023-01-01")
-                .fullName("Grigory Bashev").build();
-        long id = AuthorSpec.createAuthorSuccessful(authorCreateDto);
+    public void updateAuthorUnsuccessful(String newFullName, String newDateOfBirth, String newCountry) {
+        Long authorId = authorRepository.save(AUTHOR_MODEL).getId();
         AuthorUpdateDto authorUpdateDto = AuthorUpdateDto.builder()
-                .country(newCountry)
+                .id(Long.toString(authorId))
                 .fullName(newFullName)
+                .country(newCountry)
                 .dateOfBirth(newDateOfBirth)
-                .id(String.valueOf(id)).build();
-        String response = AuthorSpec.updateAuthorInvalid(authorUpdateDto);
-        assertTrue(response.contains(error));
+                .build();
+
+        RestAssured.given()
+                .port(port)
+                .contentType(ContentType.JSON)
+                .when()
+                .body(authorUpdateDto)
+                .put(BASE_URL)
+                .then()
+                .spec(BaseSpec.getResponseSpec(400));
     }
 
     @Test
     @DisplayName("Get nonexistent author")
     public void getNonexistentAuthor() {
-        String response = AuthorSpec.getNotExistingAuthor(1L);
-        assertTrue(response.contains("The AUTHOR with id = 1 not found"));
+        RestAssured.given()
+                .port(port)
+                .contentType(ContentType.JSON)
+                .when()
+                .get(BASE_URL + "/{authorId}", UNKNOWN_ID)
+                .then()
+                .spec(BaseSpec.getResponseSpec(
+                        404,
+                        "The AUTHOR with id = " + UNKNOWN_ID + " not found!"
+                ));
     }
 
     @Test
     @DisplayName("Delete nonexistent author")
     public void deleteNonexistentAuthor() {
-        String response = AuthorSpec.deleteNotExistingAuthor(1L);
-        assertTrue(response.contains("The AUTHOR with id = 1 not found"));
+        RestAssured.given()
+                .port(port)
+                .contentType(ContentType.JSON)
+                .when()
+                .delete(BASE_URL + "/{authorId}", UNKNOWN_ID)
+                .then()
+                .spec(BaseSpec.getResponseSpec(
+                        404,
+                        "The AUTHOR with id = " + UNKNOWN_ID + " not found!"
+                ));
     }
 
-    public void assertAuthors(AuthorDto authorDto, AuthorCreateDto authorCreateDto) {
+    public void assertAuthors(List<AuthorModel> expected, List<AuthorDto> actual) {
+        Assertions.assertEquals(expected.size(), actual.size());
+        for (int i = 0; i < expected.size(); i++) {
+            assertAuthors(expected.get(i), actual.get(i));
+        }
+    }
+
+    public void assertAuthors(AuthorModel expected, AuthorDto actual) {
         assertAll(
-                "Grouped assertion of two author dtos",
-                () -> assertEquals(authorDto.getCountry(), authorCreateDto.getCountry()),
-                () -> assertEquals(authorDto.getDateOfBirth(), authorCreateDto.getDateOfBirth()),
-                () -> assertEquals(authorDto.getFullName(), authorCreateDto.getFullName())
+                "Grouped assertion of two author",
+                () -> assertEquals(expected.getCountry(), actual.getCountry()),
+                () -> assertEquals(expected.getDateOfBirth(), LocalDate.parse(actual.getDateOfBirth())),
+                () -> assertEquals(expected.getFullName(), actual.getFullName())
         );
     }
 
-
-    public void assertAuthors(AuthorDto authorDto, AuthorUpdateDto authorUpdateDto) {
+    public void assertAuthors(AuthorUpdateDto expected, AuthorModel actual) {
         assertAll(
-                "Grouped assertion of two author dtos",
-                () -> assertEquals(authorDto.getCountry(), authorUpdateDto.getCountry()),
-                () -> assertEquals(authorDto.getDateOfBirth(), authorUpdateDto.getDateOfBirth()),
-                () -> assertEquals(authorDto.getFullName(), authorUpdateDto.getFullName())
+                "Grouped assertion of two author",
+                () -> assertEquals(expected.getCountry(), actual.getCountry()),
+                () -> assertEquals(LocalDate.parse(expected.getDateOfBirth()), actual.getDateOfBirth()),
+                () -> assertEquals(expected.getFullName(), actual.getFullName())
         );
     }
 }
