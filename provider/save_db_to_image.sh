@@ -28,7 +28,7 @@ save_db(){
     gzip "$path".old
 
     export PGPASSWORD="$password"
-    pg_dumpall -c --if-exists -h "$host" -p "$port" -U "$username" -w > "$path" &&
+    pg_dumpall -h "$host" -p "$port" -U "$username" -w > "$path" &&
 
     docker compose down -v
     docker compose up --build -d
