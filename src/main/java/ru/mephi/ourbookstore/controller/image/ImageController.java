@@ -26,23 +26,23 @@ import ru.mephi.ourbookstore.service.image.ImageService;
 @RequestMapping("/images")
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@SecurityRequirement(name = "bearerAuth")
 public class ImageController {
 
     final ImageService imageService;
 
-    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping(value = "/{imageId}", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     public @ResponseBody Resource get(@PathVariable String imageId) {
         return imageService.get(imageId);
     }
 
+    @SecurityRequirement(name = "bearerAuth")
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public String save(@RequestParam("image") MultipartFile image) {
         return imageService.save(image);
     }
 
+    @SecurityRequirement(name = "bearerAuth")
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping
     public void update(@RequestParam("imageId") String imageId,
@@ -51,18 +51,21 @@ public class ImageController {
         imageService.update(imageId, image);
     }
 
+    @SecurityRequirement(name = "bearerAuth")
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{imageId}")
     public void remove(@PathVariable String imageId) {
         imageService.remove(imageId);
     }
 
+    @SecurityRequirement(name = "bearerAuth")
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/{imageId}/books/{bookId}")
     public void addImageToBook(@PathVariable String imageId, @PathVariable Long bookId) {
         imageService.addImageToBook(imageId, bookId);
     }
 
+    @SecurityRequirement(name = "bearerAuth")
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{imageId}/books/{bookId}")
     public void removeImageFromBook(@PathVariable String imageId, @PathVariable Long bookId) {
