@@ -1,8 +1,12 @@
 package ru.mephi.ourbookstore.controller.order;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 import ru.mephi.ourbookstore.domain.OrderStatus;
 import ru.mephi.ourbookstore.domain.dto.order.Order;
@@ -20,25 +24,29 @@ import java.util.List;
 @RequestMapping("/orders")
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
+@SecurityRequirement(name = "bearerAuth")
 public class OrderController {
 
     final OrderService orderService;
     final OrderPositionService orderPositionService;
     final OrderDtoMapper orderDtoMapper;
 
+
     @GetMapping("/{orderId}")
+    @PreAuthorize("hasRole('ADMIN') or @appUserAuthService.checkPermission('ORDER',#orderId)")
     public OrderDto getOrderById(@PathVariable Long orderId) {
         return orderDtoMapper.objectToDto(orderService.getById(orderId));
     }
 
     @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public List<OrderDto> getAll() {
         return orderService.getAll().stream()
                 .map(orderDtoMapper::objectToDto)
                 .toList();
     }
-
     @GetMapping("/appUsers/{appUserId}")
+    @PreAuthorize("hasRole('ADMIN') or @appUserAuthService.checkPermission('APP_USER',#appUserId)")
     public List<OrderDto> getAllByAppUser(@PathVariable Long appUserId) {
         return orderService.getAll(appUserId).stream()
                 .map(orderDtoMapper::objectToDto)
@@ -46,12 +54,14 @@ public class OrderController {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN') or @appUserAuthService.checkPermission('APP_USER',#orderDto.appUserId)")
     public Long createOrder(@RequestBody OrderCreateDto orderDto) {
         Order order = orderDtoMapper.dtoToObject(orderDto);
         return orderService.create(order);
     }
 
     @PutMapping
+    @PreAuthorize("hasRole('ADMIN') or @appUserAuthService.checkPermission('ORDER',#orderDto.id)")
     public Long updateOrder(@RequestBody OrderUpdateDto orderDto) {
         Order order = orderDtoMapper.dtoToObject(orderDto);
         return orderService.update(order);
@@ -63,11 +73,13 @@ public class OrderController {
     }
 
     @DeleteMapping("/{orderId}")
+    @PreAuthorize("hasRole('ADMIN') or @appUserAuthService.checkPermission('ORDER',#orderId)")
     public void deleteOrder(@PathVariable Long orderId) {
         orderService.delete(orderId);
     }
 
     @PostMapping("/{orderId}/positions/{orderPositionId}")
+    @PreAuthorize("hasRole('ADMIN') or @appUserAuthService.checkPermission('ORDER',#orderId) and @appUserAuthService.checkPermission('ORDER_POSITION',#orderPositionId)")
     public Long createPositionLink(@PathVariable Long orderId, @PathVariable Long orderPositionId) {
         return orderPositionService.createLinkToOrder(new OrderPositionLink(orderId, orderPositionId));
     }

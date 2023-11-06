@@ -4,18 +4,28 @@ server:
   error:
     include-message: always
 
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG
+
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/book_store
-    username: "postgres"
-    password: "postgres"
+    username: "admin"
+    password: "admin"
     driver-class-name: org.postgresql.Driver
+  sql:
+    init:
+      encoding: utf-8
+      mode: never
   jpa:
     database: POSTGRESQL
     generate-ddl: true
     show-sql: true
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
@@ -23,3 +33,24 @@ spring:
         persistence:
           sharedCache:
             mode: ALL
+  security:
+    enabled: true
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8082/realms/book-store
+          public-key-location: classpath:keys/public.pem
+
+keycloak:
+  auth-server-url: http://localhost:8082
+  realm: book-store
+  client-name: my-client
+  public-client: true
+  use-resource-role-mappings: true
+
+keycloak-admin:
+  login: admin
+  password: admin
+  client-container-id: 579e5e42-c2b8-4014-a671-36ce67cb0809
+  public-key: classpath:keys/public.pem
+  type-public-key: RS256

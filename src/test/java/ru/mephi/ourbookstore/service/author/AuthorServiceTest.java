@@ -17,37 +17,24 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-
 @FieldDefaults(level = AccessLevel.PRIVATE)
 class AuthorServiceTest extends BookStoreTest {
 
-
     final AuthorModel AUTHOR_1 = AuthorModel.builder()
-            .id(1L)
             .country("Russia")
             .dateOfBirth(LocalDate.now())
             .fullName("Grigory Bashev")
             .build();
 
     @Autowired
-    AuthorRepository authorRepository;
-
-    @Autowired
     AuthorService authorService;
-
-    @BeforeEach
-    void clearDb() {
-        authorRepository.truncateTable();
-        List<AuthorModel> authors = authorRepository.findAll();
-        assertEquals(authors.size(), 0);
-    }
 
     @DisplayName("delete existing author")
     @Test
     void deleteExisting() {
-        authorRepository.save(AUTHOR_1);
+        Long authorId = authorRepository.save(AUTHOR_1).getId();
 
-        authorService.delete(AUTHOR_1.getId());
+        authorService.delete(authorId);
 
         List<AuthorModel> authors = authorRepository.findAll();
         assertEquals(authors.size(), 0);
