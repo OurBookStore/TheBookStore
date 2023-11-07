@@ -89,7 +89,8 @@ public class WebSecurityConfig {
                     .requestMatchers(
                             HttpMethod.GET,
                             "/books/**",
-                            "/authors/**"
+                            "/authors/**",
+                            "/images/**"
                     ).permitAll()
                     .requestMatchers(
                             HttpMethod.POST,

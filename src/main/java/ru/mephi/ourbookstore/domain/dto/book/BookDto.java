@@ -17,4 +17,5 @@ public class BookDto {
     String name;
     double price;
     int count;
+    String image;
 }

@@ -1,4 +1,4 @@
-package ru.mephi.ourbookstore.service.author;
+package ru.mephi.ourbookstore.author;
 
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import ru.mephi.ourbookstore.BookStoreTest;
 import ru.mephi.ourbookstore.domain.AuthorModel;
 import ru.mephi.ourbookstore.repository.author.AuthorRepository;
+import ru.mephi.ourbookstore.service.author.AuthorService;
 import ru.mephi.ourbookstore.service.exceptions.NotFoundException;
 
 import java.time.LocalDate;
