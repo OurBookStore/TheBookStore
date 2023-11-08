@@ -14,10 +14,9 @@
 ```sh 
 mvn clean package
 ```
-## Запустить проект 
+## Запустить проект
 ```sh
-cd provider
-docker-compose up -d
+docker-compose up -d --build
 ```
 Далее Keyclaok должен быть доступен по адресу:
 <http://localhost:8082>
