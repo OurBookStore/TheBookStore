@@ -18,6 +18,7 @@ import ru.mephi.ourbookstore.service.exceptions.ValidationException;
 import ru.mephi.ourbookstore.service.keyCloak.KeyCloakClient;
 
 import java.util.List;
+import java.util.Optional;
 
 import static ru.mephi.ourbookstore.domain.Entities.APP_USER;
 
@@ -82,16 +83,20 @@ public class AppUserService {
         AppUserModel old = appUserRepository.findById(appUserId)
                 .orElseThrow(() -> new NotFoundException(APP_USER, "id", appUserId));
         String nickname = appUser.getNickname();
-        if (appUserRepository.findByNickname(nickname).isPresent()) {
+        Optional<AppUserModel> appUserCheck = appUserRepository.findByNickname(nickname);
+        if (appUserCheck.isPresent() && !appUserCheck.get().getId().equals(appUserId)) {
             throw new AlreadyExistException(APP_USER, "nickname", nickname);
         }
         String email = appUser.getEmail();
-        if (appUserRepository.findByEmail(email).isPresent()) {
+        appUserCheck = appUserRepository.findByEmail(email);
+        if (appUserCheck.isPresent() && !appUserCheck.get().getId().equals(appUserId)) {
             throw new AlreadyExistException(APP_USER, "email", email);
         }
+        old.setEmail(appUser.getEmail());
+        old.setNickname(appUser.getNickname());
+        old.setPassword(appUser.getPassword());
         keyCloakClient.updateUser(appUserModelMapper.objectToClientModel(appUser), old.getKeycloakId());
-        AppUserModel appUserModel = appUserModelMapper.objectToModel(appUser);
-        appUserRepository.save(appUserModel);
+        appUserRepository.save(old);
     }
 
     @Transactional

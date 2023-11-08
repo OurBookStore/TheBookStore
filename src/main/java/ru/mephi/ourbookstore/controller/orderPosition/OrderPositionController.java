@@ -49,13 +49,13 @@ public class OrderPositionController {
         );
     }
 
-    @DeleteMapping("/carts")
+    @DeleteMapping("/carts/{orderPositionId}")
     @PreAuthorize("hasRole('ADMIN') or @appUserAuthService.checkPermission('ORDER_POSITION',#orderPositionRemoveFromCartDto.orderPositionId)")
     public void removeFromCart(
-            @RequestBody OrderPositionRemoveFromCartDto orderPositionRemoveFromCartDto
+            @PathVariable(value = "orderPositionId") Long orderPositionId
     ) {
         orderPositionService.removeFromCart(
-                orderPositionRemoveFromCartDto.getOrderPositionId()
+                orderPositionId
         );
     }
 
