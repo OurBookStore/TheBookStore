@@ -1,13 +1,20 @@
 package ru.mephi.ourbookstore.service.author;
 
 import jakarta.transaction.Transactional;
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 import ru.mephi.ourbookstore.domain.AuthorModel;
+import ru.mephi.ourbookstore.domain.BookModel;
 import ru.mephi.ourbookstore.domain.Entities;
 import ru.mephi.ourbookstore.domain.dto.author.Author;
+import ru.mephi.ourbookstore.domain.dto.book.Book;
 import ru.mephi.ourbookstore.mapper.author.AuthorModelMapper;
 import ru.mephi.ourbookstore.repository.author.AuthorRepository;
+import ru.mephi.ourbookstore.repository.book.BookRepository;
+import ru.mephi.ourbookstore.service.book.BookService;
+import ru.mephi.ourbookstore.service.exceptions.AlreadyExistException;
 import ru.mephi.ourbookstore.service.exceptions.NotFoundException;
 import ru.mephi.ourbookstore.service.exceptions.ValidationException;
 import ru.mephi.ourbookstore.util.validation.CountryValidator;
@@ -15,13 +22,17 @@ import ru.mephi.ourbookstore.util.validation.DateValidator;
 
 import java.util.List;
 
+import static ru.mephi.ourbookstore.domain.Entities.BOOK;
+
 @Service
 @RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class AuthorService {
 
-    private final AuthorRepository authorRepository;
-    private final AuthorModelMapper authorModelMapper;
-    private final CountryValidator countryValidator;
+    final BookRepository bookRepository;
+    final AuthorRepository authorRepository;
+    final AuthorModelMapper authorModelMapper;
+    final CountryValidator countryValidator;
 
     public Author getById(Long id) {
         AuthorModel author = authorRepository.findById(id).orElseThrow(
@@ -50,11 +61,40 @@ public class AuthorService {
     @Transactional
     public Long create(Author author) {
         if (authorRepository.existsByFullName(author.getFullName())) {
-            throw new ValidationException(Entities.AUTHOR, "Author with this name already exists", author.getFullName());
+            throw new ValidationException(Entities.AUTHOR, "Author with this name already exists",
+                    author.getFullName());
         }
         validate(author);
         AuthorModel model = authorRepository.save(authorModelMapper.objectToModel(author));
         return model.getId();
+    }
+
+    @Transactional
+    public void addBookToAuthor(long bookId, long authorId) {
+        BookModel bookModel = bookRepository.findById(bookId)
+                .orElseThrow(() -> new NotFoundException(BOOK, "id", bookId));
+        AuthorModel authorModel = authorRepository.findById(authorId)
+                .orElseThrow(() -> new NotFoundException(Entities.AUTHOR, "id", authorId));
+        if (authorModel.getBooks().contains(bookModel)) {
+            throw new AlreadyExistException(BOOK, "id", bookId);
+        }
+        authorModel.getBooks().add(bookModel);
+        bookModel.getAuthors().add(authorModel);
+        authorRepository.save(authorModel);
+    }
+
+    @Transactional
+    public void removeBookFromAuthor(long bookId, long authorId) {
+        BookModel bookModel = bookRepository.findById(bookId)
+                .orElseThrow(() -> new NotFoundException(BOOK, "id", bookId));
+        AuthorModel authorModel = authorRepository.findById(authorId)
+                .orElseThrow(() -> new NotFoundException(Entities.AUTHOR, "id", authorId));
+        if (!authorModel.getBooks().contains(bookModel)) {
+            throw new NotFoundException(BOOK, "id", bookId);
+        }
+        authorModel.getBooks().remove(bookModel);
+        bookModel.getAuthors().remove(authorModel);
+        authorRepository.save(authorModel);
     }
 
     public List<Author> getAll() {

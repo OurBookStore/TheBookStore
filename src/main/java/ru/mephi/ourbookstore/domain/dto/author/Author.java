@@ -13,5 +13,4 @@ public class Author {
     String fullName;
     String dateOfBirth;
     String country;
-
 }

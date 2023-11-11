@@ -55,4 +55,22 @@ public class AuthorController {
     public void delete(@PathVariable long authorId) {
         authorService.delete(authorId);
     }
+
+    @SecurityRequirement(name = "bearerAuth")
+    @PostMapping("/{authorId}/books/{bookId}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public void addBookToAuthor(@PathVariable long bookId,
+                                @PathVariable long authorId
+    ) {
+        authorService.addBookToAuthor(bookId, authorId);
+    }
+
+    @SecurityRequirement(name = "bearerAuth")
+    @DeleteMapping("/{authorId}/books/{bookId}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public void removeBookFromAuthor(@PathVariable long bookId,
+                                     @PathVariable long authorId
+    ) {
+        authorService.removeBookFromAuthor(bookId, authorId);
+    }
 }
