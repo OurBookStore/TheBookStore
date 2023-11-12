@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.mephi.ourbookstore.domain.OrderModel;
 import ru.mephi.ourbookstore.domain.OrderStatus;
+import ru.mephi.ourbookstore.domain.OrderStatusHistoryModel;
 import ru.mephi.ourbookstore.domain.dto.appUser.AppUser;
 import ru.mephi.ourbookstore.domain.dto.order.Order;
 import ru.mephi.ourbookstore.domain.dto.orderStatusHistory.OrderStatusHistory;
@@ -64,17 +65,13 @@ public class OrderService {
             throw new NotFoundException(APP_USER, "appUserId", order.getAppUser().getId());
         }
 
-        OrderModel newOrderModel = orderModelMapper.objectToModel(order);
-        newOrderModel.setAppUser(appUserModelMapper.objectToModel(appUser));
-        newOrderModel = orderRepository.save(newOrderModel);
+        order.setAppUser(appUser);
+        OrderModel newOrderModel = save(order);
 
         order = orderModelMapper.modelToObject(newOrderModel);
-
         OrderStatusHistory actualOSH = orderStatusHistoryService.writeOrderStatus(order, OrderStatus.CREATED);
         order.setActualOSH(actualOSH);
-        newOrderModel = orderModelMapper.objectToModel(order);
-        orderRepository.save(newOrderModel);
-
+        newOrderModel = save(order);
         return newOrderModel.getId();
     }
 
@@ -92,7 +89,11 @@ public class OrderService {
         Order order = getById(orderId);
         OrderModel orderModel = orderModelMapper.objectToModel(order);
         orderStatusHistoryService.inactivateOldStatus(orderModel);
-        return orderStatusHistoryService.writeOrderStatus(order, orderStatus).getId();
+
+        OrderStatusHistory actualOSH = orderStatusHistoryService.writeOrderStatus(order, orderStatus);
+        order.setActualOSH(actualOSH);
+        save(order);
+        return actualOSH.getId();
     }
 
     @Transactional
@@ -100,6 +101,12 @@ public class OrderService {
         orderRepository.findById(orderId)
                 .orElseThrow(() -> new NotFoundException(ORDER, "id", orderId));
         orderRepository.deleteById(orderId);
+    }
+
+    @Transactional
+    public OrderModel save(Order order){
+        OrderModel model = orderModelMapper.objectToModel(order);
+        return orderRepository.save(model);
     }
 
     private void validation(Order order) {

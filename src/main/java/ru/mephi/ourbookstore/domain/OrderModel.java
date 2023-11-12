@@ -33,6 +33,7 @@ public class OrderModel {
     List<OrderStatusHistoryModel> orderStatusHistories;
 
     @OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
+    @ToString.Exclude
     @JoinTable(name = "order_actual_status",
         joinColumns = {@JoinColumn(
                 name = "order_id",
