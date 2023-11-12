@@ -26,5 +26,5 @@ public class Book {
     int count;
     String image;
     List<OrderPosition> orderPositions;
-    Author author;
+    List<Author> authors;
 }

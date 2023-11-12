@@ -1,23 +1,28 @@
 package ru.mephi.ourbookstore.mapper.book;
 
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.Mappings;
 import ru.mephi.ourbookstore.domain.BookModel;
 import ru.mephi.ourbookstore.domain.dto.book.Book;
 import ru.mephi.ourbookstore.mapper.author.AuthorModelNullableMapper;
-import ru.mephi.ourbookstore.mapper.orderPosition.OrderPositionModelNullableMapper;
 
-/**
- * @author Aleksei Iagnenkov (alekseiiagn)
- */
 @Mapper(componentModel = "spring",
         uses = {
                 AuthorModelNullableMapper.class,
-                OrderPositionModelNullableMapper.class,
         }
 )
-public interface BookModelMapper {
+public interface BookModelNullableMapper {
 
+    @Mappings({
+            @Mapping(target = "orderPositions", expression = "java(null)"),
+            @Mapping(target = "authors", expression = "java(null)")
+    })
     Book modelToObject(BookModel model);
 
+    @Mappings({
+            @Mapping(target = "orderPositions", expression = "java(null)"),
+            @Mapping(target = "authors", expression = "java(null)")
+    })
     BookModel objectToModel(Book book);
 }

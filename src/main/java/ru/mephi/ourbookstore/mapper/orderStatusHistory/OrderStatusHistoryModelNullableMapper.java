@@ -1,4 +1,4 @@
-package ru.mephi.ourbookstore.mapper.order.nullable;
+package ru.mephi.ourbookstore.mapper.orderStatusHistory;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -10,17 +10,13 @@ import ru.mephi.ourbookstore.domain.dto.orderStatusHistory.OrderStatusHistory;
 
 @Mapper(componentModel = "spring")
 public interface OrderStatusHistoryModelNullableMapper {
-    @Mappings(
-            {
-                    @Mapping(target = "order", expression = "java(null)")
-            }
-    )
+    @Mappings({
+            @Mapping(target = "order", expression = "java(null)")
+    })
     OrderStatusHistory modelToObject(OrderStatusHistoryModel model);
 
-    @Mappings (
-            {
-                    @Mapping(target = "order", expression = "java(null)")
-            }
-    )
+    @Mappings({
+            @Mapping(target = "order", expression = "java(null)")
+    })
     OrderStatusHistoryModel objectToModel(OrderStatusHistory object);
 }
