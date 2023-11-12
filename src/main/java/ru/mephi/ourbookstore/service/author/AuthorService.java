@@ -1,29 +1,29 @@
 package ru.mephi.ourbookstore.service.author;
 
+import java.util.List;
+
 import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.mephi.ourbookstore.domain.AuthorModel;
 import ru.mephi.ourbookstore.domain.BookModel;
 import ru.mephi.ourbookstore.domain.Entities;
 import ru.mephi.ourbookstore.domain.dto.author.Author;
-import ru.mephi.ourbookstore.domain.dto.book.Book;
 import ru.mephi.ourbookstore.mapper.author.AuthorModelMapper;
 import ru.mephi.ourbookstore.repository.author.AuthorRepository;
 import ru.mephi.ourbookstore.repository.book.BookRepository;
-import ru.mephi.ourbookstore.service.book.BookService;
 import ru.mephi.ourbookstore.service.exceptions.AlreadyExistException;
 import ru.mephi.ourbookstore.service.exceptions.NotFoundException;
 import ru.mephi.ourbookstore.service.exceptions.ValidationException;
 import ru.mephi.ourbookstore.util.validation.CountryValidator;
 import ru.mephi.ourbookstore.util.validation.DateValidator;
 
-import java.util.List;
-
 import static ru.mephi.ourbookstore.domain.Entities.BOOK;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -46,6 +46,8 @@ public class AuthorService {
         AuthorModel author = authorRepository.findById(authorId).orElseThrow(
                 () -> new NotFoundException(Entities.AUTHOR, "id", authorId)
         );
+        author.getBooks()
+                .forEach(bookModel -> bookModel.getAuthors().remove(author));
         authorRepository.delete(author);
     }
 
