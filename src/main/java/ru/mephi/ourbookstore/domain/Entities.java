@@ -14,6 +14,7 @@ public enum Entities {
     ORDER("order"),
     ORDER_POSITION("orderPosition"),
     ORDER_STATUS("orderStatus"),
+    ORDER_STATUS_HISTORY("orderStatusHistory"),
     CART("cart"),
     IMAGE("image");
 

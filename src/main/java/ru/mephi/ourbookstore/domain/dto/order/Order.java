@@ -2,6 +2,7 @@ package ru.mephi.ourbookstore.domain.dto.order;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import ru.mephi.ourbookstore.domain.OrderStatusHistoryModel;
 import ru.mephi.ourbookstore.domain.dto.appUser.AppUser;
 import ru.mephi.ourbookstore.domain.dto.orderPosition.OrderPosition;
 import ru.mephi.ourbookstore.domain.dto.orderStatusHistory.OrderStatusHistory;
@@ -19,6 +20,7 @@ public class Order {
     AppUser appUser;
     List<OrderPosition> orderPositions;
     String address;
-    List<OrderStatusHistory> orderStatusHistoryList;
+    List<OrderStatusHistory> orderStatusHistories;
+    OrderStatusHistory actualOSH;
     double totalPrice;
 }

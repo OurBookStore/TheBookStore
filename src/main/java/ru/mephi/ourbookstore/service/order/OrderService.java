@@ -1,15 +1,18 @@
 package ru.mephi.ourbookstore.service.order;
 
 
+import jakarta.persistence.Query;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.hibernate.Session;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.mephi.ourbookstore.domain.OrderModel;
 import ru.mephi.ourbookstore.domain.OrderStatus;
 import ru.mephi.ourbookstore.domain.dto.appUser.AppUser;
 import ru.mephi.ourbookstore.domain.dto.order.Order;
+import ru.mephi.ourbookstore.domain.dto.orderStatusHistory.OrderStatusHistory;
 import ru.mephi.ourbookstore.mapper.appUser.AppUserModelMapper;
 import ru.mephi.ourbookstore.mapper.order.OrderModelMapper;
 import ru.mephi.ourbookstore.repository.order.OrderRepository;
@@ -61,14 +64,18 @@ public class OrderService {
             throw new NotFoundException(APP_USER, "appUserId", order.getAppUser().getId());
         }
 
-        OrderModel newModel = orderModelMapper.objectToModel(order);
-        newModel.setAppUser(appUserModelMapper.objectToModel(appUser));
-        newModel = orderRepository.save(newModel);
+        OrderModel newOrderModel = orderModelMapper.objectToModel(order);
+        newOrderModel.setAppUser(appUserModelMapper.objectToModel(appUser));
+        newOrderModel = orderRepository.save(newOrderModel);
 
-        order = orderModelMapper.modelToObject(newModel);
-        orderStatusHistoryService.writeOrderStatus(order, OrderStatus.CREATED);
+        order = orderModelMapper.modelToObject(newOrderModel);
 
-        return newModel.getId();
+        OrderStatusHistory actualOSH = orderStatusHistoryService.writeOrderStatus(order, OrderStatus.CREATED);
+        order.setActualOSH(actualOSH);
+        newOrderModel = orderModelMapper.objectToModel(order);
+        orderRepository.save(newOrderModel);
+
+        return newOrderModel.getId();
     }
 
     @Transactional
@@ -85,7 +92,7 @@ public class OrderService {
         Order order = getById(orderId);
         OrderModel orderModel = orderModelMapper.objectToModel(order);
         orderStatusHistoryService.inactivateOldStatus(orderModel);
-        return orderStatusHistoryService.writeOrderStatus(order, orderStatus);
+        return orderStatusHistoryService.writeOrderStatus(order, orderStatus).getId();
     }
 
     @Transactional

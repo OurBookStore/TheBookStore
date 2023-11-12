@@ -68,6 +68,7 @@ public class OrderController {
     }
 
     @PutMapping("/{orderId}")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER')")
     public Long updateStatus(@PathVariable Long orderId, @RequestBody OrderStatus orderStatus) {
         return orderService.updateOrderStatus(orderId, orderStatus);
     }
