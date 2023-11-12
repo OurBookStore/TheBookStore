@@ -1,7 +1,10 @@
 package ru.mephi.ourbookstore.domain.dto.author;
 
+import java.util.List;
+
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import ru.mephi.ourbookstore.domain.dto.book.Book;
 
 @Data
 @Builder
@@ -13,5 +16,5 @@ public class Author {
     String fullName;
     String dateOfBirth;
     String country;
-
+    List<Book> books;
 }

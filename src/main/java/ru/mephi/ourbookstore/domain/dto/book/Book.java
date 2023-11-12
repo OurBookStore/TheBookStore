@@ -1,10 +1,15 @@
 package ru.mephi.ourbookstore.domain.dto.book;
 
-import lombok.*;
-import lombok.experimental.FieldDefaults;
-import ru.mephi.ourbookstore.domain.OrderPositionModel;
-
 import java.util.List;
+
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.FieldDefaults;
+import ru.mephi.ourbookstore.domain.dto.author.Author;
+import ru.mephi.ourbookstore.domain.dto.orderPosition.OrderPosition;
 
 /**
  * @author Aleksei Iagnenkov (alekseiiagn)
@@ -20,5 +25,6 @@ public class Book {
     double price;
     int count;
     String image;
-    List<OrderPositionModel> orderPositions;
+    List<OrderPosition> orderPositions;
+    List<Author> authors;
 }

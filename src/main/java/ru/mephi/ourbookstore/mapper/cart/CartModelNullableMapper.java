@@ -1,4 +1,4 @@
-package ru.mephi.ourbookstore.mapper.orderPosition.nullable;
+package ru.mephi.ourbookstore.mapper.cart;
 
 import java.util.List;
 
@@ -11,9 +11,11 @@ import ru.mephi.ourbookstore.domain.dto.cart.Cart;
 /**
  * @author Aleksei Iagnenkov (alekseiiagn)
  */
-@Mapper(componentModel = "spring", imports = {
-        List.class,
-})
+@Mapper(componentModel = "spring",
+        imports = {
+                List.class,
+        }
+)
 public interface CartModelNullableMapper {
 
     @Mappings({
