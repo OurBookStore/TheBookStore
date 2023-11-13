@@ -1,4 +1,25 @@
 services:
+
+  app:
+    image: bookstore/app
+    container_name: book_store_app
+    build:
+      context: ./
+    networks:
+      - app_network
+    ports:
+      - 8080:8080
+    environment:
+      SPRING_CONFIG_LOCATION: "src/main/resources/application-prod.yaml"
+        #    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+      keycloak:
+        condition: service_started
+    volumes:
+      - ./book_store/src/main/resources/:/app/src/main/resources
+
   postgres:
     image: bookstore/postgres
     container_name: book_store_postgres
@@ -7,7 +28,6 @@ services:
     volumes:
       - postgres:/var/lib/postgresql/data
     environment:
-#      POSTGRES_USER: admin
       POSTGRES_PASSWORD: admin
     networks:
       - app_network
@@ -53,3 +73,4 @@ networks:
 volumes:
   postgres:
     driver: local
+  book_store_resources:

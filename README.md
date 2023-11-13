@@ -8,16 +8,20 @@
 
 <http://localhost:8080/app/swagger-ui/index.html>
 
-Настройка по развертыванию 
-```sh
-cd provider
-```
+# Настройка по развертыванию 
 
+## Упаковать последнюю версию в jar
+```sh 
+mvn clean package
+```
+## Запустить проект
 ```sh
-docker-compose up
+docker-compose up -d --build
 ```
 Далее Keyclaok должен быть доступен по адресу:
-
 <http://localhost:8082>
-
+База по адреcу
+<http://localhost:5432>
+И приложение по адреcу 
+<http://localhost:8080>
 Если нужно каким-то образом поменять начальное состояние кейклока, то в файле предусмотрен **keycloak-realm.json**. Его можно использовать как импорт настроек реалма Keycloak.

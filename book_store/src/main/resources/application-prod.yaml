@@ -12,7 +12,7 @@ logging:
 
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/book_store
+    url: jdbc:postgresql://book_store_postgres:5432/book_store
     username: "admin"
     password: "admin"
     driver-class-name: org.postgresql.Driver
@@ -38,7 +38,7 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://localhost:8082/realms/book-store
+          issuer-uri: http://book_store_keycloak:8082/realms/book-store
           public-key-location: classpath:keys/public.pem
 
 keycloak:
