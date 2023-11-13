@@ -1,4 +1,4 @@
-FROM eclipse-temurin:17-jdk-alpine
+FROM openjdk:17
 WORKDIR /app
 VOLUME /tmp
 COPY target/${VERSION:-"our-book-store-0.0.1-SNAPSHOT.jar"} app.jar
