@@ -17,4 +17,5 @@ public class BookUpdateDto {
     String name;
     double price;
     int count;
+    Long authorId;
 }

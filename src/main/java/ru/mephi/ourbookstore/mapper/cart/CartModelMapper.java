@@ -10,7 +10,11 @@ import ru.mephi.ourbookstore.mapper.orderPosition.OrderPositionModelMapper;
 /**
  * @author Aleksei Iagnenkov (alekseiiagn)
  */
-@Mapper(componentModel = "spring", uses = {OrderPositionModelMapper.class})
+@Mapper(componentModel = "spring",
+        uses = {
+                OrderPositionModelMapper.class,
+        }
+)
 public interface CartModelMapper {
 
     @Mappings({
