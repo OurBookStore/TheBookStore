@@ -84,12 +84,12 @@ public class AppUserService {
                 .orElseThrow(() -> new NotFoundException(APP_USER, "id", appUserId));
         String nickname = appUser.getNickname();
         Optional<AppUserModel> appUserCheck = appUserRepository.findByNickname(nickname);
-        if (appUserCheck.isPresent() && !appUserCheck.get().getId().equals(appUserId)) {
+        if (appUserCheck.isPresent()) {
             throw new AlreadyExistException(APP_USER, "nickname", nickname);
         }
         String email = appUser.getEmail();
         appUserCheck = appUserRepository.findByEmail(email);
-        if (appUserCheck.isPresent() && !appUserCheck.get().getId().equals(appUserId)) {
+        if (appUserCheck.isPresent()) {
             throw new AlreadyExistException(APP_USER, "email", email);
         }
         old.setEmail(appUser.getEmail());
