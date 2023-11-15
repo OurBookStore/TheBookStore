@@ -12,7 +12,7 @@ logging:
 
 spring:
   datasource:
-    url: jdbc:postgresql://book_store_postgres:5432/book_store
+    url: jdbc:postgresql://book_store_postgres:5400/book_store
     username: "admin"
     password: "admin"
     driver-class-name: org.postgresql.Driver
