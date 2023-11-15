@@ -305,8 +305,7 @@ public class KeyCloakClient {
                 .uri("/admin/realms/{realm_name}/users/{user_id}",realm,userId)
                 .headers(h -> h.setBearerAuth(accessTokenResponse.getToken()))
                 .retrieve()
-                .onStatus(HttpStatusCode::isError, clientResponse ->
-                        Mono.error(new KeycloakIntegrationException()))
+                .onStatus(HttpStatusCode::isError, clientResponse -> Mono.error(new KeycloakIntegrationException()))
                 .toBodilessEntity()
                 .block();
     }
