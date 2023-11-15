@@ -8,10 +8,10 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import ru.mephi.ourbookstore.domain.BookModel;
 import ru.mephi.ourbookstore.domain.dto.book.Book;
 import ru.mephi.ourbookstore.mapper.book.BookModelMapper;
 import ru.mephi.ourbookstore.repository.book.BookRepository;
-import ru.mephi.ourbookstore.domain.BookModel;
 import ru.mephi.ourbookstore.service.exceptions.AlreadyExistException;
 import ru.mephi.ourbookstore.service.exceptions.NotFoundException;
 import ru.mephi.ourbookstore.service.exceptions.ValidationException;
@@ -69,6 +69,27 @@ public class BookService {
         bookRepository.findById(bookId)
                 .orElseThrow(() -> new NotFoundException(BOOK, "id", bookId));
         bookRepository.deleteById(bookId);
+    }
+
+    public void addImageToBook(String imageId, Long bookId) {
+        BookModel bookModel = bookRepository.findById(bookId)
+                .orElseThrow(() -> new NotFoundException(BOOK, "id", bookId));
+        bookModel.setImage(imageId);
+        bookRepository.save(bookModel);
+    }
+
+    public void removeImageFromBook(Long bookId) {
+        BookModel bookModel = bookRepository.findById(bookId)
+                .orElseThrow(() -> new NotFoundException(BOOK, "id", bookId));
+        bookModel.setImage(null);
+        bookRepository.save(bookModel);
+    }
+
+    public void removeImage(String imageId) {
+        List<BookModel> bookModels = bookRepository.findBookModelsByImage(imageId).stream()
+                .peek(book -> book.setImage(null))
+                .toList();
+        bookRepository.saveAll(bookModels);
     }
 
     private void validate(Book book) {

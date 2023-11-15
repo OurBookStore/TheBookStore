@@ -2,10 +2,10 @@ package ru.mephi.ourbookstore.domain.dto.orderStatusHistory;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import ru.mephi.ourbookstore.domain.OrderModel;
 import ru.mephi.ourbookstore.domain.OrderStatus;
+import ru.mephi.ourbookstore.domain.dto.order.Order;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Data
 @Builder
@@ -15,8 +15,8 @@ import java.util.Date;
 public class OrderStatusHistory {
 
     Long id;
-    OrderModel order;
+    Order order;
     OrderStatus status;
-    Date date;
-    boolean isActual;
+    LocalDateTime actualFrom;
+    boolean actualFlag;
 }

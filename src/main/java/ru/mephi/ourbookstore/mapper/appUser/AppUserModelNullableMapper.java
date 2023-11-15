@@ -1,4 +1,4 @@
-package ru.mephi.ourbookstore.mapper.order.nullable;
+package ru.mephi.ourbookstore.mapper.appUser;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

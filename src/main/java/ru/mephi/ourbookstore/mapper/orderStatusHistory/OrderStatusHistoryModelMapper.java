@@ -5,7 +5,7 @@ import ru.mephi.ourbookstore.domain.OrderStatusHistoryModel;
 import ru.mephi.ourbookstore.domain.dto.orderStatusHistory.OrderStatusHistory;
 
 @Mapper(componentModel = "spring")
-public interface OrderStatusModelMapper {
+public interface OrderStatusHistoryModelMapper {
 
     OrderStatusHistory modelToObject(OrderStatusHistoryModel orderStatusHistoryModel);
 

@@ -4,6 +4,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 import ru.mephi.ourbookstore.domain.dto.appUser.AppUser;
 import ru.mephi.ourbookstore.domain.dto.orderPosition.OrderPosition;
+import ru.mephi.ourbookstore.domain.dto.orderStatusHistory.OrderStatusHistory;
 
 import java.util.List;
 
@@ -18,5 +19,6 @@ public class Order {
     AppUser appUser;
     List<OrderPosition> orderPositions;
     String address;
+    List<OrderStatusHistory> orderStatusHistoryList;
     double totalPrice;
 }

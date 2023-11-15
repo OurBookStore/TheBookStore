@@ -1,7 +1,10 @@
 package ru.mephi.ourbookstore.domain.dto.book;
 
+import java.util.List;
+
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import ru.mephi.ourbookstore.domain.dto.author.AuthorDto;
 
 /**
  * @author Aleksei Iagnenkov (alekseiiagn)
@@ -17,4 +20,6 @@ public class BookDto {
     String name;
     double price;
     int count;
+    String image;
+    List<AuthorDto> authors;
 }
