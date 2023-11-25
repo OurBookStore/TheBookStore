@@ -10,12 +10,15 @@ import ru.mephi.ourbookstore.domain.dto.order.Order;
 public interface OrderModelNullableMapper {
     @Mappings({
             @Mapping(target = "orderPositions", expression = "java(null)"),
-            @Mapping(target = "appUser", expression = "java(null)")
+            @Mapping(target = "appUser", expression = "java(null)"),
+            @Mapping(target = "orderStatusHistories",  expression = "java(null)")
     })
     Order modelToObject(OrderModel orderModel);
 
     @Mappings({
-            @Mapping(target = "orderPositions", expression = "java(null)")
+            @Mapping(target = "orderPositions", expression = "java(null)"),
+            @Mapping(target = "appUser", expression = "java(null)"),
+            @Mapping(target = "orderStatusHistories",  expression = "java(null)")
     })
     OrderModel objectToModel(Order order);
 }

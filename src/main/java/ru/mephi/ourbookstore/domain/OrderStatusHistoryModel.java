@@ -15,17 +15,22 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Table(indexes = {
-        @Index(columnList = "order_id, status", unique = true)
+        @Index(columnList = "order_id, status", unique = false)
 })
 public class OrderStatusHistoryModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
+
     @ManyToOne
+    @JoinColumn(name = "order_id", foreignKey = @ForeignKey(name = "none", value = ConstraintMode.NO_CONSTRAINT))
     OrderModel order;
+
     @Enumerated(EnumType.STRING)
     OrderStatus status;
+
     LocalDateTime actualFrom;
+
     boolean actualFlag;
 }

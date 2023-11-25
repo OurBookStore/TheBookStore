@@ -12,6 +12,7 @@ import ru.mephi.ourbookstore.repository.book.BookRepository;
 import ru.mephi.ourbookstore.repository.cart.CartRepository;
 import ru.mephi.ourbookstore.repository.order.OrderRepository;
 import ru.mephi.ourbookstore.repository.orderPosition.OrderPositionRepository;
+import ru.mephi.ourbookstore.repository.orderStatusHistory.OrderStatusHistoryRepository;
 
 /**
  * @author Aleksei Iagnenkov (alekseiiagn)
@@ -32,6 +33,8 @@ public class BookStoreTest {
     @Autowired
     protected OrderPositionRepository orderPositionRepository;
     @Autowired
+    protected OrderStatusHistoryRepository orderStatusHistoryRepository;
+    @Autowired
     protected BookRepository bookRepository;
     @Autowired
     protected AuthorRepository authorRepository;
@@ -46,6 +49,7 @@ public class BookStoreTest {
         bookRepository.deleteAll();
         authorRepository.deleteAll();
         cartRepository.deleteAll();
+        orderStatusHistoryRepository.deleteAll();
     }
 }
 

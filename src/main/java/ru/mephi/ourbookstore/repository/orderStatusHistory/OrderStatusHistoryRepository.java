@@ -14,9 +14,9 @@ import java.util.Optional;
 @Repository
 public interface OrderStatusHistoryRepository extends JpaRepository<OrderStatusHistoryModel, Long> {
     @Query("SELECT osh FROM OrderStatusHistoryModel osh WHERE osh.order = :order AND osh.actualFlag = true")
-    Optional<OrderStatusHistoryModel> findActualByOrder(@Param("order") OrderModel order);
+    Optional<OrderStatusHistoryModel> getActualByOrder(@Param("order") OrderModel order);
 
     @Modifying
     @Query("UPDATE OrderStatusHistoryModel osh SET osh.actualFlag = false WHERE osh.order = :order")
-    void inactivateOldStatusesByOrder(@Param("order") OrderModel order);
+    int inactivateOldStatusesByOrder(@Param("order") OrderModel order);
 }

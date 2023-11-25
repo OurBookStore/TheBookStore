@@ -5,6 +5,8 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 import ru.mephi.ourbookstore.domain.dto.appUser.AppUserDto;
 import ru.mephi.ourbookstore.domain.dto.orderPosition.OrderPositionOfOrderDto;
+import ru.mephi.ourbookstore.domain.dto.orderStatusHistory.OrderStatusHistory;
+import ru.mephi.ourbookstore.domain.dto.orderStatusHistory.OrderStatusHistoryDto;
 
 import java.util.List;
 
@@ -20,6 +22,8 @@ public class OrderDto {
     AppUserDto appUserDto;
     @JsonProperty(value = "orderPositions")
     List<OrderPositionOfOrderDto> orderPositionOfOrderDtos;
+    @JsonProperty(value = "orderStatusHistories")
+    List<OrderStatusHistoryDto> orderStatusHistoryDtos;
     String address;
     double totalPrice;
 }

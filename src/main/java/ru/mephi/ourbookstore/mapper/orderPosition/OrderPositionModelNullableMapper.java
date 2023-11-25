@@ -5,6 +5,7 @@ import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 import ru.mephi.ourbookstore.domain.OrderPositionModel;
 import ru.mephi.ourbookstore.domain.dto.orderPosition.OrderPosition;
+import ru.mephi.ourbookstore.mapper.book.BookModelNullableMapper;
 
 @Mapper(componentModel = "spring")
 public interface OrderPositionModelNullableMapper {

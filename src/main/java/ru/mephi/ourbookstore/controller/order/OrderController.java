@@ -8,13 +8,17 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
+import ru.mephi.ourbookstore.domain.OrderModel;
 import ru.mephi.ourbookstore.domain.OrderStatus;
 import ru.mephi.ourbookstore.domain.dto.order.Order;
 import ru.mephi.ourbookstore.domain.dto.order.OrderCreateDto;
 import ru.mephi.ourbookstore.domain.dto.order.OrderDto;
 import ru.mephi.ourbookstore.domain.dto.order.OrderUpdateDto;
 import ru.mephi.ourbookstore.domain.dto.orderPosition.OrderPositionLink;
+import ru.mephi.ourbookstore.domain.dto.orderStatusHistory.OrderStatusHistoryDto;
 import ru.mephi.ourbookstore.mapper.order.OrderDtoMapper;
+import ru.mephi.ourbookstore.mapper.orderStatusHistory.OrderStatusHistoryDtoMapper;
+import ru.mephi.ourbookstore.mapper.orderStatusHistory.OrderStatusHistoryDtoMapperImpl;
 import ru.mephi.ourbookstore.service.order.OrderService;
 import ru.mephi.ourbookstore.service.orderPosition.OrderPositionService;
 
@@ -30,6 +34,7 @@ public class OrderController {
     final OrderService orderService;
     final OrderPositionService orderPositionService;
     final OrderDtoMapper orderDtoMapper;
+    final OrderStatusHistoryDtoMapperImpl oshDtoMapper;
 
 
     @GetMapping("/{orderId}")
@@ -68,8 +73,15 @@ public class OrderController {
     }
 
     @PutMapping("/{orderId}")
-    public Long updateStatus(@PathVariable Long orderId, @RequestBody OrderStatus orderStatus) {
-        return orderService.updateOrderStatus(orderId, orderStatus);
+    @PreAuthorize("hasRole('ADMIN')")
+    public Long updateStatus(@PathVariable Long orderId, @RequestBody String orderStatus) {
+        return orderService.updateOrderStatus(orderId, OrderStatus.valueOf(orderStatus));
+    }
+
+    @GetMapping("/{orderId}/actual-status")
+    @PreAuthorize("hasRole('ADMIN') or @appUserAuthService.checkPermission('ORDER',#orderDto.id)")
+    public OrderStatusHistoryDto getActualStatus(@PathVariable Long orderId) {
+        return oshDtoMapper.objectToDto(orderService.getActualStatus(orderId));
     }
 
     @DeleteMapping("/{orderId}")

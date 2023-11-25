@@ -8,8 +8,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.mephi.ourbookstore.domain.OrderModel;
 import ru.mephi.ourbookstore.domain.OrderStatus;
+import ru.mephi.ourbookstore.domain.OrderStatusHistoryModel;
 import ru.mephi.ourbookstore.domain.dto.appUser.AppUser;
 import ru.mephi.ourbookstore.domain.dto.order.Order;
+import ru.mephi.ourbookstore.domain.dto.orderStatusHistory.OrderStatusHistory;
 import ru.mephi.ourbookstore.mapper.appUser.AppUserModelMapper;
 import ru.mephi.ourbookstore.mapper.order.OrderModelMapper;
 import ru.mephi.ourbookstore.repository.order.OrderRepository;
@@ -32,7 +34,7 @@ public class OrderService {
     final OrderModelMapper orderModelMapper;
     final AppUserService appUserService;
     final AppUserModelMapper appUserModelMapper;
-    final OrderStatusHistoryService orderStatusHistoryService;
+    final OrderStatusHistoryService oshService;
 
     public Order getById(long orderId) {
         OrderModel orderModel = orderRepository.findById(orderId)
@@ -61,14 +63,14 @@ public class OrderService {
             throw new NotFoundException(APP_USER, "appUserId", order.getAppUser().getId());
         }
 
-        OrderModel newModel = orderModelMapper.objectToModel(order);
-        newModel.setAppUser(appUserModelMapper.objectToModel(appUser));
-        newModel = orderRepository.save(newModel);
+        OrderModel newOrderModel = orderModelMapper.objectToModel(order);
+        newOrderModel.setAppUser(appUserModelMapper.objectToModel(appUser));
+        newOrderModel = orderRepository.save(newOrderModel);
 
-        order = orderModelMapper.modelToObject(newModel);
-        orderStatusHistoryService.writeOrderStatus(order, OrderStatus.CREATED);
+        order = orderModelMapper.modelToObject(newOrderModel);
+        oshService.writeActualOSH(order, OrderStatus.CREATED);
 
-        return newModel.getId();
+        return newOrderModel.getId();
     }
 
     @Transactional
@@ -82,10 +84,12 @@ public class OrderService {
 
     @Transactional
     public Long updateOrderStatus(Long orderId, OrderStatus orderStatus) {
-        Order order = getById(orderId);
-        OrderModel orderModel = orderModelMapper.objectToModel(order);
-        orderStatusHistoryService.inactivateOldStatus(orderModel);
-        return orderStatusHistoryService.writeOrderStatus(order, orderStatus);
+        OrderModel orderModel = orderRepository.findById(orderId)
+                .orElseThrow(() -> new NotFoundException(ORDER, "id", orderId));
+        Order order = orderModelMapper.modelToObject(orderModel);
+        oshService.inactivateByOrder(orderModel);
+        OrderStatusHistoryModel newOshModel = oshService.writeActualOSH(order, orderStatus);
+        return newOshModel.getId();
     }
 
     @Transactional
@@ -102,4 +106,9 @@ public class OrderService {
         }
     }
 
+    public OrderStatusHistory getActualStatus(Long orderId) {
+        OrderModel orderModel = orderRepository.findById(orderId)
+                .orElseThrow(() -> new NotFoundException(ORDER, "id", orderId));
+        return oshService.getActualByOrder(orderModel);
+    }
 }
