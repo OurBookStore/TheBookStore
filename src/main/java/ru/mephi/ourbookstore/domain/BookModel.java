@@ -18,6 +18,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.FieldDefaults;
+import org.hibernate.search.annotations.*;
 
 /**
  * @author Aleksei Iagnenkov (alekseiiagn)
@@ -27,12 +28,14 @@ import lombok.experimental.FieldDefaults;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Indexed
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class BookModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
+    @Field(index = Index.YES, analyze = Analyze.YES)
     String name;
     double price;
     int count;
@@ -41,6 +44,7 @@ public class BookModel {
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     List<OrderPositionModel> orderPositions;
+    @IndexedEmbedded
     @ManyToMany(cascade = {CascadeType.MERGE}, fetch = FetchType.EAGER)
     @ToString.Exclude
     @EqualsAndHashCode.Exclude

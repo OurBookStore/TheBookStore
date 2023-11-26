@@ -5,6 +5,17 @@ import java.util.List;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.apache.lucene.util.QueryBuilder;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.search.FullTextSession;
+import org.hibernate.search.Search;
+import org.hibernate.search.SearchFactory;
+import org.hibernate.search.backend.elasticsearch.ElasticsearchExtension;
+import org.hibernate.search.engine.search.query.SearchResult;
+import org.hibernate.search.mapper.orm.Search;
+import org.hibernate.search.mapper.orm.session.SearchSession;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,6 +26,9 @@ import ru.mephi.ourbookstore.repository.book.BookRepository;
 import ru.mephi.ourbookstore.service.exceptions.AlreadyExistException;
 import ru.mephi.ourbookstore.service.exceptions.NotFoundException;
 import ru.mephi.ourbookstore.service.exceptions.ValidationException;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 import static ru.mephi.ourbookstore.domain.Entities.BOOK;
 
@@ -29,6 +43,9 @@ public class BookService {
     final BookRepository bookRepository;
     final BookModelMapper bookModelMapper;
 
+    @PersistenceContext
+    final EntityManager entityManager;
+
     @Transactional(propagation = Propagation.REQUIRED, readOnly = true, noRollbackFor = Exception.class)
     public Book getById(long bookId) {
         BookModel bookModel = bookRepository.findById(bookId)
@@ -39,6 +56,17 @@ public class BookService {
     @Transactional(propagation = Propagation.REQUIRED, readOnly = true, noRollbackFor = Exception.class)
     public List<Book> getAll() {
         return bookRepository.findAll().stream()
+                .map(bookModelMapper::modelToObject)
+                .toList();
+    }
+
+    public List<Book> search(String searchText) {
+        SearchSession searchSession = Search.session(entityManager);
+
+        SearchResult<BookModel> result = searchSession.search(BookModel.class).extension(ElasticsearchExtension.get())
+                .where(f -> f.simpleQueryString().fields("name","authors.name").matching(searchText)).fetch(100);
+
+        return result.hits().stream()
                 .map(bookModelMapper::modelToObject)
                 .toList();
     }

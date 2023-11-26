@@ -3,13 +3,7 @@ package ru.mephi.ourbookstore.domain;
 import java.time.LocalDate;
 import java.util.List;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,19 +12,25 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.FieldDefaults;
+import org.hibernate.search.annotations.*;
+import org.hibernate.search.annotations.Index;
 
 @Entity
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Indexed
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class AuthorModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
+    @Field
     String fullName;
+    @Field(index = Index.YES, analyze= Analyze.NO, store = Store.YES)
+    @DateBridge(resolution = Resolution.MONTH)
     LocalDate dateOfBirth;
     String country;
     @ManyToMany(cascade = {CascadeType.MERGE}, mappedBy = "authors", fetch = FetchType.EAGER)

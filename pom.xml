@@ -25,6 +25,8 @@
         <maven.assembly.plagin.version>3.1.1</maven.assembly.plagin.version>
         <maven.jar.plagin.version>3.1.1</maven.jar.plagin.version>
         <restassured.version>5.3.0</restassured.version>
+        <elasticsearch.version>6.0.2.Final</elasticsearch.version>
+        <hibernatesearch.version>6.0.2.Final</hibernatesearch.version>
     </properties>
 
     <dependencies>
@@ -87,6 +89,19 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>${lombok.version}</version>
+        </dependency>
+
+        <!--        search-->
+        <dependency>
+            <groupId>org.hibernate.search</groupId>
+            <artifactId>hibernate-search-mapper-orm</artifactId>
+            <version>${hibernatesearch.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hibernate.search</groupId>
+            <artifactId>hibernate-search-backend-elasticsearch</artifactId>
+            <version>${elasticsearch.version}</version>
         </dependency>
 
         <!--        tests-->
