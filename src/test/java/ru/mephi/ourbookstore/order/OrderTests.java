@@ -102,13 +102,6 @@ public class OrderTests extends BookStoreTest {
                 .andExpect(jsonPath("$.orderPositions[0].id", is(orderPositionModel.getId().intValue())))
                 .andExpect(jsonPath("$.orderPositions[0].count", is(orderPositionModel.getCount())))
                 .andExpect(jsonPath("$.orderPositions[0].price", is(orderPositionModel.getPrice())));
-        /*
-        Не работают, тк orderModelMapper использует orderPositionNullableMapper, где book пишется null
-                .andExpect(jsonPath("$.orderPositions[0].book.id", is(bookModel.getId().intValue())))
-                .andExpect(jsonPath("$.orderPositions[0].book.name", is(bookModel.getName())))
-                .andExpect(jsonPath("$.orderPositions[0].book.price", is(bookModel.getPrice())))
-                .andExpect(jsonPath("$.orderPositions[0].book.count", is(bookModel.getCount())));
-         */
     }
 
     @Test
