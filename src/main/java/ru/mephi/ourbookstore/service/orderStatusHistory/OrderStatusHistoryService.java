@@ -50,6 +50,6 @@ public class OrderStatusHistoryService {
 
     public OrderStatusHistory getActualByOrder(OrderModel orderModel) {
         return oshModelMapper.modelToObject(repository.getActualByOrder(orderModel)
-                .orElseThrow(() -> new NoActualStatusException("id", orderModel.getId())));
+                .orElseThrow(() -> new NoActualStatusException(Entities.ORDER, "id", orderModel.getId())));
     }
 }

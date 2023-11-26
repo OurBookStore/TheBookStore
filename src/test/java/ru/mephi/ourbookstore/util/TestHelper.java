@@ -1,12 +1,9 @@
 package ru.mephi.ourbookstore.util;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
-import ru.mephi.ourbookstore.domain.AppUserModel;
-import ru.mephi.ourbookstore.domain.AuthorModel;
-import ru.mephi.ourbookstore.domain.BookModel;
-import ru.mephi.ourbookstore.domain.OrderModel;
-import ru.mephi.ourbookstore.domain.OrderPositionModel;
+import ru.mephi.ourbookstore.domain.*;
 import ru.mephi.ourbookstore.domain.dto.book.BookCreateDto;
 import ru.mephi.ourbookstore.domain.dto.book.BookUpdateDto;
 import ru.mephi.ourbookstore.domain.dto.order.OrderCreateDto;
@@ -35,6 +32,14 @@ public abstract class TestHelper {
                     .id(version)
                     .address("address" + version)
                     .totalPrice(0)
+                    .build();
+        }
+
+        public static OrderStatusHistoryModel getTestOSH(Long version) {
+            return OrderStatusHistoryModel.builder()
+                    .id(version)
+                    .actualFlag(true)
+                    .actualFrom(LocalDateTime.now())
                     .build();
         }
 

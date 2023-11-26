@@ -19,7 +19,7 @@ public enum BookStoreError {
     KEYCLOAK_REQUEST_ERROR(HttpStatus.CONFLICT, "Keycloak error"),
     SAVE_ERROR(HttpStatus.BAD_REQUEST, "Error while saving an %s with id = %d"),
     READ_ERROR(HttpStatus.BAD_REQUEST, "Error while reading an %s with id = %d"),
-    NO_ACTUAL_STATUS(HttpStatus.BAD_REQUEST,"Order with %s = %s has no actual status. It's time to reinstall shindows!"),
+    NO_ACTUAL_STATUS(HttpStatus.BAD_REQUEST,"The %s with %s = %d has no actual status. It's time to reinstall shindows!"),
     ;
 
     final String message;

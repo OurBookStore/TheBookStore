@@ -11,7 +11,8 @@ import ru.mephi.ourbookstore.domain.*;
 import ru.mephi.ourbookstore.domain.dto.order.OrderCreateDto;
 import ru.mephi.ourbookstore.domain.dto.order.OrderUpdateDto;
 import ru.mephi.ourbookstore.service.exceptions.BookStoreError;
-import ru.mephi.ourbookstore.util.EntityTestHelper;
+import ru.mephi.ourbookstore.service.exceptions.NoActualStatusException;
+import ru.mephi.ourbookstore.util.TestHelper;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -36,9 +37,9 @@ public class OrderTests extends BookStoreTest {
 
     @BeforeEach
     public void setUp() {
-        orderModel = EntityTestHelper.getTestOrderModel(1L);
-        appUserModel = appUserRepository.save(EntityTestHelper.getTetsAppUserModel(1L));
-        oshModel = EntityTestHelper.getTestOSH(1L);
+        orderModel = TestHelper.OrderEntity.getOrderModel(1L);
+        appUserModel = appUserRepository.save(TestHelper.AppUserEntity.getTetsAppUserModel(1L));
+        oshModel = TestHelper.OrderEntity.getTestOSH(1L);
         orderModel.setAppUser(appUserModel);
         orderModel = orderRepository.save(orderModel);
         oshModel.setOrder(orderModel);
@@ -76,17 +77,27 @@ public class OrderTests extends BookStoreTest {
                         .content(newOrderStatus.name()))
                 .andExpect(status().isOk());
 
-        //OrderModel resultOrder = orderRepository.findById(orderModel.getId()).orElseThrow();
-
         mockMvc.perform(get(String.format( "/orders/%s/actual-status", orderModel.getId())))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.status", is(newOrderStatus.name())));
     }
 
     @Test
+    public void failedOrderWithNoStatusTest() throws Exception {
+        OrderModel newOrder = orderRepository.save(TestHelper.OrderEntity.getOrderModel(2L));
+
+        mockMvc.perform(get(String.format( "/orders/%s/actual-status", newOrder.getId())))
+                .andExpect(result ->
+                        assertTrue((Objects.requireNonNull(result.getResolvedException())
+                                .getMessage()
+                                .contains(String.format(BookStoreError.NO_ACTUAL_STATUS.getMessage(), ORDER, "id", newOrder.getId())))));
+
+    }
+
+    @Test
     public void getOrderWithPositionTest() throws Exception {
-        BookModel bookModel = bookRepository.save(EntityTestHelper.getTestBookModelDto(3L));
-        OrderPositionModel orderPositionModel = EntityTestHelper.getTestOrderPositionModel(1L);
+        BookModel bookModel = bookRepository.save(TestHelper.BookEntity.getBookModel1());
+        OrderPositionModel orderPositionModel = TestHelper.OrderPositionEntity.getOrderPositionModel(1L);
         orderPositionModel.setBook(bookModel);
         orderPositionModel.setOrder(orderModel);
         orderPositionModel = orderPositionRepository.save(orderPositionModel);
@@ -152,7 +163,7 @@ public class OrderTests extends BookStoreTest {
 
     @Test
     public void createOrderTest() throws Exception {
-        OrderCreateDto orderCreateDto = EntityTestHelper.getTestOrderCreateDto(2L);
+        OrderCreateDto orderCreateDto = TestHelper.OrderEntity.getOrderCreateDto(2L);
         orderCreateDto.setAppUserId(appUserModel.getId());
 
         String content = new ObjectMapper()
@@ -169,7 +180,7 @@ public class OrderTests extends BookStoreTest {
     @Test
     public void failedCreateOrderTest() throws Exception {
         Long incorrectId = 1212442L;
-        OrderCreateDto orderCreateDto = EntityTestHelper.getTestOrderCreateDto(2L);
+        OrderCreateDto orderCreateDto = TestHelper.OrderEntity.getOrderCreateDto(2L);
         orderCreateDto.setAppUserId(incorrectId);
 
         String content = new ObjectMapper()
@@ -190,7 +201,7 @@ public class OrderTests extends BookStoreTest {
 
     @Test
     public void updateOrderTest() throws Exception {
-        OrderUpdateDto orderUpdateDto = EntityTestHelper.getTestOrderUpdateDto(2L);
+        OrderUpdateDto orderUpdateDto = TestHelper.OrderEntity.getOrderUpdateDto(2L);
         orderUpdateDto.setId(orderModel.getId());
 
         String content = new ObjectMapper()
@@ -207,7 +218,7 @@ public class OrderTests extends BookStoreTest {
     @Test
     public void failedUpdateOrderTest() throws Exception {
         long incorrectId = 1212442L;
-        OrderUpdateDto orderUpdateDto = EntityTestHelper.getTestOrderUpdateDto(2L);
+        OrderUpdateDto orderUpdateDto = TestHelper.OrderEntity.getOrderUpdateDto(2L);
         orderUpdateDto.setId(incorrectId);
 
         String content = new ObjectMapper()
@@ -228,8 +239,8 @@ public class OrderTests extends BookStoreTest {
 
     @Test
     public void createOrderPositionLinkTest() throws Exception {
-        BookModel bookModel = bookRepository.save(EntityTestHelper.getTestBookModelDto(1L));
-        OrderPositionModel orderPositionModel = EntityTestHelper.getTestOrderPositionModel(1L);
+        BookModel bookModel = bookRepository.save(TestHelper.BookEntity.getBookModel1());
+        OrderPositionModel orderPositionModel = TestHelper.OrderPositionEntity.getOrderPositionModel(1L);
         orderPositionModel.setBook(bookModel);
         orderPositionModel.setPrice(orderPositionModel.getCount() * bookModel.getPrice());
         orderPositionModel = orderPositionRepository.save(orderPositionModel);
@@ -247,8 +258,8 @@ public class OrderTests extends BookStoreTest {
 
     @Test
     public void failedCreateOrderPositionLink1Test() throws Exception {
-        BookModel bookModel = bookRepository.save(EntityTestHelper.getTestBookModelDto(1L));
-        OrderPositionModel orderPositionModel = EntityTestHelper.getTestOrderPositionModel(1L);
+        BookModel bookModel = bookRepository.save(TestHelper.BookEntity.getBookModel1());
+        OrderPositionModel orderPositionModel = TestHelper.OrderPositionEntity.getOrderPositionModel(1L);
 
         int incorrectCount = 0;
         bookModel.setCount(incorrectCount);
@@ -267,8 +278,8 @@ public class OrderTests extends BookStoreTest {
     @Test
     public void failedCreateOrderPositionLink2Test() throws Exception {
         Long incorrectId = 1212442L;
-        BookModel bookModel = bookRepository.save(EntityTestHelper.getTestBookModelDto(1L));
-        OrderPositionModel orderPositionModel = EntityTestHelper.getTestOrderPositionModel(1L);
+        BookModel bookModel = bookRepository.save(TestHelper.BookEntity.getBookModel1());
+        OrderPositionModel orderPositionModel = TestHelper.OrderPositionEntity.getOrderPositionModel(1L);
         orderPositionModel.setBook(bookModel);
         orderPositionModel = orderPositionRepository.save(orderPositionModel);
 
@@ -284,8 +295,8 @@ public class OrderTests extends BookStoreTest {
     @Test
     public void failedCreateOrderPositionLink3Test() throws Exception {
         Long incorrectId = 1212442L;
-        BookModel bookModel = bookRepository.save(EntityTestHelper.getTestBookModelDto(1L));
-        OrderPositionModel orderPositionModel = EntityTestHelper.getTestOrderPositionModel(1L);
+        BookModel bookModel = bookRepository.save(TestHelper.BookEntity.getBookModel1());
+        OrderPositionModel orderPositionModel = TestHelper.OrderPositionEntity.getOrderPositionModel(1L);
         orderPositionModel.setBook(bookModel);
         orderPositionRepository.save(orderPositionModel);
 
