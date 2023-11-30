@@ -31,4 +31,8 @@ public class CountryValidator {
         }
         return countrySet.contains(country);
     }
+
+    public Set<String> getCountries() {
+        return countrySet;
+    }
 }
