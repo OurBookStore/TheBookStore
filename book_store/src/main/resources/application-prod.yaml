@@ -38,11 +38,11 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://book_store_keycloak:8082/realms/book-store
+          issuer-uri: http://book_store_keycloak:8080/realms/book-store
           public-key-location: classpath:keys/public.pem
 
 keycloak:
-  auth-server-url: http://localhost:8082
+  auth-server-url: http://book_store_keycloak:8080
   realm: book-store
   client-name: my-client
   public-client: true
