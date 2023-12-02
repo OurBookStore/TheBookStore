@@ -35,9 +35,15 @@ public class AppUserAuthService {
                     .anyMatch(orderModel -> orderModel.getId().equals(resourceId));
             case APP_USER -> appUserReq
                     .getId().equals(resourceId);
-            case ORDER_POSITION -> appUserReq.getOrders().stream()
-                    .flatMap(orderModel -> orderModel.getOrderPositions().stream())
-                    .anyMatch(orderPositionModel -> orderPositionModel.getId().equals(resourceId));
+            case ORDER_POSITION -> {
+                boolean ordersAnyMatch = appUserReq.getOrders().stream()
+                        .flatMap(orderModel -> orderModel.getOrderPositions().stream())
+                        .anyMatch(orderPositionModel -> orderPositionModel.getId().equals(resourceId));
+                boolean cartAnyMatch = appUserReq.getCart().getOrderPositions().stream()
+                        .anyMatch(orderPositionModel -> orderPositionModel.getId().equals(resourceId));
+                yield ordersAnyMatch || cartAnyMatch;
+            }
+
             case CART -> appUserReq.getCart().getId().equals(resourceId);
         };
     }

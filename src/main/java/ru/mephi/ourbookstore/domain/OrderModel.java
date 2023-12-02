@@ -21,6 +21,7 @@ public class OrderModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
     @ManyToOne
+    @ToString.Exclude
     AppUserModel appUser;
     @OneToMany(mappedBy = "order", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     @ToString.Exclude

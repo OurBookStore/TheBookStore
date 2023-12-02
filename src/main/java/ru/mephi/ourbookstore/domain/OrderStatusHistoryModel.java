@@ -23,6 +23,7 @@ public class OrderStatusHistoryModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
     @ManyToOne
+    @ToString.Exclude
     OrderModel order;
     @Enumerated(EnumType.STRING)
     OrderStatus status;

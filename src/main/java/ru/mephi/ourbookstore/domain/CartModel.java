@@ -9,11 +9,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 /**
@@ -31,7 +27,9 @@ public class CartModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
     @OneToMany(mappedBy = "cart", fetch = FetchType.LAZY)
+    @ToString.Exclude
     List<OrderPositionModel> orderPositions;
+    @ToString.Exclude
     @OneToOne(mappedBy = "cart")
     AppUserModel appUser;
 }
