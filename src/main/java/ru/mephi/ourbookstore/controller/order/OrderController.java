@@ -15,6 +15,7 @@ import ru.mephi.ourbookstore.domain.dto.order.OrderCreateDto;
 import ru.mephi.ourbookstore.domain.dto.order.OrderDto;
 import ru.mephi.ourbookstore.domain.dto.order.OrderUpdateDto;
 import ru.mephi.ourbookstore.domain.dto.orderPosition.OrderPositionLink;
+import ru.mephi.ourbookstore.domain.dto.orderStatusHistory.OrderStatusDto;
 import ru.mephi.ourbookstore.domain.dto.orderStatusHistory.OrderStatusHistoryDto;
 import ru.mephi.ourbookstore.mapper.order.OrderDtoMapper;
 import ru.mephi.ourbookstore.mapper.orderStatusHistory.OrderStatusHistoryDtoMapper;
@@ -74,8 +75,8 @@ public class OrderController {
 
     @PutMapping("/{orderId}")
     @PreAuthorize("hasRole('ADMIN')")
-    public Long updateStatus(@PathVariable Long orderId, @RequestBody String orderStatus) {
-        return orderService.updateOrderStatus(orderId, OrderStatus.valueOf(orderStatus));
+    public Long updateStatus(@PathVariable Long orderId, @RequestBody OrderStatusDto orderStatusDto) {
+        return orderService.updateOrderStatus(orderId, orderStatusDto.getOrderStatus());
     }
 
     @GetMapping("/{orderId}/actual-status")
