@@ -37,11 +37,14 @@ public class OrderTests extends BookStoreTest {
 
     private final long INCORRECT_ID = 1212442L;
 
+    private final long ID_1 = 1L;
+    private final long ID_2 = 2L;
+
     @BeforeEach
     public void setUp() {
-        orderModel = TestHelper.OrderEntity.getOrderModel(1L);
+        orderModel = TestHelper.OrderEntity.getOrderModel(ID_1);
         appUserModel = appUserRepository.save(TestHelper.AppUserEntity.getTetsAppUserModel(1L));
-        oshModel = TestHelper.OrderEntity.getTestOSH(1L);
+        oshModel = TestHelper.OrderEntity.getTestOSH(ID_1);
         orderModel.setAppUser(appUserModel);
         orderModel = orderRepository.save(orderModel);
         oshModel.setOrder(orderModel);
@@ -91,7 +94,7 @@ public class OrderTests extends BookStoreTest {
 
     @Test
     public void failedOrderWithNoStatusTest() throws Exception {
-        OrderModel newOrder = orderRepository.save(TestHelper.OrderEntity.getOrderModel(2L));
+        OrderModel newOrder = orderRepository.save(TestHelper.OrderEntity.getOrderModel(ID_2));
 
         mockMvc.perform(get(String.format( "/orders/%s/actual-status", newOrder.getId())))
                 .andExpect(result ->
@@ -166,7 +169,7 @@ public class OrderTests extends BookStoreTest {
 
     @Test
     public void createOrderTest() throws Exception {
-        OrderCreateDto orderCreateDto = TestHelper.OrderEntity.getOrderCreateDto(2L);
+        OrderCreateDto orderCreateDto = TestHelper.OrderEntity.getOrderCreateDto(ID_2);
         orderCreateDto.setAppUserId(appUserModel.getId());
 
         String content = new ObjectMapper()
@@ -182,7 +185,7 @@ public class OrderTests extends BookStoreTest {
 
     @Test
     public void failedCreateOrderTest() throws Exception {
-        OrderCreateDto orderCreateDto = TestHelper.OrderEntity.getOrderCreateDto(2L);
+        OrderCreateDto orderCreateDto = TestHelper.OrderEntity.getOrderCreateDto(ID_2);
         orderCreateDto.setAppUserId(INCORRECT_ID);
 
         String content = new ObjectMapper()
@@ -203,7 +206,7 @@ public class OrderTests extends BookStoreTest {
 
     @Test
     public void updateOrderTest() throws Exception {
-        OrderUpdateDto orderUpdateDto = TestHelper.OrderEntity.getOrderUpdateDto(2L);
+        OrderUpdateDto orderUpdateDto = TestHelper.OrderEntity.getOrderUpdateDto(ID_2);
         orderUpdateDto.setId(orderModel.getId());
 
         String content = new ObjectMapper()
@@ -219,7 +222,7 @@ public class OrderTests extends BookStoreTest {
 
     @Test
     public void failedUpdateOrderTest() throws Exception {
-        OrderUpdateDto orderUpdateDto = TestHelper.OrderEntity.getOrderUpdateDto(2L);
+        OrderUpdateDto orderUpdateDto = TestHelper.OrderEntity.getOrderUpdateDto(ID_2);
         orderUpdateDto.setId(INCORRECT_ID);
 
         String content = new ObjectMapper()
