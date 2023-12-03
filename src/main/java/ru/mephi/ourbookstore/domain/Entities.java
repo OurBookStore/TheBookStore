@@ -15,6 +15,7 @@ public enum Entities {
     ORDER_POSITION("orderPosition"),
     ORDER_STATUS("orderStatus"),
     CART("cart"),
+    ORDER_STATUS_HISTORY("order_status_history"),
     IMAGE("image");
 
     final String name;
