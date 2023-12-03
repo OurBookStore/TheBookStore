@@ -24,10 +24,8 @@ spring:
         dialect: org.hibernate.dialect.H2Dialect
       search:
         enabled: true
-        default:
-          indexmanager: elasticsearch
-          elasticsearch:
-            host: http://localhost:9200
+        backend:
+          hosts: localhost:9200
       jakarta:
         persistence:
           sharedCache:

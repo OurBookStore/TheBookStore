@@ -2,16 +2,10 @@ package ru.mephi.ourbookstore.service.book;
 
 import java.util.List;
 
+import jakarta.persistence.EntityManager;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.apache.lucene.util.QueryBuilder;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
-import org.hibernate.search.FullTextSession;
-import org.hibernate.search.Search;
-import org.hibernate.search.SearchFactory;
 import org.hibernate.search.backend.elasticsearch.ElasticsearchExtension;
 import org.hibernate.search.engine.search.query.SearchResult;
 import org.hibernate.search.mapper.orm.Search;
@@ -27,9 +21,6 @@ import ru.mephi.ourbookstore.service.exceptions.AlreadyExistException;
 import ru.mephi.ourbookstore.service.exceptions.NotFoundException;
 import ru.mephi.ourbookstore.service.exceptions.ValidationException;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
 import static ru.mephi.ourbookstore.domain.Entities.BOOK;
 
 /**
@@ -43,7 +34,6 @@ public class BookService {
     final BookRepository bookRepository;
     final BookModelMapper bookModelMapper;
 
-    @PersistenceContext
     final EntityManager entityManager;
 
     @Transactional(propagation = Propagation.REQUIRED, readOnly = true, noRollbackFor = Exception.class)

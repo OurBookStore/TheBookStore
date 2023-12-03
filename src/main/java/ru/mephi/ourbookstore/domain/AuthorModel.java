@@ -12,25 +12,23 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.FieldDefaults;
-import org.hibernate.search.annotations.*;
-import org.hibernate.search.annotations.Index;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.FullTextField;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.Indexed;
 
 @Entity
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Indexed
+@Indexed(enabled = false)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class AuthorModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
-    @Field
+    @FullTextField
     String fullName;
-    @Field(index = Index.YES, analyze= Analyze.NO, store = Store.YES)
-    @DateBridge(resolution = Resolution.MONTH)
     LocalDate dateOfBirth;
     String country;
     @ManyToMany(cascade = {CascadeType.MERGE}, mappedBy = "authors", fetch = FetchType.EAGER)

@@ -61,10 +61,30 @@ services:
       KEYCLOAK_ADMIN_PASSWORD: admin
     networks:
       - app_network
-    restart: no
+    restart: unless-stopped
     depends_on:
       postgres:
         condition: service_healthy
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.11.1
+    container_name: book_store_elasticsearch
+    ports:
+      - 9200:9200
+    networks:
+      - app_network
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      ELASTIC_PASSWORD: elastic
+      STACK_VERSION: 8.11.1
+      LICENSE: basic
+      ES_PORT: 9200
+      ES_HEAP_SIZE: 2g
+      MAX_OPEN_FILES: 65535
+      MAX_LOCKED_MEMORY: unlimited
 
 networks:
   app_network:
