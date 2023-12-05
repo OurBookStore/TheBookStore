@@ -2,17 +2,18 @@ package ru.mephi.ourbookstore.service.book;
 
 import java.util.List;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.apache.lucene.search.Query;
-import org.hibernate.search.jpa.FullTextQuery;
-import org.hibernate.search.jpa.Search;
-import org.hibernate.search.query.dsl.QueryBuilder;
+import org.hibernate.search.engine.search.query.SearchResult;
+import org.hibernate.search.mapper.orm.Search;
+import org.hibernate.search.mapper.orm.massindexing.MassIndexer;
+import org.hibernate.search.mapper.orm.session.SearchSession;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import ru.mephi.ourbookstore.domain.AuthorModel;
 import ru.mephi.ourbookstore.domain.BookModel;
 import ru.mephi.ourbookstore.domain.dto.book.Book;
 import ru.mephi.ourbookstore.mapper.book.BookModelMapper;
@@ -35,7 +36,8 @@ public class BookService {
     final BookModelMapper bookModelMapper;
     final EntityManager entityManager;
 
-    final int SEARCH_MAX_DISTANCE = 2;
+    final int SEARCH_HINTS_CNT = 20;
+    final int INDEXER_THREADS = 6;
 
     @Transactional(propagation = Propagation.REQUIRED, readOnly = true, noRollbackFor = Exception.class)
     public Book getById(long bookId) {
@@ -52,15 +54,19 @@ public class BookService {
     }
 
     public List<Book> search(String searchText) {
-        Query fuzzyQuery = getQueryBuilder()
-                .keyword()
-                .fuzzy()
-                .withEditDistanceUpTo(SEARCH_MAX_DISTANCE)
-                .onFields("name", "authors.fullName")
-                .matching(searchText)
-                .createQuery();
+        SearchSession searchSession = Search.session(entityManager);
 
-        return getJpaQuery(fuzzyQuery).getResultList();
+        runIndexing(searchSession);
+
+        SearchResult<BookModel> searchResult = searchSession
+                .search(BookModel.class)
+                .where(f -> f.
+                        match().fields("name", "authors.fullName").matching(searchText).fuzzy())
+                .fetch(SEARCH_HINTS_CNT);
+
+        return searchResult.hits().stream()
+                .map(bookModelMapper::modelToObject)
+                .toList();
     }
 
     @Transactional
@@ -127,16 +133,11 @@ public class BookService {
         }
     }
 
-    private FullTextQuery getJpaQuery(org.apache.lucene.search.Query luceneQuery) {
-        return Search.getFullTextEntityManager(entityManager)
-                .createFullTextQuery(luceneQuery, Book.class);
-    }
-
-    private QueryBuilder getQueryBuilder() {
-        return Search.getFullTextEntityManager(entityManager)
-                .getSearchFactory()
-                .buildQueryBuilder()
-                .forEntity(Book.class)
-                .get();
+    private void runIndexing(SearchSession searchSession) {
+        MassIndexer indexer = searchSession.massIndexer(BookModel.class )
+                .threadsToLoadObjects(INDEXER_THREADS);
+        try {
+            indexer.startAndWait();
+        } catch (InterruptedException ignored) {}
     }
 }

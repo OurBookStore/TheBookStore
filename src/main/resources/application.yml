@@ -31,9 +31,11 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         search:
           enabled: true
-          default:
-            indexBase: /data/index/default
-            directory_provider: filesystem
+          backend:
+            directory:
+              root: indexes
+              type: local-filesystem
+
 
       jakarta:
         persistence:
