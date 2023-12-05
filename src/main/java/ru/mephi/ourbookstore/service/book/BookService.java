@@ -2,14 +2,14 @@ package ru.mephi.ourbookstore.service.book;
 
 import java.util.List;
 
-import jakarta.persistence.EntityManager;
+import javax.persistence.EntityManager;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.hibernate.search.backend.elasticsearch.ElasticsearchExtension;
-import org.hibernate.search.engine.search.query.SearchResult;
-import org.hibernate.search.mapper.orm.Search;
-import org.hibernate.search.mapper.orm.session.SearchSession;
+import org.apache.lucene.search.Query;
+import org.hibernate.search.jpa.FullTextQuery;
+import org.hibernate.search.jpa.Search;
+import org.hibernate.search.query.dsl.QueryBuilder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,8 +33,9 @@ public class BookService {
 
     final BookRepository bookRepository;
     final BookModelMapper bookModelMapper;
-
     final EntityManager entityManager;
+
+    final int SEARCH_MAX_DISTANCE = 2;
 
     @Transactional(propagation = Propagation.REQUIRED, readOnly = true, noRollbackFor = Exception.class)
     public Book getById(long bookId) {
@@ -51,14 +52,15 @@ public class BookService {
     }
 
     public List<Book> search(String searchText) {
-        SearchSession searchSession = Search.session(entityManager);
+        Query fuzzyQuery = getQueryBuilder()
+                .keyword()
+                .fuzzy()
+                .withEditDistanceUpTo(SEARCH_MAX_DISTANCE)
+                .onFields("name", "authors.fullName")
+                .matching(searchText)
+                .createQuery();
 
-        SearchResult<BookModel> result = searchSession.search(BookModel.class).extension(ElasticsearchExtension.get())
-                .where(f -> f.simpleQueryString().fields("name","authors.name").matching(searchText)).fetch(100);
-
-        return result.hits().stream()
-                .map(bookModelMapper::modelToObject)
-                .toList();
+        return getJpaQuery(fuzzyQuery).getResultList();
     }
 
     @Transactional
@@ -123,5 +125,18 @@ public class BookService {
         if (price < 0) {
             throw new ValidationException(BOOK, "price", price);
         }
+    }
+
+    private FullTextQuery getJpaQuery(org.apache.lucene.search.Query luceneQuery) {
+        return Search.getFullTextEntityManager(entityManager)
+                .createFullTextQuery(luceneQuery, Book.class);
+    }
+
+    private QueryBuilder getQueryBuilder() {
+        return Search.getFullTextEntityManager(entityManager)
+                .getSearchFactory()
+                .buildQueryBuilder()
+                .forEntity(Book.class)
+                .get();
     }
 }

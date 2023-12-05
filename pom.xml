@@ -25,8 +25,7 @@
         <maven.assembly.plagin.version>3.1.1</maven.assembly.plagin.version>
         <maven.jar.plagin.version>3.1.1</maven.jar.plagin.version>
         <restassured.version>5.3.0</restassured.version>
-        <elasticsearch.version>6.1.6.Final</elasticsearch.version>
-        <hibernatesearch.version>6.1.6.Final</hibernatesearch.version>
+        <hibernatesearch.version>5.11.12.Final</hibernatesearch.version>
     </properties>
 
     <dependencies>
@@ -93,15 +92,9 @@
 
         <!--        search-->
         <dependency>
-            <groupId>org.hibernate.search</groupId>
-            <artifactId>hibernate-search-mapper-orm-orm6</artifactId>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-search-orm</artifactId>
             <version>${hibernatesearch.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.hibernate.search</groupId>
-            <artifactId>hibernate-search-backend-elasticsearch</artifactId>
-            <version>${elasticsearch.version}</version>
         </dependency>
 
         <!--        tests-->

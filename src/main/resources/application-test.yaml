@@ -22,10 +22,11 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.H2Dialect
-      search:
-        enabled: true
-        backend:
-          hosts: localhost:9200
+        search:
+          enabled: true
+          default:
+            indexBase: /data/index/default
+            directory_provider: filesystem
       jakarta:
         persistence:
           sharedCache:
