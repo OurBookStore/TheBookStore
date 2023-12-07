@@ -10,10 +10,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
-import ru.mephi.ourbookstore.domain.dto.appUser.AppUser;
-import ru.mephi.ourbookstore.domain.dto.appUser.AppUserCreateDto;
-import ru.mephi.ourbookstore.domain.dto.appUser.AppUserDto;
-import ru.mephi.ourbookstore.domain.dto.appUser.AppUserUpdateDto;
+import ru.mephi.ourbookstore.domain.dto.appUser.*;
 import ru.mephi.ourbookstore.mapper.appUser.AppUserDtoMapper;
 import ru.mephi.ourbookstore.service.appUser.AppUserService;
 
@@ -63,6 +60,25 @@ public class AppUserController {
     public void update(@RequestBody AppUserUpdateDto appUserRqDto) {
         AppUser appUser = appUserDtoMapper.dtoToObject(appUserRqDto);
         appUserService.update(appUser);
+    }
+
+    @PatchMapping("/address")
+    @SecurityRequirement(name = "bearerAuth")
+    @PreAuthorize("hasRole('ADMIN') or @appUserAuthService.checkPermission('APP_USER',#appUserPatchDto.id)")
+    public void updateAddress(@RequestBody AppUserPatchDto appUserPatchDto) {
+        appUserService.updateAddress(appUserPatchDto);
+    }
+
+    @GetMapping("/address")
+    @SecurityRequirement(name = "bearerAuth")
+    public AppUserPatchDto getAddress(@AuthenticationPrincipal Jwt jwt) {
+        return  appUserService.getAddress(jwt);
+    }
+
+    @DeleteMapping("/address")
+    @SecurityRequirement(name = "bearerAuth")
+    public void removeAddress(@AuthenticationPrincipal Jwt jwt) {
+        appUserService.removeAddress(jwt);
     }
 
     @SecurityRequirement(name = "bearerAuth")

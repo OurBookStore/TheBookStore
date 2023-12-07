@@ -34,4 +34,5 @@ public class AppUserModel {
     @OneToOne(cascade = CascadeType.ALL)
     @ToString.Exclude
     CartModel cart;
+    String address;
 }

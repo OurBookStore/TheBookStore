@@ -5,11 +5,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
-import ru.mephi.ourbookstore.domain.OrderModel;
-import ru.mephi.ourbookstore.domain.OrderStatus;
 import ru.mephi.ourbookstore.domain.dto.order.Order;
 import ru.mephi.ourbookstore.domain.dto.order.OrderCreateDto;
 import ru.mephi.ourbookstore.domain.dto.order.OrderDto;
@@ -18,7 +14,6 @@ import ru.mephi.ourbookstore.domain.dto.orderPosition.OrderPositionLink;
 import ru.mephi.ourbookstore.domain.dto.orderStatusHistory.OrderStatusDto;
 import ru.mephi.ourbookstore.domain.dto.orderStatusHistory.OrderStatusHistoryDto;
 import ru.mephi.ourbookstore.mapper.order.OrderDtoMapper;
-import ru.mephi.ourbookstore.mapper.orderStatusHistory.OrderStatusHistoryDtoMapper;
 import ru.mephi.ourbookstore.mapper.orderStatusHistory.OrderStatusHistoryDtoMapperImpl;
 import ru.mephi.ourbookstore.service.order.OrderService;
 import ru.mephi.ourbookstore.service.orderPosition.OrderPositionService;
@@ -51,6 +46,7 @@ public class OrderController {
                 .map(orderDtoMapper::objectToDto)
                 .toList();
     }
+
     @GetMapping("/appUsers/{appUserId}")
     @PreAuthorize("hasRole('ADMIN') or @appUserAuthService.checkPermission('APP_USER',#appUserId)")
     public List<OrderDto> getAllByAppUser(@PathVariable Long appUserId) {
@@ -64,6 +60,12 @@ public class OrderController {
     public Long createOrder(@RequestBody OrderCreateDto orderDto) {
         Order order = orderDtoMapper.dtoToObject(orderDto);
         return orderService.create(order);
+    }
+
+    @PutMapping("/{orderId}/carts/{cartId}")
+    @PreAuthorize("hasRole('ADMIN') or @appUserAuthService.checkPermission('ORDER',#orderId) and @appUserAuthService.checkPermission('CART',#cartId)")
+    public Long fillOrderByCartPositions(@PathVariable Long orderId, @PathVariable Long cartId) {
+        return orderPositionService.fillOrderByCartPositions(orderId, cartId);
     }
 
     @PutMapping
@@ -80,7 +82,7 @@ public class OrderController {
     }
 
     @GetMapping("/{orderId}/actual-status")
-    @PreAuthorize("hasRole('ADMIN') or @appUserAuthService.checkPermission('ORDER',#orderDto.id)")
+    @PreAuthorize("hasRole('ADMIN') or @appUserAuthService.checkPermission('ORDER',#orderId)")
     public OrderStatusHistoryDto getActualStatus(@PathVariable Long orderId) {
         return oshDtoMapper.objectToDto(orderService.getActualStatus(orderId));
     }
@@ -96,4 +98,5 @@ public class OrderController {
     public Long createPositionLink(@PathVariable Long orderId, @PathVariable Long orderPositionId) {
         return orderPositionService.createLinkToOrder(new OrderPositionLink(orderId, orderPositionId));
     }
+
 }

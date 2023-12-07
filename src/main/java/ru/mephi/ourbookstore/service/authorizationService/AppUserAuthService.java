@@ -43,7 +43,6 @@ public class AppUserAuthService {
                         .anyMatch(orderPositionModel -> orderPositionModel.getId().equals(resourceId));
                 yield ordersAnyMatch || cartAnyMatch;
             }
-
             case CART -> appUserReq.getCart().getId().equals(resourceId);
         };
     }
