@@ -20,15 +20,20 @@ public class OrderModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
+
     @ManyToOne
     @ToString.Exclude
     AppUserModel appUser;
+
     @OneToMany(mappedBy = "order", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     @ToString.Exclude
     List<OrderPositionModel> orderPositions;
-    @OneToMany(mappedBy = "order")
+
+    @OneToMany(mappedBy = "order", cascade = CascadeType.REMOVE)
     @ToString.Exclude
-    List<OrderStatusHistoryModel> orderStatusHistoryList;
+    List<OrderStatusHistoryModel> orderStatusHistories;
+
     String address;
+
     double totalPrice;
 }

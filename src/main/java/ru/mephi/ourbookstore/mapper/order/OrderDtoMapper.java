@@ -19,7 +19,6 @@ public interface OrderDtoMapper {
 
     @Mappings({
             @Mapping(target = "appUserDto", source = "appUser"),
-            @Mapping(target = "orderPositionOfOrderDtos", source = "orderPositions")
     })
     OrderDto objectToDto(Order order);
 }
