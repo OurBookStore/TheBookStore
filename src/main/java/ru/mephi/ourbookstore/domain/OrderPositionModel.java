@@ -17,11 +17,14 @@ public class OrderPositionModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
     @ManyToOne(cascade = {CascadeType.MERGE})
+    @ToString.Exclude
     BookModel book;
     @ManyToOne(cascade = {CascadeType.MERGE})
+    @ToString.Exclude
     OrderModel order;
     int count;
     double price;
     @ManyToOne(cascade = {CascadeType.MERGE})
+    @ToString.Exclude
     CartModel cart;
 }

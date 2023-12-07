@@ -18,10 +18,10 @@ import ru.mephi.ourbookstore.mapper.orderPosition.OrderPositionModelMapper;
 import ru.mephi.ourbookstore.repository.orderPosition.OrderPositionRepository;
 import ru.mephi.ourbookstore.service.book.BookService;
 import ru.mephi.ourbookstore.service.cart.CartService;
-import ru.mephi.ourbookstore.service.exceptions.BookCountException;
-import ru.mephi.ourbookstore.service.exceptions.NotFoundException;
-import ru.mephi.ourbookstore.service.exceptions.ValidationException;
+import ru.mephi.ourbookstore.service.exceptions.*;
 import ru.mephi.ourbookstore.service.order.OrderService;
+
+import java.util.List;
 
 import static ru.mephi.ourbookstore.domain.Entities.ORDER_POSITION;
 
@@ -60,6 +60,9 @@ public class OrderPositionService {
     @Transactional
     public Long createLinkToOrder(OrderPositionLink orderPositionLink) {
         OrderPosition orderPosition = getById(orderPositionLink.getPositionId());
+        if (orderPosition.getOrder() != null) {
+            throw new BookStoreException(BookStoreError.ALREADY_EXISTS, ORDER_POSITION, "id", orderPositionLink.getPositionId());
+        }
         orderPosition.setOrder(orderService.getById(orderPositionLink.getOrderId()));
 
         if (orderPosition.getBook().getCount() < orderPosition.getCount()) {
@@ -71,9 +74,22 @@ public class OrderPositionService {
         orderPosition.getOrder().setTotalPrice(
                 orderPosition.getOrder().getTotalPrice() + orderPosition.getPrice()
         );
+        orderPosition.setCart(null);
         OrderPositionModel orderPositionModel = orderModelMapper.objectToModel(orderPosition);
         orderPositionModel = orderPositionRepository.save(orderPositionModel);
         return orderPositionModel.getOrder().getId();
+    }
+
+    @Transactional
+    public Long fillOrderByCartPositions(Long orderId, Long cartId) {
+        Cart cart = cartService.getById(cartId);
+        List<OrderPosition> orderPositionList = cart.getOrderPositions();
+        orderPositionList.forEach(orderPosition -> createLinkToOrder(OrderPositionLink.builder()
+                .orderId(orderId)
+                .positionId(orderPosition.getId())
+                .build()));
+
+        return orderId;
     }
 
     @Transactional

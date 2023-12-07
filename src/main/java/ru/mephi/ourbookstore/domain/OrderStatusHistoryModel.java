@@ -25,6 +25,7 @@ public class OrderStatusHistoryModel {
 
     @ManyToOne
     @JoinColumn(name = "order_id", foreignKey = @ForeignKey(name = "none", value = ConstraintMode.NO_CONSTRAINT))
+    @ToString.Exclude
     OrderModel order;
 
     @Enumerated(EnumType.STRING)

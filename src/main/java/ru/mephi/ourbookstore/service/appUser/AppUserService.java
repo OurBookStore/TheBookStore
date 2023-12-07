@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import ru.mephi.ourbookstore.domain.AppUserModel;
 import ru.mephi.ourbookstore.domain.dto.appUser.AppUser;
+import ru.mephi.ourbookstore.domain.dto.appUser.AppUserPatchDto;
 import ru.mephi.ourbookstore.domain.dto.cart.Cart;
 import ru.mephi.ourbookstore.mapper.appUser.AppUserModelMapper;
 import ru.mephi.ourbookstore.repository.appUser.AppUserRepository;
@@ -91,6 +92,37 @@ public class AppUserService {
         }
         keyCloakClient.updateUser(appUserModelMapper.objectToClientModel(appUser), old.getKeycloakId());
         AppUserModel appUserModel = appUserModelMapper.objectToModel(appUser);
+        appUserRepository.save(appUserModel);
+    }
+
+    @Transactional
+    public void updateAddress(AppUserPatchDto appUserPatchDto) {
+        Long appUserId = appUserPatchDto.getId();
+        String address = appUserPatchDto.getAddress();
+        if (address == null || address.isBlank()) {
+            throw new ValidationException(APP_USER, "address", address);
+        }
+        AppUserModel appUserModel = appUserRepository.findById(appUserId)
+                .orElseThrow(() -> new NotFoundException(APP_USER, "id", appUserId));
+        appUserModel.setAddress(address);
+        appUserRepository.save(appUserModel);
+    }
+
+    @Transactional(readOnly = true)
+    public AppUserPatchDto getAddress(Jwt jwt) {
+        AppUserModel appUserModel = appUserRepository.findAppUserModelByKeycloakId(jwt.getSubject())
+                .orElseThrow(() -> new NotFoundException(APP_USER, "keycloak_id", jwt.getSubject()));
+        return AppUserPatchDto.builder()
+                .id(appUserModel.getId())
+                .address(appUserModel.getAddress())
+                .build();
+    }
+
+    @Transactional
+    public void removeAddress(Jwt jwt) {
+        AppUserModel appUserModel = appUserRepository.findAppUserModelByKeycloakId(jwt.getSubject())
+                .orElseThrow(() -> new NotFoundException(APP_USER, "keycloak_id", jwt.getSubject()));
+        appUserModel.setAddress(null);
         appUserRepository.save(appUserModel);
     }
 

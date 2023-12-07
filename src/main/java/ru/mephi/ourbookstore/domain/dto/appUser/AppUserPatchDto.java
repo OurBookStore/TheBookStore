@@ -3,19 +3,13 @@ package ru.mephi.ourbookstore.domain.dto.appUser;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-/**
- * @author Aleksei Iagnenkov (alekseiiagn)
- */
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class AppUserDto {
+public class AppUserPatchDto {
 
     Long id;
-    String nickname;
-    String email;
-    Long cartId;
     String address;
 }

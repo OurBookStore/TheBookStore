@@ -17,4 +17,5 @@ public class AppUserUpdateDto {
     String nickname;
     String email;
     String password;
+    String address;
 }
