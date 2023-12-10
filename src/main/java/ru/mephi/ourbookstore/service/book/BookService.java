@@ -13,12 +13,12 @@ import org.hibernate.search.mapper.orm.session.SearchSession;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import ru.mephi.ourbookstore.domain.AuthorModel;
 import ru.mephi.ourbookstore.domain.BookModel;
 import ru.mephi.ourbookstore.domain.dto.book.Book;
 import ru.mephi.ourbookstore.mapper.book.BookModelMapper;
 import ru.mephi.ourbookstore.repository.book.BookRepository;
 import ru.mephi.ourbookstore.service.exceptions.AlreadyExistException;
+import ru.mephi.ourbookstore.service.exceptions.InterruptedIndexerException;
 import ru.mephi.ourbookstore.service.exceptions.NotFoundException;
 import ru.mephi.ourbookstore.service.exceptions.ValidationException;
 
@@ -138,6 +138,8 @@ public class BookService {
                 .threadsToLoadObjects(INDEXER_THREADS);
         try {
             indexer.startAndWait();
-        } catch (InterruptedException ignored) {}
+        } catch (InterruptedException e) {
+            throw new InterruptedIndexerException();
+        }
     }
 }

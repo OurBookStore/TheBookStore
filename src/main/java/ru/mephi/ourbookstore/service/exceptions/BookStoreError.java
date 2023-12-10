@@ -20,6 +20,7 @@ public enum BookStoreError {
     SAVE_ERROR(HttpStatus.BAD_REQUEST, "Error while saving an %s with id = %d"),
     READ_ERROR(HttpStatus.BAD_REQUEST, "Error while reading an %s with id = %d"),
     NO_ACTUAL_STATUS(HttpStatus.BAD_REQUEST,"Order with %s = %s has no actual status. It's time to reinstall shindows!"),
+    INDEXER_THREAD_INTERRUPTED(HttpStatus.BAD_REQUEST, "Indexer thread is interrupted"),
     ;
 
     final String message;
