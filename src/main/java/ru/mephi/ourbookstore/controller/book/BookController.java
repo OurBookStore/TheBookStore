@@ -1,26 +1,22 @@
 package ru.mephi.ourbookstore.controller.book;
 
-import java.util.List;
-
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import ru.mephi.ourbookstore.domain.dto.book.Book;
 import ru.mephi.ourbookstore.domain.dto.book.BookCreateDto;
 import ru.mephi.ourbookstore.domain.dto.book.BookDto;
 import ru.mephi.ourbookstore.domain.dto.book.BookUpdateDto;
-import ru.mephi.ourbookstore.mapper.book.BookDtoMapper;
-import ru.mephi.ourbookstore.domain.dto.book.Book;
+import ru.mephi.ourbookstore.domain.dto.bookPage.BookPageDto;
+import ru.mephi.ourbookstore.mapper.book.BookDtoMapperImpl;
 import ru.mephi.ourbookstore.service.book.BookService;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/books")
@@ -29,7 +25,7 @@ import ru.mephi.ourbookstore.service.book.BookService;
 public class BookController {
 
     final BookService bookService;
-    final BookDtoMapper bookDtoMapper;
+    final BookDtoMapperImpl bookDtoMapper;
 
     @GetMapping("/{bookId}")
     public BookDto getById(@PathVariable long bookId) {
@@ -41,6 +37,11 @@ public class BookController {
         return bookService.getAll().stream()
                 .map(bookDtoMapper::objectToDto)
                 .toList();
+    }
+
+    @GetMapping("/page/{pageNumber}")
+    public BookPageDto get(@PathVariable int pageNumber) {
+        return bookDtoMapper.objectToPageDto(bookService.getByPageNumber(pageNumber));
     }
 
     @SecurityRequirement(name = "bearerAuth")

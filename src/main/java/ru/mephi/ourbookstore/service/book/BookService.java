@@ -1,10 +1,10 @@
 package ru.mephi.ourbookstore.service.book;
 
-import java.util.List;
-
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,7 +16,10 @@ import ru.mephi.ourbookstore.service.exceptions.AlreadyExistException;
 import ru.mephi.ourbookstore.service.exceptions.NotFoundException;
 import ru.mephi.ourbookstore.service.exceptions.ValidationException;
 
+import java.util.List;
+
 import static ru.mephi.ourbookstore.domain.Entities.BOOK;
+
 
 /**
  * @author Aleksei Iagnenkov (alekseiiagn)
@@ -28,6 +31,7 @@ public class BookService {
 
     final BookRepository bookRepository;
     final BookModelMapper bookModelMapper;
+    static int BOOK_PER_PAGE = 3;
 
     @Transactional(propagation = Propagation.REQUIRED, readOnly = true, noRollbackFor = Exception.class)
     public Book getById(long bookId) {
@@ -41,6 +45,14 @@ public class BookService {
         return bookRepository.findAll().stream()
                 .map(bookModelMapper::modelToObject)
                 .toList();
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED, readOnly = true, noRollbackFor = Exception.class)
+    public Page<Book> getByPageNumber(int pageNumber) {
+        if (pageNumber < 0) {
+            throw new ValidationException("Page index must not be less than zero");
+        }
+        return bookRepository.findAll(PageRequest.of(pageNumber, BOOK_PER_PAGE)).map(bookModelMapper::modelToObject);
     }
 
     @Transactional

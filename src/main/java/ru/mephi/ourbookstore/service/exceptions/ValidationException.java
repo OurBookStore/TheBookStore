@@ -10,4 +10,7 @@ public class ValidationException extends BookStoreException {
     public ValidationException(Entities entity, String fieldName, Object fieldValue) {
         super(BookStoreError.VALIDATION_ERROR, entity, fieldName, fieldValue);
     }
+    public ValidationException(String fieldValue) {
+        super(BookStoreError.VALIDATION_ERROR, fieldValue);
+    }
 }
