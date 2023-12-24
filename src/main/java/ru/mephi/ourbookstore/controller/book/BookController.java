@@ -43,6 +43,13 @@ public class BookController {
                 .toList();
     }
 
+    @GetMapping("/search/{searchText}")
+    public List<BookDto> search(@PathVariable String searchText) {
+        return bookService.search(searchText).stream()
+                .map(bookDtoMapper::objectToDto)
+                .toList();
+    }
+
     @SecurityRequirement(name = "bearerAuth")
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")

@@ -3,13 +3,7 @@ package ru.mephi.ourbookstore.domain;
 import java.time.LocalDate;
 import java.util.List;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,6 +12,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.FieldDefaults;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.FullTextField;
 
 @Entity
 @Data
@@ -30,6 +25,7 @@ public class AuthorModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
+    @FullTextField
     String fullName;
     LocalDate dateOfBirth;
     String country;
