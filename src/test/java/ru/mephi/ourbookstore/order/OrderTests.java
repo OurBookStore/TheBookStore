@@ -87,7 +87,7 @@ public class OrderTests extends BookStoreTest {
                         .content(content))
                 .andExpect(status().isOk());
 
-        mockMvc.perform(get(String.format( "/orders/%s/actual-status", orderModel.getId())))
+        mockMvc.perform(get(String.format("/orders/%s/actual-status", orderModel.getId())))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.status", is(newOrderStatusDto.getOrderStatus().name())));
     }
@@ -96,12 +96,33 @@ public class OrderTests extends BookStoreTest {
     public void failedOrderWithNoStatusTest() throws Exception {
         OrderModel newOrder = orderRepository.save(TestHelper.OrderEntity.getOrderModel(ID_2));
 
-        mockMvc.perform(get(String.format( "/orders/%s/actual-status", newOrder.getId())))
+        mockMvc.perform(get(String.format("/orders/%s/actual-status", newOrder.getId())))
                 .andExpect(result ->
                         assertTrue((Objects.requireNonNull(result.getResolvedException())
                                 .getMessage()
                                 .contains(String.format(BookStoreError.NO_ACTUAL_STATUS.getMessage(), ORDER, "id", newOrder.getId())))));
 
+    }
+
+    @Test
+    public void fillOrderPositionTest() throws Exception {
+        BookModel bookModel = bookRepository.save(TestHelper.BookEntity.getBookModel1());
+        OrderPositionModel orderPositionModel = TestHelper.OrderPositionEntity.getOrderPositionModel(1L);
+        orderPositionModel.setBook(bookModel);
+        orderPositionModel.setOrder(orderModel);
+        orderPositionModel = orderPositionRepository.save(orderPositionModel);
+
+        mockMvc.perform(get(String.format("/orders/%s", orderModel.getId())))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id", is(orderModel.getId().intValue())))
+                .andExpect(jsonPath("$.appUser.id", is(orderModel.getAppUser().getId().intValue())))
+                .andExpect(jsonPath("$.appUser.nickname", is(orderModel.getAppUser().getNickname())))
+                .andExpect(jsonPath("$.appUser.email", is(orderModel.getAppUser().getEmail())))
+                .andExpect(jsonPath("$.address", is(orderModel.getAddress())))
+                .andExpect(jsonPath("$.totalPrice", is(orderModel.getTotalPrice())))
+                .andExpect(jsonPath("$.orderPositions[0].id", is(orderPositionModel.getId().intValue())))
+                .andExpect(jsonPath("$.orderPositions[0].count", is(orderPositionModel.getCount())))
+                .andExpect(jsonPath("$.orderPositions[0].price", is(orderPositionModel.getPrice())));
     }
 
     @Test
