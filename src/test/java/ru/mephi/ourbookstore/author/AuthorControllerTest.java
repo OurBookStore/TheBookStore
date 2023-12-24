@@ -32,7 +32,7 @@ public class AuthorControllerTest extends BookStoreTest {
 
     @LocalServerPort
     private int port;
-/*
+
     @ParameterizedTest
     @DisplayName("Create author successful")
     @CsvSource({
@@ -59,7 +59,7 @@ public class AuthorControllerTest extends BookStoreTest {
 
         assertAuthors(authorModels, authors);
     }
-*//*
+
     @ParameterizedTest
     @DisplayName("Create author unsuccessful")
     @CsvSource({
@@ -85,7 +85,7 @@ public class AuthorControllerTest extends BookStoreTest {
                 .then()
                 .spec(BaseSpec.getResponseSpec(400));
     }
-*/
+
     @ParameterizedTest
     @DisplayName("Create author with same name")
     @CsvSource({
