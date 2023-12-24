@@ -32,5 +32,7 @@ public class AppUserModel {
     @ToString.Exclude
     List<OrderModel> orders;
     @OneToOne(cascade = CascadeType.ALL)
+    @ToString.Exclude
     CartModel cart;
+    String address;
 }

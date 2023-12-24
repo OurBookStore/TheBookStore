@@ -232,6 +232,7 @@ ALTER SEQUENCE public.author_model_id_seq OWNED BY public.author_model.id;
 CREATE TABLE public.book_model (
                                    id bigint NOT NULL,
                                    count integer NOT NULL,
+                                   image character varying(255),
                                    name character varying(255),
                                    price double precision NOT NULL
 );
@@ -467,7 +468,9 @@ INSERT INTO public.app_user_model VALUES (2, 'admin@admin', '24756198-f4c1-4899-
 -- Data for Name: book_model; Type: TABLE DATA; Schema: public; Owner: admin
 --
 
-
+INSERT INTO public.book_model VALUES (1, 5, '', 'book1', 100);
+INSERT INTO public.book_model VALUES (2, 17, '', 'book2', 90);
+INSERT INTO public.book_model VALUES (3, 1, '', 'book3', 130);
 
 --
 -- Data for Name: cart_model; Type: TABLE DATA; Schema: public; Owner: admin

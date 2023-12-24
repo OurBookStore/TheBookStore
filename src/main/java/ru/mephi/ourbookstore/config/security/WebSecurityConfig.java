@@ -50,11 +50,11 @@ public class WebSecurityConfig {
     private Boolean isSecurityEnable;
 
     /**
-     * Реализация фитьра безопасности с учетом Aoth2 KeyCloak сервера
+     * Реализация фильтра безопасности с учетом OAuth2 KeyCloak сервера
      *
-     * @param http                       - атрубут безопасности, на котором настраивается работа фильтра
-     * @param jwtAuthenticationConverter JWT Converter для четения JWT токена
-     * @return фитр безопасности
+     * @param http                       - атрибут безопасности, на котором настраивается работа фильтра
+     * @param jwtAuthenticationConverter JWT Converter для чтения JWT токена
+     * @return фильтр безопасности
      * @throws Exception есть методы с checked исключением
      */
     @Bean
@@ -90,7 +90,8 @@ public class WebSecurityConfig {
                             HttpMethod.GET,
                             "/books/**",
                             "/authors/**",
-                            "/images/**"
+                            "/images/**",
+                            "/countries/**"
                     ).permitAll()
                     .requestMatchers(
                             HttpMethod.POST,

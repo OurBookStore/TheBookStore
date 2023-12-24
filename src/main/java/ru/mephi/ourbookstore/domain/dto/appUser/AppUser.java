@@ -24,4 +24,5 @@ public class AppUser {
     String keycloakId;
     List<OrderModel> orders;
     Cart cart;
+    String address;
 }

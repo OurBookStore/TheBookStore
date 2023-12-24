@@ -20,10 +20,8 @@ public class OrderDto {
     Long id;
     @JsonProperty(value = "appUser")
     AppUserDto appUserDto;
-    @JsonProperty(value = "orderPositions")
-    List<OrderPositionOfOrderDto> orderPositionOfOrderDtos;
-    @JsonProperty(value = "orderStatusHistories")
-    List<OrderStatusHistoryDto> orderStatusHistoryDtos;
+    List<OrderPositionOfOrderDto> orderPositions;
+    List<OrderStatusHistoryDto> orderStatusHistories;
     String address;
     double totalPrice;
 }

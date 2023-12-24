@@ -84,8 +84,10 @@ public class BookService {
     public void update(Book book) {
         validate(book);
         Long bookId = book.getId();
-        bookRepository.findById(bookId)
+        String imageId = bookRepository.findById(bookId)
+                .map(BookModel::getImage)
                 .orElseThrow(() -> new NotFoundException(BOOK, "id", bookId));
+        book.setImage(imageId);
         BookModel bookModel = bookModelMapper.objectToModel(book);
         bookRepository.save(bookModel);
     }

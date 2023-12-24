@@ -4,6 +4,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.mephi.ourbookstore.domain.Entities;
 import ru.mephi.ourbookstore.domain.OrderModel;
 import ru.mephi.ourbookstore.domain.OrderStatus;
@@ -26,7 +27,7 @@ public class OrderStatusHistoryService {
     final OrderStatusHistoryRepository repository;
     final OrderStatusHistoryModelMapperImpl oshModelMapper;
 
-
+    @Transactional
     public OrderStatusHistoryModel writeActualOSH(Order order, OrderStatus orderStatus) {
         OrderStatusHistory osh = OrderStatusHistory.builder()
                 .status(orderStatus)
@@ -44,12 +45,14 @@ public class OrderStatusHistoryService {
                 .orElseThrow(() -> new NotFoundException(Entities.ORDER_STATUS_HISTORY, "id", oshId));
         return oshModelMapper.modelToObject(model);
     }
+
+    @Transactional
     public void inactivateByOrder(OrderModel orderModel) {
         repository.inactivateOldStatusesByOrder(orderModel);
     }
 
     public OrderStatusHistory getActualByOrder(OrderModel orderModel) {
         return oshModelMapper.modelToObject(repository.getActualByOrder(orderModel)
-                .orElseThrow(() -> new NoActualStatusException("id", orderModel.getId())));
+                .orElseThrow(() -> new NoActualStatusException(Entities.ORDER, "id", orderModel.getId())));
     }
 }

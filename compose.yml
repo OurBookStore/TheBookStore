@@ -11,7 +11,6 @@ services:
       - 8080:8080
     environment:
       SPRING_CONFIG_LOCATION: "src/main/resources/application-prod.yaml"
-        #    restart: unless-stopped
     depends_on:
       postgres:
         condition: service_healthy
