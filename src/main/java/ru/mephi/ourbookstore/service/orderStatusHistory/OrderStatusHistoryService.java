@@ -12,7 +12,7 @@ import ru.mephi.ourbookstore.domain.OrderStatusHistoryModel;
 import ru.mephi.ourbookstore.domain.dto.order.Order;
 import ru.mephi.ourbookstore.domain.dto.orderStatusHistory.OrderStatusHistory;
 
-import ru.mephi.ourbookstore.mapper.orderStatusHistory.OrderStatusHistoryModelMapperImpl;
+import ru.mephi.ourbookstore.mapper.orderStatusHistory.OrderStatusHistoryModelMapper;
 import ru.mephi.ourbookstore.repository.orderStatusHistory.OrderStatusHistoryRepository;
 import ru.mephi.ourbookstore.service.exceptions.NoActualStatusException;
 import ru.mephi.ourbookstore.service.exceptions.NotFoundException;
@@ -25,7 +25,7 @@ import java.time.LocalDateTime;
 public class OrderStatusHistoryService {
 
     final OrderStatusHistoryRepository repository;
-    final OrderStatusHistoryModelMapperImpl oshModelMapper;
+    final OrderStatusHistoryModelMapper oshModelMapper;
 
     @Transactional
     public OrderStatusHistoryModel writeActualOSH(Order order, OrderStatus orderStatus) {

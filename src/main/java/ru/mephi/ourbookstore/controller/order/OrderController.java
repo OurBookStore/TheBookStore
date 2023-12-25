@@ -14,7 +14,7 @@ import ru.mephi.ourbookstore.domain.dto.orderPosition.OrderPositionLink;
 import ru.mephi.ourbookstore.domain.dto.orderStatusHistory.OrderStatusDto;
 import ru.mephi.ourbookstore.domain.dto.orderStatusHistory.OrderStatusHistoryDto;
 import ru.mephi.ourbookstore.mapper.order.OrderDtoMapper;
-import ru.mephi.ourbookstore.mapper.orderStatusHistory.OrderStatusHistoryDtoMapperImpl;
+import ru.mephi.ourbookstore.mapper.orderStatusHistory.OrderStatusHistoryDtoMapper;
 import ru.mephi.ourbookstore.service.order.OrderService;
 import ru.mephi.ourbookstore.service.orderPosition.OrderPositionService;
 
@@ -30,7 +30,7 @@ public class OrderController {
     final OrderService orderService;
     final OrderPositionService orderPositionService;
     final OrderDtoMapper orderDtoMapper;
-    final OrderStatusHistoryDtoMapperImpl oshDtoMapper;
+    final OrderStatusHistoryDtoMapper oshDtoMapper;
 
 
     @GetMapping("/{orderId}")
