@@ -215,7 +215,7 @@ public abstract class TestHelper {
         public static AuthorModel getAuthorModel2() {
             return AuthorModel.builder()
                     .fullName("2")
-                    .dateOfBirth(LocalDate.parse("2023-01-01"))
+                    .dateOfBirth(LocalDate.parse("2000-01-01"))
                     .country("2")
                     .build();
         }
