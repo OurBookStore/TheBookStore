@@ -1,10 +1,16 @@
 package ru.mephi.ourbookstore.service.book;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import java.util.List;
+import jakarta.persistence.EntityManager;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
+import org.hibernate.search.engine.search.query.SearchResult;
+import org.hibernate.search.mapper.orm.Search;
+import org.hibernate.search.mapper.orm.massindexing.MassIndexer;
+import org.hibernate.search.mapper.orm.session.SearchSession;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,6 +19,7 @@ import ru.mephi.ourbookstore.domain.dto.book.Book;
 import ru.mephi.ourbookstore.mapper.book.BookModelMapper;
 import ru.mephi.ourbookstore.repository.book.BookRepository;
 import ru.mephi.ourbookstore.service.exceptions.AlreadyExistException;
+import ru.mephi.ourbookstore.service.exceptions.InterruptedIndexerException;
 import ru.mephi.ourbookstore.service.exceptions.NotFoundException;
 import ru.mephi.ourbookstore.service.exceptions.ValidationException;
 
@@ -31,6 +38,11 @@ public class BookService {
 
     final BookRepository bookRepository;
     final BookModelMapper bookModelMapper;
+  
+    final EntityManager entityManager;
+
+    final int SEARCH_HINTS_CNT = 20;
+    final int INDEXER_THREADS = 6;
     static int BOOK_PER_PAGE = 3;
 
     @Transactional(propagation = Propagation.REQUIRED, readOnly = true, noRollbackFor = Exception.class)
@@ -53,6 +65,22 @@ public class BookService {
             throw new ValidationException("Page index must not be less than zero");
         }
         return bookRepository.findAll(PageRequest.of(pageNumber, BOOK_PER_PAGE)).map(bookModelMapper::modelToObject);
+    }
+  
+    public List<Book> search(String searchText) {
+        SearchSession searchSession = Search.session(entityManager);
+
+        runIndexing(searchSession);
+
+        SearchResult<BookModel> searchResult = searchSession
+                .search(BookModel.class)
+                .where(f -> f.
+                        match().fields("name", "authors.fullName").matching(searchText).fuzzy())
+                .fetch(SEARCH_HINTS_CNT);
+
+        return searchResult.hits().stream()
+                .map(bookModelMapper::modelToObject)
+                .toList();
     }
 
     @Transactional
@@ -118,6 +146,16 @@ public class BookService {
         double price = book.getPrice();
         if (price < 0) {
             throw new ValidationException(BOOK, "price", price);
+        }
+    }
+
+    private void runIndexing(SearchSession searchSession) {
+        MassIndexer indexer = searchSession.massIndexer(BookModel.class )
+                .threadsToLoadObjects(INDEXER_THREADS);
+        try {
+            indexer.startAndWait();
+        } catch (InterruptedException e) {
+            throw new InterruptedIndexerException();
         }
     }
 }

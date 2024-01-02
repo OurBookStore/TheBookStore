@@ -23,7 +23,7 @@ public class CountryController {
 
     @GetMapping
     @PreAuthorize("hasRole('ADMIN')")
-    public Set<String> removeBookFromAuthor() {
+    public Set<String> getCountries() {
         return countryValidator.getCountries();
     }
 }

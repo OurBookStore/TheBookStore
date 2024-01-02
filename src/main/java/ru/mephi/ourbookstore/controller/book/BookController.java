@@ -39,9 +39,17 @@ public class BookController {
                 .toList();
     }
 
+
     @GetMapping("/page/{pageNumber}")
     public BookPageDto get(@PathVariable int pageNumber) {
         return bookDtoMapper.objectToPageDto(bookService.getByPageNumber(pageNumber));
+    }
+
+    @GetMapping("/search/{searchText}")
+    public List<BookDto> search(@PathVariable String searchText) {
+        return bookService.search(searchText).stream()
+                .map(bookDtoMapper::objectToDto)
+                .toList();
     }
 
     @SecurityRequirement(name = "bearerAuth")

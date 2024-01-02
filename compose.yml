@@ -60,10 +60,11 @@ services:
       KEYCLOAK_ADMIN_PASSWORD: admin
     networks:
       - app_network
-    restart: no
+    restart: unless-stopped
     depends_on:
       postgres:
         condition: service_healthy
+
 
 networks:
   app_network:
