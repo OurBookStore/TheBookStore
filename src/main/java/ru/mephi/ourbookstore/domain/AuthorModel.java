@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.search.mapper.pojo.mapping.definition.annotation.FullTextField;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.GenericField;
 
 @Entity
 @Data
@@ -27,6 +28,7 @@ public class AuthorModel {
     Long id;
     @FullTextField
     String fullName;
+    @GenericField
     LocalDate dateOfBirth;
     String country;
     @ManyToMany(cascade = {CascadeType.MERGE}, mappedBy = "authors", fetch = FetchType.EAGER)

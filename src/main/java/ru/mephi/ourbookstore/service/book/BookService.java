@@ -2,6 +2,8 @@ package ru.mephi.ourbookstore.service.book;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+
+import java.time.LocalDate;
 import java.util.List;
 import jakarta.persistence.EntityManager;
 import lombok.AccessLevel;
@@ -11,6 +13,7 @@ import org.hibernate.search.engine.search.query.SearchResult;
 import org.hibernate.search.mapper.orm.Search;
 import org.hibernate.search.mapper.orm.massindexing.MassIndexer;
 import org.hibernate.search.mapper.orm.session.SearchSession;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -71,13 +74,27 @@ public class BookService {
         int offset = bookSearchRqDto.getPageNumber() * BOOK_PER_PAGE;
         SearchSession searchSession = Search.session(entityManager);
 
+        LocalDate dateFrom;
+        if (bookSearchRqDto.getDateOfBirthFrom() == null) {
+            dateFrom = LocalDate.MIN;
+        } else {
+            dateFrom = LocalDate.parse(bookSearchRqDto.getDateOfBirthFrom());
+        }
+
+        LocalDate dateTo;
+        if(bookSearchRqDto.getDateOfBirthTo() == null) {
+            dateTo = LocalDate.MAX;
+        } else {
+            dateTo = LocalDate.parse(bookSearchRqDto.getDateOfBirthTo());
+        }
+
         runIndexing(searchSession);
 
         SearchResult<BookModel> searchResult = searchSession
                 .search(BookModel.class)
                 .where(f->f.bool()
                         .must(f.match().fields().fields("name", "authors.fullName").matching(bookSearchRqDto.getSearchText()).fuzzy())
-                        .must(f.range().field("authors.dateOfBirch").between(bookSearchRqDto.getDateOfBirthFrom(), bookSearchRqDto.getDateOfBirthTo())))
+                        .must(f.range().field("authors.dateOfBirth").between(dateFrom, dateTo)))
                 .fetch(offset, BOOK_PER_PAGE);
 
         return searchResult.hits().stream()
