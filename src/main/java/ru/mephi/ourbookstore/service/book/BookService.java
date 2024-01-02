@@ -1,7 +1,8 @@
 package ru.mephi.ourbookstore.service.book;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import java.util.List;
-
 import jakarta.persistence.EntityManager;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +23,10 @@ import ru.mephi.ourbookstore.service.exceptions.InterruptedIndexerException;
 import ru.mephi.ourbookstore.service.exceptions.NotFoundException;
 import ru.mephi.ourbookstore.service.exceptions.ValidationException;
 
+import java.util.List;
+
 import static ru.mephi.ourbookstore.domain.Entities.BOOK;
+
 
 /**
  * @author Aleksei Iagnenkov (alekseiiagn)
@@ -34,10 +38,12 @@ public class BookService {
 
     final BookRepository bookRepository;
     final BookModelMapper bookModelMapper;
+  
     final EntityManager entityManager;
 
     final int SEARCH_HINTS_CNT = 20;
     final int INDEXER_THREADS = 6;
+    static int BOOK_PER_PAGE = 3;
 
     @Transactional(propagation = Propagation.REQUIRED, readOnly = true, noRollbackFor = Exception.class)
     public Book getById(long bookId) {
@@ -53,6 +59,14 @@ public class BookService {
                 .toList();
     }
 
+    @Transactional(propagation = Propagation.REQUIRED, readOnly = true, noRollbackFor = Exception.class)
+    public Page<Book> getByPageNumber(int pageNumber) {
+        if (pageNumber < 0) {
+            throw new ValidationException("Page index must not be less than zero");
+        }
+        return bookRepository.findAll(PageRequest.of(pageNumber, BOOK_PER_PAGE)).map(bookModelMapper::modelToObject);
+    }
+  
     public List<Book> search(String searchText) {
         SearchSession searchSession = Search.session(entityManager);
 

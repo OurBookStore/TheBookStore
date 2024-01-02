@@ -11,4 +11,8 @@ public class BookStoreException extends ResponseStatusException {
     public BookStoreException(BookStoreError error, Entities entity, String fieldName, Object fieldValue) {
         super(error.getCode(), String.format(error.getMessage(), entity, fieldName, fieldValue));
     }
+
+    public BookStoreException(BookStoreError error, String message) {
+        super(error.getCode(), message);
+    }
 }
