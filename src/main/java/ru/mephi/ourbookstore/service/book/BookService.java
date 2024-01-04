@@ -73,8 +73,8 @@ public class BookService {
         int offset = bookSearchRqDto.getPageNumber() * BOOK_PER_PAGE;
         SearchSession searchSession = Search.session(entityManager);
 
-        LocalDate dateFrom = LocalDate.parse(bookSearchRqDto.getDateOfBirthFrom());
-        LocalDate dateTo = LocalDate.parse(bookSearchRqDto.getDateOfBirthTo());
+        LocalDate dateFrom = bookSearchRqDto.getDateOfBirthFrom() == null ? null : LocalDate.parse(bookSearchRqDto.getDateOfBirthFrom());
+        LocalDate dateTo = bookSearchRqDto.getDateOfBirthTo() == null ? null : LocalDate.parse(bookSearchRqDto.getDateOfBirthTo());
 
         runIndexing(searchSession);
 
@@ -85,10 +85,10 @@ public class BookService {
                     if (bookSearchRqDto.getSearchText() != null && !bookSearchRqDto.getSearchText().isEmpty()) {
                         b.must(f.match().fields().fields("name", "authors.fullName").matching(bookSearchRqDto.getSearchText()).fuzzy());
                     }
-                    if (bookSearchRqDto.getDateOfBirthFrom() != null) {
+                    if (dateFrom != null) {
                         b.must(f.range().field("authors.dateOfBirth").atLeast(dateFrom));
                     }
-                    if (bookSearchRqDto.getDateOfBirthTo() != null) {
+                    if (dateTo != null) {
                         b.must(f.range().field("authors.dateOfBirth").atMost(dateTo));
                     }
                 } ))
