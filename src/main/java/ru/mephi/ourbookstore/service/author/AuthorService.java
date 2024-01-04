@@ -1,5 +1,6 @@
 package ru.mephi.ourbookstore.service.author;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import jakarta.transaction.Transactional;
@@ -116,5 +117,13 @@ public class AuthorService {
         if (!countryValidator.isCountryValid(author.getCountry())) {
             throw new ValidationException(Entities.AUTHOR, "Invalid country", author.getCountry());
         }
+    }
+
+    public LocalDate getMinDateOfBirth() {
+        return authorRepository.getMinDateOfBirth();
+    }
+
+    public LocalDate getMaxDateOfBirth() {
+        return authorRepository.getMaxDateOfBirth();
     }
 }

@@ -2,6 +2,8 @@ package ru.mephi.ourbookstore.service.book;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+
+import java.time.LocalDate;
 import java.util.List;
 import jakarta.persistence.EntityManager;
 import lombok.AccessLevel;
@@ -16,14 +18,15 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import ru.mephi.ourbookstore.domain.BookModel;
 import ru.mephi.ourbookstore.domain.dto.book.Book;
+import ru.mephi.ourbookstore.domain.dto.book.BookFilterDefaultsDto;
+import ru.mephi.ourbookstore.domain.dto.book.BookSearchRqDto;
 import ru.mephi.ourbookstore.mapper.book.BookModelMapper;
 import ru.mephi.ourbookstore.repository.book.BookRepository;
+import ru.mephi.ourbookstore.service.author.AuthorService;
 import ru.mephi.ourbookstore.service.exceptions.AlreadyExistException;
 import ru.mephi.ourbookstore.service.exceptions.InterruptedIndexerException;
 import ru.mephi.ourbookstore.service.exceptions.NotFoundException;
 import ru.mephi.ourbookstore.service.exceptions.ValidationException;
-
-import java.util.List;
 
 import static ru.mephi.ourbookstore.domain.Entities.BOOK;
 
@@ -40,9 +43,8 @@ public class BookService {
     final BookModelMapper bookModelMapper;
   
     final EntityManager entityManager;
-
-    final int SEARCH_HINTS_CNT = 20;
-    final int INDEXER_THREADS = 6;
+    final AuthorService authorService;
+    static int INDEXER_THREADS = 6;
     static int BOOK_PER_PAGE = 3;
 
     @Transactional(propagation = Propagation.REQUIRED, readOnly = true, noRollbackFor = Exception.class)
@@ -67,16 +69,30 @@ public class BookService {
         return bookRepository.findAll(PageRequest.of(pageNumber, BOOK_PER_PAGE)).map(bookModelMapper::modelToObject);
     }
   
-    public List<Book> search(String searchText) {
+    public List<Book> search(BookSearchRqDto bookSearchRqDto) {
+        int offset = bookSearchRqDto.getPageNumber() * BOOK_PER_PAGE;
         SearchSession searchSession = Search.session(entityManager);
+
+        LocalDate dateFrom = bookSearchRqDto.getDateOfBirthFrom() == null ? null : LocalDate.parse(bookSearchRqDto.getDateOfBirthFrom());
+        LocalDate dateTo = bookSearchRqDto.getDateOfBirthTo() == null ? null : LocalDate.parse(bookSearchRqDto.getDateOfBirthTo());
 
         runIndexing(searchSession);
 
         SearchResult<BookModel> searchResult = searchSession
                 .search(BookModel.class)
-                .where(f -> f.
-                        match().fields("name", "authors.fullName").matching(searchText).fuzzy())
-                .fetch(SEARCH_HINTS_CNT);
+                .where(f->f.bool(b-> {
+                    b.must(f.matchAll());
+                    if (bookSearchRqDto.getSearchText() != null && !bookSearchRqDto.getSearchText().isEmpty()) {
+                        b.must(f.match().fields().fields("name", "authors.fullName").matching(bookSearchRqDto.getSearchText()).fuzzy());
+                    }
+                    if (dateFrom != null) {
+                        b.must(f.range().field("authors.dateOfBirth").atLeast(dateFrom));
+                    }
+                    if (dateTo != null) {
+                        b.must(f.range().field("authors.dateOfBirth").atMost(dateTo));
+                    }
+                } ))
+                .fetch(offset, BOOK_PER_PAGE);
 
         return searchResult.hits().stream()
                 .map(bookModelMapper::modelToObject)
@@ -157,5 +173,12 @@ public class BookService {
         } catch (InterruptedException e) {
             throw new InterruptedIndexerException();
         }
+    }
+
+    public BookFilterDefaultsDto getFilterDefaults() {
+        return BookFilterDefaultsDto.builder()
+                .dateOfBirthMin(authorService.getMinDateOfBirth().toString())
+                .dateOfBirthMax(authorService.getMaxDateOfBirth().toString())
+                .build();
     }
 }

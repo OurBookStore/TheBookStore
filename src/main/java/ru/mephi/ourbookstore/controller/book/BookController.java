@@ -4,18 +4,13 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import ru.mephi.ourbookstore.domain.dto.book.Book;
-import ru.mephi.ourbookstore.domain.dto.book.BookCreateDto;
-import ru.mephi.ourbookstore.domain.dto.book.BookDto;
-import ru.mephi.ourbookstore.domain.dto.book.BookUpdateDto;
+import ru.mephi.ourbookstore.domain.dto.book.*;
 import ru.mephi.ourbookstore.domain.dto.bookPage.BookPageDto;
 import ru.mephi.ourbookstore.mapper.book.BookDtoMapperImpl;
 import ru.mephi.ourbookstore.service.book.BookService;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -45,11 +40,16 @@ public class BookController {
         return bookDtoMapper.objectToPageDto(bookService.getByPageNumber(pageNumber));
     }
 
-    @GetMapping("/search/{searchText}")
-    public List<BookDto> search(@PathVariable String searchText) {
-        return bookService.search(searchText).stream()
+    @GetMapping("/search")
+    public List<BookDto> search(@RequestBody BookSearchRqDto bookSearchRqDto) {
+        return bookService.search(bookSearchRqDto).stream()
                 .map(bookDtoMapper::objectToDto)
                 .toList();
+    }
+
+    @GetMapping("search/defaults")
+    public BookFilterDefaultsDto getFilterDefaults() {
+        return bookService.getFilterDefaults();
     }
 
     @SecurityRequirement(name = "bearerAuth")
