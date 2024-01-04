@@ -11,6 +11,7 @@ import lombok.experimental.FieldDefaults;
 public class BookSearchRqDto {
     String searchText;
     int pageNumber;
+    int bookPerPage;
     String dateOfBirthFrom;
     String dateOfBirthTo;
 }

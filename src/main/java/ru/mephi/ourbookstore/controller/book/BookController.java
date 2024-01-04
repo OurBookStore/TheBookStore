@@ -8,7 +8,9 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ru.mephi.ourbookstore.domain.dto.book.*;
 import ru.mephi.ourbookstore.domain.dto.bookPage.BookPageDto;
+import ru.mephi.ourbookstore.mapper.book.BookDtoMapper;
 import ru.mephi.ourbookstore.mapper.book.BookDtoMapperImpl;
+import ru.mephi.ourbookstore.mapper.book.BookModelMapper;
 import ru.mephi.ourbookstore.service.book.BookService;
 
 import java.util.List;
@@ -21,6 +23,7 @@ public class BookController {
 
     final BookService bookService;
     final BookDtoMapperImpl bookDtoMapper;
+    final BookModelMapper bookModelMapper;
 
     @GetMapping("/{bookId}")
     public BookDto getById(@PathVariable long bookId) {
@@ -41,10 +44,8 @@ public class BookController {
     }
 
     @GetMapping("/search")
-    public List<BookDto> search(@RequestBody BookSearchRqDto bookSearchRqDto) {
-        return bookService.search(bookSearchRqDto).stream()
-                .map(bookDtoMapper::objectToDto)
-                .toList();
+    public BookPageDto search(@RequestBody BookSearchRqDto bookSearchRqDto) {
+        return BookDtoMapper.searchResultToPageDto(bookService.search(bookSearchRqDto), bookSearchRqDto.getBookPerPage(), bookModelMapper, bookDtoMapper);
     }
 
     @GetMapping("search/defaults")
