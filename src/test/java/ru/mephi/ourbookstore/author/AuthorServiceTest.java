@@ -43,4 +43,30 @@ class AuthorServiceTest extends BookStoreTest {
                 authorService.delete(1)
         );
     }
+
+    @DisplayName("get min date of birth")
+    @Test
+    void getMinDateOfBirth() {
+        authorRepository.save(TestHelper.AuthorEntity.getAuthorModel1());
+        authorRepository.save(TestHelper.AuthorEntity.getAuthorModel2());
+
+        LocalDate birthDate1 = TestHelper.AuthorEntity.getAuthorModel1().getDateOfBirth();
+        LocalDate birthDate2 = TestHelper.AuthorEntity.getAuthorModel2().getDateOfBirth();
+        LocalDate minDate = birthDate1.isAfter(birthDate2) ? birthDate2 : birthDate1;
+
+        assertEquals(authorService.getMinDateOfBirth(), minDate);
+    }
+
+    @DisplayName("get max date of birth")
+    @Test
+    void getMaxDateOfBirth() {
+        authorRepository.save(TestHelper.AuthorEntity.getAuthorModel1());
+        authorRepository.save(TestHelper.AuthorEntity.getAuthorModel2());
+
+        LocalDate birthDate1 = TestHelper.AuthorEntity.getAuthorModel1().getDateOfBirth();
+        LocalDate birthDate2 = TestHelper.AuthorEntity.getAuthorModel2().getDateOfBirth();
+        LocalDate maxDate = birthDate1.isAfter(birthDate2) ? birthDate1 : birthDate2;
+
+        assertEquals(authorService.getMaxDateOfBirth(), maxDate);
+    }
 }

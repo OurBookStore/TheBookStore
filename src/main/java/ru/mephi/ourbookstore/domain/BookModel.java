@@ -18,6 +18,9 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.FieldDefaults;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.FullTextField;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.Indexed;
+import org.hibernate.search.mapper.pojo.mapping.definition.annotation.IndexedEmbedded;
 
 /**
  * @author Aleksei Iagnenkov (alekseiiagn)
@@ -27,12 +30,14 @@ import lombok.experimental.FieldDefaults;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Indexed
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class BookModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
+    @FullTextField
     String name;
     double price;
     int count;
@@ -44,5 +49,6 @@ public class BookModel {
     @ManyToMany(cascade = {CascadeType.MERGE}, fetch = FetchType.EAGER)
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
+    @IndexedEmbedded
     List<AuthorModel> authors;
 }

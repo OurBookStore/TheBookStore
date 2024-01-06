@@ -1,22 +1,35 @@
 package ru.mephi.ourbookstore.service.book;
 
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 
+import java.time.LocalDate;
+import java.util.List;
+import jakarta.persistence.EntityManager;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.hibernate.search.engine.search.query.SearchResult;
+import org.hibernate.search.mapper.orm.Search;
+import org.hibernate.search.mapper.orm.massindexing.MassIndexer;
+import org.hibernate.search.mapper.orm.session.SearchSession;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import ru.mephi.ourbookstore.domain.BookModel;
 import ru.mephi.ourbookstore.domain.dto.book.Book;
+import ru.mephi.ourbookstore.domain.dto.book.BookFilterDefaultsDto;
+import ru.mephi.ourbookstore.domain.dto.book.BookSearchRqDto;
 import ru.mephi.ourbookstore.mapper.book.BookModelMapper;
 import ru.mephi.ourbookstore.repository.book.BookRepository;
+import ru.mephi.ourbookstore.service.author.AuthorService;
 import ru.mephi.ourbookstore.service.exceptions.AlreadyExistException;
+import ru.mephi.ourbookstore.service.exceptions.InterruptedIndexerException;
 import ru.mephi.ourbookstore.service.exceptions.NotFoundException;
 import ru.mephi.ourbookstore.service.exceptions.ValidationException;
 
 import static ru.mephi.ourbookstore.domain.Entities.BOOK;
+
 
 /**
  * @author Aleksei Iagnenkov (alekseiiagn)
@@ -28,6 +41,11 @@ public class BookService {
 
     final BookRepository bookRepository;
     final BookModelMapper bookModelMapper;
+  
+    final EntityManager entityManager;
+    final AuthorService authorService;
+    static int INDEXER_THREADS = 6;
+    static int BOOK_PER_PAGE = 3;
 
     @Transactional(propagation = Propagation.REQUIRED, readOnly = true, noRollbackFor = Exception.class)
     public Book getById(long bookId) {
@@ -41,6 +59,47 @@ public class BookService {
         return bookRepository.findAll().stream()
                 .map(bookModelMapper::modelToObject)
                 .toList();
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED, readOnly = true, noRollbackFor = Exception.class)
+    public Page<Book> getByPageNumber(int pageNumber) {
+        if (pageNumber < 0) {
+            throw new ValidationException("Page index must not be less than zero");
+        }
+        return bookRepository.findAll(PageRequest.of(pageNumber, BOOK_PER_PAGE)).map(bookModelMapper::modelToObject);
+    }
+  
+    public SearchResult<BookModel> search(BookSearchRqDto bookSearchRqDto) {
+        if (bookSearchRqDto.getPageNumber() < 0) {
+            throw new ValidationException("Page index must not be less than zero");
+        }
+
+        int offset = bookSearchRqDto.getPageNumber() * bookSearchRqDto.getBookPerPage();
+
+        SearchSession searchSession = Search.session(entityManager);
+
+        LocalDate dateFrom = bookSearchRqDto.getDateOfBirthFrom() == null ? null : LocalDate.parse(bookSearchRqDto.getDateOfBirthFrom());
+        LocalDate dateTo = bookSearchRqDto.getDateOfBirthTo() == null ? null : LocalDate.parse(bookSearchRqDto.getDateOfBirthTo());
+
+        runIndexing(searchSession);
+
+        return searchSession
+                .search(BookModel.class)
+                .where(f->f.bool(b-> {
+                    b.must(f.matchAll());
+                    if (bookSearchRqDto.getSearchText() != null && !bookSearchRqDto.getSearchText().isEmpty()) {
+                        b.must( f.bool()
+                                .should(f.match().fields().fields("name", "authors.fullName").matching(bookSearchRqDto.getSearchText()).fuzzy())
+                                .should(f.wildcard().fields("name", "authors.fullName").matching("*" + bookSearchRqDto.getSearchText() + "*")));
+                    }
+                    if (dateFrom != null) {
+                        b.must(f.range().field("authors.dateOfBirth").atLeast(dateFrom));
+                    }
+                    if (dateTo != null) {
+                        b.must(f.range().field("authors.dateOfBirth").atMost(dateTo));
+                    }
+                } ))
+                .fetch(offset, bookSearchRqDto.getBookPerPage());
     }
 
     @Transactional
@@ -107,5 +166,22 @@ public class BookService {
         if (price < 0) {
             throw new ValidationException(BOOK, "price", price);
         }
+    }
+
+    private void runIndexing(SearchSession searchSession) {
+        MassIndexer indexer = searchSession.massIndexer(BookModel.class )
+                .threadsToLoadObjects(INDEXER_THREADS);
+        try {
+            indexer.startAndWait();
+        } catch (InterruptedException e) {
+            throw new InterruptedIndexerException();
+        }
+    }
+
+    public BookFilterDefaultsDto getFilterDefaults() {
+        return BookFilterDefaultsDto.builder()
+                .dateOfBirthMin(authorService.getMinDateOfBirth().toString())
+                .dateOfBirthMax(authorService.getMaxDateOfBirth().toString())
+                .build();
     }
 }
