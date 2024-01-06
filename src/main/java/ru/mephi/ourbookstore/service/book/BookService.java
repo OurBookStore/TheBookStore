@@ -69,8 +69,13 @@ public class BookService {
         return bookRepository.findAll(PageRequest.of(pageNumber, BOOK_PER_PAGE)).map(bookModelMapper::modelToObject);
     }
   
-    public List<Book> search(BookSearchRqDto bookSearchRqDto) {
-        int offset = bookSearchRqDto.getPageNumber() * BOOK_PER_PAGE;
+    public SearchResult<BookModel> search(BookSearchRqDto bookSearchRqDto) {
+        if (bookSearchRqDto.getPageNumber() < 0) {
+            throw new ValidationException("Page index must not be less than zero");
+        }
+
+        int offset = bookSearchRqDto.getPageNumber() * bookSearchRqDto.getBookPerPage();
+
         SearchSession searchSession = Search.session(entityManager);
 
         LocalDate dateFrom = bookSearchRqDto.getDateOfBirthFrom() == null ? null : LocalDate.parse(bookSearchRqDto.getDateOfBirthFrom());
@@ -78,12 +83,14 @@ public class BookService {
 
         runIndexing(searchSession);
 
-        SearchResult<BookModel> searchResult = searchSession
+        return searchSession
                 .search(BookModel.class)
                 .where(f->f.bool(b-> {
                     b.must(f.matchAll());
                     if (bookSearchRqDto.getSearchText() != null && !bookSearchRqDto.getSearchText().isEmpty()) {
-                        b.must(f.match().fields().fields("name", "authors.fullName").matching(bookSearchRqDto.getSearchText()).fuzzy());
+                        b.must( f.bool()
+                                .should(f.match().fields().fields("name", "authors.fullName").matching(bookSearchRqDto.getSearchText()).fuzzy())
+                                .should(f.wildcard().fields("name", "authors.fullName").matching("*" + bookSearchRqDto.getSearchText() + "*")));
                     }
                     if (dateFrom != null) {
                         b.must(f.range().field("authors.dateOfBirth").atLeast(dateFrom));
@@ -92,11 +99,7 @@ public class BookService {
                         b.must(f.range().field("authors.dateOfBirth").atMost(dateTo));
                     }
                 } ))
-                .fetch(offset, BOOK_PER_PAGE);
-
-        return searchResult.hits().stream()
-                .map(bookModelMapper::modelToObject)
-                .toList();
+                .fetch(offset, bookSearchRqDto.getBookPerPage());
     }
 
     @Transactional
