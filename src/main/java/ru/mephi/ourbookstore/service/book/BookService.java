@@ -170,7 +170,7 @@ public class BookService {
 
     private void runIndexing(SearchSession searchSession) {
         MassIndexer indexer = searchSession.massIndexer(BookModel.class )
-                .threadsToLoadObjects(INDEXER_THREADS);
+                .threadsToLoadObjects(INDEXER_THREADS).purgeAllOnStart(true);
         try {
             indexer.startAndWait();
         } catch (InterruptedException e) {
