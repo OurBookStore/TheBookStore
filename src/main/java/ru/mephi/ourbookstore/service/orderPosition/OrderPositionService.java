@@ -22,8 +22,11 @@ import ru.mephi.ourbookstore.service.exceptions.*;
 import ru.mephi.ourbookstore.service.order.OrderService;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import static ru.mephi.ourbookstore.domain.Entities.ORDER_POSITION;
+import static ru.mephi.ourbookstore.util.Utils.distinctByKey;
 
 @Service
 @RequiredArgsConstructor
@@ -33,14 +36,14 @@ public class OrderPositionService {
     final OrderService orderService;
     final BookService bookService;
     final CartService cartService;
-    final OrderPositionModelMapper orderModelMapper;
+    final OrderPositionModelMapper orderPositionModelMapper;
     final CartModelMapper cartModelMapper;
     final OrderPositionRepository orderPositionRepository;
 
     public OrderPosition getById(long orderPositionId) {
         OrderPositionModel orderPositionModel = orderPositionRepository.findById(orderPositionId)
                 .orElseThrow(() -> new NotFoundException(ORDER_POSITION, "id", orderPositionId));
-        return orderModelMapper.modelToObject(orderPositionModel);
+        return orderPositionModelMapper.modelToObject(orderPositionModel);
     }
 
     @Transactional
@@ -52,7 +55,7 @@ public class OrderPositionService {
             throw new BookCountException("count", orderPosition.getCount());
         }
         orderPosition.setPrice(orderPosition.getBook().getPrice() * orderPosition.getCount());
-        OrderPositionModel orderPositionModel = orderModelMapper.objectToModel(orderPosition);
+        OrderPositionModel orderPositionModel = orderPositionModelMapper.objectToModel(orderPosition);
         orderPositionModel = orderPositionRepository.save(orderPositionModel);
         return orderPositionModel.getId();
     }
@@ -75,21 +78,57 @@ public class OrderPositionService {
                 orderPosition.getOrder().getTotalPrice() + orderPosition.getPrice()
         );
         orderPosition.setCart(null);
-        OrderPositionModel orderPositionModel = orderModelMapper.objectToModel(orderPosition);
+        OrderPositionModel orderPositionModel = orderPositionModelMapper.objectToModel(orderPosition);
         orderPositionModel = orderPositionRepository.save(orderPositionModel);
         return orderPositionModel.getOrder().getId();
     }
 
     @Transactional
     public Long fillOrderByCartPositions(Long orderId, Long cartId) {
-        Cart cart = cartService.getById(cartId);
-        List<OrderPosition> orderPositionList = cart.getOrderPositions();
+        List<OrderPosition> orderPositionList = handleOrderPositions(cartId);
+
         orderPositionList.forEach(orderPosition -> createLinkToOrder(OrderPositionLink.builder()
                 .orderId(orderId)
                 .positionId(orderPosition.getId())
                 .build()));
 
         return orderId;
+    }
+
+    @Transactional
+    public List<OrderPosition> handleOrderPositions(Long cartId) {
+        List<OrderPositionModel> orderPositions = orderPositionRepository.findAllByCartId(cartId);
+
+
+        Map<Long, Integer> bookCountDictionary = orderPositions.stream().collect(
+                Collectors.groupingBy(orderPosition -> orderPosition.getBook().getId(), Collectors.summingInt(OrderPositionModel::getCount))
+        );
+        List<OrderPositionModel> orderPreviewModelPositions = orderPositions
+                .stream()
+                .filter(distinctByKey(orderPosition -> orderPosition.getBook().getId())) //Удаляет дубликаты
+                .map(orderPosition -> OrderPositionModel.builder() //меняем у уникальных позиций количтсва
+                        .cart(orderPosition.getCart())
+                        .count(bookCountDictionary.get(orderPosition.getBook().getId()))
+                        .price(bookCountDictionary.get(orderPosition.getBook().getId()) * orderPosition.getBook().getPrice())
+                        .book(orderPosition.getBook())
+                        .order(orderPosition.getOrder())
+                        .build())
+                .filter(orderPosition -> orderPosition.getBook().getCount() != 0) //Фильтр на ошибки
+                .map(this::handleCartPosition) //Проверяем переполнение по количству книг
+                .toList();
+        orderPositionRepository.deleteAllByCartId(cartId);
+        List<OrderPositionModel> positionModelList = orderPositionRepository.saveAll(orderPreviewModelPositions);
+        return positionModelList.stream()
+                .map(orderPositionModelMapper::modelToObject)
+                .collect(Collectors.toList());
+    }
+
+    private OrderPositionModel handleCartPosition(OrderPositionModel orderPosition) {
+        if (orderPosition.getBook().getCount() <= orderPosition.getCount()) {
+            orderPosition.setCount(orderPosition.getBook().getCount());
+            orderPosition.setPrice(orderPosition.getCount() * orderPosition.getBook().getPrice());
+        }
+        return orderPosition;
     }
 
     @Transactional

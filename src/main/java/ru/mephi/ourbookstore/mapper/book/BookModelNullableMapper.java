@@ -16,13 +16,11 @@ public interface BookModelNullableMapper {
 
     @Mappings({
             @Mapping(target = "orderPositions", expression = "java(null)"),
-            @Mapping(target = "authors", expression = "java(null)")
     })
     Book modelToObject(BookModel model);
 
     @Mappings({
             @Mapping(target = "orderPositions", expression = "java(null)"),
-            @Mapping(target = "authors", expression = "java(null)")
     })
     BookModel objectToModel(Book book);
 }

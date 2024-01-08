@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.mephi.ourbookstore.domain.dto.cart.Cart;
 import ru.mephi.ourbookstore.domain.dto.cart.CartDto;
+import ru.mephi.ourbookstore.domain.dto.order.OrderPreviewDto;
 import ru.mephi.ourbookstore.mapper.cart.CartDtoMapper;
 import ru.mephi.ourbookstore.service.cart.CartService;
 
@@ -40,5 +41,12 @@ public class CartController {
     public CartDto getByAppUserId(@PathVariable Long appUserId) {
         Cart cart = cartService.getByAppUserId(appUserId);
         return mapper.objectToDto(cart);
+    }
+
+    @GetMapping("/preview/{appUserId}")
+    @SecurityRequirement(name = "bearerAuth")
+    @PreAuthorize("hasRole('ADMIN') or @appUserAuthService.checkPermission('APP_USER',#appUserId)")
+    public OrderPreviewDto getPreviewOrder(@PathVariable Long appUserId) {
+        return cartService.getOrderPreview(appUserId);
     }
 }

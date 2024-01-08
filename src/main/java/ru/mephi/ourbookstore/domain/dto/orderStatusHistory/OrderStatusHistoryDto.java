@@ -1,8 +1,8 @@
 package ru.mephi.ourbookstore.domain.dto.orderStatusHistory;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import ru.mephi.ourbookstore.domain.dto.order.OrderDto;
 
 import java.time.LocalDateTime;
 
@@ -15,6 +15,7 @@ public class OrderStatusHistoryDto {
     Long id;
     Long orderId;
     String status;
+    @JsonFormat(pattern = "YYYY-MM-dd HH:mm")
     LocalDateTime actualFrom;
     boolean actualFlag;
 }
