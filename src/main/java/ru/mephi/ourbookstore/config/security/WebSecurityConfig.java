@@ -95,7 +95,8 @@ public class WebSecurityConfig {
                     ).permitAll()
                     .requestMatchers(
                             HttpMethod.POST,
-                            "/appUsers"
+                            "/appUsers",
+                            "/books/search"
                     ).permitAll()
                     .anyRequest().authenticated()
             );

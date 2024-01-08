@@ -43,7 +43,7 @@ public class BookController {
         return bookDtoMapper.objectToPageDto(bookService.getByPageNumber(pageNumber));
     }
 
-    @GetMapping("/search")
+    @PostMapping("/search")
     public BookPageDto search(@RequestBody BookSearchRqDto bookSearchRqDto) {
         return BookDtoMapper.searchResultToPageDto(bookService.search(bookSearchRqDto), bookSearchRqDto.getBookPerPage(), bookModelMapper, bookDtoMapper);
     }
